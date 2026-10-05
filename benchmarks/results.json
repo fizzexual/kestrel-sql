@@ -1,0 +1,3402 @@
+{
+  "status": "prototype; no production certification or universal speed claim",
+  "recorded_at_utc": "2026-10-05T16:55:29.636765+00:00",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "processor": "Intel64 Family 6 Model 165 Stepping 5, GenuineIntel",
+  "python": "3.12.10",
+  "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "versions": {
+    "duckdb": "1.5.6",
+    "sqlite": "3.49.1",
+    "kestrel": "0.1.0"
+  },
+  "methodology": {
+    "rows": 1000000,
+    "repeats": 31,
+    "warmups": 3,
+    "threads": 1,
+    "dataset": "ordered ts=i; value=(i*37)%1000-500; device=(i*17)%97",
+    "query_timing": "warm in-process parse, execute, materialize; Rust direct API versus Python native bindings; different boundary costs",
+    "execution_order": "Kestrel memory, Kestrel durable/reopened, Kestrel Python pipe, then each SQLite/DuckDB query; shared live machine, no affinity",
+    "sqlite_indexes": [
+      "(ts,value) covering",
+      "(value)"
+    ],
+    "sqlite_statement_cache": "disabled to include parsing",
+    "duckdb_indexes": [
+      "(ts) ART"
+    ],
+    "limitations": [
+      "specialized synthetic append-only workload",
+      "all datasets fit in RAM",
+      "no multi-client load",
+      "no cold-I/O or power-loss qualification",
+      "ingestion methods differ; load times are diagnostic, not fair ingestion rankings",
+      "Kestrel stores 128-bit prefix sums: 3x logical integer data size",
+      "no query-result cache in Kestrel",
+      "general scan and grouping cases included; competitors support far more SQL"
+    ]
+  },
+  "correctness": {
+    "seed": 20261005,
+    "queries_checked_against_each_reference": 1002,
+    "references": [
+      "SQLite 3.49.1",
+      "DuckDB 1.5.6"
+    ],
+    "late_append_and_process_kill_recovery": "passed",
+    "randomized_prefix_aggregate_queries": 200,
+    "prefix_suite_verified_after_timing_run": true
+  },
+  "kestrel": {
+    "engine": "KestrelSQL",
+    "ingest_ms": 28.123700000000003,
+    "logical_index_bytes": 72000048,
+    "mode": "memory",
+    "reopen_ms": null,
+    "repeats": 31,
+    "rows": 1000000,
+    "threads": 1,
+    "version": "0.1.0",
+    "warmups": 3
+  },
+  "sqlite_manual_prefix_baseline": {
+    "construction_ms": 1213.4415,
+    "maintenance": "prebuilt prefix table; an application or trigger must maintain it on future ordered appends",
+    "limits": "unique ordered timestamp dataset; 64-bit-safe sums; extra schema and rewritten queries"
+  },
+  "kestrel_durable": {
+    "engine": "KestrelSQL",
+    "ingest_ms": 292.8865,
+    "logical_index_bytes": 72000048,
+    "mode": "durable",
+    "reopen_ms": 88.837,
+    "repeats": 31,
+    "rows": 1000000,
+    "threads": 1,
+    "version": "0.1.0",
+    "warmups": 3,
+    "wal_bytes": 14067959
+  },
+  "reference_load_diagnostics_ms": {
+    "sqlite_generated_rows": 1063.1253,
+    "sqlite_indexes": 746.1234,
+    "duckdb_native_generated_table": 65.0638,
+    "duckdb_index": 297.9768
+  },
+  "queries": [
+    {
+      "name": "all_aggregates",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events",
+      "kestrel_memory": {
+        "median_us": 4.4,
+        "name": "all_aggregates",
+        "p95_us": 4.8999999999999995,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            1000000,
+            -500000,
+            -0.5
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          6.0,
+          4.4,
+          4.199999999999999,
+          4.199999999999999,
+          4.1,
+          4.199999999999999,
+          4.1,
+          4.1,
+          4.199999999999999,
+          4.8999999999999995,
+          4.8,
+          4.4,
+          4.300000000000001,
+          4.4,
+          4.4,
+          4.5,
+          4.300000000000001,
+          4.4,
+          4.4,
+          4.4,
+          4.5,
+          4.300000000000001,
+          4.300000000000001,
+          4.4,
+          4.300000000000001,
+          4.5,
+          4.300000000000001,
+          4.4,
+          4.300000000000001,
+          4.4,
+          4.5
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 38.1,
+        "p95_us": 77.9,
+        "samples_us": [
+          42.2,
+          38.1,
+          36.4,
+          38.7,
+          62.3,
+          59.6,
+          37.2,
+          51.9,
+          77.9,
+          77.5,
+          80.3,
+          40.4,
+          36.0,
+          39.0,
+          68.8,
+          50.5,
+          38.4,
+          34.8,
+          32.6,
+          33.2,
+          33.0,
+          36.1,
+          34.9,
+          36.7,
+          34.6,
+          32.8,
+          31.9,
+          32.4,
+          38.6,
+          36.8,
+          40.4
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": {
+        "median_us": 35.4,
+        "p95_us": 41.9,
+        "samples_us": [
+          43.3,
+          41.9,
+          38.7,
+          36.8,
+          36.4,
+          37.3,
+          36.4,
+          35.8,
+          35.2,
+          35.2,
+          34.8,
+          38.3,
+          35.4,
+          35.4,
+          34.9,
+          35.4,
+          35.8,
+          35.5,
+          35.4,
+          36.5,
+          34.6,
+          35.0,
+          34.7,
+          35.1,
+          34.8,
+          35.4,
+          34.9,
+          35.3,
+          34.7,
+          34.9,
+          34.7
+        ],
+        "result": [
+          [
+            1000000,
+            -500000,
+            -0.5
+          ]
+        ],
+        "rewritten_sql": "WITH bounds AS (\n            SELECT COALESCE((SELECT n FROM cumulative WHERE ts < 1000000 ORDER BY ts DESC LIMIT 1),0) AS hn,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 1000000 ORDER BY ts DESC LIMIT 1),0) AS hs,\n            COALESCE((SELECT n FROM cumulative WHERE ts < 0 ORDER BY ts DESC LIMIT 1),0) AS ln,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 0 ORDER BY ts DESC LIMIT 1),0) AS ls)\n            SELECT hn-ln, CASE WHEN hn>ln THEN hs-ls END, CASE WHEN hn>ln THEN 1.0*(hs-ls)/(hn-ln) END FROM bounds",
+        "query_plan": [
+          [
+            2,
+            0,
+            0,
+            "CO-ROUTINE bounds"
+          ],
+          [
+            3,
+            2,
+            0,
+            "SCAN CONSTANT ROW"
+          ],
+          [
+            6,
+            2,
+            0,
+            "SCALAR SUBQUERY 1"
+          ],
+          [
+            15,
+            6,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            26,
+            2,
+            0,
+            "SCALAR SUBQUERY 2"
+          ],
+          [
+            35,
+            26,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            46,
+            2,
+            0,
+            "SCALAR SUBQUERY 3"
+          ],
+          [
+            55,
+            46,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            66,
+            2,
+            0,
+            "SCALAR SUBQUERY 4"
+          ],
+          [
+            75,
+            66,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            86,
+            0,
+            16,
+            "SCAN bounds"
+          ]
+        ]
+      },
+      "kestrel_after_durable_reopen": {
+        "median_us": 4.4,
+        "name": "all_aggregates",
+        "p95_us": 6.2,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            1000000,
+            -500000,
+            -0.5
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          6.2,
+          4.6,
+          4.5,
+          4.5,
+          4.4,
+          4.6,
+          4.300000000000001,
+          4.300000000000001,
+          4.300000000000001,
+          4.300000000000001,
+          4.6,
+          4.300000000000001,
+          4.300000000000001,
+          4.6,
+          4.6,
+          6.2,
+          4.6,
+          4.8,
+          4.6,
+          4.4,
+          4.5,
+          4.4,
+          4.4,
+          4.4,
+          4.4,
+          4.6,
+          4.300000000000001,
+          4.300000000000001,
+          4.4,
+          4.4,
+          4.6
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events"
+      },
+      "sqlite": {
+        "median_us": 51905.4,
+        "p95_us": 61335.6,
+        "samples_us": [
+          47220.6,
+          63150.1,
+          50068.4,
+          51905.4,
+          54818.2,
+          54541.3,
+          46097.0,
+          57261.8,
+          56522.4,
+          52884.6,
+          52725.3,
+          51479.1,
+          51057.5,
+          53604.4,
+          61335.6,
+          56730.8,
+          51918.9,
+          60649.9,
+          50753.9,
+          50719.0,
+          53336.6,
+          59167.4,
+          51134.9,
+          53072.6,
+          49702.0,
+          49846.6,
+          49847.7,
+          50260.5,
+          47023.1,
+          50692.6,
+          51428.7
+        ],
+        "result": [
+          [
+            1000000,
+            -500000,
+            -0.5
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 3171.7,
+        "p95_us": 4831.4,
+        "samples_us": [
+          3423.5,
+          3520.7,
+          3166.3,
+          3198.6,
+          3034.0,
+          3003.8,
+          4070.1,
+          4642.0,
+          4831.4,
+          4924.0,
+          4809.3,
+          3378.0,
+          3786.0,
+          3888.2,
+          3360.8,
+          3171.7,
+          3066.0,
+          2945.8,
+          3052.3,
+          3172.8,
+          3020.1,
+          2960.9,
+          3116.4,
+          3231.9,
+          3122.0,
+          3069.6,
+          3013.9,
+          2937.2,
+          2934.2,
+          3070.8,
+          3338.9
+        ],
+        "result": [
+          [
+            1000000,
+            -500000,
+            -0.5
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          3,
+          0,
+          212,
+          "SCAN events USING COVERING INDEX value_index"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502    UNGROUPED_AGGREGATE    \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502        Aggregates:        \u2502\n\u2502        count_star()       \u2502\n\u2502    sum_no_overflow(#0)    \u2502\n\u2502          avg(#1)          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           value           \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502      ~1,000,000 rows      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502     Projections: value    \u2502\n\u2502                           \u2502\n\u2502      ~1,000,000 rows      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 720.840909090909
+    },
+    {
+      "name": "broad_window",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 250000 AND ts < 750000",
+      "kestrel_memory": {
+        "median_us": 5.2,
+        "name": "broad_window",
+        "p95_us": 16.900000000000002,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            500000,
+            -250000,
+            -0.5
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          6.1,
+          6.0,
+          9.5,
+          6.2,
+          9.9,
+          5.6,
+          16.900000000000002,
+          5.5,
+          5.2,
+          5.2,
+          5.2,
+          23.3,
+          5.1000000000000005,
+          5.1000000000000005,
+          5.2,
+          5.1000000000000005,
+          5.0,
+          5.0,
+          5.2,
+          5.1000000000000005,
+          5.0,
+          5.1000000000000005,
+          5.3,
+          5.1000000000000005,
+          5.5,
+          5.2,
+          5.5,
+          5.1000000000000005,
+          5.1000000000000005,
+          5.2,
+          5.1000000000000005
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 250000 AND ts < 750000"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 40.6,
+        "p95_us": 63.3,
+        "samples_us": [
+          49.2,
+          37.5,
+          35.0,
+          35.2,
+          37.6,
+          37.9,
+          53.0,
+          42.1,
+          35.5,
+          35.1,
+          34.9,
+          40.0,
+          48.4,
+          44.0,
+          37.0,
+          40.6,
+          35.5,
+          35.4,
+          34.6,
+          43.6,
+          63.3,
+          63.3,
+          51.3,
+          43.8,
+          52.4,
+          40.6,
+          35.9,
+          35.6,
+          43.3,
+          45.9,
+          45.9
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": {
+        "median_us": 35.5,
+        "p95_us": 36.8,
+        "samples_us": [
+          36.8,
+          36.0,
+          37.4,
+          36.0,
+          35.6,
+          35.2,
+          35.6,
+          35.5,
+          35.4,
+          36.1,
+          35.5,
+          35.5,
+          35.6,
+          35.3,
+          35.3,
+          35.4,
+          36.4,
+          36.8,
+          35.4,
+          35.8,
+          35.3,
+          35.4,
+          35.0,
+          35.6,
+          36.0,
+          35.3,
+          35.3,
+          35.7,
+          35.4,
+          35.6,
+          35.3
+        ],
+        "result": [
+          [
+            500000,
+            -250000,
+            -0.5
+          ]
+        ],
+        "rewritten_sql": "WITH bounds AS (\n            SELECT COALESCE((SELECT n FROM cumulative WHERE ts < 750000 ORDER BY ts DESC LIMIT 1),0) AS hn,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 750000 ORDER BY ts DESC LIMIT 1),0) AS hs,\n            COALESCE((SELECT n FROM cumulative WHERE ts < 250000 ORDER BY ts DESC LIMIT 1),0) AS ln,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 250000 ORDER BY ts DESC LIMIT 1),0) AS ls)\n            SELECT hn-ln, CASE WHEN hn>ln THEN hs-ls END, CASE WHEN hn>ln THEN 1.0*(hs-ls)/(hn-ln) END FROM bounds",
+        "query_plan": [
+          [
+            2,
+            0,
+            0,
+            "CO-ROUTINE bounds"
+          ],
+          [
+            3,
+            2,
+            0,
+            "SCAN CONSTANT ROW"
+          ],
+          [
+            6,
+            2,
+            0,
+            "SCALAR SUBQUERY 1"
+          ],
+          [
+            15,
+            6,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            26,
+            2,
+            0,
+            "SCALAR SUBQUERY 2"
+          ],
+          [
+            35,
+            26,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            46,
+            2,
+            0,
+            "SCALAR SUBQUERY 3"
+          ],
+          [
+            55,
+            46,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            66,
+            2,
+            0,
+            "SCALAR SUBQUERY 4"
+          ],
+          [
+            75,
+            66,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            86,
+            0,
+            16,
+            "SCAN bounds"
+          ]
+        ]
+      },
+      "kestrel_after_durable_reopen": {
+        "median_us": 5.800000000000001,
+        "name": "broad_window",
+        "p95_us": 7.9,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            500000,
+            -250000,
+            -0.5
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          5.9,
+          5.800000000000001,
+          5.699999999999999,
+          5.699999999999999,
+          5.9,
+          6.0,
+          5.699999999999999,
+          5.699999999999999,
+          5.800000000000001,
+          6.2,
+          5.800000000000001,
+          5.800000000000001,
+          6.0,
+          7.9,
+          5.800000000000001,
+          7.300000000000001,
+          9.0,
+          6.1,
+          5.800000000000001,
+          5.800000000000001,
+          6.3999999999999995,
+          5.699999999999999,
+          5.6,
+          5.699999999999999,
+          5.800000000000001,
+          5.699999999999999,
+          5.6,
+          5.699999999999999,
+          5.800000000000001,
+          5.699999999999999,
+          5.699999999999999
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 250000 AND ts < 750000"
+      },
+      "sqlite": {
+        "median_us": 39067.9,
+        "p95_us": 46556.1,
+        "samples_us": [
+          38153.8,
+          35004.0,
+          34904.2,
+          42221.9,
+          39978.2,
+          42266.9,
+          46556.1,
+          37973.9,
+          44544.2,
+          39267.7,
+          36818.3,
+          38583.4,
+          35700.6,
+          36128.5,
+          50158.0,
+          41917.8,
+          40336.8,
+          44777.0,
+          39383.8,
+          44118.9,
+          38056.5,
+          44883.8,
+          36600.3,
+          36578.6,
+          36378.2,
+          39067.9,
+          36277.5,
+          39085.9,
+          43422.3,
+          38947.1,
+          37773.5
+        ],
+        "result": [
+          [
+            500000,
+            -250000,
+            -0.5
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 2612.5,
+        "p95_us": 3176.2,
+        "samples_us": [
+          2427.2,
+          2459.6,
+          2408.1,
+          2956.7,
+          2524.0,
+          2458.1,
+          2575.0,
+          2532.5,
+          2389.0,
+          2511.9,
+          3042.1,
+          2622.0,
+          2623.5,
+          2507.7,
+          2457.9,
+          2612.5,
+          2700.8,
+          2690.6,
+          2834.5,
+          2603.0,
+          2510.1,
+          2555.1,
+          3176.2,
+          2811.6,
+          2805.8,
+          2923.7,
+          2702.7,
+          3572.5,
+          3165.9,
+          2783.1,
+          2567.5
+        ],
+        "result": [
+          [
+            500000,
+            -250000,
+            -0.5
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          3,
+          0,
+          154,
+          "SEARCH events USING COVERING INDEX ts_value (ts>? AND ts<?)"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502    UNGROUPED_AGGREGATE    \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502        Aggregates:        \u2502\n\u2502        count_star()       \u2502\n\u2502    sum_no_overflow(#0)    \u2502\n\u2502          avg(#1)          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           value           \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502     Projections: value    \u2502\n\u2502                           \u2502\n\u2502          Filters:         \u2502\n\u2502  ts>=250000 AND ts<750000 \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 502.40384615384613
+    },
+    {
+      "name": "narrow_window",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE ts >= 999000 AND ts < 1000000",
+      "kestrel_memory": {
+        "median_us": 3.8,
+        "name": "narrow_window",
+        "p95_us": 4.1,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            1000,
+            -500
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          5.699999999999999,
+          3.8,
+          3.9,
+          3.8,
+          3.8,
+          3.9,
+          3.7,
+          4.0,
+          3.8,
+          3.8,
+          3.8,
+          3.9,
+          3.8,
+          3.8,
+          3.8,
+          3.7,
+          4.0,
+          3.8,
+          3.9,
+          3.8,
+          4.1,
+          3.8,
+          3.8,
+          3.7,
+          3.7,
+          3.9,
+          3.8,
+          3.7,
+          3.7,
+          3.9,
+          3.7
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE ts >= 999000 AND ts < 1000000"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 35.4,
+        "p95_us": 48.3,
+        "samples_us": [
+          43.2,
+          35.3,
+          32.5,
+          32.5,
+          40.6,
+          34.8,
+          32.7,
+          31.5,
+          35.6,
+          54.7,
+          41.9,
+          32.8,
+          34.6,
+          37.0,
+          38.7,
+          35.2,
+          33.0,
+          35.7,
+          33.0,
+          35.9,
+          33.3,
+          35.4,
+          32.4,
+          46.9,
+          43.3,
+          39.1,
+          48.3,
+          34.9,
+          33.6,
+          43.7,
+          37.7
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": {
+        "median_us": 31.5,
+        "p95_us": 34.7,
+        "samples_us": [
+          31.9,
+          32.8,
+          31.7,
+          31.4,
+          31.5,
+          31.7,
+          31.3,
+          31.7,
+          31.3,
+          31.7,
+          33.1,
+          31.8,
+          31.5,
+          31.5,
+          31.7,
+          31.7,
+          31.5,
+          34.7,
+          31.5,
+          31.4,
+          31.5,
+          31.3,
+          31.5,
+          31.4,
+          31.4,
+          32.8,
+          38.7,
+          33.8,
+          31.5,
+          31.5,
+          31.5
+        ],
+        "result": [
+          [
+            1000,
+            -500
+          ]
+        ],
+        "rewritten_sql": "WITH bounds AS (\n            SELECT COALESCE((SELECT n FROM cumulative WHERE ts < 1000000 ORDER BY ts DESC LIMIT 1),0) AS hn,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 1000000 ORDER BY ts DESC LIMIT 1),0) AS hs,\n            COALESCE((SELECT n FROM cumulative WHERE ts < 999000 ORDER BY ts DESC LIMIT 1),0) AS ln,\n            COALESCE((SELECT total FROM cumulative WHERE ts < 999000 ORDER BY ts DESC LIMIT 1),0) AS ls)\n            SELECT hn-ln, CASE WHEN hn>ln THEN hs-ls END FROM bounds",
+        "query_plan": [
+          [
+            2,
+            0,
+            0,
+            "CO-ROUTINE bounds"
+          ],
+          [
+            3,
+            2,
+            0,
+            "SCAN CONSTANT ROW"
+          ],
+          [
+            6,
+            2,
+            0,
+            "SCALAR SUBQUERY 1"
+          ],
+          [
+            15,
+            6,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            26,
+            2,
+            0,
+            "SCALAR SUBQUERY 2"
+          ],
+          [
+            35,
+            26,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            46,
+            2,
+            0,
+            "SCALAR SUBQUERY 3"
+          ],
+          [
+            55,
+            46,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            66,
+            2,
+            0,
+            "SCALAR SUBQUERY 4"
+          ],
+          [
+            75,
+            66,
+            196,
+            "SEARCH cumulative USING INTEGER PRIMARY KEY (rowid<?)"
+          ],
+          [
+            86,
+            0,
+            16,
+            "SCAN bounds"
+          ]
+        ]
+      },
+      "kestrel_after_durable_reopen": {
+        "median_us": 4.199999999999999,
+        "name": "narrow_window",
+        "p95_us": 4.6,
+        "plan": "prefix-range-aggregate",
+        "result": [
+          [
+            1000,
+            -500
+          ]
+        ],
+        "rows_scanned": 0,
+        "samples_us": [
+          4.5,
+          4.4,
+          4.5,
+          4.4,
+          4.300000000000001,
+          4.300000000000001,
+          4.300000000000001,
+          4.6,
+          5.699999999999999,
+          4.199999999999999,
+          4.1,
+          4.199999999999999,
+          4.199999999999999,
+          4.1,
+          4.1,
+          4.199999999999999,
+          4.199999999999999,
+          4.199999999999999,
+          4.199999999999999,
+          4.1,
+          4.1,
+          4.199999999999999,
+          4.1,
+          4.199999999999999,
+          4.199999999999999,
+          4.1,
+          4.199999999999999,
+          4.1,
+          4.1,
+          4.1,
+          4.0
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE ts >= 999000 AND ts < 1000000"
+      },
+      "sqlite": {
+        "median_us": 65.8,
+        "p95_us": 116.5,
+        "samples_us": [
+          69.6,
+          66.5,
+          65.7,
+          66.2,
+          65.2,
+          66.6,
+          67.2,
+          65.1,
+          65.3,
+          65.3,
+          64.9,
+          65.2,
+          65.2,
+          66.1,
+          66.8,
+          67.7,
+          65.9,
+          65.4,
+          66.4,
+          65.3,
+          65.8,
+          86.2,
+          65.4,
+          73.7,
+          69.0,
+          64.0,
+          65.3,
+          64.3,
+          63.6,
+          123.4,
+          116.5
+        ],
+        "result": [
+          [
+            1000,
+            -500
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 417.3,
+        "p95_us": 488.3,
+        "samples_us": [
+          437.1,
+          403.3,
+          401.4,
+          401.8,
+          459.6,
+          439.4,
+          417.3,
+          488.3,
+          451.3,
+          427.6,
+          464.8,
+          458.3,
+          453.2,
+          552.2,
+          422.8,
+          411.4,
+          404.4,
+          398.8,
+          400.4,
+          404.0,
+          421.4,
+          413.2,
+          413.1,
+          404.6,
+          484.9,
+          458.8,
+          448.1,
+          415.9,
+          404.0,
+          401.5,
+          397.5
+        ],
+        "result": [
+          [
+            1000,
+            -500
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          3,
+          0,
+          154,
+          "SEARCH events USING COVERING INDEX ts_value (ts>? AND ts<?)"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502    UNGROUPED_AGGREGATE    \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502        Aggregates:        \u2502\n\u2502        count_star()       \u2502\n\u2502    sum_no_overflow(#0)    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502     Projections: value    \u2502\n\u2502                           \u2502\n\u2502          Filters:         \u2502\n\u2502 ts>=999000 AND ts<1000000 \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 109.81578947368422
+    },
+    {
+      "name": "unordered_filter",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE value >= 0",
+      "kestrel_memory": {
+        "median_us": 6749.4,
+        "name": "unordered_filter",
+        "p95_us": 14894.7,
+        "plan": "filtered-column-scan",
+        "result": [
+          [
+            500000,
+            124750000
+          ]
+        ],
+        "rows_scanned": 1000000,
+        "samples_us": [
+          6109.9,
+          7181.0,
+          7971.4,
+          8263.2,
+          8405.9,
+          5978.5,
+          5937.4,
+          5835.9,
+          5668.3,
+          5815.8,
+          15151.8,
+          13923.2,
+          11398.2,
+          14894.7,
+          11385.4,
+          8492.2,
+          6405.1,
+          6414.0,
+          6250.0,
+          6230.2,
+          6162.2,
+          5997.200000000001,
+          6057.0,
+          6252.599999999999,
+          6098.9,
+          7200.5,
+          7948.200000000001,
+          6749.4,
+          8274.3,
+          8603.3,
+          8234.0
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE value >= 0"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 6483.6,
+        "p95_us": 9558.6,
+        "samples_us": [
+          7830.0,
+          9989.9,
+          6609.0,
+          6483.6,
+          6920.1,
+          7771.0,
+          9558.6,
+          6348.0,
+          6019.0,
+          6377.3,
+          8410.3,
+          6409.1,
+          6422.5,
+          6507.5,
+          6791.3,
+          7639.8,
+          7028.9,
+          6714.4,
+          6379.7,
+          6456.1,
+          8661.7,
+          6108.2,
+          5732.2,
+          6587.7,
+          6454.7,
+          6110.2,
+          6343.3,
+          6120.5,
+          6827.1,
+          5858.6,
+          5630.9
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": null,
+      "kestrel_after_durable_reopen": {
+        "median_us": 5987.3,
+        "name": "unordered_filter",
+        "p95_us": 7951.9,
+        "plan": "filtered-column-scan",
+        "result": [
+          [
+            500000,
+            124750000
+          ]
+        ],
+        "rows_scanned": 1000000,
+        "samples_us": [
+          6900.5,
+          6672.3,
+          6597.4,
+          5876.8,
+          5727.7,
+          5542.3,
+          5420.7,
+          5987.3,
+          5647.3,
+          5568.6,
+          5618.5,
+          5419.700000000001,
+          5540.200000000001,
+          5528.599999999999,
+          5633.2,
+          6101.7,
+          8948.2,
+          7951.9,
+          7932.399999999999,
+          6635.2,
+          6181.5,
+          6056.5,
+          5999.599999999999,
+          6069.200000000001,
+          6233.4,
+          6405.700000000001,
+          6160.8,
+          5851.6,
+          5831.3,
+          5809.7,
+          5664.5
+        ],
+        "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE value >= 0"
+      },
+      "sqlite": {
+        "median_us": 18446.8,
+        "p95_us": 22926.8,
+        "samples_us": [
+          24528.0,
+          22926.8,
+          18208.4,
+          18446.8,
+          19857.4,
+          20953.1,
+          20150.7,
+          19170.9,
+          18024.7,
+          17974.2,
+          17892.0,
+          20911.9,
+          17445.5,
+          17126.4,
+          17419.6,
+          18146.4,
+          18823.3,
+          19080.1,
+          17463.6,
+          17332.9,
+          17074.6,
+          16973.8,
+          18346.7,
+          19659.2,
+          18958.9,
+          22281.9,
+          19317.9,
+          21825.8,
+          19186.5,
+          17429.5,
+          17363.3
+        ],
+        "result": [
+          [
+            500000,
+            124750000
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 3199.1,
+        "p95_us": 4157.5,
+        "samples_us": [
+          3199.1,
+          3063.3,
+          3116.4,
+          3582.7,
+          3173.9,
+          3065.7,
+          2987.0,
+          3048.3,
+          3381.4,
+          3412.3,
+          4157.5,
+          3304.8,
+          3724.4,
+          3425.0,
+          3285.3,
+          3686.3,
+          3207.5,
+          3389.3,
+          3187.4,
+          2968.8,
+          2865.5,
+          2813.9,
+          3666.0,
+          3209.1,
+          4261.4,
+          3475.2,
+          2835.2,
+          2904.8,
+          3156.1,
+          2983.8,
+          3040.4
+        ],
+        "result": [
+          [
+            500000,
+            124750000
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          3,
+          0,
+          192,
+          "SEARCH events USING COVERING INDEX value_index (value>?)"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502    UNGROUPED_AGGREGATE    \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502        Aggregates:        \u2502\n\u2502        count_star()       \u2502\n\u2502    sum_no_overflow(#0)    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502     Projections: value    \u2502\n\u2502     Filters: value>=0     \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 0.47398287255163424
+    },
+    {
+      "name": "grouped",
+      "sql": "SELECT device, SUM(value) AS total FROM events GROUP BY device ORDER BY device",
+      "kestrel_memory": {
+        "median_us": 22629.1,
+        "name": "grouped",
+        "p95_us": 31134.7,
+        "plan": "grouped-scan",
+        "result": [
+          [
+            0,
+            -5845
+          ],
+          [
+            1,
+            -5026
+          ],
+          [
+            2,
+            -4706
+          ],
+          [
+            3,
+            -5035
+          ],
+          [
+            4,
+            -5067
+          ],
+          [
+            5,
+            -5025
+          ],
+          [
+            6,
+            -5428
+          ],
+          [
+            7,
+            -5108
+          ],
+          [
+            8,
+            -4789
+          ],
+          [
+            9,
+            -5469
+          ],
+          [
+            10,
+            -5205
+          ],
+          [
+            11,
+            -4830
+          ],
+          [
+            12,
+            -5510
+          ],
+          [
+            13,
+            -5191
+          ],
+          [
+            14,
+            -4871
+          ],
+          [
+            15,
+            -5385
+          ],
+          [
+            16,
+            -5232
+          ],
+          [
+            17,
+            -5375
+          ],
+          [
+            18,
+            -5593
+          ],
+          [
+            19,
+            -5273
+          ],
+          [
+            20,
+            -4565
+          ],
+          [
+            21,
+            -5634
+          ],
+          [
+            22,
+            -5555
+          ],
+          [
+            23,
+            -4995
+          ],
+          [
+            24,
+            -4675
+          ],
+          [
+            25,
+            -5356
+          ],
+          [
+            26,
+            -5036
+          ],
+          [
+            27,
+            -4735
+          ],
+          [
+            28,
+            -5397
+          ],
+          [
+            29,
+            -5077
+          ],
+          [
+            30,
+            -4758
+          ],
+          [
+            31,
+            -5438
+          ],
+          [
+            32,
+            -4915
+          ],
+          [
+            33,
+            -4799
+          ],
+          [
+            34,
+            -5905
+          ],
+          [
+            35,
+            -5160
+          ],
+          [
+            36,
+            -4840
+          ],
+          [
+            37,
+            -5095
+          ],
+          [
+            38,
+            -5201
+          ],
+          [
+            39,
+            -5085
+          ],
+          [
+            40,
+            -5562
+          ],
+          [
+            41,
+            -5242
+          ],
+          [
+            42,
+            -4923
+          ],
+          [
+            43,
+            -5603
+          ],
+          [
+            44,
+            -5265
+          ],
+          [
+            45,
+            -4964
+          ],
+          [
+            46,
+            -5644
+          ],
+          [
+            47,
+            -5325
+          ],
+          [
+            48,
+            -5005
+          ],
+          [
+            49,
+            -4445
+          ],
+          [
+            50,
+            -5366
+          ],
+          [
+            51,
+            -5435
+          ],
+          [
+            52,
+            -4727
+          ],
+          [
+            53,
+            -5407
+          ],
+          [
+            54,
+            -4625
+          ],
+          [
+            55,
+            -4768
+          ],
+          [
+            56,
+            -5615
+          ],
+          [
+            57,
+            -5129
+          ],
+          [
+            58,
+            -4809
+          ],
+          [
+            59,
+            -5490
+          ],
+          [
+            60,
+            -5170
+          ],
+          [
+            61,
+            -4795
+          ],
+          [
+            62,
+            -5531
+          ],
+          [
+            63,
+            -5211
+          ],
+          [
+            64,
+            -4892
+          ],
+          [
+            65,
+            -5572
+          ],
+          [
+            66,
+            -4975
+          ],
+          [
+            67,
+            -4933
+          ],
+          [
+            68,
+            -5965
+          ],
+          [
+            69,
+            -5294
+          ],
+          [
+            70,
+            -4974
+          ],
+          [
+            71,
+            -4655
+          ],
+          [
+            72,
+            -5335
+          ],
+          [
+            73,
+            -5145
+          ],
+          [
+            74,
+            -4696
+          ],
+          [
+            75,
+            -5376
+          ],
+          [
+            76,
+            -5057
+          ],
+          [
+            77,
+            -4737
+          ],
+          [
+            78,
+            -5325
+          ],
+          [
+            79,
+            -5098
+          ],
+          [
+            80,
+            -4778
+          ],
+          [
+            81,
+            -5459
+          ],
+          [
+            82,
+            -5139
+          ],
+          [
+            83,
+            -4505
+          ],
+          [
+            84,
+            -5500
+          ],
+          [
+            85,
+            -5495
+          ],
+          [
+            86,
+            -4861
+          ],
+          [
+            87,
+            -5541
+          ],
+          [
+            88,
+            -5222
+          ],
+          [
+            89,
+            -4902
+          ],
+          [
+            90,
+            -5675
+          ],
+          [
+            91,
+            -5263
+          ],
+          [
+            92,
+            -4943
+          ],
+          [
+            93,
+            -5624
+          ],
+          [
+            94,
+            -5304
+          ],
+          [
+            95,
+            -4855
+          ],
+          [
+            96,
+            -4665
+          ]
+        ],
+        "rows_scanned": 1000000,
+        "samples_us": [
+          28632.2,
+          23569.1,
+          32197.8,
+          25811.4,
+          27739.199999999997,
+          21976.3,
+          21680.600000000002,
+          21166.899999999998,
+          22321.899999999998,
+          22577.8,
+          22357.399999999998,
+          21853.0,
+          23316.5,
+          24681.0,
+          22325.399999999998,
+          21858.0,
+          31134.7,
+          25436.7,
+          22629.1,
+          21730.5,
+          21031.100000000002,
+          20767.8,
+          22714.5,
+          22307.6,
+          21644.9,
+          25910.800000000003,
+          24647.8,
+          23778.3,
+          21774.600000000002,
+          22845.5,
+          24522.5
+        ],
+        "sql": "SELECT device, SUM(value) AS total FROM events GROUP BY device ORDER BY device"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 23529.5,
+        "p95_us": 35228.6,
+        "samples_us": [
+          21060.2,
+          21613.9,
+          24976.2,
+          21868.5,
+          22830.6,
+          22552.4,
+          23702.0,
+          24027.6,
+          22488.2,
+          22216.3,
+          26849.8,
+          25096.2,
+          22210.6,
+          21136.5,
+          21511.6,
+          24720.3,
+          24626.1,
+          21837.6,
+          21447.1,
+          22389.7,
+          25171.6,
+          22885.3,
+          23529.5,
+          22241.2,
+          25561.9,
+          35228.6,
+          29816.9,
+          33757.9,
+          35915.9,
+          29380.5,
+          25777.6
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": null,
+      "kestrel_after_durable_reopen": {
+        "median_us": 23978.4,
+        "name": "grouped",
+        "p95_us": 28526.3,
+        "plan": "grouped-scan",
+        "result": [
+          [
+            0,
+            -5845
+          ],
+          [
+            1,
+            -5026
+          ],
+          [
+            2,
+            -4706
+          ],
+          [
+            3,
+            -5035
+          ],
+          [
+            4,
+            -5067
+          ],
+          [
+            5,
+            -5025
+          ],
+          [
+            6,
+            -5428
+          ],
+          [
+            7,
+            -5108
+          ],
+          [
+            8,
+            -4789
+          ],
+          [
+            9,
+            -5469
+          ],
+          [
+            10,
+            -5205
+          ],
+          [
+            11,
+            -4830
+          ],
+          [
+            12,
+            -5510
+          ],
+          [
+            13,
+            -5191
+          ],
+          [
+            14,
+            -4871
+          ],
+          [
+            15,
+            -5385
+          ],
+          [
+            16,
+            -5232
+          ],
+          [
+            17,
+            -5375
+          ],
+          [
+            18,
+            -5593
+          ],
+          [
+            19,
+            -5273
+          ],
+          [
+            20,
+            -4565
+          ],
+          [
+            21,
+            -5634
+          ],
+          [
+            22,
+            -5555
+          ],
+          [
+            23,
+            -4995
+          ],
+          [
+            24,
+            -4675
+          ],
+          [
+            25,
+            -5356
+          ],
+          [
+            26,
+            -5036
+          ],
+          [
+            27,
+            -4735
+          ],
+          [
+            28,
+            -5397
+          ],
+          [
+            29,
+            -5077
+          ],
+          [
+            30,
+            -4758
+          ],
+          [
+            31,
+            -5438
+          ],
+          [
+            32,
+            -4915
+          ],
+          [
+            33,
+            -4799
+          ],
+          [
+            34,
+            -5905
+          ],
+          [
+            35,
+            -5160
+          ],
+          [
+            36,
+            -4840
+          ],
+          [
+            37,
+            -5095
+          ],
+          [
+            38,
+            -5201
+          ],
+          [
+            39,
+            -5085
+          ],
+          [
+            40,
+            -5562
+          ],
+          [
+            41,
+            -5242
+          ],
+          [
+            42,
+            -4923
+          ],
+          [
+            43,
+            -5603
+          ],
+          [
+            44,
+            -5265
+          ],
+          [
+            45,
+            -4964
+          ],
+          [
+            46,
+            -5644
+          ],
+          [
+            47,
+            -5325
+          ],
+          [
+            48,
+            -5005
+          ],
+          [
+            49,
+            -4445
+          ],
+          [
+            50,
+            -5366
+          ],
+          [
+            51,
+            -5435
+          ],
+          [
+            52,
+            -4727
+          ],
+          [
+            53,
+            -5407
+          ],
+          [
+            54,
+            -4625
+          ],
+          [
+            55,
+            -4768
+          ],
+          [
+            56,
+            -5615
+          ],
+          [
+            57,
+            -5129
+          ],
+          [
+            58,
+            -4809
+          ],
+          [
+            59,
+            -5490
+          ],
+          [
+            60,
+            -5170
+          ],
+          [
+            61,
+            -4795
+          ],
+          [
+            62,
+            -5531
+          ],
+          [
+            63,
+            -5211
+          ],
+          [
+            64,
+            -4892
+          ],
+          [
+            65,
+            -5572
+          ],
+          [
+            66,
+            -4975
+          ],
+          [
+            67,
+            -4933
+          ],
+          [
+            68,
+            -5965
+          ],
+          [
+            69,
+            -5294
+          ],
+          [
+            70,
+            -4974
+          ],
+          [
+            71,
+            -4655
+          ],
+          [
+            72,
+            -5335
+          ],
+          [
+            73,
+            -5145
+          ],
+          [
+            74,
+            -4696
+          ],
+          [
+            75,
+            -5376
+          ],
+          [
+            76,
+            -5057
+          ],
+          [
+            77,
+            -4737
+          ],
+          [
+            78,
+            -5325
+          ],
+          [
+            79,
+            -5098
+          ],
+          [
+            80,
+            -4778
+          ],
+          [
+            81,
+            -5459
+          ],
+          [
+            82,
+            -5139
+          ],
+          [
+            83,
+            -4505
+          ],
+          [
+            84,
+            -5500
+          ],
+          [
+            85,
+            -5495
+          ],
+          [
+            86,
+            -4861
+          ],
+          [
+            87,
+            -5541
+          ],
+          [
+            88,
+            -5222
+          ],
+          [
+            89,
+            -4902
+          ],
+          [
+            90,
+            -5675
+          ],
+          [
+            91,
+            -5263
+          ],
+          [
+            92,
+            -4943
+          ],
+          [
+            93,
+            -5624
+          ],
+          [
+            94,
+            -5304
+          ],
+          [
+            95,
+            -4855
+          ],
+          [
+            96,
+            -4665
+          ]
+        ],
+        "rows_scanned": 1000000,
+        "samples_us": [
+          26953.2,
+          30390.4,
+          24173.8,
+          21835.6,
+          20717.4,
+          23030.0,
+          27692.5,
+          24233.5,
+          23719.1,
+          22802.1,
+          23978.4,
+          24912.7,
+          23464.8,
+          24947.4,
+          23223.1,
+          28526.3,
+          25150.8,
+          26911.600000000002,
+          24802.7,
+          25467.3,
+          24173.4,
+          26781.6,
+          22145.5,
+          21532.2,
+          23142.0,
+          23312.0,
+          22230.199999999997,
+          20938.600000000002,
+          22194.9,
+          24461.0,
+          22311.8
+        ],
+        "sql": "SELECT device, SUM(value) AS total FROM events GROUP BY device ORDER BY device"
+      },
+      "sqlite": {
+        "median_us": 346853.0,
+        "p95_us": 467876.7,
+        "samples_us": [
+          341560.5,
+          407580.1,
+          467876.7,
+          401712.1,
+          342930.9,
+          349187.5,
+          330919.8,
+          335824.0,
+          378215.6,
+          400903.2,
+          396510.2,
+          363105.6,
+          345898.3,
+          338210.6,
+          412543.7,
+          334474.9,
+          367819.1,
+          374881.7,
+          365212.4,
+          346853.0,
+          335266.8,
+          337071.9,
+          342710.5,
+          345967.7,
+          345727.6,
+          369007.1,
+          402818.3,
+          339664.4,
+          342855.6,
+          337754.4,
+          485360.6
+        ],
+        "result": [
+          [
+            0,
+            -5845
+          ],
+          [
+            1,
+            -5026
+          ],
+          [
+            2,
+            -4706
+          ],
+          [
+            3,
+            -5035
+          ],
+          [
+            4,
+            -5067
+          ],
+          [
+            5,
+            -5025
+          ],
+          [
+            6,
+            -5428
+          ],
+          [
+            7,
+            -5108
+          ],
+          [
+            8,
+            -4789
+          ],
+          [
+            9,
+            -5469
+          ],
+          [
+            10,
+            -5205
+          ],
+          [
+            11,
+            -4830
+          ],
+          [
+            12,
+            -5510
+          ],
+          [
+            13,
+            -5191
+          ],
+          [
+            14,
+            -4871
+          ],
+          [
+            15,
+            -5385
+          ],
+          [
+            16,
+            -5232
+          ],
+          [
+            17,
+            -5375
+          ],
+          [
+            18,
+            -5593
+          ],
+          [
+            19,
+            -5273
+          ],
+          [
+            20,
+            -4565
+          ],
+          [
+            21,
+            -5634
+          ],
+          [
+            22,
+            -5555
+          ],
+          [
+            23,
+            -4995
+          ],
+          [
+            24,
+            -4675
+          ],
+          [
+            25,
+            -5356
+          ],
+          [
+            26,
+            -5036
+          ],
+          [
+            27,
+            -4735
+          ],
+          [
+            28,
+            -5397
+          ],
+          [
+            29,
+            -5077
+          ],
+          [
+            30,
+            -4758
+          ],
+          [
+            31,
+            -5438
+          ],
+          [
+            32,
+            -4915
+          ],
+          [
+            33,
+            -4799
+          ],
+          [
+            34,
+            -5905
+          ],
+          [
+            35,
+            -5160
+          ],
+          [
+            36,
+            -4840
+          ],
+          [
+            37,
+            -5095
+          ],
+          [
+            38,
+            -5201
+          ],
+          [
+            39,
+            -5085
+          ],
+          [
+            40,
+            -5562
+          ],
+          [
+            41,
+            -5242
+          ],
+          [
+            42,
+            -4923
+          ],
+          [
+            43,
+            -5603
+          ],
+          [
+            44,
+            -5265
+          ],
+          [
+            45,
+            -4964
+          ],
+          [
+            46,
+            -5644
+          ],
+          [
+            47,
+            -5325
+          ],
+          [
+            48,
+            -5005
+          ],
+          [
+            49,
+            -4445
+          ],
+          [
+            50,
+            -5366
+          ],
+          [
+            51,
+            -5435
+          ],
+          [
+            52,
+            -4727
+          ],
+          [
+            53,
+            -5407
+          ],
+          [
+            54,
+            -4625
+          ],
+          [
+            55,
+            -4768
+          ],
+          [
+            56,
+            -5615
+          ],
+          [
+            57,
+            -5129
+          ],
+          [
+            58,
+            -4809
+          ],
+          [
+            59,
+            -5490
+          ],
+          [
+            60,
+            -5170
+          ],
+          [
+            61,
+            -4795
+          ],
+          [
+            62,
+            -5531
+          ],
+          [
+            63,
+            -5211
+          ],
+          [
+            64,
+            -4892
+          ],
+          [
+            65,
+            -5572
+          ],
+          [
+            66,
+            -4975
+          ],
+          [
+            67,
+            -4933
+          ],
+          [
+            68,
+            -5965
+          ],
+          [
+            69,
+            -5294
+          ],
+          [
+            70,
+            -4974
+          ],
+          [
+            71,
+            -4655
+          ],
+          [
+            72,
+            -5335
+          ],
+          [
+            73,
+            -5145
+          ],
+          [
+            74,
+            -4696
+          ],
+          [
+            75,
+            -5376
+          ],
+          [
+            76,
+            -5057
+          ],
+          [
+            77,
+            -4737
+          ],
+          [
+            78,
+            -5325
+          ],
+          [
+            79,
+            -5098
+          ],
+          [
+            80,
+            -4778
+          ],
+          [
+            81,
+            -5459
+          ],
+          [
+            82,
+            -5139
+          ],
+          [
+            83,
+            -4505
+          ],
+          [
+            84,
+            -5500
+          ],
+          [
+            85,
+            -5495
+          ],
+          [
+            86,
+            -4861
+          ],
+          [
+            87,
+            -5541
+          ],
+          [
+            88,
+            -5222
+          ],
+          [
+            89,
+            -4902
+          ],
+          [
+            90,
+            -5675
+          ],
+          [
+            91,
+            -5263
+          ],
+          [
+            92,
+            -4943
+          ],
+          [
+            93,
+            -5624
+          ],
+          [
+            94,
+            -5304
+          ],
+          [
+            95,
+            -4855
+          ],
+          [
+            96,
+            -4665
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 5881.2,
+        "p95_us": 7006.7,
+        "samples_us": [
+          6022.2,
+          5838.0,
+          6040.5,
+          6256.4,
+          8058.7,
+          5869.3,
+          5657.1,
+          5881.2,
+          5660.9,
+          6631.3,
+          6557.4,
+          6119.9,
+          5660.1,
+          5747.1,
+          7006.7,
+          5613.3,
+          5693.5,
+          5524.8,
+          5591.9,
+          6578.1,
+          6646.1,
+          5831.3,
+          5505.5,
+          5268.1,
+          5926.1,
+          5489.1,
+          6693.6,
+          6711.7,
+          5978.3,
+          6073.0,
+          5874.3
+        ],
+        "result": [
+          [
+            0,
+            -5845
+          ],
+          [
+            1,
+            -5026
+          ],
+          [
+            2,
+            -4706
+          ],
+          [
+            3,
+            -5035
+          ],
+          [
+            4,
+            -5067
+          ],
+          [
+            5,
+            -5025
+          ],
+          [
+            6,
+            -5428
+          ],
+          [
+            7,
+            -5108
+          ],
+          [
+            8,
+            -4789
+          ],
+          [
+            9,
+            -5469
+          ],
+          [
+            10,
+            -5205
+          ],
+          [
+            11,
+            -4830
+          ],
+          [
+            12,
+            -5510
+          ],
+          [
+            13,
+            -5191
+          ],
+          [
+            14,
+            -4871
+          ],
+          [
+            15,
+            -5385
+          ],
+          [
+            16,
+            -5232
+          ],
+          [
+            17,
+            -5375
+          ],
+          [
+            18,
+            -5593
+          ],
+          [
+            19,
+            -5273
+          ],
+          [
+            20,
+            -4565
+          ],
+          [
+            21,
+            -5634
+          ],
+          [
+            22,
+            -5555
+          ],
+          [
+            23,
+            -4995
+          ],
+          [
+            24,
+            -4675
+          ],
+          [
+            25,
+            -5356
+          ],
+          [
+            26,
+            -5036
+          ],
+          [
+            27,
+            -4735
+          ],
+          [
+            28,
+            -5397
+          ],
+          [
+            29,
+            -5077
+          ],
+          [
+            30,
+            -4758
+          ],
+          [
+            31,
+            -5438
+          ],
+          [
+            32,
+            -4915
+          ],
+          [
+            33,
+            -4799
+          ],
+          [
+            34,
+            -5905
+          ],
+          [
+            35,
+            -5160
+          ],
+          [
+            36,
+            -4840
+          ],
+          [
+            37,
+            -5095
+          ],
+          [
+            38,
+            -5201
+          ],
+          [
+            39,
+            -5085
+          ],
+          [
+            40,
+            -5562
+          ],
+          [
+            41,
+            -5242
+          ],
+          [
+            42,
+            -4923
+          ],
+          [
+            43,
+            -5603
+          ],
+          [
+            44,
+            -5265
+          ],
+          [
+            45,
+            -4964
+          ],
+          [
+            46,
+            -5644
+          ],
+          [
+            47,
+            -5325
+          ],
+          [
+            48,
+            -5005
+          ],
+          [
+            49,
+            -4445
+          ],
+          [
+            50,
+            -5366
+          ],
+          [
+            51,
+            -5435
+          ],
+          [
+            52,
+            -4727
+          ],
+          [
+            53,
+            -5407
+          ],
+          [
+            54,
+            -4625
+          ],
+          [
+            55,
+            -4768
+          ],
+          [
+            56,
+            -5615
+          ],
+          [
+            57,
+            -5129
+          ],
+          [
+            58,
+            -4809
+          ],
+          [
+            59,
+            -5490
+          ],
+          [
+            60,
+            -5170
+          ],
+          [
+            61,
+            -4795
+          ],
+          [
+            62,
+            -5531
+          ],
+          [
+            63,
+            -5211
+          ],
+          [
+            64,
+            -4892
+          ],
+          [
+            65,
+            -5572
+          ],
+          [
+            66,
+            -4975
+          ],
+          [
+            67,
+            -4933
+          ],
+          [
+            68,
+            -5965
+          ],
+          [
+            69,
+            -5294
+          ],
+          [
+            70,
+            -4974
+          ],
+          [
+            71,
+            -4655
+          ],
+          [
+            72,
+            -5335
+          ],
+          [
+            73,
+            -5145
+          ],
+          [
+            74,
+            -4696
+          ],
+          [
+            75,
+            -5376
+          ],
+          [
+            76,
+            -5057
+          ],
+          [
+            77,
+            -4737
+          ],
+          [
+            78,
+            -5325
+          ],
+          [
+            79,
+            -5098
+          ],
+          [
+            80,
+            -4778
+          ],
+          [
+            81,
+            -5459
+          ],
+          [
+            82,
+            -5139
+          ],
+          [
+            83,
+            -4505
+          ],
+          [
+            84,
+            -5500
+          ],
+          [
+            85,
+            -5495
+          ],
+          [
+            86,
+            -4861
+          ],
+          [
+            87,
+            -5541
+          ],
+          [
+            88,
+            -5222
+          ],
+          [
+            89,
+            -4902
+          ],
+          [
+            90,
+            -5675
+          ],
+          [
+            91,
+            -5263
+          ],
+          [
+            92,
+            -4943
+          ],
+          [
+            93,
+            -5624
+          ],
+          [
+            94,
+            -5304
+          ],
+          [
+            95,
+            -4855
+          ],
+          [
+            96,
+            -4665
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          7,
+          0,
+          216,
+          "SCAN events"
+        ],
+        [
+          9,
+          0,
+          0,
+          "USE TEMP B-TREE FOR GROUP BY"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502__internal_decompress_integ\u2502\n\u2502     ral_bigint(#0, 0)     \u2502\n\u2502             #1            \u2502\n\u2502                           \u2502\n\u2502          ~0 rows          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          ORDER_BY         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502 memory.main.events.device \u2502\n\u2502             ASC           \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502__internal_compress_integra\u2502\n\u2502     l_utinyint(#0, 0)     \u2502\n\u2502             #1            \u2502\n\u2502                           \u2502\n\u2502          ~98 rows         \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502__internal_decompress_integ\u2502\n\u2502     ral_bigint(#0, 0)     \u2502\n\u2502             #1            \u2502\n\u2502                           \u2502\n\u2502          ~98 rows         \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502   PERFECT_HASH_GROUP_BY   \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502         Groups: #0        \u2502\n\u2502                           \u2502\n\u2502        Aggregates:        \u2502\n\u2502    sum_no_overflow(#1)    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           device          \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502      ~1,000,000 rows      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502__internal_compress_integra\u2502\n\u2502     l_utinyint(#0, 0)     \u2502\n\u2502             #1            \u2502\n\u2502                           \u2502\n\u2502      ~1,000,000 rows      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502                           \u2502\n\u2502        Projections:       \u2502\n\u2502           device          \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502      ~1,000,000 rows      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 0.2598954443614638
+    },
+    {
+      "name": "min_max",
+      "sql": "SELECT MIN(value) AS smallest, MAX(value) AS largest FROM events WHERE ts >= 500000",
+      "kestrel_memory": {
+        "median_us": 3815.7,
+        "name": "min_max",
+        "p95_us": 4072.7999999999997,
+        "plan": "bounded-column-scan",
+        "result": [
+          [
+            -500,
+            499
+          ]
+        ],
+        "rows_scanned": 500000,
+        "samples_us": [
+          3994.6,
+          3842.4,
+          3848.2999999999997,
+          3806.2999999999997,
+          3833.1,
+          3815.7,
+          3737.0,
+          3841.3,
+          3937.8,
+          3843.5,
+          3754.1,
+          3755.9,
+          3979.8999999999996,
+          3675.4,
+          3724.7999999999997,
+          3691.2999999999997,
+          4040.2,
+          3715.4,
+          3656.8999999999996,
+          3559.7,
+          3544.4,
+          3864.3,
+          3949.0000000000005,
+          4621.3,
+          4072.7999999999997,
+          3925.2999999999997,
+          3854.5,
+          3752.6,
+          3777.8,
+          3751.8,
+          3779.3
+        ],
+        "sql": "SELECT MIN(value) AS smallest, MAX(value) AS largest FROM events WHERE ts >= 500000"
+      },
+      "kestrel_python_pipe": {
+        "median_us": 3817.6,
+        "p95_us": 4486.4,
+        "samples_us": [
+          3867.6,
+          3827.1,
+          4451.3,
+          4273.0,
+          5206.7,
+          4101.7,
+          3919.8,
+          3886.7,
+          3616.3,
+          3638.5,
+          3574.9,
+          3566.6,
+          3537.6,
+          3583.6,
+          3576.5,
+          3598.7,
+          3587.2,
+          3503.8,
+          3599.7,
+          3517.2,
+          3611.1,
+          3986.1,
+          3986.6,
+          3784.7,
+          3837.4,
+          3744.4,
+          3969.7,
+          3817.6,
+          3826.7,
+          4067.4,
+          4486.4
+        ],
+        "included_overhead": "Python, pipe round trip, Rust parse/execute, JSON serialization/deserialization"
+      },
+      "sqlite_manual_prefix": null,
+      "kestrel_after_durable_reopen": {
+        "median_us": 3739.9,
+        "name": "min_max",
+        "p95_us": 4331.599999999999,
+        "plan": "bounded-column-scan",
+        "result": [
+          [
+            -500,
+            499
+          ]
+        ],
+        "rows_scanned": 500000,
+        "samples_us": [
+          3662.5,
+          3715.5,
+          3703.1,
+          3689.9,
+          3587.9,
+          4359.799999999999,
+          4331.599999999999,
+          4107.2,
+          3978.4,
+          3902.8,
+          3895.9,
+          3898.8999999999996,
+          3861.6000000000004,
+          3814.8,
+          3713.7,
+          3727.4,
+          3782.6,
+          3724.2999999999997,
+          3772.5,
+          3739.6,
+          3769.7,
+          3717.5,
+          3730.3,
+          3597.4,
+          3764.5,
+          3686.8,
+          3739.9,
+          3553.8,
+          4023.2000000000003,
+          3906.4,
+          3636.9
+        ],
+        "sql": "SELECT MIN(value) AS smallest, MAX(value) AS largest FROM events WHERE ts >= 500000"
+      },
+      "sqlite": {
+        "median_us": 33030.9,
+        "p95_us": 38647.4,
+        "samples_us": [
+          31965.3,
+          30691.6,
+          34574.1,
+          33468.3,
+          33628.4,
+          38647.4,
+          34760.9,
+          33030.9,
+          31799.9,
+          32030.3,
+          29455.2,
+          30148.7,
+          31452.3,
+          31033.0,
+          30191.1,
+          30205.7,
+          33129.3,
+          30888.3,
+          29068.1,
+          30905.3,
+          31358.5,
+          35155.4,
+          34332.9,
+          35595.6,
+          32435.0,
+          33573.2,
+          37724.1,
+          36711.6,
+          45447.8,
+          35954.2,
+          34078.5
+        ],
+        "result": [
+          [
+            -500,
+            499
+          ]
+        ]
+      },
+      "duckdb": {
+        "median_us": 2737.7,
+        "p95_us": 3904.2,
+        "samples_us": [
+          3545.3,
+          3904.2,
+          3836.4,
+          3224.9,
+          3349.6,
+          3847.8,
+          3876.6,
+          3377.4,
+          3176.9,
+          2711.8,
+          2878.6,
+          2594.9,
+          2598.6,
+          2737.7,
+          2590.1,
+          2440.4,
+          2392.3,
+          2483.2,
+          2788.2,
+          2730.2,
+          2608.8,
+          2922.4,
+          2636.2,
+          2634.2,
+          2871.8,
+          5034.2,
+          3144.5,
+          2734.2,
+          2588.2,
+          2451.6,
+          2598.9
+        ],
+        "result": [
+          [
+            -500,
+            499
+          ]
+        ]
+      },
+      "sqlite_query_plan": [
+        [
+          3,
+          0,
+          194,
+          "SEARCH events USING COVERING INDEX ts_value (ts>?)"
+        ]
+      ],
+      "duckdb_query_plan": [
+        [
+          "physical_plan",
+          "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502    UNGROUPED_AGGREGATE    \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502        Aggregates:        \u2502\n\u2502          min(#0)          \u2502\n\u2502          max(#1)          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         PROJECTION        \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           value           \u2502\n\u2502           value           \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502          SEQ_SCAN         \u2502\n\u2502    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500   \u2502\n\u2502           Table:          \u2502\n\u2502     memory.main.events    \u2502\n\u2502                           \u2502\n\u2502   Type: Sequential Scan   \u2502\n\u2502     Projections: value    \u2502\n\u2502    Filters: ts>=500000    \u2502\n\u2502                           \u2502\n\u2502       ~200,000 rows       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        ]
+      ],
+      "duckdb_time_divided_by_kestrel": 0.7174830306365805
+    }
+  ]
+}
