@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.12 experimental medium sparse-cache candidate
+
+- Promote a 16,384-slot exact-tag cache only after measured key reuse and another nonempty block. Limit it to 8,192 keys, one promotion attempt and a 50% hit-rate gate; retain the authoritative randomized HashMap and exact i128 reductions.
+- Preserve the first trial's 75–79% tiny-query regression, then defer allocation to recover this guard. Retain source, binaries, raw trials, 60 fresh query shapes and final paired controls.
+- Pass 72 Rust tests in both modes and both Clippy configurations, 2,800 SQL cases against each DuckDB/SQLite, signed wide JSON, confirmed retry/reopen and current publication/source/process-kill/Parquet checks. Promoted queries add 384 KiB on this computer. Every loss and guard stays visible in [PERFORMANCE_042.md](PERFORMANCE_042.md).
+
 ## 0.3.11 experimental seeded group-cache candidate
 
 - Index sparse-group cache slots with a per-query odd multiplier derived once from the existing randomized HashMap state. Retain exact signed tags, authoritative mapping, typed i128 state, cache bounds and fallback.

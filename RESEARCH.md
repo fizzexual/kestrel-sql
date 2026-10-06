@@ -77,3 +77,7 @@ Stage instrumentation located the added unordered-scan cost in selection. An `in
 ## 0.3.11 seeded sparse-cache indexing
 
 Low-bit-aligned keys defeated the xor-fold index. A full-width multiply spreads those keys, but fixed multipliers have their own adversarial spacings. The candidate derives an odd multiplier once per query using [Rust RandomState](https://doc.rust-lang.org/std/collections/hash_map/struct.RandomState.html) and [BuildHasher::hash_one](https://doc.rust-lang.org/std/hash/trait.BuildHasher.html#method.hash_one). Exact tags and the authoritative randomized HashMap retain correctness. Tests invert each actual multiplier to force real collisions; the matrix adds Fibonacci/power-of-two patterns. This is established cache/indexing work, without cryptographic or novelty claims. [Current measurements and remaining losses](PERFORMANCE_041.md).
+
+## 0.3.12 reuse-triggered cache
+
+Measured reuse can justify a wider lookup table after small-cache fallback. The first trial paid the allocation cost on tiny queries after their final block; delaying allocation until the next nonempty block avoids unused work. Exact tags, an authoritative randomized map, a key budget, a hit-rate gate and one promotion attempt preserve correctness and bound additional memory. Seed-specific collision, irregular signed-key, growing-cardinality and beyond-i64 reduction checks accompany the final timings. This is established adaptive caching, without a novelty claim. [Evidence and every tradeoff](PERFORMANCE_042.md).
