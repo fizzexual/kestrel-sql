@@ -1,5 +1,6 @@
 """Executed capability checks, separate from the common aggregate performance test."""
 import argparse
+import hashlib
 import json
 import subprocess
 import time
@@ -21,6 +22,8 @@ def main():
     args.work.mkdir(parents=True)
     servers = json.loads(args.servers.read_text())
     report = {'profile':'executed SQL/transaction capabilities, not inferred from aggregate speed',
+        'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
+        'sql_binary_sha256':hashlib.sha256(args.sql_binary.resolve().read_bytes()).hexdigest(),
         'engines':[],'unexecuted_engines':[
             {'engine':'ClickHouse','reason':'No Docker daemon or native supported Linux environment available'},
             {'engine':'SQL Server','reason':'No local SQL Server instance; installation/licensing/configuration not undertaken'},

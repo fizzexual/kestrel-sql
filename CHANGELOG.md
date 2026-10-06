@@ -1,5 +1,16 @@
 # Changes
 
+## 0.3.1
+
+- Validate exact batch retries against the existing receipt ledger without cloning it. Copy committed receipts only when new rows require publication; keep conflicting retries and whole-group atomicity checks.
+- Buffer segment and catalog writes, explicitly flush before synchronization, and preserve the existing durable acknowledgment and on-disk format.
+- Reuse immutable segment handles for checked positional compaction reads. Long query scans and integrity verification retain independent handles.
+- Skip duplicate-only snapshot publication and avoid a second ordinary GROUP BY hash lookup.
+- Expose process-local publication-stage timings and histograms for preparation, writes, synchronization, catalog encoding and rename.
+- Test the full 100,000-ID capacity, reopen and exact retries. Add three-round rotating comparisons against five other engines, host observations, direct query/retry probes, and preserved intermediate regressions.
+
+See [PERFORMANCE_031.md](PERFORMANCE_031.md) for versioned raw evidence and remaining failures. This release remains an experimental prototype.
+
 ## 0.3.0
 
 - Add immutable `ArchiveSnapshot` views and a public concurrent `LiveArchive` wrapper. Readers keep a stable committed generation while a single writer ingests or compacts.

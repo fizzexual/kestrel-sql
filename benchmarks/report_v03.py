@@ -17,9 +17,9 @@ def read(name):
     return json.loads((ROOT/'benchmarks'/name).read_text(encoding='utf-8'))
 
 
-def audit(report, expected):
+def audit(report, expected, key_fields=('engine','profile','clients','offered_rps','scheduled_seconds')):
     cases = report['cases']
-    keys = [(c['engine'],c['profile'],c['clients'],c['offered_rps'],c['scheduled_seconds']) for c in cases]
+    keys = [tuple(c[field] for field in key_fields) for c in cases]
     assert len(keys)==len(set(keys))==expected
     checked=0
     for c in cases:

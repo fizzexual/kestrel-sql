@@ -26,6 +26,60 @@ fn int(n: i128) -> Vec<Vec<Value>> {
 }
 
 #[test]
+fn full_receipt_budget_preserves_replays_without_new_publications() {
+    let path = temp("receipt-capacity");
+    let mut archive = open(&path);
+    let batches = (0..100_000_i64)
+        .map(|i| IngestBatch {
+            id: Some(format!("capacity:{i}")),
+            columns: vec![vec![i], vec![i * 2], vec![i % 97]],
+        })
+        .collect();
+    let receipts = archive.append_group(batches).unwrap();
+    assert_eq!(receipts.len(), 100_000);
+    assert!(receipts.iter().all(|r| !r.duplicate && r.generation == 1));
+    assert_eq!(archive.stats().unwrap().recorded_batch_ids, 100_000);
+    assert!(
+        archive
+            .append_once("over-capacity", vec![vec![100_000], vec![2], vec![1]])
+            .is_err()
+    );
+    drop(archive);
+
+    let live = LiveArchive::new(open(&path)).unwrap();
+    let pinned = live.snapshot();
+    for i in [0_i64, 50_000, 99_999] {
+        let receipt = live
+            .append(IngestBatch {
+                id: Some(format!("capacity:{i}")),
+                columns: vec![vec![i], vec![i * 2], vec![i % 97]],
+            })
+            .unwrap();
+        assert!(receipt.duplicate && receipt.generation == 1);
+    }
+    assert!(
+        live.append(IngestBatch {
+            id: Some("capacity:0".into()),
+            columns: vec![vec![0], vec![7], vec![0]],
+        })
+        .is_err()
+    );
+    assert!(std::sync::Arc::ptr_eq(&pinned, &live.snapshot()));
+    assert_eq!(
+        pinned
+            .query("SELECT COUNT(*), SUM(value) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        vec![vec![Value::Int(100_000), Value::Int(9_999_900_000)]]
+    );
+    assert_eq!(live.stats().durable_group_commits, 0);
+    assert_eq!(live.stats().duplicate_batches, 3);
+    assert_eq!(pinned.stats().unwrap().publication_profile.attempts, 0);
+    assert_eq!(pinned.verify().unwrap(), 100_000 * 24);
+}
+
+#[test]
 fn concurrent_positional_reads_preserve_column_and_page_offsets() {
     let path = temp("positional-reads");
     let mut archive = open(&path);

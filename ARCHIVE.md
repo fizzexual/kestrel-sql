@@ -88,6 +88,8 @@ Uncached read pages validate CRC32; boundary pages can then be reused from the 3
 
 `compact_small()` replaces up to 32 small runs with one synchronized segment and catalog, preserving receipts. `reclaim()` removes superseded catalogs and retired payloads only when no snapshot pins those payloads. `LiveArchive` schedules this bounded maintenance automatically. Crash orphans and pending files are left for inspection; complete orphan cleanup and a retention policy remain operational work.
 
+Version 0.3.1 buffers segment and catalog output and explicitly flushes those buffers before `sync_all()`. Exact replay-only groups validate existing receipts without copying the full ledger or publishing a new generation. New publications still copy and serialize committed receipts. Compaction reads checked input pages through retained immutable handles; long queries and full scrubs use independent handles. Publication-stage diagnostics and repeated performance evidence are in [PERFORMANCE_031.md](PERFORMANCE_031.md).
+
 Tests cover interrupted publication, checksums, pinned snapshots, identified retries, compaction and independent result reconciliation. The historical [0.2 hard tests](HARD_TESTS.md) and [0.3 results](V03_RESULTS.md) retain separate evidence; the new forced-kill suite additionally replays identified batches after recovery. The separate RAM/WAL implementation has its own process-kill regression test.
 
 Snapshots retain immutable committed generations while the single writer appends and compacts. They also retain the store's OS lock; this is in-process concurrency, not independent process readers. 0.3 opens `KSQLCAT2` catalogs and writes `KSQLCAT3` catalogs with receipts; older binaries reject the new catalog. Segment payloads remain `KSQLSEG2`.

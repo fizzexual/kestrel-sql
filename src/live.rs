@@ -69,8 +69,9 @@ pub struct LiveArchive {
 
 impl LiveArchive {
     pub fn new(mut archive: Archive) -> Result<Self> {
-        let columns = archive.snapshot()?.columns().len();
-        let reader = Arc::new(RwLock::new(Arc::new(archive.snapshot()?)));
+        let initial = archive.snapshot()?;
+        let columns = initial.columns().len();
+        let reader = Arc::new(RwLock::new(Arc::new(initial)));
         let counters = Arc::new(Counters::default());
         let (sender, receiver) = mpsc::sync_channel::<Command>(QUEUE_CAPACITY);
         let published = Arc::clone(&reader);
@@ -118,10 +119,13 @@ impl LiveArchive {
                                 metrics.commits.fetch_add(1, Ordering::Relaxed);
                             }
                             // Publish the read view before any caller receives its ACK.
-                            let view = archive
-                                .snapshot()
-                                .expect("successful publication has a healthy snapshot");
-                            *published.write().unwrap_or_else(|e| e.into_inner()) = Arc::new(view);
+                            if inserted > 0 {
+                                let view = archive
+                                    .snapshot()
+                                    .expect("successful publication has a healthy snapshot");
+                                *published.write().unwrap_or_else(|e| e.into_inner()) =
+                                    Arc::new(view);
+                            }
                             for ((reply, bytes), receipt) in replies.into_iter().zip(receipts) {
                                 metrics.queued_bytes.fetch_sub(bytes, Ordering::Relaxed);
                                 let _ = reply.send(Ok(receipt));

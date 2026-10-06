@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--old-binary', type=Path, required=True)
     parser.add_argument('--binary', type=Path, default=ROOT/'bin'/'kestrel-stress.exe')
+    parser.add_argument('--output', type=Path, default=ROOT/'benchmarks'/'format-v03.json')
     parser.add_argument('--work', type=Path, default=ROOT.parent.parent/'work'/f'format-v03-{time.time_ns()}')
     args = parser.parse_args()
     directory = args.work/'store'
@@ -44,10 +45,11 @@ def main():
     finally:
         engine.finish()
     result = {'legacy_binary_sha256':hashlib.sha256(old.read_bytes()).hexdigest(),
+        'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
         'legacy_catalog_read':True,'new_catalog_magic':'KSQLCAT3',
         'older_binary_rejects_new_catalog':True,'downgrade_error':downgraded.stderr.strip(),
         'receipt_preserved_after_reopen':True,'full_scrub_passed':True}
-    (ROOT/'benchmarks'/'format-v03.json').write_text(json.dumps(result,indent=2)+'\n')
+    args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(result,indent=2))
 
 

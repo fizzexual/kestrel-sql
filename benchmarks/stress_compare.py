@@ -246,6 +246,13 @@ def verify_final(engine, attempts, acknowledgments, batch):
 
 
 def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
+    publication_before = None
+    if engine.name == 'kestrel':
+        diagnostic = engine.connect()
+        try:
+            publication_before = diagnostic.call({'op':'stats'}).get('publication_profile')
+        finally:
+            diagnostic.close()
     tasks = queue.Queue(maxsize=queue_size)
     samples, errors, expired, acks, attempts = [],[],[],[],[]
     ready = threading.Barrier(clients+1)
@@ -321,6 +328,7 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
     in_window = [s for s in successful if s['finished_ns'] <= start+int(seconds*1e9)]
     latency = [s['latency_ms'] for s in successful]
     report = {'engine':engine.name,'version':engine.version,'profile':profile,'clients':clients,
+        'arrival_start_monotonic_ns':start,
         'offered_rps':rate,'scheduled_seconds':seconds,'offered_operations':offers,
         'offered_wall_seconds':(offered_end-start)/1e9,'including_drain_seconds':(ended-start)/1e9,
         'successful_operations':len(successful),'completed_in_arrival_window':len(in_window),
@@ -338,6 +346,7 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
     if engine.name=='kestrel':
         connection=engine.connect()
         report['live_state_before_reopen']=connection.call({'op':'stats'})
+        report['publication_profile_before_load']=publication_before
         connection.close()
     report['reconciliation'] = verify_final(engine,attempts,acks,batch)
     # Per-five-second successful completion bins expose degradation and stalls.

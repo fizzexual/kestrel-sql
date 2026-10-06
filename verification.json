@@ -1,37 +1,37 @@
 {
-  "version": "0.3.0",
-  "local_qualification_date": "2026-10-06",
-  "status": "experimental prototype; production qualification remains incomplete",
+  "version": "0.3.1",
   "rust_tests": {
-    "debug": 30,
-    "release": 30,
+    "debug": 31,
+    "release": 31,
     "passed": true
   },
   "format_check": "passed",
   "clippy_warnings_as_errors": "passed",
-  "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
-  "cli_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
-  "bridge_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
-  "concurrent_positional_and_scan_sql_cases": 512,
   "tested_platform": "Windows 10",
   "linux_execution": "unverified",
+  "cli_sha256": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
+  "bridge_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+  "probe_sha256": "2accbf4b54a139343442a315c18bdf2b321041986764510d1499b5b77737ecc3",
   "source_sha256": {
-    "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+    "src/archive.rs": "4c7a30288b9fdd5da5d4983cc23bfc18c924b832c6e694f4e96fd8dce5b2a9ef",
     "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
-    "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+    "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
     "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
     "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
     "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
     "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
     "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
     "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
-    "tests/archive.rs": "74e14a7ad07f17a19e2dfececa88f727f0a6058082df8c5be898e8a6f426b505",
+    "tests/archive.rs": "f02c96c7dc46a40dd6c86af75f25c782cabbc4495a7c4f82495f9eef0c184200",
     "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
     "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
-    "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
-    "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413"
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
+    "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23"
   },
-  "rust_example_smoke": "passed; fresh store, exact retry, pinned and current views, full scrub",
+  "local_qualification_date": "2026-10-06",
+  "status": "experimental prototype; production qualification remains incomplete",
+  "historical_0_3_proof": "verification-v03.json",
   "historical_0_2_proof": "verification-v02.json",
   "historical_scale_and_pipeline": {
     "archive_differential": {
@@ -77,8 +77,8 @@
     }
   },
   "retained_data_recheck": {
-    "version": "0.3.0",
-    "binary_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
+    "version": "0.3.1",
+    "binary_sha256": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
     "retained_fixed_scale_cases": 24,
     "retained_random_window_cases": 124,
     "retained_real_data_cases": 5,
@@ -94,124 +94,99 @@
     "partial_row_import_rejected_before_publication": true
   },
   "current_stress": {
-    "main": {
-      "completed_cases": 26,
+    "baseline": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 129736,
+      "unsuccessful_or_unexecuted": 25864,
+      "raw_executed_samples_checked": 129736,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "buffered_trial": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 115390,
+      "unsuccessful_or_unexecuted": 40210,
+      "raw_executed_samples_checked": 115390,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "final": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 130233,
+      "unsuccessful_or_unexecuted": 25367,
+      "raw_executed_samples_checked": 130233,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "interleaved": {
+      "completed_cases": 42,
       "engines": 6,
-      "offered_operations": 785600,
-      "successful_operations": 538612,
-      "unsuccessful_or_unexecuted": 246988,
-      "raw_executed_samples_checked": 538641,
-      "numpy_reference_windows": 520,
+      "offered_operations": 663600,
+      "successful_operations": 645432,
+      "unsuccessful_or_unexecuted": 18168,
+      "raw_executed_samples_checked": 645499,
+      "numpy_reference_windows": 840,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
     },
     "analytics": {
-      "completed_cases": 4,
+      "completed_cases": 9,
       "engines": 2,
-      "offered_operations": 92000,
-      "successful_operations": 68779,
-      "unsuccessful_or_unexecuted": 23221,
-      "raw_executed_samples_checked": 68779,
-      "numpy_reference_windows": 80,
+      "offered_operations": 270000,
+      "successful_operations": 211488,
+      "unsuccessful_or_unexecuted": 58512,
+      "raw_executed_samples_checked": 211488,
+      "numpy_reference_windows": 180,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
     },
-    "earlier_cache_iteration": {
-      "completed_cases": 11,
-      "engines": 1,
-      "offered_operations": 155600,
-      "successful_operations": 129516,
-      "unsuccessful_or_unexecuted": 26084,
-      "raw_executed_samples_checked": 129516,
-      "numpy_reference_windows": 220,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
+    "replay_probe": {
+      "cases": 6,
+      "samples_checked": 6000,
+      "one_row_payload": true,
+      "no_new_publication": true
     },
-    "first_zero_delay_run": {
-      "completed_cases": 11,
-      "engines": 1,
-      "offered_operations": 155600,
-      "successful_operations": 105102,
-      "unsuccessful_or_unexecuted": 50498,
-      "raw_executed_samples_checked": 105191,
-      "numpy_reference_windows": 220,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
+    "core_probe": {
+      "cases": 6,
+      "sql_cases": 36,
+      "samples_checked": 1116,
+      "all_results_equal": true
     },
-    "zero_delay_confirmation": {
-      "completed_cases": 26,
-      "engines": 6,
-      "offered_operations": 785600,
-      "successful_operations": 543827,
-      "unsuccessful_or_unexecuted": 241773,
-      "raw_executed_samples_checked": 543856,
-      "numpy_reference_windows": 520,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
-    "analytics_before_retained_handles": {
-      "completed_cases": 4,
-      "engines": 2,
-      "offered_operations": 92000,
-      "successful_operations": 67905,
-      "unsuccessful_or_unexecuted": 24095,
-      "raw_executed_samples_checked": 67905,
-      "numpy_reference_windows": 80,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
-    "all_reads_retained_handles": {
-      "completed_cases": 11,
-      "engines": 1,
-      "offered_operations": 155600,
-      "successful_operations": 124410,
-      "unsuccessful_or_unexecuted": 31190,
-      "raw_executed_samples_checked": 124410,
-      "numpy_reference_windows": 220,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
-    "all_reads_retained_handles_analytics": {
-      "completed_cases": 2,
-      "engines": 1,
-      "offered_operations": 46000,
-      "successful_operations": 46000,
-      "unsuccessful_or_unexecuted": 0,
-      "raw_executed_samples_checked": 46000,
-      "numpy_reference_windows": 40,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
-    "mixed_2k_slo_passed": false,
-    "soak_500_slo_passed": true,
-    "analytics_1k_30s_slo_passed": false
+    "invalid_build_comparison": {
+      "excluded": true,
+      "retained_cases": 6,
+      "reason": "Candidate probe reported 0.3.0, not 0.3.1: Cargo artifact output collision across shared target directories. All timings excluded from performance claims."
+    }
   },
   "archive_identified_process_kills": {
     "cycles_passed": 24,
-    "acknowledged_batches": 472,
-    "unacknowledged_committed_batches": 1,
+    "acknowledged_batches": 478,
+    "unacknowledged_committed_batches": 6,
     "all_acknowledged_batches_present": true,
     "published_batches_atomic": true,
     "retry_deduplication_passed": true,
     "full_scrubs_passed": true,
     "fault_model": "forcible OS process kill, live filesystem; no power-loss or replicated failover claim",
-    "report": "benchmarks/hard-recovery-v03.json"
+    "report": "benchmarks/perf-031-recovery.json"
   },
   "hard_boundaries": {
     "independent_process_opener_rejected": true,
@@ -232,7 +207,8 @@
     }
   },
   "live_pipeline": {
-    "engine_version": "0.3.0",
+    "engine_version": "0.3.1",
+    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
     "workflow": "two Parquet sources, durable source-hash/chunk IDs, each source replayed",
     "initial_rows": 25000,
     "late_backfill_rows": 5000,
@@ -283,7 +259,7 @@
     },
     "final_stats": {
       "block_rows": 4096,
-      "generation": 163,
+      "generation": 171,
       "ingest": {
         "committed_batches": 0,
         "compaction_total_ms": 0.0,
@@ -292,24 +268,149 @@
         "durable_group_commits": 0,
         "flush_delay_ms": 0,
         "maintenance_errors": 0,
-        "publication_max_ms": 0.1007,
-        "publication_total_ms": 0.1007,
+        "publication_max_ms": 0.0283,
+        "publication_total_ms": 0.0283,
         "queued_payload_bytes": 0
       },
       "logical_data_bytes": 720000,
-      "metadata_bytes": 14414,
-      "page_cache_hits": 841,
-      "page_cache_misses": 78,
-      "physical_bytes": 3127109,
+      "metadata_bytes": 17740,
+      "page_cache_hits": 828,
+      "page_cache_misses": 76,
+      "physical_bytes": 1275675,
+      "publication_profile": {
+        "attempts": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
       "recorded_batch_ids": 300,
-      "retained_page_cache_bytes": 1451232,
+      "retained_page_cache_bytes": 1369344,
       "rows": 30000,
-      "segments": 35
+      "segments": 43
     },
     "limits": "batch idempotency for this archive, not end-to-end exactly-once delivery; BIGINT metrics only"
   },
   "format_compatibility": {
     "legacy_binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
+    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
     "legacy_catalog_read": true,
     "new_catalog_magic": "KSQLCAT3",
     "older_binary_rejects_new_catalog": true,
@@ -317,26 +418,49 @@
     "receipt_preserved_after_reopen": true,
     "full_scrub_passed": true
   },
+  "baseline_provenance": {
+    "origin": "kestrel-sql-0.3.0.zip; historical library sources preserved, identical new performance probe added",
+    "original_package_sha256": "d7a344258e15821aea0d6b19badc5e7afdeb10853b16dcc58fd6e7ba02b6d6dc",
+    "core_source_sha256": {
+      "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413",
+      "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+      "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+      "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+      "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+      "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549"
+    },
+    "baseline_binary_sha256": {
+      "kestrel-stress.exe": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
+      "kestrel.exe": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
+      "performance-probe.exe": "6b5cd4df813f3b2552d888cd486e33faeee2aacdc7387ac2f530e643db5f9e0d"
+    }
+  },
   "executed_capabilities": {
     "engines": 6,
-    "report": "benchmarks/capability-v03.json",
+    "report": "benchmarks/capability-031.json",
     "archive_transactional_parity": false
   },
   "stress_bridge": {
     "test_only": true,
-    "binary_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
-    "concurrency": "immutable LiveArchive read snapshots; one bounded writer with durable group publication"
+    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+    "concurrency": "immutable LiveArchive snapshots; one bounded durable group writer"
   },
   "reference_servers_stopped": true,
   "qualification_limits": [
-    "shared desktop; uncontrolled host/storage/OS-cache state and sequential engine order",
-    "client/interface overhead differs; percentiles include successes only and loss is separate",
-    "short sweeps and one-minute soak; repeated tails remain unstable",
+    "shared desktop and unequal client interfaces; short repeated runs are descriptive",
+    "latency percentiles include successes only; all failed/unexecuted offers reported separately",
+    "unordered-filter regression and overload/single-client tail failures remain visible",
     "BIGINT aggregate subset; no raw projection, joins, updates/deletes or SQL transactions in Archive",
-    "no native Arrow/Parquet SDK; Parquet demo uses DuckDB to read sources",
-    "receipt count bounded to 100000; full-ledger endurance and performance unqualified",
-    "queue/cache limits exclude caller allocations, active pinned pages and OS caches",
-    "crash orphans/pending files retained; complete retention/backup/upgrade operation unqualified",
+    "no native Arrow/Parquet SDK; Parquet demo reads sources through DuckDB",
+    "receipt capacity correctness tested at 100000 IDs; full-ledger unique-write endurance unqualified",
+    "queue/cache budgets exclude caller allocations, active pinned pages and OS caches",
+    "backup/retention/orphan cleanup, upgrades and disk exhaustion remain unqualified",
     "physical power loss, Windows directory-entry durability and Linux execution unqualified",
     "no distributed scale, replication or TAOBench/Facebook-scale qualification"
   ]

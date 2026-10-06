@@ -7,10 +7,11 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::{File, OpenOptions};
-use std::io::{Read, Seek, SeekFrom, Write};
+use std::io::{BufWriter, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
+use std::time::{Duration, Instant};
 
 pub const BLOCK_ROWS: usize = 4096;
 pub const MAX_SEGMENT_ROWS: usize = 1_000_000;
@@ -23,6 +24,48 @@ const CAT_MAGIC: &[u8; 8] = b"KSQLCAT3";
 const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
 const MAX_BATCH_IDS: usize = 100_000;
 const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
+
+/// Inclusive histogram buckets end at 0.1, 1, 5, 20, 100, 500 and 1000 ms;
+/// the final bucket contains all longer samples. Diagnostics are process-local.
+#[derive(Debug, Default, Clone, Serialize)]
+pub struct StageProfile {
+    pub count: u64,
+    pub total_ms: f64,
+    pub max_ms: f64,
+    pub histogram: [u64; 8],
+}
+impl StageProfile {
+    fn observe(&mut self, elapsed: Duration) {
+        let ms = elapsed.as_secs_f64() * 1000.0;
+        let bucket =
+            [0.1, 1.0, 5.0, 20.0, 100.0, 500.0, 1000.0].partition_point(|limit| ms > *limit);
+        self.count += 1;
+        self.total_ms += ms;
+        self.max_ms = self.max_ms.max(ms);
+        self.histogram[bucket] += 1;
+    }
+}
+
+#[derive(Debug, Default, Clone, Serialize)]
+pub struct PublicationProfile {
+    pub attempts: u64,
+    pub completed: u64,
+    pub prepare: StageProfile,
+    pub segment_write: StageProfile,
+    pub segment_sync: StageProfile,
+    pub catalog_encode: StageProfile,
+    pub catalog_write: StageProfile,
+    pub catalog_sync: StageProfile,
+    pub catalog_rename: StageProfile,
+    pub replay_validation: StageProfile,
+}
+
+fn measured<T>(duration: &mut Duration, work: impl FnOnce() -> Result<T>) -> Result<T> {
+    let started = Instant::now();
+    let result = work();
+    *duration = started.elapsed();
+    result
+}
 
 struct Page {
     values: Vec<i64>,
@@ -168,6 +211,7 @@ pub struct ArchiveStats {
     pub retained_page_cache_bytes: usize,
     pub page_cache_hits: u64,
     pub page_cache_misses: u64,
+    pub publication_profile: PublicationProfile,
 }
 
 pub struct Archive {
@@ -180,6 +224,7 @@ pub struct Archive {
     generation: u64,
     poisoned: bool,
     cache: Arc<PageCache>,
+    profile: Arc<Mutex<PublicationProfile>>,
 }
 
 /// An immutable committed view. Holding it retains the store lock and any
@@ -192,9 +237,10 @@ pub struct ArchiveSnapshot {
     generation: u64,
     recorded_batch_ids: usize,
     cache: Arc<PageCache>,
+    profile: Arc<Mutex<PublicationProfile>>,
 }
 
-fn write_envelope(file: &mut File, magic: &[u8; 8], bytes: &[u8]) -> Result<()> {
+fn write_envelope(file: &mut impl Write, magic: &[u8; 8], bytes: &[u8]) -> Result<()> {
     if bytes.len() > MAX_METADATA_BYTES {
         return Err(Error::new("metadata budget exceeded"));
     }
@@ -385,6 +431,7 @@ impl Archive {
             generation: latest.unwrap_or(0),
             poisoned: false,
             cache: Arc::new(PageCache::default()),
+            profile: Arc::new(Mutex::new(PublicationProfile::default())),
         })
     }
     fn healthy(&self) -> Result<()> {
@@ -418,9 +465,10 @@ impl Archive {
     /// precedes I/O. A receipt is returned only after catalog publication succeeds.
     pub fn append_group(&mut self, batches: Vec<IngestBatch>) -> Result<Vec<IngestReceipt>> {
         self.healthy()?;
+        let started = Instant::now();
         let width = self.catalog.columns.len();
         let mut combined = vec![Vec::new(); width];
-        let mut records = self.catalog.batches.clone();
+        let mut new_records = BTreeMap::new();
         let mut receipts = Vec::with_capacity(batches.len());
         let mut total = 0usize;
         for batch in batches {
@@ -449,7 +497,10 @@ impl Archive {
                     }
                 }
                 let digest: [u8; 32] = digest.finalize().into();
-                if let Some(previous) = records.get(&id) {
+                if let Some(previous) = new_records
+                    .get(&id)
+                    .or_else(|| self.catalog.batches.get(&id))
+                {
                     if previous.digest != digest || previous.rows != rows {
                         return Err(Error::new(
                             "batch ID already committed with different content",
@@ -462,12 +513,12 @@ impl Archive {
                     });
                     continue;
                 }
-                if records.len() >= MAX_BATCH_IDS {
+                if self.catalog.batches.len() + new_records.len() >= MAX_BATCH_IDS {
                     return Err(Error::new(
                         "durable batch ID budget exceeded; no IDs are silently evicted",
                     ));
                 }
-                records.insert(
+                new_records.insert(
                     id,
                     BatchRecord {
                         digest,
@@ -496,7 +547,17 @@ impl Archive {
             }
         }
         if total > 0 {
-            self.publish(combined, &[], records)?;
+            // Exact replays never clone the committed ledger. New publication
+            // still copies and serializes it to preserve the existing disk format.
+            let mut records = self.catalog.batches.clone();
+            records.extend(new_records);
+            self.publish(combined, &[], records, started)?;
+        } else if !receipts.is_empty() && receipts.iter().all(|r| r.duplicate) {
+            self.profile
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .replay_validation
+                .observe(started.elapsed());
         }
         Ok(receipts)
     }
@@ -506,6 +567,7 @@ impl Archive {
         mut columns: Vec<Vec<i64>>,
         remove: &[String],
         batches: BTreeMap<String, BatchRecord>,
+        started: Instant,
     ) -> Result<usize> {
         self.healthy()?;
         if columns.len() != self.catalog.columns.len() {
@@ -588,38 +650,69 @@ impl Archive {
             segments: references,
             batches,
         };
+        let mut times = [Duration::ZERO; 7];
+        times[0] = started.elapsed();
         let publish = (|| -> Result<File> {
-            let mut segment_file = OpenOptions::new()
-                .read(true)
-                .write(true)
-                .create_new(true)
-                .open(self.path.join(&name))?;
-            write_envelope(&mut segment_file, SEG_MAGIC, &metadata_bytes)?;
-            let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
-            for column in &columns {
-                for block in column.chunks(BLOCK_ROWS) {
-                    buffer.clear();
-                    for value in block {
-                        buffer.extend_from_slice(&value.to_le_bytes());
+            let segment_file = measured(&mut times[1], || {
+                let mut segment_file = OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .create_new(true)
+                    .open(self.path.join(&name))?;
+                let mut output = BufWriter::with_capacity(64 * 1024, &mut segment_file);
+                write_envelope(&mut output, SEG_MAGIC, &metadata_bytes)?;
+                let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
+                for column in &columns {
+                    for block in column.chunks(BLOCK_ROWS) {
+                        buffer.clear();
+                        for value in block {
+                            buffer.extend_from_slice(&value.to_le_bytes());
+                        }
+                        output.write_all(&buffer)?;
                     }
-                    segment_file.write_all(&buffer)?;
                 }
-            }
-            segment_file.sync_all()?;
-            let bytes = serde_json::to_vec(&candidate).map_err(|e| Error::new(e.to_string()))?;
+                output.flush()?;
+                drop(output);
+                Ok(segment_file)
+            })?;
+            measured(&mut times[2], || Ok(segment_file.sync_all()?))?;
+            let bytes = measured(&mut times[3], || {
+                serde_json::to_vec(&candidate).map_err(|e| Error::new(e.to_string()))
+            })?;
             let pending = self.path.join(format!("catalog-{generation:020}.pending"));
-            let mut file = File::create_new(&pending)?;
-            write_envelope(&mut file, CAT_MAGIC, &bytes)?;
-            file.sync_all()?;
+            let file = measured(&mut times[4], || {
+                let mut file = File::create_new(&pending)?;
+                let mut output = BufWriter::with_capacity(64 * 1024, &mut file);
+                write_envelope(&mut output, CAT_MAGIC, &bytes)?;
+                output.flush()?;
+                drop(output);
+                Ok(file)
+            })?;
+            measured(&mut times[5], || Ok(file.sync_all()?))?;
             drop(file);
-            std::fs::rename(
-                pending,
-                self.path.join(format!("catalog-{generation:020}.ks2")),
-            )?;
-            #[cfg(unix)]
-            File::open(&self.path)?.sync_all()?;
+            measured(&mut times[6], || {
+                std::fs::rename(
+                    pending,
+                    self.path.join(format!("catalog-{generation:020}.ks2")),
+                )?;
+                #[cfg(unix)]
+                File::open(&self.path)?.sync_all()?;
+                Ok(())
+            })?;
             Ok(segment_file)
         })();
+        {
+            let mut profile = self.profile.lock().unwrap_or_else(|e| e.into_inner());
+            profile.attempts += 1;
+            profile.completed += u64::from(publish.is_ok());
+            profile.prepare.observe(times[0]);
+            profile.segment_write.observe(times[1]);
+            profile.segment_sync.observe(times[2]);
+            profile.catalog_encode.observe(times[3]);
+            profile.catalog_write.observe(times[4]);
+            profile.catalog_sync.observe(times[5]);
+            profile.catalog_rename.observe(times[6]);
+        }
         let file = match publish {
             Ok(file) => file,
             Err(e) => {
@@ -652,6 +745,7 @@ impl Archive {
     /// The replacement is atomically published; batch receipts remain unchanged.
     pub fn compact_small(&mut self) -> Result<usize> {
         self.healthy()?;
+        let started = Instant::now();
         let width = self.catalog.columns.len();
         let mut rows = 0;
         let mut selected = Vec::new();
@@ -684,12 +778,15 @@ impl Archive {
             };
             for (column, data) in columns.iter_mut().enumerate() {
                 for block in 0..segment.metadata.rows.div_ceil(BLOCK_ROWS) {
-                    data.extend(reader.block(column, block)?);
+                    // The writer reads each immutable run once. Reuse its
+                    // retained handle instead of reopening every compaction input.
+                    // Concurrent long query scans still use independent handles.
+                    data.extend(reader.read_block(column, block, false)?);
                 }
             }
         }
         let remove: Vec<_> = selected.iter().map(|s| s.name.clone()).collect();
-        self.publish(columns, &remove, self.catalog.batches.clone())?;
+        self.publish(columns, &remove, self.catalog.batches.clone(), started)?;
         Ok(remove.len() - 1)
     }
 
@@ -742,6 +839,7 @@ impl Archive {
             generation: self.generation,
             recorded_batch_ids: self.catalog.batches.len(),
             cache: Arc::clone(&self.cache),
+            profile: Arc::clone(&self.profile),
         })
     }
 
@@ -800,6 +898,11 @@ impl ArchiveSnapshot {
                 .bytes,
             page_cache_hits: self.cache.hits.load(Ordering::Relaxed),
             page_cache_misses: self.cache.misses.load(Ordering::Relaxed),
+            publication_profile: self
+                .profile
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .clone(),
         })
     }
     pub fn query(&self, sql: &str) -> Result<ArchiveResult> {
@@ -951,8 +1054,8 @@ impl ArchiveSnapshot {
                         }
                         let cells = if let Some(c) = resolved.group {
                             let key = columns[c][row];
-                            if !groups.contains_key(&key)
-                                && groups.len() >= crate::query::MAX_RESULT_ROWS
+                            if groups.len() >= crate::query::MAX_RESULT_ROWS
+                                && !groups.contains_key(&key)
                             {
                                 return Err(Error::new("archive group budget exceeded"));
                             }

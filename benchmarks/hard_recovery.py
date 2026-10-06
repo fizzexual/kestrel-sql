@@ -2,6 +2,7 @@
 These are process failures on a live OS, not physical power failures.
 """
 import argparse
+import hashlib
 import json
 import random
 import shutil
@@ -29,6 +30,8 @@ def main():
         parser.error('forced-kill cycles must be 1..100')
     args.work.mkdir(parents=True)
     report = {'fault_model':'forcible OS process kill, live filesystem; no power-loss or replicated failover claim',
+        'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
+        'sql_binary_sha256':hashlib.sha256(args.sql_binary.resolve().read_bytes()).hexdigest(),
         'cycles':[],'boundaries':{}}
     delays = [.002,.005,.01,.02,.05,.10,.25,.50]
     for cycle in range(args.cycles):

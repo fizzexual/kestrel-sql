@@ -40,6 +40,7 @@ def import_file(engine,source):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
+    parser.add_argument('--output',type=Path,default=ROOT/'portfolio'/'live-pipeline-results.json')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'live-pipeline-{time.time_ns()}')
     args=parser.parse_args()
     args.work.mkdir(parents=True)
@@ -51,7 +52,8 @@ def main():
     db.execute('COPY base TO ? (FORMAT PARQUET)',[str(base)])
     db.execute('COPY late TO ? (FORMAT PARQUET)',[str(late)])
     engine=Engine('kestrel',args.work/'store',0,args.binary.resolve(),{})
-    report={'engine_version':engine.version,'workflow':'two Parquet sources, durable source-hash/chunk IDs, each source replayed',
+    report={'engine_version':engine.version,'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
+        'workflow':'two Parquet sources, durable source-hash/chunk IDs, each source replayed',
         'initial_rows':25000,'late_backfill_rows':5000,'imports':[]}
     try:
         first,batches=import_file(engine,base)
@@ -96,7 +98,7 @@ def main():
         connection.close()
     finally:
         engine.finish(); db.close()
-    output=ROOT/'portfolio'/'live-pipeline-results.json'
+    output=args.output
     output.write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 
