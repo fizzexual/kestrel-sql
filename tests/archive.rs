@@ -1227,7 +1227,7 @@ fn dense_groups_handle_signed_edges_holes_filters_and_wide_sums() {
 fn wide_and_high_cardinality_groups_keep_hash_fallback() {
     for keys in [
         vec![i64::MIN, i64::MAX, 0, -1, i64::MIN, i64::MAX],
-        (0..5003).collect(),
+        (0..5003).map(|i| i * 17).collect(),
     ] {
         let path = temp("group-fallback");
         let mut archive = open(&path);
@@ -1238,13 +1238,84 @@ fn wide_and_high_cardinality_groups_keep_hash_fallback() {
         archive.append(columns).unwrap();
         let sql = "SELECT device, COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device";
         let result = archive.query(sql).unwrap();
-        assert_eq!(result.result.plan, "streamed-column-scan");
+        assert_eq!(result.result.plan, "streamed-hash-group");
         assert_eq!(result.result.rows, reference.query(sql).unwrap().rows);
         assert_eq!(
             archive.verify().unwrap(),
             archive.stats().unwrap().rows * 24
         );
     }
+}
+
+#[test]
+fn expanded_compact_domains_match_memory_across_signed_edges_and_filters() {
+    for base in [i64::MIN, -2501, i64::MAX - 5002] {
+        let path = temp("expanded-dense");
+        let mut archive = open(&path);
+        let mut reference = Database::memory();
+        reference.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)").unwrap();
+        for batch in 0..2 {
+            let columns = vec![
+                (0..5003).map(|i| i * 17 % 6007 - batch * 97).collect(),
+                (0..5003)
+                    .map(|i| if i % 2 == 0 { i64::MAX } else { i64::MIN })
+                    .collect(),
+                (0..5003).map(|i| base + i).collect(),
+            ];
+            reference.append("events", columns.clone()).unwrap();
+            archive.append(columns).unwrap();
+        }
+        for sql in [
+            "SELECT device, COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events GROUP BY device ORDER BY device",
+            "SELECT SUM(value) AS s, device AS k, SUM(value), AVG(value), COUNT(*) FROM events WHERE ts > 37 AND value < 0 GROUP BY device ORDER BY k DESC LIMIT 31",
+            "SELECT device, COUNT(*) FROM events WHERE ts < -99999 GROUP BY device ORDER BY device",
+        ] {
+            let result = archive.query(sql).unwrap();
+            assert_eq!(result.result.plan, "streamed-dense-group");
+            assert_eq!(
+                result.result.rows,
+                reference.query(sql).unwrap().rows,
+                "{sql}"
+            );
+        }
+        assert_eq!(archive.verify().unwrap(), 10006 * 24);
+    }
+    let path = temp("expanded-sparse-small");
+    let mut archive = open(&path);
+    archive
+        .append(vec![vec![1, 2], vec![7, 9], vec![0, 65_535]])
+        .unwrap();
+    assert_eq!(
+        archive
+            .query("SELECT device, COUNT(*) FROM events GROUP BY device")
+            .unwrap()
+            .result
+            .plan,
+        "streamed-hash-group"
+    );
+}
+
+#[test]
+fn sparse_result_budget_accepts_existing_keys_at_capacity() {
+    let path = temp("sparse-at-capacity");
+    let mut archive = open(&path);
+    archive
+        .append(vec![
+            (0..100_000).collect(),
+            vec![1; 100_000],
+            (0..100_000).map(|i| i * 17).collect(),
+        ])
+        .unwrap();
+    archive
+        .append(vec![vec![-7], vec![9], vec![99_999 * 17]])
+        .unwrap();
+    let result = archive.query("SELECT device, COUNT(*), SUM(value) FROM events GROUP BY device ORDER BY device DESC LIMIT 1").unwrap();
+    assert_eq!(result.result.plan, "streamed-hash-group");
+    assert_eq!(
+        result.result.rows,
+        vec![vec![Value::Int(99_999 * 17), Value::Int(2), Value::Int(10)]]
+    );
+    assert_eq!(archive.verify().unwrap(), 100001 * 24);
 }
 
 #[test]
@@ -1262,7 +1333,7 @@ fn group_strategy_is_local_to_pinned_snapshot_and_survives_compaction() {
         .append(vec![vec![-9, 2], vec![40, 50], vec![i64::MAX, -3]])
         .unwrap();
     let after = archive.query(sql).unwrap();
-    assert_eq!(after.result.plan, "streamed-column-scan");
+    assert_eq!(after.result.plan, "streamed-hash-group");
     assert_eq!(
         after.result.rows,
         vec![

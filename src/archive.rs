@@ -27,8 +27,11 @@ const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
 const MAX_CATALOG_CHAIN: usize = 32;
 const MAX_BATCH_IDS: usize = 100_000;
 const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
-const MAX_DENSE_GROUP_SLOTS: usize = 4096;
+const MAX_DENSE_GROUP_SLOTS: usize = 65_536;
 const MAX_DENSE_GROUP_BYTES: usize = 8 * 1024 * 1024;
+const GROUP_KEY_CACHE_SLOTS: usize = 256;
+const GROUP_KEY_CACHE_MAX_KEYS: usize = 128;
+type GroupKeyCache = [Option<(i64, usize)>; GROUP_KEY_CACHE_SLOTS];
 
 /// Inclusive histogram buckets end at 0.1, 1, 5, 20, 100, 500 and 1000 ms;
 /// the final bucket contains all longer samples. Diagnostics are process-local.
@@ -1188,7 +1191,6 @@ impl ArchiveSnapshot {
         };
         let resolved = Resolved::new(&self.catalog, q)?;
         let mut states = vec![Cell::default(); resolved.exprs.len()];
-        let mut groups: HashMap<i64, Vec<Cell>> = HashMap::new();
         let mut dense = resolved.group.and_then(|column| {
             let min = self
                 .segments
@@ -1200,9 +1202,17 @@ impl ArchiveSnapshot {
                 .iter()
                 .map(|s| s.metadata.indexes[column].max)
                 .max()?;
+            let span = DenseGroups::capacity(min, max, resolved.exprs.len())?;
+            // Expanded domains should not allocate more group slots than the
+            // archive has rows. Preserve the original small-domain strategy.
+            if span > 4096 && span > self.segments.iter().map(|s| s.metadata.rows).sum() {
+                return None;
+            }
             DenseGroups::new(min, max, &resolved.exprs)
         });
         let dense_plan = dense.is_some();
+        let mut sparse =
+            (resolved.group.is_some() && !dense_plan).then(|| SparseGroups::new(&resolved.exprs));
         let mut bytes_read = 0;
         let mut scanned = 0;
         let mut pruned = 0;
@@ -1363,21 +1373,8 @@ impl ArchiveSnapshot {
                     if let Some(column) = resolved.group {
                         if let Some(dense) = &mut dense {
                             dense.update_selected(column, &columns, &selected)?;
-                        } else {
-                            for &row in &selected {
-                                let key = columns[column][row];
-                                if groups.len() >= crate::query::MAX_RESULT_ROWS
-                                    && !groups.contains_key(&key)
-                                {
-                                    return Err(Error::new("archive group budget exceeded"));
-                                }
-                                let cells = groups
-                                    .entry(key)
-                                    .or_insert_with(|| vec![Cell::default(); resolved.exprs.len()]);
-                                for (cell, expr) in cells.iter_mut().zip(&resolved.exprs) {
-                                    cell.update(*expr, &columns, row);
-                                }
-                            }
+                        } else if let Some(sparse) = &mut sparse {
+                            sparse.update_selected(column, &columns, &selected)?;
                         }
                     } else {
                         for (cell, expr) in states.iter_mut().zip(&resolved.exprs) {
@@ -1396,17 +1393,8 @@ impl ArchiveSnapshot {
             Vec::new()
         } else if let Some(dense) = dense {
             dense.into_rows(&resolved.exprs)
-        } else if resolved.group.is_some() {
-            groups
-                .into_iter()
-                .map(|(key, cells)| {
-                    cells
-                        .iter()
-                        .zip(&resolved.exprs)
-                        .map(|(s, e)| s.value(*e, Some(key)))
-                        .collect()
-                })
-                .collect()
+        } else if let Some(sparse) = sparse {
+            sparse.into_rows(&resolved.exprs)
         } else {
             vec![
                 states
@@ -1433,6 +1421,8 @@ impl ArchiveSnapshot {
                     "segmented-sparse-prefix".into()
                 } else if dense_plan {
                     "streamed-dense-group".into()
+                } else if resolved.group.is_some() {
+                    "streamed-hash-group".into()
                 } else {
                     "streamed-column-scan".into()
                 },
@@ -1811,6 +1801,9 @@ impl DenseGroups {
     }
     fn new(min: i64, max: i64, expressions: &[AExpr]) -> Option<Self> {
         let span = Self::capacity(min, max, expressions.len())?;
+        Some(Self::with_span(min, span, expressions))
+    }
+    fn with_span(base: i64, span: usize, expressions: &[AExpr]) -> Self {
         let mut aggregates = Vec::new();
         let mut outputs = Vec::with_capacity(expressions.len());
         for &expression in expressions {
@@ -1836,13 +1829,13 @@ impl DenseGroups {
             });
             outputs.push(Some(index));
         }
-        Some(Self {
-            base: min,
+        Self {
+            base,
             counts: vec![0; span],
             aggregates,
             outputs,
             slots: Vec::with_capacity(BLOCK_ROWS),
-        })
+        }
     }
     fn update_selected(
         &mut self,
@@ -1861,6 +1854,20 @@ impl DenseGroups {
             self.slots.push(slot as usize);
             self.counts[slot as usize] += 1;
         }
+        self.update_aggregates(columns, selected);
+        Ok(())
+    }
+    fn push_group(&mut self) {
+        self.counts.push(0);
+        for aggregate in &mut self.aggregates {
+            match aggregate {
+                DenseAggregate::Sum(_, sums) => sums.push(0),
+                DenseAggregate::Min(_, minima) => minima.push(i64::MAX),
+                DenseAggregate::Max(_, maxima) => maxima.push(i64::MIN),
+            }
+        }
+    }
+    fn update_aggregates(&mut self, columns: &[Vec<i64>], selected: &[usize]) {
         // SUM and AVG of the same column share one exact i128 reduction.
         // Narrow arrays and dispatch outside the row loop keep updates local.
         for aggregate in &mut self.aggregates {
@@ -1885,39 +1892,132 @@ impl DenseGroups {
                 }
             }
         }
-        Ok(())
+    }
+    fn row(&self, slot: usize, key: i64, expressions: &[AExpr]) -> Vec<Value> {
+        let count = self.counts[slot];
+        expressions
+            .iter()
+            .zip(&self.outputs)
+            .map(|(&expression, output)| {
+                match (expression, output.map(|index| &self.aggregates[index])) {
+                    (AExpr::Group(_), None) => Value::Int(i128::from(key)),
+                    (AExpr::Count, None) => Value::Int(count as i128),
+                    (AExpr::Sum(_), Some(DenseAggregate::Sum(_, sums))) => Value::Int(sums[slot]),
+                    (AExpr::Avg(_), Some(DenseAggregate::Sum(_, sums))) => {
+                        Value::Float(sums[slot] as f64 / count as f64)
+                    }
+                    (AExpr::Min(_), Some(DenseAggregate::Min(_, minima))) => {
+                        Value::Int(i128::from(minima[slot]))
+                    }
+                    (AExpr::Max(_), Some(DenseAggregate::Max(_, maxima))) => {
+                        Value::Int(i128::from(maxima[slot]))
+                    }
+                    _ => unreachable!("group aggregate output mapping"),
+                }
+            })
+            .collect()
     }
     fn into_rows(self, expressions: &[AExpr]) -> Vec<Vec<Value>> {
         self.counts
             .iter()
             .enumerate()
             .filter(|(_, count)| **count != 0)
-            .map(|(slot, &count)| {
-                let key = self.base + slot as i64;
-                expressions
-                    .iter()
-                    .zip(&self.outputs)
-                    .map(|(&expression, output)| {
-                        match (expression, output.map(|index| &self.aggregates[index])) {
-                            (AExpr::Group(_), None) => Value::Int(i128::from(key)),
-                            (AExpr::Count, None) => Value::Int(count as i128),
-                            (AExpr::Sum(_), Some(DenseAggregate::Sum(_, sums))) => {
-                                Value::Int(sums[slot])
-                            }
-                            (AExpr::Avg(_), Some(DenseAggregate::Sum(_, sums))) => {
-                                Value::Float(sums[slot] as f64 / count as f64)
-                            }
-                            (AExpr::Min(_), Some(DenseAggregate::Min(_, minima))) => {
-                                Value::Int(i128::from(minima[slot]))
-                            }
-                            (AExpr::Max(_), Some(DenseAggregate::Max(_, maxima))) => {
-                                Value::Int(i128::from(maxima[slot]))
-                            }
-                            _ => unreachable!("dense aggregate output mapping"),
+            .map(|(slot, _)| self.row(slot, self.base + slot as i64, expressions))
+            .collect()
+    }
+}
+/// Arbitrary signed keys map once per row to shared typed accumulators. Keep
+/// the standard randomized HashMap and enforce the result limit on insertion.
+struct SparseGroups {
+    index: HashMap<i64, usize>,
+    keys: Vec<i64>,
+    state: DenseGroups,
+    cache: Option<Box<GroupKeyCache>>,
+}
+impl SparseGroups {
+    fn new(expressions: &[AExpr]) -> Self {
+        Self {
+            index: HashMap::new(),
+            keys: Vec::new(),
+            state: DenseGroups::with_span(0, 0, expressions),
+            cache: Some(Box::new([None; GROUP_KEY_CACHE_SLOTS])),
+        }
+    }
+    fn update_selected(
+        &mut self,
+        column: usize,
+        columns: &[Vec<i64>],
+        selected: &[usize],
+    ) -> Result<()> {
+        self.state.slots.clear();
+        if self.cache.is_some() {
+            self.map_selected::<true>(column, columns, selected)?;
+        } else {
+            self.map_selected::<false>(column, columns, selected)?;
+        }
+        self.state.update_aggregates(columns, selected);
+        Ok(())
+    }
+    fn map_selected<const CACHE: bool>(
+        &mut self,
+        column: usize,
+        columns: &[Vec<i64>],
+        selected: &[usize],
+    ) -> Result<()> {
+        let mut cache_hits = 0;
+        for &row in selected {
+            let key = columns[column][row];
+            // This is a tagged lookup cache, not the authoritative hash table.
+            // Exact key comparison handles every collision and signed value.
+            let bits = key as u64;
+            let cache_slot = (bits ^ (bits >> 32)) as usize & (GROUP_KEY_CACHE_SLOTS - 1);
+            let cached = if CACHE {
+                self.cache.as_ref().and_then(|cache| {
+                    cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
+                })
+            } else {
+                None
+            };
+            let slot = if let Some((_, slot)) = cached {
+                cache_hits += 1;
+                slot
+            } else {
+                match self.index.entry(key) {
+                    std::collections::hash_map::Entry::Occupied(entry) => *entry.get(),
+                    std::collections::hash_map::Entry::Vacant(entry) => {
+                        if self.keys.len() >= crate::query::MAX_RESULT_ROWS {
+                            return Err(Error::new("archive group budget exceeded"));
                         }
-                    })
-                    .collect()
-            })
+                        let slot = self.keys.len();
+                        entry.insert(slot);
+                        self.keys.push(key);
+                        self.state.push_group();
+                        if CACHE && self.keys.len() > GROUP_KEY_CACHE_MAX_KEYS {
+                            self.cache = None;
+                        }
+                        slot
+                    }
+                }
+            };
+            if CACHE && let Some(cache) = &mut self.cache {
+                cache[cache_slot] = Some((key, slot));
+            }
+            self.state.slots.push(slot);
+            self.state.counts[slot] += 1;
+        }
+        // A representative block with fewer than half cache hits should use
+        // the plain hash mapping kernel for the rest of this query. Tiny row
+        // selections retain the cache to avoid premature decisions.
+        if CACHE && selected.len() >= 64 && cache_hits * 2 < selected.len() {
+            self.cache = None;
+        }
+        Ok(())
+    }
+    fn into_rows(self, expressions: &[AExpr]) -> Vec<Vec<Value>> {
+        self.keys
+            .iter()
+            .enumerate()
+            .map(|(slot, &key)| self.state.row(slot, key, expressions))
             .collect()
     }
 }
@@ -1953,21 +2053,6 @@ impl Cell {
             }
             AExpr::Count => (),
             AExpr::Group(_) => unreachable!("group expressions use the grouped row kernel"),
-        }
-    }
-    fn update(&mut self, e: AExpr, columns: &[Vec<i64>], row: usize) {
-        self.count += 1;
-        match e {
-            AExpr::Sum(c) | AExpr::Avg(c) => self.sum += i128::from(columns[c][row]),
-            AExpr::Min(c) => {
-                let x = columns[c][row];
-                self.min = Some(self.min.map_or(x, |m| m.min(x)));
-            }
-            AExpr::Max(c) => {
-                let x = columns[c][row];
-                self.max = Some(self.max.map_or(x, |m| m.max(x)));
-            }
-            _ => (),
         }
     }
     fn value(&self, e: AExpr, key: Option<i64>) -> Value {
@@ -2008,6 +2093,120 @@ fn retain_matching(selected: &mut Vec<usize>, values: &[i64], op: Op, value: i64
 #[cfg(test)]
 mod dense_group_tests {
     use super::*;
+
+    #[test]
+    fn sparse_cache_disables_when_a_block_has_unhelpful_collisions() {
+        let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1)];
+        let mut groups = SparseGroups::new(&expressions);
+        let columns = vec![(0..1024).map(|i| i % 3 * 256).collect(), vec![7; 1024]];
+        let selected: Vec<_> = (0..1024).collect();
+        groups.update_selected(0, &columns, &selected).unwrap();
+        assert!(groups.cache.is_none());
+        groups.update_selected(0, &columns, &selected).unwrap();
+        let rows = groups.into_rows(&expressions);
+        assert_eq!(
+            rows[0],
+            vec![Value::Int(0), Value::Int(684), Value::Int(4788)]
+        );
+        assert_eq!(
+            rows[1],
+            vec![Value::Int(256), Value::Int(682), Value::Int(4774)]
+        );
+        assert_eq!(
+            rows[2],
+            vec![Value::Int(512), Value::Int(682), Value::Int(4774)]
+        );
+    }
+
+    #[test]
+    fn sparse_key_cache_checks_tags_and_releases_after_cardinality_limit() {
+        let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1)];
+        let mut groups = SparseGroups::new(&expressions);
+        let keys = [
+            vec![0, 256, i64::MIN, i64::MAX],
+            (0..129).map(|i| i * 256).collect(),
+        ]
+        .concat();
+        let columns = vec![keys, (0..133).map(|i| i * 37 - 91).collect()];
+        let first = vec![0, 1, 2, 3, 0, 3, 1, 2];
+        groups.update_selected(0, &columns, &first).unwrap();
+        assert!(groups.cache.is_some());
+        let all: Vec<_> = (0..133).collect();
+        groups.update_selected(0, &columns, &all).unwrap();
+        assert!(groups.cache.is_none());
+        groups.update_selected(0, &columns, &first).unwrap();
+        let mut expected: BTreeMap<i64, (usize, i128)> = BTreeMap::new();
+        for &row in first.iter().chain(&all).chain(&first) {
+            let entry = expected.entry(columns[0][row]).or_default();
+            entry.0 += 1;
+            entry.1 += i128::from(columns[1][row]);
+        }
+        let rows = groups.into_rows(&expressions);
+        for row in rows {
+            let Value::Int(key) = row[0] else {
+                unreachable!()
+            };
+            let (count, sum) = expected.remove(&(key as i64)).unwrap();
+            assert_eq!(
+                row,
+                vec![Value::Int(key), Value::Int(count as i128), Value::Int(sum)]
+            );
+        }
+        assert!(expected.is_empty());
+    }
+
+    #[test]
+    fn expanded_dense_capacity_keeps_memory_and_slot_bounds() {
+        assert_eq!(DenseGroups::capacity(0, 65_535, 1), Some(65_536));
+        assert!(DenseGroups::capacity(0, 65_535, 2).is_none());
+        assert!(DenseGroups::capacity(0, 65_536, 1).is_none());
+        assert_eq!(
+            DenseGroups::capacity(i64::MIN, i64::MIN + 5002, 7),
+            Some(5003)
+        );
+        assert_eq!(
+            DenseGroups::capacity(i64::MAX - 5002, i64::MAX, 7),
+            Some(5003)
+        );
+    }
+
+    #[test]
+    fn sparse_arrays_share_reductions_and_preserve_signed_wide_results() {
+        let expressions = [
+            AExpr::Group(0),
+            AExpr::Count,
+            AExpr::Sum(1),
+            AExpr::Avg(1),
+            AExpr::Min(1),
+            AExpr::Max(1),
+            AExpr::Sum(1),
+        ];
+        let mut groups = SparseGroups::new(&expressions);
+        assert_eq!(groups.state.aggregates.len(), 3);
+        assert_eq!(groups.state.outputs[2], groups.state.outputs[3]);
+        assert_eq!(groups.state.outputs[2], groups.state.outputs[6]);
+        let columns = vec![
+            vec![i64::MIN, i64::MAX, i64::MIN, 0, i64::MAX],
+            vec![i64::MAX, i64::MIN, i64::MAX, -7, i64::MIN],
+        ];
+        groups.update_selected(0, &columns, &[0, 1, 2]).unwrap();
+        groups.update_selected(0, &columns, &[3, 4]).unwrap();
+        let rows = groups.into_rows(&expressions);
+        assert_eq!(
+            rows[0],
+            vec![
+                Value::Int(i64::MIN.into()),
+                Value::Int(2),
+                Value::Int(i128::from(i64::MAX) * 2),
+                Value::Float(i64::MAX as f64),
+                Value::Int(i64::MAX.into()),
+                Value::Int(i64::MAX.into()),
+                Value::Int(i128::from(i64::MAX) * 2)
+            ]
+        );
+        assert_eq!(rows[1][2], Value::Int(i128::from(i64::MIN) * 2));
+        assert_eq!(rows[2][2], Value::Int(-7));
+    }
 
     #[test]
     fn dense_group_budget_and_signed_span_are_checked_before_allocation() {

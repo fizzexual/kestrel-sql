@@ -1,5 +1,8 @@
 # KestrelSQL: data-engineering portfolio case study
 
+The [0.3.9 grouping case study](PERFORMANCE_039.md) profiles sparse/hash reduction costs, expands bounded dense execution and validates an adaptive tagged lookup cache. The matched comparison has 22 median DuckDB wins and 8 losses; 15 additional stress shapes have 11 wins and 4 losses. All 69 Rust tests, 1,000 independent SQL cases and current crash/source replay checks pass. Intermediate cache penalties and remaining service failures remain accessible.
+
+
 ## Project statement
 
 Built a Rust embedded analytics engine and Python/SQL pipelines to investigate fast exact aggregates over append-only events. The archive persists 100 million rows, automatically maintains sparse aggregate indexes, accepts overlapping late batches and keeps raw values on disk. Version 0.3 adds concurrent immutable read views, durable batch receipts, group publication and bounded small-run compaction. Query results are checked against mature SQL engines rather than inferred from timing alone.

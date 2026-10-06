@@ -1,0 +1,140 @@
+[
+  {
+    "suite": "stage-profiles",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/profile_group_039.py",
+      "--binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\group-probe.exe",
+      "--output",
+      "benchmarks/group-039-final-profiles.json"
+    ],
+    "started_at_utc": "2026-10-06T17:30:25.814247+00:00",
+    "harness_sha256": "9d99c5a955078c73a874ad78fe1195b309e9f472effa6f26098e32bfdcbec033",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:30:30.189538+00:00"
+  },
+  {
+    "suite": "sql-differential",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/archive_verify.py",
+      "--binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\kestrel.exe",
+      "--output",
+      "benchmarks/archive-039-verification.json",
+      "--queries",
+      "500"
+    ],
+    "started_at_utc": "2026-10-06T17:30:30.191538+00:00",
+    "harness_sha256": "d30eb8f9a971f9da7b77deb93a33cc84fccf317516f1e69faf88665a067e9a2d",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:30:53.099620+00:00"
+  },
+  {
+    "suite": "expanded-and-sparse-sql",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/group_verify_039.py"
+    ],
+    "started_at_utc": "2026-10-06T17:30:53.100619+00:00",
+    "harness_sha256": "4b02d5cf06b7687b3b6816ba6b70c007b83eff55c6cca81aae5a183bc56b2f76",
+    "returncode": 1,
+    "completed_at_utc": "2026-10-06T17:30:53.455984+00:00"
+  },
+  {
+    "suite": "expanded-and-sparse-sql",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/group_verify_039.py"
+    ],
+    "started_at_utc": "2026-10-06T17:32:45.052582+00:00",
+    "harness_sha256": "c62fca826b03b4715444a06b9f3a4366503e5d0f8b62f2b91506875ee8584635",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:32:54.562701+00:00"
+  },
+  {
+    "suite": "publication-cuts-corruptions",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/publication_faults.py",
+      "--binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\kestrel-stress.exe",
+      "--sql-binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\kestrel.exe",
+      "--fault-driver",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\kestrel-039-fault-build\\release\\examples\\publication_fault_probe.exe",
+      "--expected-version",
+      "0.3.9",
+      "--output",
+      "benchmarks/publication-039-faults.json"
+    ],
+    "started_at_utc": "2026-10-06T17:32:54.563701+00:00",
+    "harness_sha256": "f642050d8431840354aea8c4d515c00ce7a013c69fd6f040d32d3d85e6f5af38",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:34:03.949518+00:00"
+  },
+  {
+    "suite": "concurrent-forced-kills",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/group_commit_recovery.py",
+      "--binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\kestrel-stress.exe",
+      "--expected-version",
+      "0.3.9",
+      "--retry-index",
+      "--output",
+      "benchmarks/group-039-recovery.json"
+    ],
+    "started_at_utc": "2026-10-06T17:34:03.950521+00:00",
+    "harness_sha256": "3da137b22a007c4b949b7295ab4dcd44d96fc8d96f6ad2d59bab9459bfc19859",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:35:07.408851+00:00"
+  },
+  {
+    "suite": "source-cuts-and-kills",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/source_faults.py",
+      "--adapter",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\source-pipeline-typed.exe",
+      "--driver",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\kestrel-039-fault-build\\release\\examples\\source_fault_probe.exe",
+      "--output",
+      "benchmarks/source-039-faults.json"
+    ],
+    "started_at_utc": "2026-10-06T17:35:07.409839+00:00",
+    "harness_sha256": "7e5ee8cfca662d65b5ee73cb2954bd0d2059af98a9d94512dcd26ac8aa80a42b",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:35:32.839240+00:00"
+  },
+  {
+    "suite": "parquet-source-pipeline",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/source_pipeline_demo.py",
+      "--binary",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-039\\candidate\\source-pipeline-typed.exe",
+      "--expected-version",
+      "0.3.9",
+      "--output",
+      "portfolio/source-pipeline-039-results.json"
+    ],
+    "started_at_utc": "2026-10-06T17:35:32.839240+00:00",
+    "harness_sha256": "aa6a030e59cf5b0d986f275396bc4bd7d0c77ec9b9f7d8d2d7548afe42766c60",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:35:36.727249+00:00"
+  },
+  {
+    "suite": "wide-json-and-sparse-reopen",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "benchmarks/wire_039.py"
+    ],
+    "started_at_utc": "2026-10-06T17:35:36.727249+00:00",
+    "harness_sha256": "93142d613d7cae2ab21e7b833e45e28071bcd13c186f9b0aaf0d563b08470116",
+    "returncode": 0,
+    "completed_at_utc": "2026-10-06T17:35:36.981589+00:00"
+  }
+]

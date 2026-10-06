@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.9 experimental sparse-grouping candidate
+
+- Increase the direct-address ceiling to 65,536 slots while keeping the conservative 8 MiB budget. Expanded domains also fit the archive row count.
+- Map arbitrary signed keys through the standard randomized HashMap to typed shared reductions, avoiding per-group Cell vectors and duplicate SUM/AVG work. Report `streamed-hash-group` for this fallback.
+- Add a 256-entry tagged key cache, with exact collision checks, a 128-key ceiling and block hit-rate disabling. Specialize the disabled path so it has no per-row cache checks; preserve the measured first-cache regressions.
+- Add six correctness tests; all 69 pass in debug/release and Clippy. Check 1,000 SQL cases against DuckDB/SQLite, wide JSON, publication failures, corrupt catalogs, forced kills, source replay and the Parquet pipeline.
+- Preserve 81 current engine/fixture/round cases, all 45 shapes, 5,530 paired control samples and both intermediate candidates. Disclose the remaining unordered-scan regression; keep storage/publication/CLI/source formats and policy unchanged. See [PERFORMANCE_039.md](PERFORMANCE_039.md).
+
 ## 0.3.8 experimental adaptive-grouping candidate
 
 - Select query-local direct-address aggregation for bounded integer spans (4,096 slots, conservative 8 MiB limit), with hash fallback for sparse or wider domains and the existing result budget.
