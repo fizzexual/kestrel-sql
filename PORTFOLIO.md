@@ -1,5 +1,7 @@
 # KestrelSQL: data-engineering portfolio case study
 
+The [0.3.16 packed medium-cache case study](PERFORMANCE_046.md) reduces tagged lookup memory by one-third, uses criteria declared before timing, preserves compile/footprint failures and retains every slower control. Independent zero/signed-key collision oracles and current durable retry/crash evidence support the bounded change.
+
 The [0.3.15 bounded reader reuse case study](PERFORMANCE_045.md) profiles fragmented query overhead, preserves an offset-only experiment with inconclusive scan gains, and selects exclusive file reuse under an explicit idle-handle budget. It verifies eight-client exact results, beyond-i64 sums, corruption after warming, fresh scrubs, snapshot retirement and durable retries. All 60 current shapes, losses and slower controls remain visible; this is local experimental evidence.
 
 The [0.3.14 adaptive sparse-kernel case study](PERFORMANCE_044.md) retains two unsuccessful wider-fusion trials, then selects a small-cache kernel with guarded wider fallback. It independently verifies signed wide shared SUM/AVG across cache modes and durable retry/crash behavior. The final release retains 60 fresh shapes, 74 Rust tests and 4,000 SQL cases against each reference.

@@ -35,7 +35,30 @@ const GROUP_KEY_CACHE_MAX_KEYS: usize = 128;
 type GroupKeyCache = [Option<(i64, usize)>; GROUP_KEY_CACHE_SLOTS];
 const LARGE_GROUP_CACHE_SLOTS: usize = 16_384;
 const LARGE_GROUP_CACHE_MAX_KEYS: usize = 8192;
-type LargeGroupKeyCache = [Option<(i64, usize)>; LARGE_GROUP_CACHE_SLOTS];
+#[derive(Debug, Clone, Copy, Default)]
+struct LargeGroupCacheEntry {
+    key: i64,
+    // Zero means empty; all authoritative group indexes fit the result budget.
+    slot_plus_one: u32,
+}
+impl LargeGroupCacheEntry {
+    fn new(key: i64, slot: usize) -> Self {
+        Self {
+            key,
+            slot_plus_one: u32::try_from(slot + 1)
+                .expect("bounded group index fits the packed cache"),
+        }
+    }
+    fn lookup(self, key: i64) -> Option<(i64, usize)> {
+        if self.slot_plus_one == 0 || self.key != key {
+            None
+        } else {
+            Some((key, self.slot_plus_one as usize - 1))
+        }
+    }
+}
+type LargeGroupKeyCache = [LargeGroupCacheEntry; LARGE_GROUP_CACHE_SLOTS];
+const _: () = assert!(crate::query::MAX_RESULT_ROWS < u32::MAX as usize);
 
 /// Inclusive histogram buckets end at 0.1, 1, 5, 20, 100, 500 and 1000 ms;
 /// the final bucket contains all longer samples. Diagnostics are process-local.
@@ -2107,12 +2130,14 @@ impl SparseGroups {
         if self.cache_promotion_pending && !selected.is_empty() {
             // Allocate only when a later nonempty block will use this table.
             // Construct it on the heap without a large stack temporary.
-            let mut cache: Box<LargeGroupKeyCache> = vec![None; LARGE_GROUP_CACHE_SLOTS]
-                .into_boxed_slice()
-                .try_into()
-                .expect("fixed group-cache length");
+            let mut cache: Box<LargeGroupKeyCache> =
+                vec![LargeGroupCacheEntry::default(); LARGE_GROUP_CACHE_SLOTS]
+                    .into_boxed_slice()
+                    .try_into()
+                    .expect("fixed group-cache length");
             for (slot, &key) in self.keys.iter().enumerate() {
-                cache[large_group_cache_slot(key, self.cache_multiplier)] = Some((key, slot));
+                cache[large_group_cache_slot(key, self.cache_multiplier)] =
+                    LargeGroupCacheEntry::new(key, slot);
             }
             self.large_cache = Some(cache);
             self.cache_promotion_pending = false;
@@ -2168,9 +2193,9 @@ impl SparseGroups {
                     cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
                 })
             } else if MODE == 2 {
-                self.large_cache.as_ref().and_then(|cache| {
-                    cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
-                })
+                self.large_cache
+                    .as_ref()
+                    .and_then(|cache| cache[cache_slot].lookup(key))
             } else {
                 None
             };
@@ -2215,7 +2240,7 @@ impl SparseGroups {
                 && cached.is_none()
                 && let Some(cache) = &mut self.large_cache
             {
-                cache[cache_slot] = Some((key, slot));
+                cache[cache_slot] = LargeGroupCacheEntry::new(key, slot);
             }
             self.state.slots.push(slot);
             self.state.counts[slot] += 1;
@@ -2274,9 +2299,9 @@ impl SparseGroups {
                     cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
                 })
             } else if MODE == 2 {
-                self.large_cache.as_ref().and_then(|cache| {
-                    cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
-                })
+                self.large_cache
+                    .as_ref()
+                    .and_then(|cache| cache[cache_slot].lookup(key))
             } else {
                 None
             };
@@ -2324,7 +2349,7 @@ impl SparseGroups {
                 && cached.is_none()
                 && let Some(cache) = &mut self.large_cache
             {
-                cache[cache_slot] = Some((key, slot));
+                cache[cache_slot] = LargeGroupCacheEntry::new(key, slot);
             }
             self.state.counts[slot] += 1;
             if SHARED_SUM {
@@ -2496,6 +2521,73 @@ mod dense_group_tests {
     }
 
     #[test]
+    fn packed_medium_cache_preserves_zero_and_colliding_signed_wide_groups() {
+        assert_eq!(std::mem::size_of::<LargeGroupCacheEntry>(), 16);
+        assert_eq!(std::mem::size_of::<LargeGroupKeyCache>(), 262_144);
+        let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1), AExpr::Avg(1)];
+        let mut groups = SparseGroups::new(&expressions);
+        let collision = cache_colliding_keys(groups.cache_multiplier, 3);
+        assert_eq!(collision[0], 0);
+        assert!(
+            collision
+                .iter()
+                .all(|&key| large_group_cache_slot(key, groups.cache_multiplier) == 0)
+        );
+        let keys = [collision[0], i64::MIN, i64::MAX, collision[1], collision[2]];
+        groups.cache = None;
+        groups.cache_learning = false;
+        groups.large_cache = Some(
+            vec![LargeGroupCacheEntry::default(); LARGE_GROUP_CACHE_SLOTS]
+                .into_boxed_slice()
+                .try_into()
+                .unwrap(),
+        );
+        let columns = vec![
+            (0..100)
+                .map(|row| keys[row % keys.len()])
+                .collect::<Vec<_>>(),
+            (0..100_usize)
+                .map(|row| {
+                    if (row % keys.len()).is_multiple_of(2) {
+                        i64::MAX
+                    } else {
+                        i64::MIN
+                    }
+                })
+                .collect::<Vec<_>>(),
+        ];
+        let mut expected = BTreeMap::<i64, (i128, i128)>::new();
+        for (key, value) in columns[0].iter().zip(&columns[1]) {
+            let totals = expected.entry(*key).or_default();
+            totals.0 += 1;
+            totals.1 += i128::from(*value);
+        }
+        for first in (0..100).step_by(5) {
+            groups
+                .update_selected(0, &columns, &(first..first + 5).collect::<Vec<_>>())
+                .unwrap();
+        }
+        assert!(groups.large_cache.is_some());
+        let mut actual = groups.into_rows(&expressions);
+        actual.sort_by_key(|row| match row[0] {
+            Value::Int(key) => key,
+            _ => unreachable!(),
+        });
+        let expected = expected
+            .into_iter()
+            .map(|(key, (count, sum))| {
+                vec![
+                    Value::Int(i128::from(key)),
+                    Value::Int(count),
+                    Value::Int(sum),
+                    Value::Float(sum as f64 / count as f64),
+                ]
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
     fn sparse_cache_disables_actual_collisions_after_bounded_second_chance() {
         let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1)];
         let mut groups = SparseGroups::new(&expressions);
@@ -2619,10 +2711,7 @@ mod dense_group_tests {
         );
         groups.update_selected(0, &columns, &[8192]).unwrap();
         assert!(groups.large_cache.is_some() && !groups.cache_promotion_pending);
-        assert_eq!(
-            std::mem::size_of::<LargeGroupKeyCache>(),
-            LARGE_GROUP_CACHE_SLOTS * std::mem::size_of::<Option<(i64, usize)>>()
-        );
+        assert_eq!(std::mem::size_of::<LargeGroupKeyCache>(), 256 * 1024);
         for lo in (8193..15009).step_by(BLOCK_ROWS) {
             groups
                 .update_selected(
@@ -2730,7 +2819,7 @@ mod dense_group_tests {
                 groups.cache = None;
                 groups.cache_learning = false;
                 groups.large_cache = Some(
-                    vec![None; LARGE_GROUP_CACHE_SLOTS]
+                    vec![LargeGroupCacheEntry::default(); LARGE_GROUP_CACHE_SLOTS]
                         .into_boxed_slice()
                         .try_into()
                         .unwrap(),

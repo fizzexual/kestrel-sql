@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.16 experimental packed medium key-cache candidate
+
+- Store exact signed keys and checked u32 group indexes plus one in 16-byte entries, reducing the promoted table from 384 to 256 KiB on this 64-bit build. Preserve cache promotion/demotion/budgets, HashMap authority, counts, exact i128 reductions, reader ownership and durable formats/source/writer policy.
+- Select the trial under predeclared primary/guard criteria, then independently rebuild and remeasure all 60 DuckDB shapes and paired 1M/tiny/10M/100M controls. Preserve every slower guard and both initial build failures.
+- Pass 77 Rust tests in both modes and both Clippy configurations, including zero/signed keys, real tag collisions, wide sums/AVG and the new footprint. Pass 4,000 SQL cases against each reference, 104 manual bridge oracles and current crash/retry/source/Parquet checks. [Every result and limit](PERFORMANCE_046.md).
+
 ## 0.3.15 experimental bounded reader reuse candidate
 
 - Retain at most one idle, exclusively owned stream file per segment, with a 128-idle-file shared archive budget. Concurrent readers never share a file cursor. Fresh full scrubs bypass reuse; I/O/checksum failures invalidate handles. Segment retirement releases the budget without adding snapshot references.
