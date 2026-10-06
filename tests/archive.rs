@@ -541,6 +541,119 @@ fn concurrent_positional_reads_preserve_column_and_page_offsets() {
         }
     });
     assert_eq!(snapshot.verify().unwrap(), rows as u64 * 24);
+    let stats = snapshot.stats().unwrap();
+    assert_eq!(stats.retained_stream_handles, 1);
+    assert!(stats.stream_handle_reuses > 0);
+}
+
+#[test]
+fn idle_stream_handles_are_bounded_and_retirement_releases_the_budget() {
+    let path = temp("bounded-stream-handles");
+    let mut archive = open(&path);
+    for batch in 0..130_i64 {
+        archive
+            .append(vec![
+                (0..1000).map(|i| batch * 1000 + i).collect(),
+                (0..1000).map(|i| if i % 2 == 0 { -1 } else { 3 }).collect(),
+                (0..1000).map(|i| i % 19 - 9).collect(),
+            ])
+            .unwrap();
+    }
+    let sql = "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0";
+    let expected = vec![vec![Value::Int(65000), Value::Int(195000)]];
+    assert_eq!(archive.query(sql).unwrap().result.rows, expected);
+    assert_eq!(archive.stats().unwrap().retained_stream_handles, 128);
+    assert_eq!(archive.query(sql).unwrap().result.rows, expected);
+    let warmed = archive.stats().unwrap();
+    assert_eq!(warmed.retained_stream_handles, 128);
+    assert_eq!(warmed.stream_handle_opens, 132);
+    assert_eq!(warmed.stream_handle_reuses, 128);
+    assert_eq!(archive.verify().unwrap(), 130_000 * 24);
+    // Full verification opens fresh files, without borrowing or populating reuse.
+    let scrubbed = archive.stats().unwrap();
+    assert_eq!(scrubbed.retained_stream_handles, 128);
+    assert_eq!(scrubbed.stream_handle_opens, warmed.stream_handle_opens);
+    assert_eq!(scrubbed.stream_handle_reuses, warmed.stream_handle_reuses);
+
+    let pinned = archive.snapshot().unwrap();
+    assert_eq!(archive.compact_small().unwrap(), 31);
+    archive.reclaim().unwrap();
+    let retired = path.join("segment-00000000000000000001.ks2");
+    assert!(retired.exists());
+    assert_eq!(pinned.query(sql).unwrap().result.rows, expected);
+    assert_eq!(archive.stats().unwrap().retained_stream_handles, 128);
+    drop(pinned);
+    archive.reclaim().unwrap();
+    assert!(!retired.exists());
+    assert_eq!(archive.stats().unwrap().retained_stream_handles, 96);
+    assert_eq!(archive.query(sql).unwrap().result.rows, expected);
+    assert_eq!(archive.stats().unwrap().retained_stream_handles, 99);
+    let remaining = archive.snapshot().unwrap();
+    drop(archive);
+    assert_eq!(remaining.query(sql).unwrap().result.rows, expected);
+    assert_eq!(remaining.verify().unwrap(), 130_000 * 24);
+}
+
+#[test]
+fn reused_streams_detect_corruption_and_truncation_after_warming() {
+    let path = temp("stream-reuse-corruption");
+    let mut archive = open(&path);
+    let rows = 13_000_i64;
+    archive
+        .append(vec![
+            (0..rows).collect(),
+            (0..rows).map(|i| if i % 2 == 0 { -1 } else { 3 }).collect(),
+            (0..rows).map(|i| i % 19 - 9).collect(),
+        ])
+        .unwrap();
+    let view = archive.snapshot().unwrap();
+    let sql = "SELECT COUNT(*), SUM(value), SUM(device) FROM events WHERE value >= 0";
+    let devices = (0..rows)
+        .filter(|i| i % 2 != 0)
+        .map(|i| i128::from(i % 19 - 9))
+        .sum();
+    let expected = vec![vec![
+        Value::Int(6500),
+        Value::Int(19500),
+        Value::Int(devices),
+    ]];
+    assert_eq!(view.query(sql).unwrap().result.rows, expected);
+    assert_eq!(view.query(sql).unwrap().result.rows, expected);
+    assert_eq!(view.stats().unwrap().retained_stream_handles, 1);
+    assert!(view.stats().unwrap().stream_handle_reuses > 0);
+    let prefix = "SELECT SUM(value) FROM events WHERE ts >= 100 AND ts < 200";
+    assert_eq!(view.query(prefix).unwrap().result.rows, int(100));
+
+    let segment = path.join("segment-00000000000000000001.ks2");
+    let original = std::fs::read(&segment).unwrap();
+    let offset = 16 + u32::from_le_bytes(original[8..12].try_into().unwrap()) as usize;
+    let mut damaged = original.clone();
+    damaged[offset + rows as usize * 8 + 6000 * 8] ^= 1;
+    std::fs::write(&segment, damaged).unwrap();
+    assert!(view.query(sql).is_err());
+    assert_eq!(view.stats().unwrap().retained_stream_handles, 0);
+    assert!(view.verify().is_err());
+    assert_eq!(view.stats().unwrap().retained_page_cache_bytes, 0);
+
+    std::fs::write(&segment, &original).unwrap();
+    assert_eq!(view.query(sql).unwrap().result.rows, expected);
+    std::fs::OpenOptions::new()
+        .write(true)
+        .open(&segment)
+        .unwrap()
+        .set_len(original.len() as u64 - 13)
+        .unwrap();
+    assert!(view.query(sql).is_err());
+    assert_eq!(view.stats().unwrap().retained_stream_handles, 0);
+    assert!(view.verify().is_err());
+    std::fs::write(&segment, original).unwrap();
+    assert_eq!(view.query(sql).unwrap().result.rows, expected);
+    assert_eq!(view.verify().unwrap(), rows as u64 * 24);
+    drop(view);
+    drop(archive);
+    let reopened = open(&path);
+    assert_eq!(reopened.stats().unwrap().retained_stream_handles, 0);
+    assert_eq!(reopened.query(sql).unwrap().result.rows, expected);
 }
 
 #[test]

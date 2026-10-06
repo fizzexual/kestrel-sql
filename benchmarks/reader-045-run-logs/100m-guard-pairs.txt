@@ -1,0 +1,2 @@
+{"name": "group_sum", "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device", "all_results_equal": true, "baseline_median_ms": 659.8192, "candidate_median_ms": 654.5173, "paired_candidate_over_baseline_median": 0.9924642942165651}
+{"name": "group_full", "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device", "all_results_equal": true, "baseline_median_ms": 932.8254999999999, "candidate_median_ms": 925.6104, "paired_candidate_over_baseline_median": 0.9912840822092756}

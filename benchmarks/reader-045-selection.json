@@ -1,0 +1,52 @@
+{
+  "selected_at_utc": "2026-10-06T22:04:43.930493+00:00",
+  "status": "selected development trial; full rebuilt release qualification pending",
+  "selected": "bounded-owned-handles",
+  "baseline": "0.3.14",
+  "ratios": {
+    "irregular-pairs": {
+      "group_sum": 0.9124205796577616,
+      "group_full": 0.9482176921365446,
+      "filtered_group": 0.7855702304532821,
+      "unordered_control": 0.6030761653159001
+    },
+    "scan-pairs": {
+      "unordered": 1.0318140501233606,
+      "sparse": 0.958609952937387,
+      "multi": 0.936346993381214,
+      "dense_group_guard": 0.9875678119349007
+    },
+    "sparse-guards": {
+      "group_sum": 0.9933009376149815,
+      "group_full": 0.9916347639527215,
+      "filtered_group": 1.0121583692263914
+    },
+    "wide-guards": {
+      "group_sum": 1.0004791344667696,
+      "group_full": 1.0254646407123629,
+      "filtered_group": 0.9991910540090411
+    },
+    "highcard-guards": {
+      "group_sum": 1.000496805368464,
+      "group_full": 1.000123188274092
+    },
+    "tiny-guards": {
+      "group_sum": 0.5481727574750831,
+      "group_full": 0.5791855203619909,
+      "filtered_group": 0.5113739763421292
+    },
+    "irregular-profiles": {
+      "group_sum": 0.9314441012970972,
+      "group_full": 0.9285273212197653,
+      "filtered_group": 0.7910788679787386,
+      "unordered_control": 0.599664882838884
+    }
+  },
+  "max_observed_slower_guard": 1.0318140501233606,
+  "idle_handle_budget_per_store": 128,
+  "idle_handle_budget_per_segment": 1,
+  "policy": "Independent File::open handles; at most one idle handle per immutable Segment and 128 per store. Segment ownership governs retirement; full scrubs open fresh handles. Seek/read remains the preceding streaming I/O path; offset-only trial is not adopted.",
+  "unselected_trial": "benchmarks/reader-045-offset-unselected.json",
+  "rust_trial_tests": 76,
+  "trial_proof": "benchmarks/trial-045-bounded-owned-handles/proof.json"
+}

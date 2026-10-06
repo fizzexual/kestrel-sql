@@ -10,7 +10,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::{File, OpenOptions};
 use std::io::{BufWriter, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
@@ -27,6 +27,7 @@ const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
 const MAX_CATALOG_CHAIN: usize = 32;
 const MAX_BATCH_IDS: usize = 100_000;
 const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
+const MAX_IDLE_STREAM_HANDLES: usize = 128;
 const MAX_DENSE_GROUP_SLOTS: usize = 65_536;
 const MAX_DENSE_GROUP_BYTES: usize = 8 * 1024 * 1024;
 const GROUP_KEY_CACHE_SLOTS: usize = 256;
@@ -97,6 +98,9 @@ struct PageCache {
     state: Mutex<CachedPages>,
     hits: AtomicU64,
     misses: AtomicU64,
+    idle_stream_handles: Arc<AtomicUsize>,
+    stream_handle_opens: AtomicU64,
+    stream_handle_reuses: AtomicU64,
 }
 impl PageCache {
     fn get(&self, key: PageKey) -> Option<Arc<Page>> {
@@ -304,6 +308,57 @@ struct Segment {
     metadata: SegmentMetadata,
     offset: u64,
     index_bytes: usize,
+    idle_stream: Mutex<Option<CachedStreamFile>>,
+    stream_budget: Arc<AtomicUsize>,
+}
+// Keep idle handles inside their immutable segment, so retirement does not
+// acquire another segment reference. Only independently opened files enter it.
+struct CachedStreamFile {
+    file: Option<File>,
+    budget: Arc<AtomicUsize>,
+}
+impl CachedStreamFile {
+    fn into_file(mut self) -> File {
+        self.file.take().unwrap()
+    }
+}
+impl Drop for CachedStreamFile {
+    fn drop(&mut self) {
+        self.budget.fetch_sub(1, Ordering::Relaxed);
+    }
+}
+impl Segment {
+    fn take_stream(&self) -> Option<File> {
+        self.idle_stream
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .take()
+            .map(CachedStreamFile::into_file)
+    }
+    fn cache_stream(&self, file: File) {
+        let mut idle = self.idle_stream.lock().unwrap_or_else(|e| e.into_inner());
+        if idle.is_none()
+            && self
+                .stream_budget
+                .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |count| {
+                    (count < MAX_IDLE_STREAM_HANDLES).then_some(count + 1)
+                })
+                .is_ok()
+        {
+            *idle = Some(CachedStreamFile {
+                file: Some(file),
+                budget: Arc::clone(&self.stream_budget),
+            });
+        }
+    }
+    fn clear_stream(&self) {
+        drop(
+            self.idle_stream
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .take(),
+        );
+    }
 }
 impl SegmentMetadata {
     fn index_memory(&self) -> usize {
@@ -343,6 +398,9 @@ pub struct ArchiveStats {
     pub retained_page_cache_bytes: usize,
     pub page_cache_hits: u64,
     pub page_cache_misses: u64,
+    pub retained_stream_handles: usize,
+    pub stream_handle_opens: u64,
+    pub stream_handle_reuses: u64,
     pub publication_profile: PublicationProfile,
 }
 
@@ -511,7 +569,12 @@ fn publication_cut_point(point: &str) -> Result<()> {
     }
     Ok(())
 }
-fn load_segment(path: &Path, name: String, columns: usize) -> Result<Segment> {
+fn load_segment(
+    path: &Path,
+    name: String,
+    columns: usize,
+    stream_budget: Arc<AtomicUsize>,
+) -> Result<Segment> {
     if parse_name(&name, "segment-", ".ks2").is_none() {
         return Err(Error::new("invalid segment filename"));
     }
@@ -558,6 +621,8 @@ fn load_segment(path: &Path, name: String, columns: usize) -> Result<Segment> {
         metadata,
         offset,
         index_bytes: bytes.len(),
+        idle_stream: Mutex::new(None),
+        stream_budget,
     })
 }
 
@@ -616,10 +681,16 @@ impl Archive {
                 Vec::new(),
             )
         };
+        let cache = Arc::new(PageCache::default());
         let mut segments = Vec::new();
         let mut index_memory = 0;
         for name in &catalog.segments {
-            let segment = load_segment(&path, name.clone(), columns.len())?;
+            let segment = load_segment(
+                &path,
+                name.clone(),
+                columns.len(),
+                Arc::clone(&cache.idle_stream_handles),
+            )?;
             index_memory += segment.metadata.index_memory();
             if index_memory > MAX_INDEX_MEMORY {
                 return Err(Error::new("archive index memory budget exceeded"));
@@ -636,7 +707,7 @@ impl Archive {
             next_generation: next,
             generation: latest.unwrap_or(0),
             poisoned: false,
-            cache: Arc::new(PageCache::default()),
+            cache,
             profile: Arc::new(Mutex::new(PublicationProfile::default())),
         })
     }
@@ -991,6 +1062,8 @@ impl Archive {
             metadata,
             offset: 16 + metadata_bytes.len() as u64,
             index_bytes: metadata_bytes.len(),
+            idle_stream: Mutex::new(None),
+            stream_budget: Arc::clone(&self.cache.idle_stream_handles),
         }));
         Ok(rows)
     }
@@ -1168,6 +1241,9 @@ impl ArchiveSnapshot {
                 .bytes,
             page_cache_hits: self.cache.hits.load(Ordering::Relaxed),
             page_cache_misses: self.cache.misses.load(Ordering::Relaxed),
+            retained_stream_handles: self.cache.idle_stream_handles.load(Ordering::Relaxed),
+            stream_handle_opens: self.cache.stream_handle_opens.load(Ordering::Relaxed),
+            stream_handle_reuses: self.cache.stream_handle_reuses.load(Ordering::Relaxed),
             publication_profile: self
                 .profile
                 .lock()
@@ -1455,6 +1531,9 @@ impl ArchiveSnapshot {
         let result = self.verify_payload();
         if result.is_err() {
             self.cache.clear();
+            for segment in &self.segments {
+                segment.clear_stream();
+            }
         }
         result
     }
@@ -1519,6 +1598,15 @@ struct Reader<'a> {
     cache: Option<&'a PageCache>,
     materialized_rows: usize,
 }
+impl Drop for Reader<'_> {
+    fn drop(&mut self) {
+        if self.cache.is_some()
+            && let Some(file) = self.stream_file.take()
+        {
+            self.segment.cache_stream(file);
+        }
+    }
+}
 impl Reader<'_> {
     fn indexed_page(&mut self, column: usize, block: usize) -> Result<Arc<Page>> {
         let key = (
@@ -1570,16 +1658,37 @@ impl Reader<'_> {
             // Long scans need independent synchronous handles on Windows to avoid
             // serializing all scan I/O on the retained boundary-read handle.
             if self.stream_file.is_none() {
-                self.stream_file = Some(File::open(self.directory.join(&self.segment.name))?);
+                let file = if let Some(cache) = self.cache {
+                    if let Some(file) = self.segment.take_stream() {
+                        cache.stream_handle_reuses.fetch_add(1, Ordering::Relaxed);
+                        file
+                    } else {
+                        let file = File::open(self.directory.join(&self.segment.name))?;
+                        cache.stream_handle_opens.fetch_add(1, Ordering::Relaxed);
+                        file
+                    }
+                } else {
+                    // Full verification opens fresh handles and bypasses reuse.
+                    File::open(self.directory.join(&self.segment.name))?
+                };
+                self.stream_file = Some(file);
             }
             let file = self.stream_file.as_mut().unwrap();
-            file.seek(SeekFrom::Start(offset))?;
-            file.read_exact(&mut self.scratch)?;
+            let read = file
+                .seek(SeekFrom::Start(offset))
+                .and_then(|_| file.read_exact(&mut self.scratch));
+            if let Err(error) = read {
+                self.stream_file = None;
+                self.segment.clear_stream();
+                return Err(error.into());
+            }
         } else {
             read_exact_at(&self.segment.file, &mut self.scratch, offset)?;
         }
         self.bytes += self.scratch.len() as u64;
         if crc32fast::hash(&self.scratch) != self.segment.metadata.indexes[column].crc[block] {
+            self.stream_file = None;
+            self.segment.clear_stream();
             return Err(Error::new("archive data block checksum mismatch"));
         }
         values.clear();

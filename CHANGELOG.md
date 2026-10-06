@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.15 experimental bounded reader reuse candidate
+
+- Retain at most one idle, exclusively owned stream file per segment, with a 128-idle-file shared archive budget. Concurrent readers never share a file cursor. Fresh full scrubs bypass reuse; I/O/checksum failures invalidate handles. Segment retirement releases the budget without adding snapshot references.
+- Preserve an unselected offset-only trial and every slower guard. Independently rebuild and measure 60 DuckDB shapes, fragmented/tiny queries and dense/sparse/high-cardinality/scan/10M/100M controls. Group kernels, serialized formats, publication policy and source contracts retain exact preceding source identity.
+- Pass 76 Rust tests in debug/release, both Clippy configurations, 4,000 SQL cases against each DuckDB/SQLite and 104 manual bridge oracles, including eight concurrent clients. Verify bounded retention, snapshot retirement, warm corruption/truncation, cold reopen, confirmed retries and current fault/process-kill/Parquet checks. [Every result and limit](PERFORMANCE_045.md).
+
 ## 0.3.14 experimental adaptive sparse SUM candidate
 
 - Avoid rewriting exact cache-hit tags. Fuse a shared SUM/AVG into sparse lookup only for blocks entered with the small cache active; retain the preceding wider and fallback mapper, dense kernels, readers and storage policy.

@@ -89,3 +89,7 @@ A selected-row slot pass followed by another reduction pass imposed measurable a
 ## 0.3.14 sparse kernel selection
 
 A fused loop can help small sparse states yet regress wider key sets. Exact cache hits need no tag rewrite; a typed shared SUM can be reduced during small-cache lookup, while wider kernels retain a separately measured two-pass mapper. Four preserved trials and alternating guards support this bounded choice. Source identity proves unchanged dense/scan/read/write paths; changes in their measured timings are retained without attribution. This is established specialization, without a novelty claim. [Evidence and unsuccessful trials](PERFORMANCE_044.md).
+
+## 0.3.15 bounded reader reuse
+
+Repeated file opens matter when queries visit many small segments. An offset-only read trial did not convincingly improve the target scan, so its source and results remain unselected. A separately measured cache transfers exclusive file ownership between query-local readers, retaining at most one idle file per segment and 128 per archive. Payload checksum reads and fresh scrubs remain required; compaction, pinned snapshots and handle lifetime receive direct tests. Resource tradeoffs and every slower control are explicit. Source identity proves unchanged group kernels, serialized formats and durable publication policy. This is established resource reuse without a novelty claim. [Evidence and both trials](PERFORMANCE_045.md).
