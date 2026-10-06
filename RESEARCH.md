@@ -69,3 +69,7 @@ This technique has established prior art. DuckDB documents choosing an array ind
 ## 0.3.9 tagged lookup experiment
 
 The measured sparse reduction path keeps [Rust's standard randomized HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) as the authoritative key map, while reusing exact key/slot hits in a small query-local cache. Collision and high-cardinality overhead in the first cached candidate motivated a block-specialized plain hash path and a minimum-hit heuristic. These are established optimization techniques, with no novelty claim. [All current measurements and rejected intermediate evidence](PERFORMANCE_039.md) remain reproducible.
+
+## 0.3.10 first-filter selection
+
+Stage instrumentation located the added unordered-scan cost in selection. An `inline(never)` trial produced no reliable end-to-end gain. [Rust's reference describes inline annotations as hints](https://doc.rust-lang.org/reference/attributes/codegen.html#the-inline-attribute), so an annotation is a hypothesis to measure, not a speed guarantee. Building row positions directly from the first residual predicate removes an initial range fill and indirect value lookups. Operator fusion is established prior art; no novelty claim is made. [Final controls, complete matrix and retained unsuccessful evidence](PERFORMANCE_040.md) support the measured scope.

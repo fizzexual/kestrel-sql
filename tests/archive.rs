@@ -27,6 +27,68 @@ fn int(n: i128) -> Vec<Vec<Value>> {
 }
 
 #[test]
+fn first_scan_predicate_handles_partial_blocks_extrema_and_filter_order() {
+    let path = temp("first-scan-predicate");
+    let mut archive = open(&path);
+    let mut reference = Database::memory();
+    reference.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)").unwrap();
+    for batch in 0..3 {
+        let rows = BLOCK_ROWS * 2 + 19;
+        let timestamps: Vec<_> = (0..rows)
+            .map(|row| row as i64 - 1200 + batch * 1700)
+            .collect();
+        let values: Vec<_> = (0..rows)
+            .map(|row| [i64::MIN, -3, 0, 7, i64::MAX][row % 5])
+            .collect();
+        let keys: Vec<_> = (0..rows).map(|row| row as i64 % 19 - 9).collect();
+        let columns = vec![timestamps, values, keys];
+        reference.append("events", columns.clone()).unwrap();
+        archive.append(columns).unwrap();
+    }
+    let lo = BLOCK_ROWS as i64 - 1200 + 37;
+    let hi = (BLOCK_ROWS * 2) as i64 - 1200 - 13;
+    let mut checked = Vec::new();
+    for op in ["=", "<>", "<", "<=", ">", ">="] {
+        for threshold in [i64::MIN, -4, 0, 7, i64::MAX] {
+            for filters in [
+                format!("value {op} {threshold} AND ts >= {lo} AND ts < {hi} AND device <> 0"),
+                format!("ts >= {lo} AND value {op} {threshold} AND ts < {hi} AND device <> 0"),
+                format!("device <> 0 AND ts >= {lo} AND ts < {hi} AND value {op} {threshold}"),
+            ] {
+                for (expressions, tail) in [
+                    (
+                        "COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value)",
+                        "",
+                    ),
+                    (
+                        "device, COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value)",
+                        " GROUP BY device ORDER BY device",
+                    ),
+                ] {
+                    let sql = format!("SELECT {expressions} FROM events WHERE {filters}{tail}");
+                    let expected = reference.query(&sql).unwrap().rows;
+                    assert_eq!(archive.query(&sql).unwrap().result.rows, expected, "{sql}");
+                    checked.push((sql, expected));
+                }
+            }
+        }
+    }
+    assert_eq!(
+        archive.verify().unwrap(),
+        archive.stats().unwrap().logical_data_bytes
+    );
+    drop(archive);
+    let reopened = open(&path);
+    for (sql, expected) in checked {
+        assert_eq!(reopened.query(&sql).unwrap().result.rows, expected, "{sql}");
+    }
+    assert_eq!(
+        reopened.verify().unwrap(),
+        reopened.stats().unwrap().logical_data_bytes
+    );
+}
+
+#[test]
 fn prepared_batches_preserve_order_conflicts_generation_and_reopen() {
     let path = temp("prepared-reopen");
     let columns = vec![vec![2, 1, 3], vec![i64::MAX, i64::MIN, -7], vec![1, 2, 3]];

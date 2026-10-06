@@ -1,5 +1,8 @@
 # KestrelSQL: data-engineering portfolio case study
 
+The [0.3.10 filter case study](PERFORMANCE_040.md) follows a measured scan regression through stage profiling, an unsuccessful outlining trial, direct first-filter selection and final 1M/100M controls. All 70 Rust tests and 1,600 SQL comparisons against each reference pass, alongside current retry/crash/source checks. The full matrix retains 29 wins/1 loss and 11 wins/4 losses on the extra shapes. Existing requests/s failures remain visible.
+
+
 The [0.3.9 grouping case study](PERFORMANCE_039.md) profiles sparse/hash reduction costs, expands bounded dense execution and validates an adaptive tagged lookup cache. The matched comparison has 22 median DuckDB wins and 8 losses; 15 additional stress shapes have 11 wins and 4 losses. All 69 Rust tests, 1,000 independent SQL cases and current crash/source replay checks pass. Intermediate cache penalties and remaining service failures remain accessible.
 
 

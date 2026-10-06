@@ -6,6 +6,9 @@ Version 0.3 adds immutable snapshots, durable identified batches, bounded small-
 
 The 0.3.9 grouping planner uses typed direct-address arrays for group-key spans of at most 65,536 slots under a conservative 8 MiB state budget. Above 4,096 slots, the span must also fit the archive row count. Wider domains use a standard randomized HashMap from keys to typed accumulator slots. SUM/AVG and repeated reductions share exact i128 sums. A 256-entry tagged cache checks complete keys and is released above 128 distinct keys or after a block of at least 64 selected rows with fewer than half hits; disabled blocks use a plain hash kernel. Both paths keep the 100,000-group result limit. Plans identify `streamed-dense-group` or `streamed-hash-group`. Persistent indexes and publication formats are unchanged. See [current measured wins/losses](PERFORMANCE_039.md).
 
+The 0.3.10 streaming selection path builds positions directly from the first predicate remaining after sorted-column bounds. Later predicates retain those positions. It preserves all six comparisons, local block offsets, aggregate null/empty semantics, group limits and checksummed reads. This is query execution work; persistent indexes, formats and writer policy are unchanged. See [current controls and full matrix](PERFORMANCE_040.md).
+
+
 ## Reproduce
 
 PowerShell, from this repository:

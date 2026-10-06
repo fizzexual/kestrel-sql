@@ -1,5 +1,12 @@
 # Changes
 
+## 0.3.10 experimental direct-filter candidate
+
+- Build positions directly from the first scan predicate not already enforced by sorted bounds; keep later comparisons, aggregation, CRC reads and publication policy intact.
+- Preserve the unsuccessful separate-function trial, initial profiles and pre-release direct-filter measurements. Rebuild final binaries and compare them against released 0.3.9, 0.3.8 and DuckDB.
+- Add a public-API regression test for six operators, signed extremes, reordered filters and partial blocks across overlapping runs, including reopen. All 70 tests pass in debug/release and both Clippy configurations.
+- Check 1,600 queries against each DuckDB/SQLite, current publication faults, corrupt catalogs, process kills, source retries, wide JSON and the Parquet workflow. Keep all 45 matrix shapes and losses. See [PERFORMANCE_040.md](PERFORMANCE_040.md).
+
 ## 0.3.9 experimental sparse-grouping candidate
 
 - Increase the direct-address ceiling to 65,536 slots while keeping the conservative 8 MiB budget. Expanded domains also fit the archive row count.

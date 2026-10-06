@@ -1,0 +1,471 @@
+{
+  "started_at_utc": "2026-10-06T18:16:17.557305+00:00",
+  "binary_sha256": {
+    "baseline": "33b264f1cd45ffc5671e000746d71ec32b73a00a03d004a45eb2d869951fe45e",
+    "candidate": "70bdd87cab51f29a641450f60569cc2f271473b7632c2ab0de82b4cc9796374e"
+  },
+  "probe_source_sha256": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+  "harness_sha256": "23dbde6dfe7cdaefbe32bb2890dccff4222e3867205b6dd95140efac2c9b466c",
+  "fixture": {
+    "label": "100000000",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\kestrel",
+    "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\reference.duckdb",
+    "rows": 100000000,
+    "reference_bytes": 320352256,
+    "queries": [
+      [
+        "group_sum",
+        "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "group_full",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "filtered_group",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+      ],
+      [
+        "unordered_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+      ],
+      [
+        "prefix_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 25000000 AND ts < 50000000"
+      ]
+    ]
+  },
+  "methodology": {
+    "turns": 7,
+    "repeats": 5,
+    "warmups": 3,
+    "threads": 1,
+    "same_archive": true,
+    "sequential_open_close": true,
+    "instrumented": false,
+    "timing": "ArchiveSnapshot::query; setup/open/close/assertions/full scrubs excluded",
+    "limits": "warm shared Windows desktop; profiled stage samples excluded from competitive claims; no network or power-loss qualification"
+  },
+  "cases": [
+    {
+      "name": "unordered",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              345.7403,
+              341.9758,
+              343.0946,
+              348.0833,
+              341.9857
+            ],
+            "median_ms": 343.0946,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              327.5516,
+              315.97740000000005,
+              317.884,
+              316.6423,
+              318.5595
+            ],
+            "median_ms": 317.884,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              317.5645,
+              325.7069,
+              321.5462,
+              318.8234,
+              316.8825
+            ],
+            "median_ms": 318.8234,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              347.2731,
+              339.0087,
+              339.4343,
+              339.4462,
+              342.3296
+            ],
+            "median_ms": 339.4462,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              338.3888,
+              341.58820000000003,
+              341.7367,
+              339.1031,
+              340.3562
+            ],
+            "median_ms": 340.3562,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              317.41409999999996,
+              317.40479999999997,
+              337.4817,
+              326.7749,
+              329.97290000000004
+            ],
+            "median_ms": 326.7749,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              321.5438,
+              318.776,
+              316.69000000000005,
+              320.4706,
+              316.5127
+            ],
+            "median_ms": 318.776,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              346.7704,
+              339.6553,
+              341.5137,
+              345.7188,
+              345.4115
+            ],
+            "median_ms": 345.4115,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              348.7278,
+              340.613,
+              340.7286,
+              340.9389,
+              345.866
+            ],
+            "median_ms": 340.9389,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              316.1512,
+              318.2367,
+              316.62249999999995,
+              317.6072,
+              322.3801
+            ],
+            "median_ms": 317.6072,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              320.17060000000004,
+              327.2788,
+              321.54359999999997,
+              321.5172,
+              324.2287
+            ],
+            "median_ms": 321.54359999999997,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              339.6595,
+              342.2822,
+              340.4066,
+              342.7133,
+              350.3695
+            ],
+            "median_ms": 342.2822,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.9",
+            "samples_ms": [
+              341.8849,
+              337.6477,
+              339.3988,
+              337.5693,
+              340.3688
+            ],
+            "median_ms": 339.3988,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              326.082,
+              321.8664,
+              334.37879999999996,
+              323.2254,
+              321.286
+            ],
+            "median_ms": 323.2254,
+            "result": {
+              "bytes_read": 800000000,
+              "columns": [
+                "count(*)",
+                "sum(value)"
+              ],
+              "plan": "streamed-column-scan",
+              "rows": [
+                [
+                  50000000,
+                  12475000000
+                ]
+              ],
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 340.9389,
+      "candidate_median_ms": 318.8234,
+      "paired_candidate_over_baseline_median": 0.9392457479270647
+    }
+  ],
+  "complete": true,
+  "completed_at_utc": "2026-10-06T18:17:02.251000+00:00"
+}

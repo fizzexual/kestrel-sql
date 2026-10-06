@@ -1353,16 +1353,30 @@ impl ArchiveSnapshot {
                     }
                     let selection_started = PROFILE.then(Instant::now);
                     selected.clear();
-                    selected.extend(start..end);
-                    for (column, op, value) in &resolved.filters {
-                        // Sorted bounds already enforce these comparisons.
-                        if Some(*column) == bounded && !matches!(op, Op::Ne) {
-                            continue;
-                        }
-                        retain_matching(&mut selected, &columns[*column], *op, *value);
+                    // Sorted bounds already enforce these comparisons. The
+                    // first remaining predicate can build positions directly,
+                    // avoiding a full range fill followed by a retain pass.
+                    let mut filters = resolved
+                        .filters
+                        .iter()
+                        .filter(|(column, op, _)| Some(*column) != bounded || matches!(op, Op::Ne));
+                    if let Some((column, op, value)) = filters.next() {
+                        select_matching_range(
+                            &mut selected,
+                            &columns[*column],
+                            start,
+                            end,
+                            *op,
+                            *value,
+                        );
+                    } else {
+                        selected.extend(start..end);
+                    }
+                    for (column, op, value) in filters {
                         if selected.is_empty() {
                             break;
                         }
+                        retain_matching(&mut selected, &columns[*column], *op, *value);
                     }
                     scanned += end - start;
                     if let Some(started) = selection_started {
@@ -2087,6 +2101,55 @@ fn retain_matching(selected: &mut Vec<usize>, values: &[i64], op: Op, value: i64
         Op::Le => selected.retain(|&row| values[row] <= value),
         Op::Gt => selected.retain(|&row| values[row] > value),
         Op::Ge => selected.retain(|&row| values[row] >= value),
+    }
+}
+
+fn select_matching_range(
+    selected: &mut Vec<usize>,
+    values: &[i64],
+    start: usize,
+    end: usize,
+    op: Op,
+    value: i64,
+) {
+    let input = &values[start..end];
+    match op {
+        Op::Eq => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x == value).then_some(start + row)),
+        ),
+        Op::Ne => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x != value).then_some(start + row)),
+        ),
+        Op::Lt => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x < value).then_some(start + row)),
+        ),
+        Op::Le => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x <= value).then_some(start + row)),
+        ),
+        Op::Gt => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x > value).then_some(start + row)),
+        ),
+        Op::Ge => selected.extend(
+            input
+                .iter()
+                .enumerate()
+                .filter_map(|(row, &x)| (x >= value).then_some(start + row)),
+        ),
     }
 }
 

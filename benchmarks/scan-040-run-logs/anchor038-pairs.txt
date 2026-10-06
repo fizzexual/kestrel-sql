@@ -1,0 +1,2 @@
+{"name": "unordered", "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0", "all_results_equal": true, "baseline_median_ms": 2.9509, "candidate_median_ms": 2.9099, "paired_candidate_over_baseline_median": 0.9909995584689059}
+{"name": "multi", "sql": "SELECT COUNT(*), SUM(value), SUM(device) FROM events WHERE ts >= 200317 AND ts < 700123 AND value >= 0 AND device <> 7", "all_results_equal": true, "baseline_median_ms": 3.9469, "candidate_median_ms": 3.9473, "paired_candidate_over_baseline_median": 1.006183407006158}
