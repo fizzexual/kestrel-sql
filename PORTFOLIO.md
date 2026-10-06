@@ -1,5 +1,8 @@
 # KestrelSQL: data-engineering portfolio case study
 
+The [0.3.11 cache case study](PERFORMANCE_041.md) traces a grouping loss to repeated hash mapping, tests per-query cache indexing, constructs actual seed-specific collisions, and adds Fibonacci/power-of-two patterns. It retains 55 fresh shapes, 70 Rust tests, 2,200 SQL comparisons against each reference and current durability checks. Existing service failures and all benchmark losses stay visible.
+
+
 The [0.3.10 filter case study](PERFORMANCE_040.md) follows a measured scan regression through stage profiling, an unsuccessful outlining trial, direct first-filter selection and final 1M/100M controls. All 70 Rust tests and 1,600 SQL comparisons against each reference pass, alongside current retry/crash/source checks. The full matrix retains 29 wins/1 loss and 11 wins/4 losses on the extra shapes. Existing requests/s failures remain visible.
 
 

@@ -1,5 +1,12 @@
 # Changes
 
+## 0.3.11 experimental seeded group-cache candidate
+
+- Index sparse-group cache slots with a per-query odd multiplier derived once from the existing randomized HashMap state. Retain exact signed tags, authoritative mapping, typed i128 state, cache bounds and fallback.
+- Replace obsolete fixed-slot collision assumptions with real collisions generated for each actual seed. Verify counts/sums, fallback and cache release without weakening the tests.
+- Preserve released 0.3.10 sources/binaries and the trial. Retain 55 fresh query shapes, 21 alternating collision/guard pairs and separate stage profiles.
+- Pass 70 Rust debug/release tests and both Clippy configurations, 2,200 SQL cases against each DuckDB/SQLite, plus current retry, publication, corrupt catalog, forced kill, source, Parquet and wide JSON checks. Every loss remains in [PERFORMANCE_041.md](PERFORMANCE_041.md).
+
 ## 0.3.10 experimental direct-filter candidate
 
 - Build positions directly from the first scan predicate not already enforced by sorted bounds; keep later comparisons, aggregation, CRC reads and publication policy intact.

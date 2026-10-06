@@ -1,0 +1,4530 @@
+{
+  "version": "0.3.11",
+  "binary_sha256": "b79f6e03771790ebc17587db740854fb1bb6f407dd1d096daac7650882a6174b",
+  "started_at_utc": "2026-10-06T18:55:53.092526+00:00",
+  "seed": 39041,
+  "references": {
+    "duckdb": "1.5.6",
+    "sqlite": "3.49.1"
+  },
+  "methodology": "Eight overlapping sorted append runs per mode; independent DuckDB and SQLite SQL results; no performance timing",
+  "cases": [
+    {
+      "mode": "expanded",
+      "case": 0,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 5003,
+      "result_sha256": "bb75c242163c043b5a3506ce3dcd084ba3f91390938019b53412b8d6709ff5cf"
+    },
+    {
+      "mode": "expanded",
+      "case": 1,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4002 AND ts < 4963 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "096b2b4c64c85e71480ceb90dd013be0cd777a384de010bd767ec432ccfac0e5"
+    },
+    {
+      "mode": "expanded",
+      "case": 2,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 283 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "e3ab7b0ee6ca77ad42b9f560a809bb1d0606c9d05b817650c75aef195ab5a162"
+    },
+    {
+      "mode": "expanded",
+      "case": 3,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -357 AND value < -76 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "f01403f7a220b6930fd590ad24e59e1436d9361c48f9d5c81596e339aa4ecaa5"
+    },
+    {
+      "mode": "expanded",
+      "case": 4,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 5,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 6,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "ddc82299fde7aeb3f2872ecfc129f6896e844dd70b3e8c257789856c5a26fd86"
+    },
+    {
+      "mode": "expanded",
+      "case": 7,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4538 AND ts < 5845 AND value != 357 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "ec70e48f9a7226089431465caadf6300a8e77ba6cf1818ca8bc1579539cb81ca"
+    },
+    {
+      "mode": "expanded",
+      "case": 8,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "4d6edb362ed56a477715692f8d4befea74a131e67fcd9bad609e9344ac4fe173"
+    },
+    {
+      "mode": "expanded",
+      "case": 9,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4774 AND ts < 6159 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "635dae641d5a6ad9e6b5e91f65254af12e235a096a67944e62af7b155289e1a4"
+    },
+    {
+      "mode": "expanded",
+      "case": 10,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 96 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "f98b08bc222537ab56af3d2041701c184b61d96f28e1146c1ffeb385b9469da8"
+    },
+    {
+      "mode": "expanded",
+      "case": 11,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4808 AND value < 469 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "d895f8a4ed548b43f4a1b8b2fadc879801442314b3032177a70fc6c5efa5f820"
+    },
+    {
+      "mode": "expanded",
+      "case": 12,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 13,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 14,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "adc66eb12107a04c89af8d436609cdbe3c873120eb42583f5e776f33c284a7a8"
+    },
+    {
+      "mode": "expanded",
+      "case": 15,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1932 AND ts < 2490 AND value != -180 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "9d69bf4284217175a979e8a3c0dfa6a9ef88c94c8cf265cafbfdd87d9b22a7ae"
+    },
+    {
+      "mode": "expanded",
+      "case": 16,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "e5763b6767eb52d3699b56573d4391272904f70cf07abfd369c9ea7ea26cc567"
+    },
+    {
+      "mode": "expanded",
+      "case": 17,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -775 AND ts < 300 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 862,
+      "result_sha256": "0b7e0c8fc51eac8ddfc96d4d379cca0865723392fb70194b8d3097d58af69763"
+    },
+    {
+      "mode": "expanded",
+      "case": 18,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 251 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "5888b3b29647ef13402ecd03cfd82689d051351350cedb274c1236a051078b27"
+    },
+    {
+      "mode": "expanded",
+      "case": 19,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -751 AND value < 87 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "c2c4f51e109ad8001ec3f6cf2eb3586bcf585b96553f7005ef9a73b38c3080cf"
+    },
+    {
+      "mode": "expanded",
+      "case": 20,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 21,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 22,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "87d8eb035da48d6137e57f287920075283857a0bc5485d9f24f0ab93b29afbdf"
+    },
+    {
+      "mode": "expanded",
+      "case": 23,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5225 AND ts < 6370 AND value != -339 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "298a2679401f1ce1d1c2ea9457dd8dd7239827a6a582c8ca88d6bfdd39648aaa"
+    },
+    {
+      "mode": "expanded",
+      "case": 24,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 25,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3646 AND ts < 4564 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "45431c28e28c7b1e142a61e4eff9baac228c6694ff5b00172ed8e5fc2f95cddb"
+    },
+    {
+      "mode": "expanded",
+      "case": 26,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -218 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "2b63aeab226ed6cabe5b7ceee3e521cfb2a6816e81f2dc27e9eae2e06fb2a772"
+    },
+    {
+      "mode": "expanded",
+      "case": 27,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -389 AND value < -458 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "5acd53e8ca06dac3ddf421029263a258053b6cc93843336d8fe7f95f4de8e198"
+    },
+    {
+      "mode": "expanded",
+      "case": 28,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 29,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 30,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "e72eb2fee03ea9434ca3dea7d67c72cadd1d9c334be74b76ad2264701d65b236"
+    },
+    {
+      "mode": "expanded",
+      "case": 31,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4684 AND ts < 5002 AND value != -154 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "88f2687ad108f26a151ee9a846e701054779773755600131c23651fdca43b14b"
+    },
+    {
+      "mode": "expanded",
+      "case": 32,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 33,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3974 AND ts < 4976 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "e8e0cdf0a709acdbe3fca131124764f4f8c8ac385737ce66cc1671f103cf7142"
+    },
+    {
+      "mode": "expanded",
+      "case": 34,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 220 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1400,
+      "result_sha256": "13b0d1d81b7b027a043ded4b119276fe56d0ffcc2d6f3264046353207d07c175"
+    },
+    {
+      "mode": "expanded",
+      "case": 35,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4790 AND value < 216 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "4b9e3e8fc40e5b1dadd62ff41b66dd09e281f44f7aec7bab0fd1f01af2ea63d4"
+    },
+    {
+      "mode": "expanded",
+      "case": 36,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 37,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 38,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "ddc82299fde7aeb3f2872ecfc129f6896e844dd70b3e8c257789856c5a26fd86"
+    },
+    {
+      "mode": "expanded",
+      "case": 39,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5509 AND ts < 6059 AND value != -130 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "4699258ed651a96f06d183258d4c3d948b4a6087fb6c8b60b91b8d93fa9bb719"
+    },
+    {
+      "mode": "expanded",
+      "case": 40,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "0137f81790ee1c79fa93765c4ccef31c3d5ca369334ff84bd577888ce640f9e1"
+    },
+    {
+      "mode": "expanded",
+      "case": 41,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4102 AND ts < 5392 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "f84e799c827ed0ce6425ce7d7db5a83bea492952c69888865edf51d739247fda"
+    },
+    {
+      "mode": "expanded",
+      "case": 42,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -437 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "460586982220c642c419b3e2b2850895789c2121ea2cdf6ac2829c6122ac8979"
+    },
+    {
+      "mode": "expanded",
+      "case": 43,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3633 AND value < -190 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "51ec9111f4aecb1b77b3860716d55fd41342ea9bc6117031685956c2054a447d"
+    },
+    {
+      "mode": "expanded",
+      "case": 44,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 45,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 46,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "3b0efb2be27c9f06b8391333937ed626ad6581ece6744e8bd6ca9268506c5c5d"
+    },
+    {
+      "mode": "expanded",
+      "case": 47,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 955 AND ts < 1194 AND value != -113 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "cf28a40684c3b2acf5b2e9d358ffe41eb8fcf44c93818b577f7d9ac563fd6e10"
+    },
+    {
+      "mode": "expanded",
+      "case": 48,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "93644354992047e0a0446d5e5e270b7cfc9cbd542940557854a8c0efdbe8fd8a"
+    },
+    {
+      "mode": "expanded",
+      "case": 49,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3061 AND ts < 3151 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "453aba6189321039fa9f086ffe0a7b08a0b6c06e78b483a970ed04444c625b58"
+    },
+    {
+      "mode": "expanded",
+      "case": 50,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 92 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "4d7fa763ac8fad8c17f1f032da6ec0c40d36ffa6a349126bd930cad233865187"
+    },
+    {
+      "mode": "expanded",
+      "case": 51,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2342 AND value < 161 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1995,
+      "result_sha256": "996161ff2653f51daaed93894427d111d9c83fbe53f8030b8c223eb1e0ff6550"
+    },
+    {
+      "mode": "expanded",
+      "case": 52,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 53,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 54,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "b6343a318b55846796ba3f033846c08af144a4368eec8d1bef76c89ce13ed772"
+    },
+    {
+      "mode": "expanded",
+      "case": 55,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -356 AND ts < -354 AND value != 265 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "9768e1eb1c627ee452fd35206bb25d812e0d35c5b3376023bcb408e02c599204"
+    },
+    {
+      "mode": "expanded",
+      "case": 56,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 57,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4815 AND ts < 6216 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "12bca751165b8175d26052c8c5b9dc357a1c3d7f02ca3f5a05454f3b0be7c55f"
+    },
+    {
+      "mode": "expanded",
+      "case": 58,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 289 GROUP BY device ORDER BY k DESC LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "0c080df22ac40c11394bf3462b81ef3c540d8bf429d81839e6de9404de583708"
+    },
+    {
+      "mode": "expanded",
+      "case": 59,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4320 AND value < 381 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "d6b644a5187b5e8828af724d76550b17550c2b8e7d86cda85f469616326e0e93"
+    },
+    {
+      "mode": "expanded",
+      "case": 60,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 61,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 62,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "e72eb2fee03ea9434ca3dea7d67c72cadd1d9c334be74b76ad2264701d65b236"
+    },
+    {
+      "mode": "expanded",
+      "case": 63,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2465 AND ts < 3295 AND value != -182 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "dd24e642811d8c6d74a2f9d563dbca5343a05b63a79587238c43ec3735b9e35f"
+    },
+    {
+      "mode": "expanded",
+      "case": 64,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 65,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 671 AND ts < 1904 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "3c59f9bb2c0c441ff87fa31f1d0af7f95430156b02c586818af5c3bffb302741"
+    },
+    {
+      "mode": "expanded",
+      "case": 66,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 128 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "20d1d296b1cf61f9b022870f2bb93042e431c8c7d5aa182fa624cb9842984236"
+    },
+    {
+      "mode": "expanded",
+      "case": 67,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 176 AND value < -129 GROUP BY device ORDER BY k DESC LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "f25e410b6a077df9d6cfb6295b314f7851bd765a155f6f579629a11d4f2b6b97"
+    },
+    {
+      "mode": "expanded",
+      "case": 68,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 69,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 70,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "214e466fd4a5e46e29588ab0a5fa829fc112fe7e4fa482a0c69081298306e206"
+    },
+    {
+      "mode": "expanded",
+      "case": 71,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2688 AND ts < 3981 AND value != -140 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "c8de3c7d4f00309cbd4d2a4c22ced5aaf59361208cf5d72b38354ef36e1fafc4"
+    },
+    {
+      "mode": "expanded",
+      "case": 72,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "4d6edb362ed56a477715692f8d4befea74a131e67fcd9bad609e9344ac4fe173"
+    },
+    {
+      "mode": "expanded",
+      "case": 73,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1908 AND ts < 2044 GROUP BY device ORDER BY k DESC LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "328715b36ec60fc56f572a70afac2783d8951b329ea730d3da8dff35299ec0f9"
+    },
+    {
+      "mode": "expanded",
+      "case": 74,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 18 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "6906970ef6801f83d9700f14768006a2329143b21c711288abf86f7faeb7655d"
+    },
+    {
+      "mode": "expanded",
+      "case": 75,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2908 AND value < 153 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "ae6dfa103e83c47eab3f4fadbe90e9bf5394585a52c8c50f164ea3184351a7e0"
+    },
+    {
+      "mode": "expanded",
+      "case": 76,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 77,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 78,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "adc66eb12107a04c89af8d436609cdbe3c873120eb42583f5e776f33c284a7a8"
+    },
+    {
+      "mode": "expanded",
+      "case": 79,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4203 AND ts < 4861 AND value != 322 GROUP BY device ORDER BY k DESC LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "c347a687b9e03244795f9739f3e7e10a8cd35756033abcfe69a3061638c0f334"
+    },
+    {
+      "mode": "expanded",
+      "case": 80,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "93644354992047e0a0446d5e5e270b7cfc9cbd542940557854a8c0efdbe8fd8a"
+    },
+    {
+      "mode": "expanded",
+      "case": 81,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 687 AND ts < 1762 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "bcf05b100b1427a38849781f534e30b9e770c071027ffc9f254c338739fd375f"
+    },
+    {
+      "mode": "expanded",
+      "case": 82,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 289 GROUP BY device ORDER BY k DESC LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "d7738231b349a3efdb5599915231b9bcfb41fb987a3fc212637028ab555416e8"
+    },
+    {
+      "mode": "expanded",
+      "case": 83,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -544 AND value < -243 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "e7718ad5431170ab023af37a79b49bd0b2369fa49c06dfeef5a3eeccab9d34d4"
+    },
+    {
+      "mode": "expanded",
+      "case": 84,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 85,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 86,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "b6343a318b55846796ba3f033846c08af144a4368eec8d1bef76c89ce13ed772"
+    },
+    {
+      "mode": "expanded",
+      "case": 87,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5050 AND ts < 6535 AND value != -103 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "b8d114fa4d9fcf3b884885d4a1d294e2588a5655be281d285be8e4427cb0398e"
+    },
+    {
+      "mode": "expanded",
+      "case": 88,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "340b7d6c394a20c038ae14a7fd08b327498e368004a42dd8a305cdfa361d1e0f"
+    },
+    {
+      "mode": "expanded",
+      "case": 89,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1286 AND ts < 2267 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "6766fbe34f67330c388c2786a48ad03793a1813436eb17c9fcd003825844aec7"
+    },
+    {
+      "mode": "expanded",
+      "case": 90,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 404 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "814fe5d7663a7942db7718d2b2af75041ef646719c4a12d22ce108604a53a78a"
+    },
+    {
+      "mode": "expanded",
+      "case": 91,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4574 AND value < -461 GROUP BY device ORDER BY k DESC LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "d82e5e29f46a1067da119c05985ac4626f599695536ab63ac51b9d5c9c9d0b07"
+    },
+    {
+      "mode": "expanded",
+      "case": 92,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 93,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 94,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "50999416a74f9677fda688bb56e90ce523765d7e4c0889e16dea8f4767faac0f"
+    },
+    {
+      "mode": "expanded",
+      "case": 95,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4573 AND ts < 5868 AND value != -48 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "0e6707dc98db8500070309e1c284d61b9ae7b88d52b5772b6782a854881e9a59"
+    },
+    {
+      "mode": "expanded",
+      "case": 96,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 97,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5126 AND ts < 5852 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "22c644d774d834f2ebeca6075081809eff48a982c9002ca4a632b1332ec81f6a"
+    },
+    {
+      "mode": "expanded",
+      "case": 98,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 91 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "1ab6deec9f118affed95033ce1547f01540291b348653e74e28bc0d21e09c246"
+    },
+    {
+      "mode": "expanded",
+      "case": 99,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5854 AND value < -259 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "ce5abb3f61483ed026da8be22dfc477bf7d22a23f53d4e3a5572e6619de8b173"
+    },
+    {
+      "mode": "expanded",
+      "case": 100,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 101,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 102,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 5003,
+      "result_sha256": "b816e919d21e838b41662575cb1a826ccb5dbe15829d735c31971210cbd6fb1e"
+    },
+    {
+      "mode": "expanded",
+      "case": 103,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4900 AND ts < 5369 AND value != -475 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "ec70e48f9a7226089431465caadf6300a8e77ba6cf1818ca8bc1579539cb81ca"
+    },
+    {
+      "mode": "expanded",
+      "case": 104,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "4d6edb362ed56a477715692f8d4befea74a131e67fcd9bad609e9344ac4fe173"
+    },
+    {
+      "mode": "expanded",
+      "case": 105,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4076 AND ts < 4687 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "e01284fbe9e4be48ac76326c9a0aa723fa37424cbc8def44e88ed635510c1c3e"
+    },
+    {
+      "mode": "expanded",
+      "case": 106,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 88 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "f98b08bc222537ab56af3d2041701c184b61d96f28e1146c1ffeb385b9469da8"
+    },
+    {
+      "mode": "expanded",
+      "case": 107,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3676 AND value < -292 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "20bdfa2fe8efacc282b67a60a9cd644c0d92013c1c19ee02a2fa83cd5e20fdf1"
+    },
+    {
+      "mode": "expanded",
+      "case": 108,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 109,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 110,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "adc66eb12107a04c89af8d436609cdbe3c873120eb42583f5e776f33c284a7a8"
+    },
+    {
+      "mode": "expanded",
+      "case": 111,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 70 AND ts < 1062 AND value != -344 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "c38bd9b77583fab6dfb80cad1c8b4d9cdb08df982288312b51868954a7221dc7"
+    },
+    {
+      "mode": "expanded",
+      "case": 112,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "e5763b6767eb52d3699b56573d4391272904f70cf07abfd369c9ea7ea26cc567"
+    },
+    {
+      "mode": "expanded",
+      "case": 113,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2059 AND ts < 3336 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "46e4a53c6042385cdb6a6d099e48b08b3fee440b796489318196dbfc607ca689"
+    },
+    {
+      "mode": "expanded",
+      "case": 114,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -20 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "4d4267ee15b7539caefa14b612c03473897f8848244801c83b4a0190ad109ab0"
+    },
+    {
+      "mode": "expanded",
+      "case": 115,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3520 AND value < 426 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "3490623e8ad34294db8995959aaeb89235f8e8e2122dec3d53035d30bdd39030"
+    },
+    {
+      "mode": "expanded",
+      "case": 116,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 117,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 118,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "87d8eb035da48d6137e57f287920075283857a0bc5485d9f24f0ab93b29afbdf"
+    },
+    {
+      "mode": "expanded",
+      "case": 119,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 278 AND ts < 1630 AND value != -304 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1710,
+      "result_sha256": "97a99d83a1a9cdf7168491b2b130eb0ad4b720dcbfdd8a4f9c934f7e0263a485"
+    },
+    {
+      "mode": "expanded",
+      "case": 120,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 121,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2001 AND ts < 2519 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "63bea16c4c4af653f785655f970ed47c7346593cf961a6cfbe4ebed204ccbc33"
+    },
+    {
+      "mode": "expanded",
+      "case": 122,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 6 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "b4729578ed64b2144ccbc07ce2ec4f2889856d7a8d72c14a7d0b67d8031c4fe4"
+    },
+    {
+      "mode": "expanded",
+      "case": 123,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2978 AND value < 47 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "8c34e8ae6f7511852c619928497dc305522d8b4ba862b3655c1d3778f46c2c0e"
+    },
+    {
+      "mode": "expanded",
+      "case": 124,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 125,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 126,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "e72eb2fee03ea9434ca3dea7d67c72cadd1d9c334be74b76ad2264701d65b236"
+    },
+    {
+      "mode": "expanded",
+      "case": 127,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4063 AND ts < 5265 AND value != -331 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "7325011e7f53e0952ec0d2aadf88ede1c1221e61c75ae4b417fdfac92cb426fc"
+    },
+    {
+      "mode": "expanded",
+      "case": 128,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 129,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4132 AND ts < 5438 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "4baac9d73f6b6272425704c01a33b9a3823eba65396e5572e90c9dddd7150c05"
+    },
+    {
+      "mode": "expanded",
+      "case": 130,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -196 GROUP BY device ORDER BY k DESC LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "dd5705d5ccd3cd103b9c1428ba70923b48e182b5f86b74792828d4c5fa605706"
+    },
+    {
+      "mode": "expanded",
+      "case": 131,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3040 AND value < 435 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "50acc05f55c22eacee3a27c32cb891768a3c80a327a82e2d02ce3b2588e113bc"
+    },
+    {
+      "mode": "expanded",
+      "case": 132,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 133,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 134,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "ddc82299fde7aeb3f2872ecfc129f6896e844dd70b3e8c257789856c5a26fd86"
+    },
+    {
+      "mode": "expanded",
+      "case": 135,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3862 AND ts < 4062 AND value != 384 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "814953a969e9bd2a6c3e00f2232c337267c826e0562832764118c5d24acc0c66"
+    },
+    {
+      "mode": "expanded",
+      "case": 136,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 5003,
+      "result_sha256": "d082406754bee607ff5d6f8a736fa04cc1dd09f785a076d6162b154c573da355"
+    },
+    {
+      "mode": "expanded",
+      "case": 137,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 611 AND ts < 1251 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "2503a22e1abb8b1aa8ceba78729d3bb6a6459cabcc4939d56ff7206387437747"
+    },
+    {
+      "mode": "expanded",
+      "case": 138,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -253 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "86c31aff997aceae67a076c30cacea053afd012d0bb2528786677baa4a01d066"
+    },
+    {
+      "mode": "expanded",
+      "case": 139,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 193 AND value < 309 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "9aac483647ce3338e2603ec87545767662b4e3e883582a2e65cdae23a7fb1967"
+    },
+    {
+      "mode": "expanded",
+      "case": 140,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 141,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 142,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "3b0efb2be27c9f06b8391333937ed626ad6581ece6744e8bd6ca9268506c5c5d"
+    },
+    {
+      "mode": "expanded",
+      "case": 143,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5517 AND ts < 5851 AND value != -189 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "68dcb39ce95f7938221a1bdb71642c95e91b5160b6feb66dbc9d4ba8d7f79a71"
+    },
+    {
+      "mode": "expanded",
+      "case": 144,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "93644354992047e0a0446d5e5e270b7cfc9cbd542940557854a8c0efdbe8fd8a"
+    },
+    {
+      "mode": "expanded",
+      "case": 145,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3072 AND ts < 4412 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "728d706884c2682e23316cfe85aaf1e7c68a1532e46987372b5d287c9fa03d06"
+    },
+    {
+      "mode": "expanded",
+      "case": 146,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 381 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "58611bbcf526cce4e7b33628663b2c7756fe0cc65ace39eeeae2a7d0766df3a2"
+    },
+    {
+      "mode": "expanded",
+      "case": 147,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -695 AND value < -433 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "ca7c32421faf77534ee5a9dbbabbb89b03acc25887d388452147293c6f5ee6ad"
+    },
+    {
+      "mode": "expanded",
+      "case": 148,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 149,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 150,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "b6343a318b55846796ba3f033846c08af144a4368eec8d1bef76c89ce13ed772"
+    },
+    {
+      "mode": "expanded",
+      "case": 151,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 37 AND ts < 354 AND value != -95 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "09f5e8df0f8af6d345dafb3130c4721e33345e7f5f7588af096f2ffcf2e85855"
+    },
+    {
+      "mode": "expanded",
+      "case": 152,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 153,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5712 AND ts < 6985 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 243,
+      "result_sha256": "31081536e5924da6d30cfe9879987549e4c12259ef1258a1fb3f033b94221b55"
+    },
+    {
+      "mode": "expanded",
+      "case": 154,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -328 GROUP BY device ORDER BY k DESC LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "090335929445d36ed57858b18e67a5f55f43dbf3cea7069969949be535c57a20"
+    },
+    {
+      "mode": "expanded",
+      "case": 155,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5231 AND value < -180 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "7d2c066e9f6cdcef4285373bead54e687a027e5e128a0920356491f5a15b8afa"
+    },
+    {
+      "mode": "expanded",
+      "case": 156,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 157,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 158,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "e72eb2fee03ea9434ca3dea7d67c72cadd1d9c334be74b76ad2264701d65b236"
+    },
+    {
+      "mode": "expanded",
+      "case": 159,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3481 AND ts < 3538 AND value != -114 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "07f0c9107a82f14693c3d4355252877f5240b33bab7d13c54a1a903ba0831a78"
+    },
+    {
+      "mode": "expanded",
+      "case": 160,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 161,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 790 AND ts < 1507 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "72acca1cd4d7a94ee9ffcddc291a4e3c370273474ef5ba648d93b334c02be473"
+    },
+    {
+      "mode": "expanded",
+      "case": 162,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 324 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "4309fdaf6a2611743ba9a1140ee7303cdedca7b1cf5ba8e48171469048d917be"
+    },
+    {
+      "mode": "expanded",
+      "case": 163,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 350 AND value < -162 GROUP BY device ORDER BY k DESC LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "f25e410b6a077df9d6cfb6295b314f7851bd765a155f6f579629a11d4f2b6b97"
+    },
+    {
+      "mode": "expanded",
+      "case": 164,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 165,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 166,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "214e466fd4a5e46e29588ab0a5fa829fc112fe7e4fa482a0c69081298306e206"
+    },
+    {
+      "mode": "expanded",
+      "case": 167,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4746 AND ts < 5379 AND value != 236 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "5aeb99db4c4adda84e63f49f7f112f39d2cc1b7bd411e2901abb042e7caabd1d"
+    },
+    {
+      "mode": "expanded",
+      "case": 168,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "4d6edb362ed56a477715692f8d4befea74a131e67fcd9bad609e9344ac4fe173"
+    },
+    {
+      "mode": "expanded",
+      "case": 169,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 643 AND ts < 1268 GROUP BY device ORDER BY k DESC LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "244be2dd012e934c69e2e85e68aa7165b13f144f020a5513f0ac841633620b96"
+    },
+    {
+      "mode": "expanded",
+      "case": 170,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -17 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2585,
+      "result_sha256": "94fe5d0a53575e31c635e4e9dd2a7e349a1b8f1b05ecfaf5090002d7aadfe1df"
+    },
+    {
+      "mode": "expanded",
+      "case": 171,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2654 AND value < 256 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "ea4075bc87cf2854c30bc46de4ffafabff03fb6482a54afc6a30a4144d3fc607"
+    },
+    {
+      "mode": "expanded",
+      "case": 172,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 173,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 174,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "adc66eb12107a04c89af8d436609cdbe3c873120eb42583f5e776f33c284a7a8"
+    },
+    {
+      "mode": "expanded",
+      "case": 175,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2185 AND ts < 3026 AND value != 116 GROUP BY device ORDER BY k DESC LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "e57380105068ca00da7068d3d6338e8a6413d39be732c68db8ebcc6006ed7324"
+    },
+    {
+      "mode": "expanded",
+      "case": 176,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "93644354992047e0a0446d5e5e270b7cfc9cbd542940557854a8c0efdbe8fd8a"
+    },
+    {
+      "mode": "expanded",
+      "case": 177,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1522 AND ts < 2489 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "a77353d83f38a4263acf1276303bcd72b6f8754bf924972edb425fdf452f00b0"
+    },
+    {
+      "mode": "expanded",
+      "case": 178,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -142 GROUP BY device ORDER BY k DESC LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "83b14ee9a25867a3dfafb780db4072b7b72380b68a5232b2076c6358bc9e2207"
+    },
+    {
+      "mode": "expanded",
+      "case": 179,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -257 AND value < -489 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "60698c532a39f36774ce5131fe3d295a0b46ac8af7bde433b2da20a87aa03cd3"
+    },
+    {
+      "mode": "expanded",
+      "case": 180,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 181,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 182,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "b6343a318b55846796ba3f033846c08af144a4368eec8d1bef76c89ce13ed772"
+    },
+    {
+      "mode": "expanded",
+      "case": 183,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3228 AND ts < 4717 AND value != -199 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "6e7fd51254e7a30c0a8269d6bfca951dc5415bceef97a6c88e862d21a8afc968"
+    },
+    {
+      "mode": "expanded",
+      "case": 184,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "340b7d6c394a20c038ae14a7fd08b327498e368004a42dd8a305cdfa361d1e0f"
+    },
+    {
+      "mode": "expanded",
+      "case": 185,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -116 AND ts < 862 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "e6c2165df0656b328d4b8e0a1b4078bdf878fd65dc3249402280b63d62475316"
+    },
+    {
+      "mode": "expanded",
+      "case": 186,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 156 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "e5838c0812e5e24d88a4dd46aeeb5665116dffeb4109d41676bde94929358faf"
+    },
+    {
+      "mode": "expanded",
+      "case": 187,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4334 AND value < -296 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 278,
+      "result_sha256": "4934c8e496e4be69c82c3cb02d1215078c9af2cf2532926ff71a014059c3e1de"
+    },
+    {
+      "mode": "expanded",
+      "case": 188,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 189,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 190,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "50999416a74f9677fda688bb56e90ce523765d7e4c0889e16dea8f4767faac0f"
+    },
+    {
+      "mode": "expanded",
+      "case": 191,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1471 AND ts < 2297 AND value != -335 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "6a5adc1817c7b2e5c801003d3e5c297d2b66faa0fb206f9237ef42c088184dcd"
+    },
+    {
+      "mode": "expanded",
+      "case": 192,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 193,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5723 AND ts < 5879 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "3fe9ed354527905156e991bced69b615b03262475e3b7640a03eb5274f0866bd"
+    },
+    {
+      "mode": "expanded",
+      "case": 194,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 191 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "5a6208d3599c19550a94c1193e1ddcac6bc30ea60b17b313357cdd67c4605c39"
+    },
+    {
+      "mode": "expanded",
+      "case": 195,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3596 AND value < 288 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "57d0e84fba85c8d9279b07bf2bead56f797ad0cf9fd2adba5716acb03dc27360"
+    },
+    {
+      "mode": "expanded",
+      "case": 196,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 197,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 198,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "ddc82299fde7aeb3f2872ecfc129f6896e844dd70b3e8c257789856c5a26fd86"
+    },
+    {
+      "mode": "expanded",
+      "case": 199,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2731 AND ts < 3746 AND value != 4 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "3ad9073957c208e618d68cbbeb1401816663f70015626b0c35ff4dc423fec67d"
+    },
+    {
+      "mode": "expanded",
+      "case": 200,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "4d6edb362ed56a477715692f8d4befea74a131e67fcd9bad609e9344ac4fe173"
+    },
+    {
+      "mode": "expanded",
+      "case": 201,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1234 AND ts < 2384 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "0e8c8b95b452c60102ab714541461450e3fcdd5915ac6e25cba4535b98c0e6cc"
+    },
+    {
+      "mode": "expanded",
+      "case": 202,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 283 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "0f3c2d7d93c80df7676e6f26fd5f1710ae8e86df60276a2b07263e6d9017a843"
+    },
+    {
+      "mode": "expanded",
+      "case": 203,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4057 AND value < -253 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "02d744cf486a7d08833bf41b979775f247e23790bd783ffe8887959a8836b0c1"
+    },
+    {
+      "mode": "expanded",
+      "case": 204,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 205,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 206,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "adc66eb12107a04c89af8d436609cdbe3c873120eb42583f5e776f33c284a7a8"
+    },
+    {
+      "mode": "expanded",
+      "case": 207,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -716 AND ts < -636 AND value != 215 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "9efe424154be8709095f9620e8581e75bde2b4f174b8f5d206b21a074339322b"
+    },
+    {
+      "mode": "expanded",
+      "case": 208,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "e5763b6767eb52d3699b56573d4391272904f70cf07abfd369c9ea7ea26cc567"
+    },
+    {
+      "mode": "expanded",
+      "case": 209,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5221 AND ts < 6210 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "35189fbc9754d28bc14ea55b3fc3133022cb97b6b3482f60fddf7159f9a3474c"
+    },
+    {
+      "mode": "expanded",
+      "case": 210,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 425 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "24b6a4f8c4e41f3315133a7b1ec4c7aa402114a2feaa4698f44ecb48a3ae98db"
+    },
+    {
+      "mode": "expanded",
+      "case": 211,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 682 AND value < -408 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "73a04422f494dcdc1e48c3d991ceedce86e4b39ba9e81dcccd175b94866ec87f"
+    },
+    {
+      "mode": "expanded",
+      "case": 212,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 213,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 214,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "87d8eb035da48d6137e57f287920075283857a0bc5485d9f24f0ab93b29afbdf"
+    },
+    {
+      "mode": "expanded",
+      "case": 215,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5668 AND ts < 6900 AND value != -465 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "84899c9838010f5f39255a33c1f8c39e6846c2d157d0db17590aaeee61ab137e"
+    },
+    {
+      "mode": "expanded",
+      "case": 216,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 217,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1277 AND ts < 1714 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "bb2ceb3470549037feb205586bc6006d0e4f87ce082303000d9ca42650981c85"
+    },
+    {
+      "mode": "expanded",
+      "case": 218,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 0 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "b4729578ed64b2144ccbc07ce2ec4f2889856d7a8d72c14a7d0b67d8031c4fe4"
+    },
+    {
+      "mode": "expanded",
+      "case": 219,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1112 AND value < 191 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "d9b934f4adc523d28b11dbf8821af83cf21d9fb966a1e0b5421424a4ac10fac8"
+    },
+    {
+      "mode": "expanded",
+      "case": 220,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 221,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 222,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "e72eb2fee03ea9434ca3dea7d67c72cadd1d9c334be74b76ad2264701d65b236"
+    },
+    {
+      "mode": "expanded",
+      "case": 223,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 520 AND ts < 1561 AND value != 251 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "89de4fc90cc0cd84bc9048dc01abd7048f5e95c2070a89d1cc2e490bf2928d7c"
+    },
+    {
+      "mode": "expanded",
+      "case": 224,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 225,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 736 AND ts < 2071 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "f1268a0917d2814668fa0080706478f61880c587f0498ffa0ccaae064c79dbd7"
+    },
+    {
+      "mode": "expanded",
+      "case": 226,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -273 GROUP BY device ORDER BY k DESC LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "dd5705d5ccd3cd103b9c1428ba70923b48e182b5f86b74792828d4c5fa605706"
+    },
+    {
+      "mode": "expanded",
+      "case": 227,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4985 AND value < -162 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "021fdad25dc22358a95c83ee5df08d18f99c3c45f9dd4f00a3371908ed59fc5b"
+    },
+    {
+      "mode": "expanded",
+      "case": 228,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 229,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 230,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "ddc82299fde7aeb3f2872ecfc129f6896e844dd70b3e8c257789856c5a26fd86"
+    },
+    {
+      "mode": "expanded",
+      "case": 231,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5236 AND ts < 6006 AND value != 339 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "2bb5a7861aac4bf5d1e7bbe77c76a5443a74c4a1bf87a2b195c9c055f3e57940"
+    },
+    {
+      "mode": "expanded",
+      "case": 232,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "0137f81790ee1c79fa93765c4ccef31c3d5ca369334ff84bd577888ce640f9e1"
+    },
+    {
+      "mode": "expanded",
+      "case": 233,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5008 AND ts < 5146 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "ba4feeed0f7fb435148037b988093de8afd0cfa06dc5e8b71ad1111695f605a3"
+    },
+    {
+      "mode": "expanded",
+      "case": 234,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -501 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "5c39fadb0ef27f931acec3c5224a7aeb38cc40a4de035e8d665f05c219b36d7a"
+    },
+    {
+      "mode": "expanded",
+      "case": 235,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2826 AND value < -332 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "36dafff02b05ce6714bb46d777cf165a7ebf37368718170d997e7a9d71910984"
+    },
+    {
+      "mode": "expanded",
+      "case": 236,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 237,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 238,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 5003,
+      "result_sha256": "09c23462dfa141a3e985f6ef293feab5e457ab5c86447fdd455303113af4fca9"
+    },
+    {
+      "mode": "expanded",
+      "case": 239,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5470 AND ts < 6373 AND value != 275 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fa69a5ce919107c3cc06392c69fc4cd6f17683d3b1974c4519aa46417f80addf"
+    },
+    {
+      "mode": "expanded",
+      "case": 240,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "93644354992047e0a0446d5e5e270b7cfc9cbd542940557854a8c0efdbe8fd8a"
+    },
+    {
+      "mode": "expanded",
+      "case": 241,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4182 AND ts < 4209 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "7041b8594f2495e13c9b2c67c616a90bd37f1a7d111bdd1bd8379908ce619fc3"
+    },
+    {
+      "mode": "expanded",
+      "case": 242,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 475 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "502522dd7a02f59d5d5c7382176db4c6cd1bd01e9b087419158d61a021cceb82"
+    },
+    {
+      "mode": "expanded",
+      "case": 243,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -181 AND value < 243 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "81edb3fdb3d343521f8964fc700c28ede949a06ab43a3b23712f72d46a40138c"
+    },
+    {
+      "mode": "expanded",
+      "case": 244,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 245,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "expanded",
+      "case": 246,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "b6343a318b55846796ba3f033846c08af144a4368eec8d1bef76c89ce13ed772"
+    },
+    {
+      "mode": "expanded",
+      "case": 247,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1030 AND ts < 1287 AND value != 390 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "fecde5b314cbd8fa529d3efaac4f7255d762915efed02d0d72a7e9fd0a8258d1"
+    },
+    {
+      "mode": "expanded",
+      "case": 248,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "fc7d49f91fb527439ba390e68435e741d2acfc5497143e577964bf13d134ba8b"
+    },
+    {
+      "mode": "expanded",
+      "case": 249,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2325 AND ts < 2889 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "1fd6a270741232f90ea72aa67bc579848f1d3402de3bf3def7ba4e6077370ad5"
+    },
+    {
+      "mode": "sparse",
+      "case": 0,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "974b182cfd9499fe14020d059a5e8ac676e74935427e6d774702a240ff4f1798"
+    },
+    {
+      "mode": "sparse",
+      "case": 1,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -204 AND ts < 300 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "e0d29c1c0357d34ace836bc69e80514bd16b3ed9190cba71fab87ebac8c90445"
+    },
+    {
+      "mode": "sparse",
+      "case": 2,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -414 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "96be03decb57e1a914177ac91d786770c3072d6d3c5929f537c60ffdbd9027a7"
+    },
+    {
+      "mode": "sparse",
+      "case": 3,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 559 AND value < 284 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 4,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 5,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 6,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "82708855e7006c23b6d3ede81bf276e42846a4edd7bf6f7dbaa6e2c1520fee9b"
+    },
+    {
+      "mode": "sparse",
+      "case": 7,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2215 AND ts < 3217 AND value != 249 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "1cdb70926384446dc98b8670f934e2ecf09464dceb3bfe974ab0f653fd81eed0"
+    },
+    {
+      "mode": "sparse",
+      "case": 8,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "3b85f9c44dc14241f4bdfa99198184f69e06e7f1315da057e5dee0a9a3de18b7"
+    },
+    {
+      "mode": "sparse",
+      "case": 9,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4940 AND ts < 6432 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "3ecc9bbff63d1ab6325d42d14180532e747cd4e58df97ea75845a913569999a7"
+    },
+    {
+      "mode": "sparse",
+      "case": 10,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 234 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "52997ff918e290021fa3d9c7587ea4a8fffbdf5eaf46e7f4d5a5aa27854e6b2c"
+    },
+    {
+      "mode": "sparse",
+      "case": 11,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1140 AND value < 27 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "fa25aa24a06cbec62edbc80b03598cbb85e93b8d77fd84f7d83edc8b31f1af10"
+    },
+    {
+      "mode": "sparse",
+      "case": 12,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 13,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 14,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "bf83e1fed6c7f5dafa542bcaaff6498b5e514025fb154824bc8f17f02948d6a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 15,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2149 AND ts < 3364 AND value != 128 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 16,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "da5f046103e3dc6d6c3f1313745cd11bfa8bd4b8b0e1cdb37490056ae43fcbe7"
+    },
+    {
+      "mode": "sparse",
+      "case": 17,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3360 AND ts < 4418 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "7064131690039ecead1d2ce04ffba13a81f9eb6506acf5047a6299abe8b8da47"
+    },
+    {
+      "mode": "sparse",
+      "case": 18,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -19 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "91031bc62d234f8ee171d9fd079adc069e86c42712a17863ac70d8f35a263885"
+    },
+    {
+      "mode": "sparse",
+      "case": 19,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4728 AND value < -409 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "3412070d292b32af3f628b5c6a019f360aede2e4dae0f35384eaf4fc8a33f723"
+    },
+    {
+      "mode": "sparse",
+      "case": 20,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 21,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 22,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "f17c9841fa7ef6798c7cf325499b4646b5d60b6bd8fcb86f94b114530a444461"
+    },
+    {
+      "mode": "sparse",
+      "case": 23,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1649 AND ts < 2817 AND value != 2 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "fc6e5e12566fd2727eccf28b0ee60544278ac4f4cf222785b572db7ed6fea977"
+    },
+    {
+      "mode": "sparse",
+      "case": 24,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 25,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -360 AND ts < -354 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "24e2cda6e13ccb88f403bdc1187c1fe6c8d393696867ba342a9abb1b82e46e8a"
+    },
+    {
+      "mode": "sparse",
+      "case": 26,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 367 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "d6ec9ba7ab8d4b563501707d85ba0b6a8d1522c493f3d0dfa7025f44729cde39"
+    },
+    {
+      "mode": "sparse",
+      "case": 27,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4144 AND value < -252 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "18834b02fb8529f304a814586f2d6590e7d1a13107e10cf93338bd18f055db1c"
+    },
+    {
+      "mode": "sparse",
+      "case": 28,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 29,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 30,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "aa284cb0980bedc57d7ca8ae22e0339aa250c9d1e0f4144a02945a2e66819f00"
+    },
+    {
+      "mode": "sparse",
+      "case": 31,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 170 AND ts < 986 AND value != -126 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "054f619f787614a25053cc157457a59c6829c90e5ab2d01cb44a669f18f45d50"
+    },
+    {
+      "mode": "sparse",
+      "case": 32,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 33,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2315 AND ts < 3778 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "7b1a0a18527446f096199ffa4652f2903bb0b063a64d796018ce716fcf9f4d4b"
+    },
+    {
+      "mode": "sparse",
+      "case": 34,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 237 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "fead1996e6239b475304e627957c575b63fb71153718bff0be83ea5e721c5d2d"
+    },
+    {
+      "mode": "sparse",
+      "case": 35,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3733 AND value < 486 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 36,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 37,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 38,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "82708855e7006c23b6d3ede81bf276e42846a4edd7bf6f7dbaa6e2c1520fee9b"
+    },
+    {
+      "mode": "sparse",
+      "case": 39,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 488 AND ts < 1075 AND value != -240 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "43370433e71358718a60efd082e6b238fa8c5538d5edc5f38d0949a9521e0bb8"
+    },
+    {
+      "mode": "sparse",
+      "case": 40,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "2fab5249bfd42f4771aa0688a96f2b450ea1562d6fa0db60ca6b4db6426dcdd6"
+    },
+    {
+      "mode": "sparse",
+      "case": 41,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -455 AND ts < 635 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "c36499669cbb23261d18e1a2f4e1aafb74e8cf8ab2924926ebeb17a903748ff2"
+    },
+    {
+      "mode": "sparse",
+      "case": 42,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -307 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "7041be26c198b7a77225bebd1db9f1129734a59d8bde6c90f04b2bd6d7c2093b"
+    },
+    {
+      "mode": "sparse",
+      "case": 43,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4555 AND value < -317 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "f2471caea6731cd0ffb6cd23c973e30765e178869fb395ebac6a2d65fbdce27d"
+    },
+    {
+      "mode": "sparse",
+      "case": 44,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 45,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 46,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "d91249e86eef37305aee517de70d0dafbff75a5f0cf52dddc2a5620cd8cf21ec"
+    },
+    {
+      "mode": "sparse",
+      "case": 47,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5672 AND ts < 5894 AND value != 196 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 48,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "fb6a3cfc4def38f34af9c836c791ede265a62e73d87b3767c76b53d960f7fe92"
+    },
+    {
+      "mode": "sparse",
+      "case": 49,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2771 AND ts < 3654 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "40d8ffbecb01b6f0deace062c8f4f04a188872e61b48472ef4c9d5a908bf49a8"
+    },
+    {
+      "mode": "sparse",
+      "case": 50,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 410 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "0dac468707fd844665573f2a809e15287f9082aaf231658348df7caba007ce12"
+    },
+    {
+      "mode": "sparse",
+      "case": 51,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3881 AND value < -420 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "b92d4397262d910892795da19871b1a0ec81134d61ef9b80973a3dcfdc17989f"
+    },
+    {
+      "mode": "sparse",
+      "case": 52,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 53,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 54,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "a01cc208c656334bbea1380fc47c4a942f37d562277551bfc697a9fbbaf175bc"
+    },
+    {
+      "mode": "sparse",
+      "case": 55,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2151 AND ts < 2355 AND value != -28 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "a475c28f14a3d94c94ea368308378f54d810108c6cb2c819ed820803298122b0"
+    },
+    {
+      "mode": "sparse",
+      "case": 56,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 57,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 457 AND ts < 1010 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "9dbe62be7ed0bf2aa9ad41d93fc364329b296dc72d22cfce9f916fbaaa26a8b6"
+    },
+    {
+      "mode": "sparse",
+      "case": 58,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 179 GROUP BY device ORDER BY k DESC LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "5c375c0fbd66ac6da677d3959467b89277de6bc21017d1d449129415752d471c"
+    },
+    {
+      "mode": "sparse",
+      "case": 59,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3727 AND value < -64 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "18834b02fb8529f304a814586f2d6590e7d1a13107e10cf93338bd18f055db1c"
+    },
+    {
+      "mode": "sparse",
+      "case": 60,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 61,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 62,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "aa284cb0980bedc57d7ca8ae22e0339aa250c9d1e0f4144a02945a2e66819f00"
+    },
+    {
+      "mode": "sparse",
+      "case": 63,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4749 AND ts < 4759 AND value != -441 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "305864fa95fd212050c3bd3a2cdfd4f95ad0eeaf93fba93bcf1abba466b12ce1"
+    },
+    {
+      "mode": "sparse",
+      "case": 64,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 65,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5913 AND ts < 7071 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "47c534cc5f24b59d07bd1650c0667daa4b16f8554b302ba45e8863065a91e0ae"
+    },
+    {
+      "mode": "sparse",
+      "case": 66,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 283 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "afc676b44bf35d393041f0b43ecd57b3bb9d27bf51669c8ee12762f757cc16a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 67,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2286 AND value < 72 GROUP BY device ORDER BY k DESC LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "85f0b3af91904aad8d31f88a2c3b5fcc8ea33a5b7883fc2864b945bbf81713fa"
+    },
+    {
+      "mode": "sparse",
+      "case": 68,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 69,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 70,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "8a72b3a4d586d22436b9cbfd2ec5dbc8f7e3d02fc30a6cb514d07a8da8b62be0"
+    },
+    {
+      "mode": "sparse",
+      "case": 71,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2681 AND ts < 2731 AND value != 120 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "43370433e71358718a60efd082e6b238fa8c5538d5edc5f38d0949a9521e0bb8"
+    },
+    {
+      "mode": "sparse",
+      "case": 72,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "3b85f9c44dc14241f4bdfa99198184f69e06e7f1315da057e5dee0a9a3de18b7"
+    },
+    {
+      "mode": "sparse",
+      "case": 73,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= -126 AND ts < 878 GROUP BY device ORDER BY k DESC LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "10df7dd84f5d015e51f45e4e9a946356e63d4c956bdbb41d13dd0b97186ac937"
+    },
+    {
+      "mode": "sparse",
+      "case": 74,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 126 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "a16c5924fdc04a52eb560e377b4271b9bea6b3a33dab3bc88b06ae98b080a345"
+    },
+    {
+      "mode": "sparse",
+      "case": 75,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -465 AND value < -67 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "fa25aa24a06cbec62edbc80b03598cbb85e93b8d77fd84f7d83edc8b31f1af10"
+    },
+    {
+      "mode": "sparse",
+      "case": 76,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 77,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 78,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "bf83e1fed6c7f5dafa542bcaaff6498b5e514025fb154824bc8f17f02948d6a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 79,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1569 AND ts < 1607 AND value != -488 GROUP BY device ORDER BY k DESC LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fd06c97f94e0ed05042b0b35471d7e558d76c38d4533f567b503a4f2be79ead8"
+    },
+    {
+      "mode": "sparse",
+      "case": 80,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "fb6a3cfc4def38f34af9c836c791ede265a62e73d87b3767c76b53d960f7fe92"
+    },
+    {
+      "mode": "sparse",
+      "case": 81,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3481 AND ts < 4936 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "46811c5713e9ab77cccf71142f4eda365fe8280d0337e7e93a5a0dac9d5d469a"
+    },
+    {
+      "mode": "sparse",
+      "case": 82,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -46 GROUP BY device ORDER BY k DESC LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "d66077d2a8d4b5502d04b873061b1f61ab08589d950bf3d729be806fa39ba7ab"
+    },
+    {
+      "mode": "sparse",
+      "case": 83,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4788 AND value < -86 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "8b8b03736dafd602789c1b7d720926a2ea350cdd20417928c81e21666f51e3da"
+    },
+    {
+      "mode": "sparse",
+      "case": 84,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 85,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 86,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "a01cc208c656334bbea1380fc47c4a942f37d562277551bfc697a9fbbaf175bc"
+    },
+    {
+      "mode": "sparse",
+      "case": 87,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3222 AND ts < 4626 AND value != 430 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "fc6e5e12566fd2727eccf28b0ee60544278ac4f4cf222785b572db7ed6fea977"
+    },
+    {
+      "mode": "sparse",
+      "case": 88,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "6fccb3b850b19283bb770edb4d985d4308ce6565f7db559794fb531ddb897a60"
+    },
+    {
+      "mode": "sparse",
+      "case": 89,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1433 AND ts < 2357 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "2a00602c1c4d58632312cd4fef92bda52c5dc33912986d79aec50d263ea220dc"
+    },
+    {
+      "mode": "sparse",
+      "case": 90,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 9 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "85628cc1a3b0a04ce65946418014dccf8be31a86dad0914a21996f53d14f3a70"
+    },
+    {
+      "mode": "sparse",
+      "case": 91,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3599 AND value < 438 GROUP BY device ORDER BY k DESC LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "b7958d4ce7260dba49bba55fe55d25feeda4619ed7cb81a209843f326d29558f"
+    },
+    {
+      "mode": "sparse",
+      "case": 92,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 93,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 94,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "1e6e2d7ad4a8da1027e7677cca2410a48648730318acc3b69fc20b0a42c2ddb2"
+    },
+    {
+      "mode": "sparse",
+      "case": 95,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2569 AND ts < 2660 AND value != 137 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "660a22273cb20d81a2719e2053e8cabd3b8321bbe2028d4d7d26f8f53aaccd41"
+    },
+    {
+      "mode": "sparse",
+      "case": 96,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 97,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5228 AND ts < 5249 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "cf5f2d22b100513c94f820b7df4c05fbfef2fe47b32a7cb9a86708a8ee503b71"
+    },
+    {
+      "mode": "sparse",
+      "case": 98,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 14 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "558193b23fe717928b243ac993398430712168a2566f0e47466f8de02c344e26"
+    },
+    {
+      "mode": "sparse",
+      "case": 99,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1893 AND value < 475 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 100,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 101,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 102,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 40,
+      "result_sha256": "2b5b3fe4409001de5188823d715aed0ee4435d641ba91abde487a0c4eb8e7ac2"
+    },
+    {
+      "mode": "sparse",
+      "case": 103,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4228 AND ts < 4441 AND value != 53 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "1cdb70926384446dc98b8670f934e2ecf09464dceb3bfe974ab0f653fd81eed0"
+    },
+    {
+      "mode": "sparse",
+      "case": 104,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "3b85f9c44dc14241f4bdfa99198184f69e06e7f1315da057e5dee0a9a3de18b7"
+    },
+    {
+      "mode": "sparse",
+      "case": 105,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2631 AND ts < 3568 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "fd3e8fbad54812f3dced49b266b62767b543a43149e75e490edcb0ddf05b5d07"
+    },
+    {
+      "mode": "sparse",
+      "case": 106,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 286 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "b098c4164109778121528aedbfca0eac0b04f726ea14ab4518421d323a37ac49"
+    },
+    {
+      "mode": "sparse",
+      "case": 107,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4831 AND value < -31 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "fa25aa24a06cbec62edbc80b03598cbb85e93b8d77fd84f7d83edc8b31f1af10"
+    },
+    {
+      "mode": "sparse",
+      "case": 108,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 109,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 110,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "bf83e1fed6c7f5dafa542bcaaff6498b5e514025fb154824bc8f17f02948d6a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 111,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 636 AND ts < 1980 AND value != 95 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 112,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "da5f046103e3dc6d6c3f1313745cd11bfa8bd4b8b0e1cdb37490056ae43fcbe7"
+    },
+    {
+      "mode": "sparse",
+      "case": 113,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5371 AND ts < 5650 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "65bb1f3afb283dabf0d282fea7814d0a2ee45779cf93744fa5a5109bc5c596a9"
+    },
+    {
+      "mode": "sparse",
+      "case": 114,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 271 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "2f282058104cdd05439d3de66feb0b29eb86fed2723f1f2a522e5b10b14666e0"
+    },
+    {
+      "mode": "sparse",
+      "case": 115,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5419 AND value < -416 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "19cabe4bb5e5b47c8cd70b052c7b9ebe5ff6ac2b71dbeb52529afd686098ef82"
+    },
+    {
+      "mode": "sparse",
+      "case": 116,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 117,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 118,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "f17c9841fa7ef6798c7cf325499b4646b5d60b6bd8fcb86f94b114530a444461"
+    },
+    {
+      "mode": "sparse",
+      "case": 119,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2937 AND ts < 4276 AND value != -481 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "b92d4397262d910892795da19871b1a0ec81134d61ef9b80973a3dcfdc17989f"
+    },
+    {
+      "mode": "sparse",
+      "case": 120,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 121,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 1875 AND ts < 2233 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "f894c490a9718ab393065dfeb2664fe1b058a7a6996f33095fe9cd572159af4c"
+    },
+    {
+      "mode": "sparse",
+      "case": 122,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -123 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "e27c7847a6c02a5ad4bbefac9fae8d3fdafd510791b8918437b301d5eb00134d"
+    },
+    {
+      "mode": "sparse",
+      "case": 123,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4430 AND value < -224 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "18834b02fb8529f304a814586f2d6590e7d1a13107e10cf93338bd18f055db1c"
+    },
+    {
+      "mode": "sparse",
+      "case": 124,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 125,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 126,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "aa284cb0980bedc57d7ca8ae22e0339aa250c9d1e0f4144a02945a2e66819f00"
+    },
+    {
+      "mode": "sparse",
+      "case": 127,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1898 AND ts < 3166 AND value != 243 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "054f619f787614a25053cc157457a59c6829c90e5ab2d01cb44a669f18f45d50"
+    },
+    {
+      "mode": "sparse",
+      "case": 128,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 129,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 901 AND ts < 1250 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "9ae00393e5f8c5069793d9ed48f772f11bc4b03f82355f8a701041eea1a3b1c7"
+    },
+    {
+      "mode": "sparse",
+      "case": 130,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -495 GROUP BY device ORDER BY k DESC LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "11a83ba6bf17a7075177b7819a90e056f722e23cee6e9502382aa78776a1c93a"
+    },
+    {
+      "mode": "sparse",
+      "case": 131,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -36 AND value < 260 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 132,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 133,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 134,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "82708855e7006c23b6d3ede81bf276e42846a4edd7bf6f7dbaa6e2c1520fee9b"
+    },
+    {
+      "mode": "sparse",
+      "case": 135,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -289 AND ts < 487 AND value != 454 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "43370433e71358718a60efd082e6b238fa8c5538d5edc5f38d0949a9521e0bb8"
+    },
+    {
+      "mode": "sparse",
+      "case": 136,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "6421c443030a28a6b078c7f5183cdcafa7918ec4e0cd8d468265507333d16e4f"
+    },
+    {
+      "mode": "sparse",
+      "case": 137,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2874 AND ts < 3044 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "75faa1e7b1dc5cf543cb8f03de4a512bf66161ae3a18e2c20e0cc50231bf3065"
+    },
+    {
+      "mode": "sparse",
+      "case": 138,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 271 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "a903cf326aa08c8d74da8238d571aee31c5af747850b4bf09e4201a0b1757868"
+    },
+    {
+      "mode": "sparse",
+      "case": 139,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4880 AND value < -178 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "f2471caea6731cd0ffb6cd23c973e30765e178869fb395ebac6a2d65fbdce27d"
+    },
+    {
+      "mode": "sparse",
+      "case": 140,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 141,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 142,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "d91249e86eef37305aee517de70d0dafbff75a5f0cf52dddc2a5620cd8cf21ec"
+    },
+    {
+      "mode": "sparse",
+      "case": 143,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -4 AND ts < 412 AND value != 130 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 144,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "fb6a3cfc4def38f34af9c836c791ede265a62e73d87b3767c76b53d960f7fe92"
+    },
+    {
+      "mode": "sparse",
+      "case": 145,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4313 AND ts < 5143 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "b1a9f88d087fa22eba9eadc86aa9afcd2d0c57ff9b3eacf0d4664354ce89b0be"
+    },
+    {
+      "mode": "sparse",
+      "case": 146,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 11 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "c18cf3100cf34bd8f91635079bc6e71eb5f05ea689c65803530bd32436948bfc"
+    },
+    {
+      "mode": "sparse",
+      "case": 147,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 378 AND value < 417 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "8b8b03736dafd602789c1b7d720926a2ea350cdd20417928c81e21666f51e3da"
+    },
+    {
+      "mode": "sparse",
+      "case": 148,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 149,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 150,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "a01cc208c656334bbea1380fc47c4a942f37d562277551bfc697a9fbbaf175bc"
+    },
+    {
+      "mode": "sparse",
+      "case": 151,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2699 AND ts < 4015 AND value != -1 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "a475c28f14a3d94c94ea368308378f54d810108c6cb2c819ed820803298122b0"
+    },
+    {
+      "mode": "sparse",
+      "case": 152,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 153,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4077 AND ts < 5388 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "dc136e98b07dc353906d6723f0b9a3aa68283a1025ca59f99bd8463369a94a96"
+    },
+    {
+      "mode": "sparse",
+      "case": 154,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -348 GROUP BY device ORDER BY k DESC LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "60830675084f74a3921566204d2c8acd9028d50b63a813653976da7297b861bb"
+    },
+    {
+      "mode": "sparse",
+      "case": 155,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -133 AND value < 439 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "18834b02fb8529f304a814586f2d6590e7d1a13107e10cf93338bd18f055db1c"
+    },
+    {
+      "mode": "sparse",
+      "case": 156,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 157,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 158,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "aa284cb0980bedc57d7ca8ae22e0339aa250c9d1e0f4144a02945a2e66819f00"
+    },
+    {
+      "mode": "sparse",
+      "case": 159,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4095 AND ts < 4336 AND value != 242 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "660a22273cb20d81a2719e2053e8cabd3b8321bbe2028d4d7d26f8f53aaccd41"
+    },
+    {
+      "mode": "sparse",
+      "case": 160,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 161,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2735 AND ts < 3628 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "5a20af9eb49908570b937bd0e1605ffb67fad0c19c895bec96e81eff63c46d1a"
+    },
+    {
+      "mode": "sparse",
+      "case": 162,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 320 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "9d3bd76d03c7ddd8743ae2e8650a00326a0e54db25b4f0493d8c9dd8ac45d9af"
+    },
+    {
+      "mode": "sparse",
+      "case": 163,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 140 AND value < 465 GROUP BY device ORDER BY k DESC LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "85f0b3af91904aad8d31f88a2c3b5fcc8ea33a5b7883fc2864b945bbf81713fa"
+    },
+    {
+      "mode": "sparse",
+      "case": 164,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 165,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 166,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "8a72b3a4d586d22436b9cbfd2ec5dbc8f7e3d02fc30a6cb514d07a8da8b62be0"
+    },
+    {
+      "mode": "sparse",
+      "case": 167,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4878 AND ts < 5802 AND value != 277 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "43370433e71358718a60efd082e6b238fa8c5538d5edc5f38d0949a9521e0bb8"
+    },
+    {
+      "mode": "sparse",
+      "case": 168,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "3b85f9c44dc14241f4bdfa99198184f69e06e7f1315da057e5dee0a9a3de18b7"
+    },
+    {
+      "mode": "sparse",
+      "case": 169,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 958 AND ts < 1246 GROUP BY device ORDER BY k DESC LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "501965a789c281bbc5662e7cd5ec8eeb868115e58f131533dd274c30613dee4e"
+    },
+    {
+      "mode": "sparse",
+      "case": 170,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -302 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "da8519621f9860d7af67e2ad31ffadfdad4e55a450aa37a0e528c6ea14fdb55a"
+    },
+    {
+      "mode": "sparse",
+      "case": 171,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1663 AND value < 36 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "fa25aa24a06cbec62edbc80b03598cbb85e93b8d77fd84f7d83edc8b31f1af10"
+    },
+    {
+      "mode": "sparse",
+      "case": 172,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 173,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 174,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "bf83e1fed6c7f5dafa542bcaaff6498b5e514025fb154824bc8f17f02948d6a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 175,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 948 AND ts < 1144 AND value != 123 GROUP BY device ORDER BY k DESC LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fd06c97f94e0ed05042b0b35471d7e558d76c38d4533f567b503a4f2be79ead8"
+    },
+    {
+      "mode": "sparse",
+      "case": 176,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "fb6a3cfc4def38f34af9c836c791ede265a62e73d87b3767c76b53d960f7fe92"
+    },
+    {
+      "mode": "sparse",
+      "case": 177,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 987 AND ts < 2051 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "6e12860ac22e1fe94d71ff8e37b45aa76a11b7c38bc339befc075ce9cd257de6"
+    },
+    {
+      "mode": "sparse",
+      "case": 178,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 148 GROUP BY device ORDER BY k DESC LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "d95b3885f896c38bd9ac56607dfeefc7fb48e0463233230097ee0113bd153005"
+    },
+    {
+      "mode": "sparse",
+      "case": 179,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3928 AND value < -419 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "8b8b03736dafd602789c1b7d720926a2ea350cdd20417928c81e21666f51e3da"
+    },
+    {
+      "mode": "sparse",
+      "case": 180,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 181,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 182,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "a01cc208c656334bbea1380fc47c4a942f37d562277551bfc697a9fbbaf175bc"
+    },
+    {
+      "mode": "sparse",
+      "case": 183,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2004 AND ts < 3261 AND value != -13 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "fc6e5e12566fd2727eccf28b0ee60544278ac4f4cf222785b572db7ed6fea977"
+    },
+    {
+      "mode": "sparse",
+      "case": 184,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "6fccb3b850b19283bb770edb4d985d4308ce6565f7db559794fb531ddb897a60"
+    },
+    {
+      "mode": "sparse",
+      "case": 185,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2883 AND ts < 3278 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "e9a250851a04a5a6c78cf2d9b20e85bd62397130bb478fac279aefd11c5ed791"
+    },
+    {
+      "mode": "sparse",
+      "case": 186,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 289 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "ae4ff937da5b53bfaa255728c826c9b0c1dbb06affcf723d12f53b56a5eeda78"
+    },
+    {
+      "mode": "sparse",
+      "case": 187,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -631 AND value < -247 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 41,
+      "result_sha256": "d534f75d83bd59d31628fc1c90dbd7f722b3dc8a06d6edf64aa956e4195374c9"
+    },
+    {
+      "mode": "sparse",
+      "case": 188,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 189,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 29",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 190,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "1e6e2d7ad4a8da1027e7677cca2410a48648730318acc3b69fc20b0a42c2ddb2"
+    },
+    {
+      "mode": "sparse",
+      "case": 191,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 881 AND ts < 1481 AND value != -501 GROUP BY device ORDER BY k LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "660a22273cb20d81a2719e2053e8cabd3b8321bbe2028d4d7d26f8f53aaccd41"
+    },
+    {
+      "mode": "sparse",
+      "case": 192,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 193,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 3049 AND ts < 3527 GROUP BY device ORDER BY k DESC LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "0b4bc81ea3628f1ed67a59b6a531efe9a7bd1c43116ccc50a0c5619af40aebf7"
+    },
+    {
+      "mode": "sparse",
+      "case": 194,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -327 GROUP BY device ORDER BY k LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "96ab8a711630732bf9c2f00b8f5868ffd90f3c60dea43bf91cb2950d4c30b86e"
+    },
+    {
+      "mode": "sparse",
+      "case": 195,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5524 AND value < -273 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 196,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 197,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 198,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "82708855e7006c23b6d3ede81bf276e42846a4edd7bf6f7dbaa6e2c1520fee9b"
+    },
+    {
+      "mode": "sparse",
+      "case": 199,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4566 AND ts < 4680 AND value != -452 GROUP BY device ORDER BY k DESC LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "1cdb70926384446dc98b8670f934e2ecf09464dceb3bfe974ab0f653fd81eed0"
+    },
+    {
+      "mode": "sparse",
+      "case": 200,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "3b85f9c44dc14241f4bdfa99198184f69e06e7f1315da057e5dee0a9a3de18b7"
+    },
+    {
+      "mode": "sparse",
+      "case": 201,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5150 AND ts < 5955 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "f184fabe1acedde7c59f058e6acd8e5e8cc2b26425e14fcc42c155c9273cdb40"
+    },
+    {
+      "mode": "sparse",
+      "case": 202,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 361 GROUP BY device ORDER BY k DESC LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "d788e78e7e2285657e61579a0e26998cff5dc1e103808168d9484f7f584c7e8b"
+    },
+    {
+      "mode": "sparse",
+      "case": 203,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 4082 AND value < -411 GROUP BY device ORDER BY k LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "fa25aa24a06cbec62edbc80b03598cbb85e93b8d77fd84f7d83edc8b31f1af10"
+    },
+    {
+      "mode": "sparse",
+      "case": 204,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 205,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 206,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 14",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 14,
+      "result_sha256": "bf83e1fed6c7f5dafa542bcaaff6498b5e514025fb154824bc8f17f02948d6a4"
+    },
+    {
+      "mode": "sparse",
+      "case": 207,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1319 AND ts < 2632 AND value != 332 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 208,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "da5f046103e3dc6d6c3f1313745cd11bfa8bd4b8b0e1cdb37490056ae43fcbe7"
+    },
+    {
+      "mode": "sparse",
+      "case": 209,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 991 AND ts < 2105 GROUP BY device ORDER BY k LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "30406d0d8056d512e5643512311496770fdf8883bc913d16fe103ebbf3252a2c"
+    },
+    {
+      "mode": "sparse",
+      "case": 210,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= -318 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "ca9c4a7ba3b30d6a9480ecc033d579d35bc1f6d6a08eef860bb0b06fbd9cf18a"
+    },
+    {
+      "mode": "sparse",
+      "case": 211,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2762 AND value < 180 GROUP BY device ORDER BY k DESC LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "3412070d292b32af3f628b5c6a019f360aede2e4dae0f35384eaf4fc8a33f723"
+    },
+    {
+      "mode": "sparse",
+      "case": 212,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 213,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 214,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "f17c9841fa7ef6798c7cf325499b4646b5d60b6bd8fcb86f94b114530a444461"
+    },
+    {
+      "mode": "sparse",
+      "case": 215,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1059 AND ts < 2399 AND value != -363 GROUP BY device ORDER BY k LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "fc6e5e12566fd2727eccf28b0ee60544278ac4f4cf222785b572db7ed6fea977"
+    },
+    {
+      "mode": "sparse",
+      "case": 216,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 217,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5896 AND ts < 7310 GROUP BY device ORDER BY k DESC LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "f348e4d69d7ec80a2aee6c3b199ec2dca92400e521b88fe53aa546f6012dc3d1"
+    },
+    {
+      "mode": "sparse",
+      "case": 218,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 451 GROUP BY device ORDER BY k LIMIT 26",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 26,
+      "result_sha256": "fed0017aa3755d8788244fe45d6dcf889bd01f86bc3fa2a44ba895ca2158cf0d"
+    },
+    {
+      "mode": "sparse",
+      "case": 219,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5514 AND value < 121 GROUP BY device ORDER BY k LIMIT 27",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 27,
+      "result_sha256": "18834b02fb8529f304a814586f2d6590e7d1a13107e10cf93338bd18f055db1c"
+    },
+    {
+      "mode": "sparse",
+      "case": 220,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 28",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 221,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 222,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 30",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 30,
+      "result_sha256": "aa284cb0980bedc57d7ca8ae22e0339aa250c9d1e0f4144a02945a2e66819f00"
+    },
+    {
+      "mode": "sparse",
+      "case": 223,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 5655 AND ts < 6177 AND value != -166 GROUP BY device ORDER BY k DESC LIMIT 31",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 31,
+      "result_sha256": "054f619f787614a25053cc157457a59c6829c90e5ab2d01cb44a669f18f45d50"
+    },
+    {
+      "mode": "sparse",
+      "case": 224,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 0",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 225,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 4439 AND ts < 4577 GROUP BY device ORDER BY k LIMIT 1",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "3003fa8af190d873b34f30248ac9e9461bc53d7a3fb27e720f66035ce4750b7b"
+    },
+    {
+      "mode": "sparse",
+      "case": 226,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 385 GROUP BY device ORDER BY k DESC LIMIT 2",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 2,
+      "result_sha256": "f825452c8e507695d5ed666f0a6ded37d3d38b3b4d6212547164e6dbb02ce155"
+    },
+    {
+      "mode": "sparse",
+      "case": 227,
+      "sql": "SELECT device AS k FROM events WHERE ts >= -571 AND value < 146 GROUP BY device ORDER BY k LIMIT 3",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 3,
+      "result_sha256": "b4bb348fd5262c991d3d6f4b756ebff707674b7c7aede000c742715b188b54f0"
+    },
+    {
+      "mode": "sparse",
+      "case": 228,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 4",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 229,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k DESC LIMIT 5",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 230,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 6",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 6,
+      "result_sha256": "82708855e7006c23b6d3ede81bf276e42846a4edd7bf6f7dbaa6e2c1520fee9b"
+    },
+    {
+      "mode": "sparse",
+      "case": 231,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3809 AND ts < 4441 AND value != 115 GROUP BY device ORDER BY k LIMIT 7",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 7,
+      "result_sha256": "43370433e71358718a60efd082e6b238fa8c5538d5edc5f38d0949a9521e0bb8"
+    },
+    {
+      "mode": "sparse",
+      "case": 232,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k DESC LIMIT 8",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 8,
+      "result_sha256": "2fab5249bfd42f4771aa0688a96f2b450ea1562d6fa0db60ca6b4db6426dcdd6"
+    },
+    {
+      "mode": "sparse",
+      "case": 233,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2897 AND ts < 3154 GROUP BY device ORDER BY k LIMIT 9",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 9,
+      "result_sha256": "a9c283b1f587034bdc0558b965b855f456186c29a36242e0601373214975769a"
+    },
+    {
+      "mode": "sparse",
+      "case": 234,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 373 GROUP BY device ORDER BY k LIMIT 10",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 10,
+      "result_sha256": "b362bc5cfd11512b66d7632359a9857fbb6c35873d32d590578ac1441e407fdd"
+    },
+    {
+      "mode": "sparse",
+      "case": 235,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 2230 AND value < 489 GROUP BY device ORDER BY k DESC LIMIT 11",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 11,
+      "result_sha256": "f2471caea6731cd0ffb6cd23c973e30765e178869fb395ebac6a2d65fbdce27d"
+    },
+    {
+      "mode": "sparse",
+      "case": 236,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k LIMIT 12",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 237,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 13",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 238,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k DESC",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 40,
+      "result_sha256": "4e75927f039dc6f462752e0ec792148ab5bd6e96578c150aee59719cbefdfb68"
+    },
+    {
+      "mode": "sparse",
+      "case": 239,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3417 AND ts < 4143 AND value != 145 GROUP BY device ORDER BY k LIMIT 15",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 15,
+      "result_sha256": "fe5946692933fc1c6c3e0d139e2144e9f161244074ff2a17ef7e1fdc64106307"
+    },
+    {
+      "mode": "sparse",
+      "case": 240,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 16",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 16,
+      "result_sha256": "fb6a3cfc4def38f34af9c836c791ede265a62e73d87b3767c76b53d960f7fe92"
+    },
+    {
+      "mode": "sparse",
+      "case": 241,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 5525 AND ts < 5618 GROUP BY device ORDER BY k DESC LIMIT 17",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 17,
+      "result_sha256": "10845455deafbf48443928be1e53a06759de2f93ca461660d2ca18d84a2c5c9a"
+    },
+    {
+      "mode": "sparse",
+      "case": 242,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE value >= 271 GROUP BY device ORDER BY k LIMIT 18",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 18,
+      "result_sha256": "2f282058104cdd05439d3de66feb0b29eb86fed2723f1f2a522e5b10b14666e0"
+    },
+    {
+      "mode": "sparse",
+      "case": 243,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 1164 AND value < 170 GROUP BY device ORDER BY k LIMIT 19",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 19,
+      "result_sha256": "8b8b03736dafd602789c1b7d720926a2ea350cdd20417928c81e21666f51e3da"
+    },
+    {
+      "mode": "sparse",
+      "case": 244,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events WHERE ts < -1000000 GROUP BY device ORDER BY k DESC LIMIT 20",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 0,
+      "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "mode": "sparse",
+      "case": 245,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE device = -9223372036854775808 GROUP BY device ORDER BY k LIMIT 21",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 1,
+      "result_sha256": "62e82a387f5bae25e8f6341e0206756e2f5ae869f82a4c9ba2accfbdde55dde4"
+    },
+    {
+      "mode": "sparse",
+      "case": 246,
+      "sql": "SELECT device AS k, COUNT(*), MIN(ts), MAX(ts) FROM events WHERE device != 9223372036854775807 GROUP BY device ORDER BY k LIMIT 22",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 22,
+      "result_sha256": "a01cc208c656334bbea1380fc47c4a942f37d562277551bfc697a9fbbaf175bc"
+    },
+    {
+      "mode": "sparse",
+      "case": 247,
+      "sql": "SELECT device AS k FROM events WHERE ts >= 3029 AND ts < 3080 AND value != 90 GROUP BY device ORDER BY k DESC LIMIT 23",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 23,
+      "result_sha256": "a475c28f14a3d94c94ea368308378f54d810108c6cb2c819ed820803298122b0"
+    },
+    {
+      "mode": "sparse",
+      "case": 248,
+      "sql": "SELECT device AS k, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value), SUM(ts), SUM(value) FROM events GROUP BY device ORDER BY k LIMIT 24",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 24,
+      "result_sha256": "54c374408958e5a7ccadd28b487c1ab3c6320b30c440523c25b94f9e8985e46e"
+    },
+    {
+      "mode": "sparse",
+      "case": 249,
+      "sql": "SELECT SUM(value) AS s, device AS k, AVG(value), COUNT(*), SUM(ts) FROM events WHERE ts >= 2715 AND ts < 2861 GROUP BY device ORDER BY k LIMIT 25",
+      "duckdb_equal": true,
+      "sqlite_equal": true,
+      "result_rows": 25,
+      "result_sha256": "78e06e6696414395dc52f374249052b13772e528fb10463b1069a3778f754aa4"
+    }
+  ],
+  "modes": [
+    {
+      "mode": "expanded",
+      "rows": 40024,
+      "queries": 250,
+      "reopen_replay_and_scrub_passed": true
+    },
+    {
+      "mode": "sparse",
+      "rows": 40024,
+      "queries": 250,
+      "reopen_replay_and_scrub_passed": true
+    }
+  ],
+  "complete": true,
+  "queries_checked_against_each_reference": 500,
+  "completed_at_utc": "2026-10-06T18:55:58.453108+00:00"
+}

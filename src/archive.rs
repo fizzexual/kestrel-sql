@@ -1947,14 +1947,20 @@ struct SparseGroups {
     keys: Vec<i64>,
     state: DenseGroups,
     cache: Option<Box<GroupKeyCache>>,
+    cache_multiplier: u64,
 }
 impl SparseGroups {
     fn new(expressions: &[AExpr]) -> Self {
+        let index = HashMap::new();
+        // Derive a per-query odd multiplier once from the existing random state.
+        // Cache tags remain exact; the authoritative HashMap keeps its hasher.
+        let cache_multiplier = std::hash::BuildHasher::hash_one(index.hasher(), 0_i64) | 1;
         Self {
-            index: HashMap::new(),
+            index,
             keys: Vec::new(),
             state: DenseGroups::with_span(0, 0, expressions),
             cache: Some(Box::new([None; GROUP_KEY_CACHE_SLOTS])),
+            cache_multiplier,
         }
     }
     fn update_selected(
@@ -1983,8 +1989,7 @@ impl SparseGroups {
             let key = columns[column][row];
             // This is a tagged lookup cache, not the authoritative hash table.
             // Exact key comparison handles every collision and signed value.
-            let bits = key as u64;
-            let cache_slot = (bits ^ (bits >> 32)) as usize & (GROUP_KEY_CACHE_SLOTS - 1);
+            let cache_slot = group_cache_slot(key, self.cache_multiplier);
             let cached = if CACHE {
                 self.cache.as_ref().and_then(|cache| {
                     cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
@@ -2034,6 +2039,9 @@ impl SparseGroups {
             .map(|(slot, &key)| self.state.row(slot, key, expressions))
             .collect()
     }
+}
+fn group_cache_slot(key: i64, multiplier: u64) -> usize {
+    ((key as u64).wrapping_mul(multiplier) >> (64 - GROUP_KEY_CACHE_SLOTS.ilog2())) as usize
 }
 #[derive(Clone, Default)]
 struct Cell {
@@ -2157,11 +2165,29 @@ fn select_matching_range(
 mod dense_group_tests {
     use super::*;
 
+    fn cache_colliding_keys(multiplier: u64, count: usize) -> Vec<i64> {
+        // Invert an odd multiplier modulo 2^64. Products 0..count all have
+        // zero upper bits, constructing real collisions for every random seed.
+        let mut inverse = multiplier;
+        for _ in 0..6 {
+            inverse = inverse.wrapping_mul(2_u64.wrapping_sub(multiplier.wrapping_mul(inverse)));
+        }
+        assert_eq!(multiplier.wrapping_mul(inverse), 1);
+        (0..count)
+            .map(|i| (i as u64).wrapping_mul(inverse) as i64)
+            .collect()
+    }
+
     #[test]
     fn sparse_cache_disables_when_a_block_has_unhelpful_collisions() {
         let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1)];
         let mut groups = SparseGroups::new(&expressions);
-        let columns = vec![(0..1024).map(|i| i % 3 * 256).collect(), vec![7; 1024]];
+        let keys = cache_colliding_keys(groups.cache_multiplier, 3);
+        assert!(
+            keys.iter()
+                .all(|&key| group_cache_slot(key, groups.cache_multiplier) == 0)
+        );
+        let columns = vec![(0..1024).map(|i| keys[i % 3]).collect(), vec![7; 1024]];
         let selected: Vec<_> = (0..1024).collect();
         groups.update_selected(0, &columns, &selected).unwrap();
         assert!(groups.cache.is_none());
@@ -2173,11 +2199,19 @@ mod dense_group_tests {
         );
         assert_eq!(
             rows[1],
-            vec![Value::Int(256), Value::Int(682), Value::Int(4774)]
+            vec![
+                Value::Int(i128::from(keys[1])),
+                Value::Int(682),
+                Value::Int(4774)
+            ]
         );
         assert_eq!(
             rows[2],
-            vec![Value::Int(512), Value::Int(682), Value::Int(4774)]
+            vec![
+                Value::Int(i128::from(keys[2])),
+                Value::Int(682),
+                Value::Int(4774)
+            ]
         );
     }
 
@@ -2185,9 +2219,10 @@ mod dense_group_tests {
     fn sparse_key_cache_checks_tags_and_releases_after_cardinality_limit() {
         let expressions = [AExpr::Group(0), AExpr::Count, AExpr::Sum(1)];
         let mut groups = SparseGroups::new(&expressions);
+        let colliding = cache_colliding_keys(groups.cache_multiplier, 129);
         let keys = [
-            vec![0, 256, i64::MIN, i64::MAX],
-            (0..129).map(|i| i * 256).collect(),
+            vec![colliding[0], colliding[1], i64::MIN, i64::MAX],
+            colliding,
         ]
         .concat();
         let columns = vec![keys, (0..133).map(|i| i * 37 - 91).collect()];

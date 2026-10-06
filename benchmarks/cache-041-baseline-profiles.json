@@ -1,0 +1,2495 @@
+{
+  "started_at_utc": "2026-10-06T18:36:16.853679+00:00",
+  "binary_sha256": {
+    "baseline": "70bdd87cab51f29a641450f60569cc2f271473b7632c2ab0de82b4cc9796374e",
+    "candidate": "70bdd87cab51f29a641450f60569cc2f271473b7632c2ab0de82b4cc9796374e"
+  },
+  "probe_source_sha256": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+  "harness_sha256": "b9d405b18d21332b11f0523736b52258d7d98c89e3dc0165b502316f55f60a11",
+  "fixture": {
+    "label": "collision19",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\collision19\\archive",
+    "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\collision19\\reference.duckdb",
+    "rows": 1000000,
+    "reference_bytes": 5517312,
+    "queries": [
+      [
+        "group_sum",
+        "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "group_full",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "filtered_group",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+      ],
+      [
+        "unordered_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+      ],
+      [
+        "prefix_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+      ]
+    ]
+  },
+  "methodology": {
+    "turns": 3,
+    "repeats": 7,
+    "warmups": 3,
+    "threads": 1,
+    "same_archive": true,
+    "sequential_open_close": true,
+    "instrumented": true,
+    "timing": "ArchiveSnapshot::query; setup/open/close/assertions/full scrubs excluded",
+    "limits": "warm shared Windows desktop; profiled stage samples excluded from competitive claims; no network or power-loss qualification"
+  },
+  "cases": [
+    {
+      "name": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              18.5498,
+              21.9544,
+              18.234099999999998,
+              18.309099999999997,
+              18.4927,
+              17.9071,
+              18.903799999999997
+            ],
+            "median_ms": 18.4927,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.306899999999978,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.9318000000000035,
+                "selection_ms": 0.19450000000000026
+              },
+              {
+                "aggregate_ms": 16.272900000000032,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.388199999999999,
+                "selection_ms": 0.1938
+              },
+              {
+                "aggregate_ms": 13.271600000000008,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.698099999999997,
+                "selection_ms": 0.16820000000000027
+              },
+              {
+                "aggregate_ms": 13.48990000000003,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.561500000000002,
+                "selection_ms": 0.16770000000000024
+              },
+              {
+                "aggregate_ms": 13.436699999999966,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.751799999999999,
+                "selection_ms": 0.20919999999999983
+              },
+              {
+                "aggregate_ms": 13.137100000000013,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.517499999999997,
+                "selection_ms": 0.16340000000000016
+              },
+              {
+                "aggregate_ms": 13.819999999999997,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.823399999999998,
+                "selection_ms": 0.16730000000000025
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.751799999999999,
+              "selection_ms": 0.16820000000000027,
+              "aggregate_ms": 13.436699999999966
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              19.1709,
+              18.8228,
+              18.637,
+              19.134800000000002,
+              19.2602,
+              19.009800000000002,
+              19.3455
+            ],
+            "median_ms": 19.134800000000002,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.614599999999976,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.2308,
+                "selection_ms": 0.21030000000000032
+              },
+              {
+                "aggregate_ms": 13.52710000000004,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.0219000000000005,
+                "selection_ms": 0.1671000000000004
+              },
+              {
+                "aggregate_ms": 13.543899999999963,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.820300000000001,
+                "selection_ms": 0.17010000000000033
+              },
+              {
+                "aggregate_ms": 13.919499999999964,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.946399999999998,
+                "selection_ms": 0.1653000000000003
+              },
+              {
+                "aggregate_ms": 14.197700000000053,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.787500000000001,
+                "selection_ms": 0.17000000000000048
+              },
+              {
+                "aggregate_ms": 14.041000000000043,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.6948000000000025,
+                "selection_ms": 0.16540000000000027
+              },
+              {
+                "aggregate_ms": 14.421900000000008,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.654500000000001,
+                "selection_ms": 0.16940000000000022
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.820300000000001,
+              "selection_ms": 0.16940000000000022,
+              "aggregate_ms": 13.919499999999964
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              18.6382,
+              18.9629,
+              18.827900000000003,
+              19.8464,
+              19.0251,
+              19.082700000000003,
+              21.2957
+            ],
+            "median_ms": 19.0251,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.554100000000025,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.805999999999999,
+                "selection_ms": 0.16890000000000033
+              },
+              {
+                "aggregate_ms": 13.94579999999998,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.751800000000002,
+                "selection_ms": 0.1663000000000003
+              },
+              {
+                "aggregate_ms": 13.84190000000005,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.720700000000001,
+                "selection_ms": 0.16780000000000042
+              },
+              {
+                "aggregate_ms": 14.493499999999955,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.020300000000002,
+                "selection_ms": 0.17890000000000011
+              },
+              {
+                "aggregate_ms": 13.779000000000021,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.930000000000004,
+                "selection_ms": 0.16510000000000025
+              },
+              {
+                "aggregate_ms": 13.812700000000019,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.984999999999999,
+                "selection_ms": 0.17060000000000022
+              },
+              {
+                "aggregate_ms": 15.335399999999998,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.638400000000002,
+                "selection_ms": 0.19740000000000044
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.930000000000004,
+              "selection_ms": 0.16890000000000033,
+              "aggregate_ms": 13.84190000000005
+            }
+          },
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              19.1033,
+              18.1814,
+              20.1791,
+              20.8516,
+              19.023000000000003,
+              20.6984,
+              20.2118
+            ],
+            "median_ms": 20.1791,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.568699999999984,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.249800000000001,
+                "selection_ms": 0.16850000000000034
+              },
+              {
+                "aggregate_ms": 13.041599999999976,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.860799999999999,
+                "selection_ms": 0.17200000000000043
+              },
+              {
+                "aggregate_ms": 14.890900000000027,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.004000000000003,
+                "selection_ms": 0.18020000000000028
+              },
+              {
+                "aggregate_ms": 15.090300000000028,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.444800000000002,
+                "selection_ms": 0.21110000000000026
+              },
+              {
+                "aggregate_ms": 14.009999999999987,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.742999999999996,
+                "selection_ms": 0.16570000000000018
+              },
+              {
+                "aggregate_ms": 15.11599999999999,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.225100000000004,
+                "selection_ms": 0.1761000000000004
+              },
+              {
+                "aggregate_ms": 14.570299999999984,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.301299999999997,
+                "selection_ms": 0.17500000000000035
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 5.225100000000004,
+              "selection_ms": 0.17500000000000035,
+              "aggregate_ms": 14.570299999999984
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              19.1525,
+              23.7351,
+              19.3763,
+              20.1643,
+              18.594900000000003,
+              18.3262,
+              18.6927
+            ],
+            "median_ms": 19.1525,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 14.126999999999994,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.743900000000001,
+                "selection_ms": 0.17240000000000036
+              },
+              {
+                "aggregate_ms": 17.94430000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.477699999999999,
+                "selection_ms": 0.20030000000000017
+              },
+              {
+                "aggregate_ms": 13.961700000000038,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.132199999999997,
+                "selection_ms": 0.17000000000000035
+              },
+              {
+                "aggregate_ms": 14.430899999999966,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.433799999999996,
+                "selection_ms": 0.19330000000000022
+              },
+              {
+                "aggregate_ms": 13.592500000000054,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.732100000000004,
+                "selection_ms": 0.16440000000000005
+              },
+              {
+                "aggregate_ms": 13.390199999999979,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.643199999999997,
+                "selection_ms": 0.19610000000000005
+              },
+              {
+                "aggregate_ms": 13.640200000000016,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.791899999999999,
+                "selection_ms": 0.16130000000000005
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.791899999999999,
+              "selection_ms": 0.17240000000000036,
+              "aggregate_ms": 13.961700000000038
+            },
+            "full_scrub_bytes": 24000000
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              19.4783,
+              19.4644,
+              21.0979,
+              20.1019,
+              18.7519,
+              18.4063,
+              27.3478
+            ],
+            "median_ms": 19.4783,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "be05d1f9b79dd79f6dbec93380e40e86dc00a70210c0beaf94f38df3d36fad0f",
+                "first": [
+                  [
+                    -9,
+                    -26612
+                  ],
+                  [
+                    999927,
+                    -26156
+                  ],
+                  [
+                    1999863,
+                    -26459
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    -25888
+                  ],
+                  [
+                    16998903,
+                    -26228
+                  ],
+                  [
+                    17998839,
+                    -26772
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.368399999999989,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.756200000000002,
+                "selection_ms": 0.22830000000000011
+              },
+              {
+                "aggregate_ms": 13.991700000000018,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.190999999999996,
+                "selection_ms": 0.1692000000000003
+              },
+              {
+                "aggregate_ms": 15.688000000000025,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.129100000000001,
+                "selection_ms": 0.17990000000000014
+              },
+              {
+                "aggregate_ms": 14.172700000000052,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.1517999999999935,
+                "selection_ms": 0.6563000000000088
+              },
+              {
+                "aggregate_ms": 13.573999999999982,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.907500000000001,
+                "selection_ms": 0.1672000000000002
+              },
+              {
+                "aggregate_ms": 13.482400000000032,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.6629000000000005,
+                "selection_ms": 0.16610000000000033
+              },
+              {
+                "aggregate_ms": 21.094999999999974,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.913299999999999,
+                "selection_ms": 0.2348
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 5.1517999999999935,
+              "selection_ms": 0.17990000000000014,
+              "aggregate_ms": 13.991700000000018
+            },
+            "full_scrub_bytes": 24000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 19.1525,
+      "candidate_median_ms": 19.134800000000002,
+      "paired_candidate_over_baseline_median": 1.0170108340947657,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 4.791899999999999,
+          "selection_ms": 0.17240000000000036,
+          "aggregate_ms": 13.961700000000038
+        },
+        "candidate": {
+          "page_read_ms": 4.930000000000004,
+          "selection_ms": 0.16940000000000022,
+          "aggregate_ms": 13.919499999999964
+        }
+      }
+    },
+    {
+      "name": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              20.4011,
+              20.3763,
+              19.9717,
+              20.5594,
+              20.0041,
+              20.329900000000002,
+              20.010900000000003
+            ],
+            "median_ms": 20.329900000000002,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 15.389700000000024,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.736900000000001,
+                "selection_ms": 0.17040000000000027
+              },
+              {
+                "aggregate_ms": 15.431899999999992,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.6701,
+                "selection_ms": 0.16900000000000012
+              },
+              {
+                "aggregate_ms": 15.103400000000036,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.606000000000004,
+                "selection_ms": 0.16370000000000018
+              },
+              {
+                "aggregate_ms": 15.566100000000015,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.719500000000003,
+                "selection_ms": 0.17230000000000034
+              },
+              {
+                "aggregate_ms": 15.108000000000047,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.624300000000001,
+                "selection_ms": 0.17030000000000012
+              },
+              {
+                "aggregate_ms": 15.509800000000032,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.552000000000001,
+                "selection_ms": 0.16960000000000036
+              },
+              {
+                "aggregate_ms": 15.319800000000006,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.432199999999999,
+                "selection_ms": 0.1640000000000002
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.624300000000001,
+              "selection_ms": 0.16960000000000036,
+              "aggregate_ms": 15.389700000000024
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              22.4579,
+              26.9808,
+              23.782899999999998,
+              27.8161,
+              22.5027,
+              22.324,
+              22.7205
+            ],
+            "median_ms": 22.7205,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 16.805899999999976,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.325300000000005,
+                "selection_ms": 0.18120000000000072
+              },
+              {
+                "aggregate_ms": 20.41509999999998,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 6.237500000000001,
+                "selection_ms": 0.20429999999999993
+              },
+              {
+                "aggregate_ms": 17.77959999999997,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.6829000000000045,
+                "selection_ms": 0.1887000000000006
+              },
+              {
+                "aggregate_ms": 20.72280000000002,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 6.7501,
+                "selection_ms": 0.20629999999999968
+              },
+              {
+                "aggregate_ms": 16.281,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.894399999999999,
+                "selection_ms": 0.2103000000000002
+              },
+              {
+                "aggregate_ms": 16.609199999999962,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.363699999999996,
+                "selection_ms": 0.17410000000000025
+              },
+              {
+                "aggregate_ms": 16.808899999999987,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.590800000000001,
+                "selection_ms": 0.19850000000000034
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 5.6829000000000045,
+              "selection_ms": 0.19850000000000034,
+              "aggregate_ms": 16.808899999999987
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              32.637699999999995,
+              24.9898,
+              24.3597,
+              24.0655,
+              20.5133,
+              21.1552,
+              21.4067
+            ],
+            "median_ms": 24.0655,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 24.907299999999953,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 7.320499999999996,
+                "selection_ms": 0.2410000000000006
+              },
+              {
+                "aggregate_ms": 18.905599999999957,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.770900000000002,
+                "selection_ms": 0.19500000000000053
+              },
+              {
+                "aggregate_ms": 18.363399999999984,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.682299999999995,
+                "selection_ms": 0.18550000000000047
+              },
+              {
+                "aggregate_ms": 18.257399999999983,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.4982,
+                "selection_ms": 0.19210000000000033
+              },
+              {
+                "aggregate_ms": 15.432999999999963,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.7973,
+                "selection_ms": 0.16920000000000038
+              },
+              {
+                "aggregate_ms": 15.861399999999964,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.006200000000001,
+                "selection_ms": 0.17120000000000038
+              },
+              {
+                "aggregate_ms": 16.370199999999983,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.760600000000001,
+                "selection_ms": 0.17270000000000038
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 5.4982,
+              "selection_ms": 0.18550000000000047,
+              "aggregate_ms": 18.257399999999983
+            }
+          },
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              20.4323,
+              27.072200000000002,
+              21.5245,
+              20.6266,
+              19.752100000000002,
+              20.785800000000002,
+              19.9373
+            ],
+            "median_ms": 20.6266,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 15.418500000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.728999999999998,
+                "selection_ms": 0.16500000000000029
+              },
+              {
+                "aggregate_ms": 21.319699999999905,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.3875,
+                "selection_ms": 0.1806000000000004
+              },
+              {
+                "aggregate_ms": 15.84890000000002,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.351599999999994,
+                "selection_ms": 0.17590000000000072
+              },
+              {
+                "aggregate_ms": 15.640799999999988,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.7087999999999965,
+                "selection_ms": 0.17180000000000012
+              },
+              {
+                "aggregate_ms": 14.949700000000052,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.5059999999999985,
+                "selection_ms": 0.16790000000000033
+              },
+              {
+                "aggregate_ms": 15.906600000000031,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.613199999999998,
+                "selection_ms": 0.17040000000000025
+              },
+              {
+                "aggregate_ms": 15.114100000000004,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.551099999999998,
+                "selection_ms": 0.16770000000000032
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.7087999999999965,
+              "selection_ms": 0.17040000000000025,
+              "aggregate_ms": 15.640799999999988
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              19.983500000000003,
+              20.4763,
+              25.621499999999997,
+              23.3464,
+              23.9591,
+              20.8575,
+              20.9442
+            ],
+            "median_ms": 20.9442,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 15.313799999999956,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.398800000000001,
+                "selection_ms": 0.1711000000000003
+              },
+              {
+                "aggregate_ms": 15.684600000000005,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.506099999999998,
+                "selection_ms": 0.1840000000000003
+              },
+              {
+                "aggregate_ms": 19.836699999999983,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.4349,
+                "selection_ms": 0.2090000000000004
+              },
+              {
+                "aggregate_ms": 18.016499999999983,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.016299999999998,
+                "selection_ms": 0.18470000000000047
+              },
+              {
+                "aggregate_ms": 18.717999999999993,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.928999999999999,
+                "selection_ms": 0.1995000000000002
+              },
+              {
+                "aggregate_ms": 16.1631,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.431199999999999,
+                "selection_ms": 0.16280000000000003
+              },
+              {
+                "aggregate_ms": 16.22899999999995,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.444600000000002,
+                "selection_ms": 0.17180000000000034
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.506099999999998,
+              "selection_ms": 0.1840000000000003,
+              "aggregate_ms": 16.22899999999995
+            },
+            "full_scrub_bytes": 24000000
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              20.3519,
+              20.8171,
+              20.2169,
+              20.0213,
+              21.8962,
+              22.342399999999998,
+              24.3073
+            ],
+            "median_ms": 20.8171,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "4a1ffd8b5de540bae6fbe39269d2507832799f5b907efa3c6a73378075df6441",
+                "first": [
+                  [
+                    -9,
+                    52632,
+                    -26612,
+                    -0.5056239550083599,
+                    -500,
+                    499
+                  ],
+                  [
+                    999927,
+                    52632,
+                    -26156,
+                    -0.49696002431980546,
+                    -500,
+                    499
+                  ],
+                  [
+                    1999863,
+                    52631,
+                    -26459,
+                    -0.5027265299918299,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    52631,
+                    -25888,
+                    -0.4918774106515172,
+                    -500,
+                    499
+                  ],
+                  [
+                    16998903,
+                    52632,
+                    -26228,
+                    -0.498328013375893,
+                    -500,
+                    499
+                  ],
+                  [
+                    17998839,
+                    52632,
+                    -26772,
+                    -0.5086639306885545,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 15.446200000000005,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.635499999999998,
+                "selection_ms": 0.16400000000000034
+              },
+              {
+                "aggregate_ms": 15.850400000000052,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.696100000000002,
+                "selection_ms": 0.1667000000000003
+              },
+              {
+                "aggregate_ms": 15.415000000000028,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.533799999999999,
+                "selection_ms": 0.1674000000000003
+              },
+              {
+                "aggregate_ms": 15.278300000000014,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.4844999999999935,
+                "selection_ms": 0.1659000000000004
+              },
+              {
+                "aggregate_ms": 16.800700000000013,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 4.828300000000001,
+                "selection_ms": 0.16640000000000024
+              },
+              {
+                "aggregate_ms": 16.61680000000002,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.419500000000003,
+                "selection_ms": 0.1696000000000003
+              },
+              {
+                "aggregate_ms": 18.685800000000015,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 1000000,
+                "page_read_ms": 5.300800000000005,
+                "selection_ms": 0.18799999999999997
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.696100000000002,
+              "selection_ms": 0.1667000000000003,
+              "aggregate_ms": 15.850400000000052
+            },
+            "full_scrub_bytes": 24000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 20.6266,
+      "candidate_median_ms": 22.7205,
+      "paired_candidate_over_baseline_median": 1.1175903472225637,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 4.624300000000001,
+          "selection_ms": 0.17040000000000025,
+          "aggregate_ms": 15.640799999999988
+        },
+        "candidate": {
+          "page_read_ms": 5.4982,
+          "selection_ms": 0.18550000000000047,
+          "aggregate_ms": 16.808899999999987
+        }
+      }
+    },
+    {
+      "name": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              11.6235,
+              11.597100000000001,
+              11.5528,
+              11.6083,
+              11.699,
+              11.7318,
+              11.5022
+            ],
+            "median_ms": 11.6083,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 6.52920000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.37,
+                "selection_ms": 0.6297999999999995
+              },
+              {
+                "aggregate_ms": 6.497200000000007,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.379700000000001,
+                "selection_ms": 0.6281999999999992
+              },
+              {
+                "aggregate_ms": 6.508000000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.294799999999999,
+                "selection_ms": 0.6598999999999998
+              },
+              {
+                "aggregate_ms": 6.50230000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.388799999999998,
+                "selection_ms": 0.6305999999999999
+              },
+              {
+                "aggregate_ms": 6.607100000000004,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.368599999999998,
+                "selection_ms": 0.6326999999999997
+              },
+              {
+                "aggregate_ms": 6.592800000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.419899999999999,
+                "selection_ms": 0.6325999999999997
+              },
+              {
+                "aggregate_ms": 6.463600000000012,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.328199999999999,
+                "selection_ms": 0.627299999999998
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.37,
+              "selection_ms": 0.6305999999999999,
+              "aggregate_ms": 6.508000000000009
+            }
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              12.4229,
+              11.541300000000001,
+              11.2903,
+              11.6212,
+              12.0555,
+              11.578800000000001,
+              11.522400000000001
+            ],
+            "median_ms": 11.578800000000001,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 6.8497,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.850500000000001,
+                "selection_ms": 0.617999999999998
+              },
+              {
+                "aggregate_ms": 6.431599999999997,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.386599999999997,
+                "selection_ms": 0.6336999999999982
+              },
+              {
+                "aggregate_ms": 6.3631999999999955,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.2269000000000005,
+                "selection_ms": 0.6166999999999987
+              },
+              {
+                "aggregate_ms": 6.571400000000012,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.337700000000001,
+                "selection_ms": 0.6275999999999998
+              },
+              {
+                "aggregate_ms": 6.928500000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.4130999999999965,
+                "selection_ms": 0.6274999999999997
+              },
+              {
+                "aggregate_ms": 6.5645000000000095,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.296899999999997,
+                "selection_ms": 0.6345999999999998
+              },
+              {
+                "aggregate_ms": 6.54730000000002,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.2645,
+                "selection_ms": 0.627099999999999
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.337700000000001,
+              "selection_ms": 0.6274999999999997,
+              "aggregate_ms": 6.5645000000000095
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              12.0399,
+              15.438,
+              12.1236,
+              12.2021,
+              11.808000000000002,
+              11.7075,
+              11.889999999999999
+            ],
+            "median_ms": 12.0399,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 6.586600000000016,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.6861000000000015,
+                "selection_ms": 0.6511999999999986
+              },
+              {
+                "aggregate_ms": 8.659200000000018,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 5.8460000000000045,
+                "selection_ms": 0.8112000000000018
+              },
+              {
+                "aggregate_ms": 6.662300000000011,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.654,
+                "selection_ms": 0.6297999999999995
+              },
+              {
+                "aggregate_ms": 6.6526000000000165,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.788599999999999,
+                "selection_ms": 0.637999999999999
+              },
+              {
+                "aggregate_ms": 6.604900000000019,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.460699999999997,
+                "selection_ms": 0.6436000000000001
+              },
+              {
+                "aggregate_ms": 6.520400000000011,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.422000000000002,
+                "selection_ms": 0.6693999999999994
+              },
+              {
+                "aggregate_ms": 6.525500000000017,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.635300000000002,
+                "selection_ms": 0.6289000000000001
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.654,
+              "selection_ms": 0.6436000000000001,
+              "aggregate_ms": 6.604900000000019
+            }
+          },
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              13.259699999999999,
+              11.6533,
+              11.563199999999998,
+              11.482199999999999,
+              11.8791,
+              11.612400000000001,
+              11.638499999999999
+            ],
+            "median_ms": 11.638499999999999,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 7.39760000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 5.037799999999999,
+                "selection_ms": 0.7055999999999987
+              },
+              {
+                "aggregate_ms": 6.521300000000012,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.403700000000001,
+                "selection_ms": 0.6293999999999998
+              },
+              {
+                "aggregate_ms": 6.515300000000012,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.328600000000001,
+                "selection_ms": 0.6260999999999992
+              },
+              {
+                "aggregate_ms": 6.497800000000014,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.2659999999999965,
+                "selection_ms": 0.627499999999999
+              },
+              {
+                "aggregate_ms": 6.681600000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.470800000000001,
+                "selection_ms": 0.6286999999999994
+              },
+              {
+                "aggregate_ms": 6.4972000000000145,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.393399999999995,
+                "selection_ms": 0.6280999999999992
+              },
+              {
+                "aggregate_ms": 6.584800000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.313199999999997,
+                "selection_ms": 0.627199999999999
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.393399999999995,
+              "selection_ms": 0.6280999999999992,
+              "aggregate_ms": 6.521300000000012
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.10",
+            "samples_ms": [
+              12.9038,
+              12.0459,
+              11.8896,
+              13.014100000000001,
+              11.608500000000001,
+              11.7316,
+              11.693
+            ],
+            "median_ms": 11.8896,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 7.337100000000018,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.763399999999996,
+                "selection_ms": 0.6953000000000015
+              },
+              {
+                "aggregate_ms": 6.758100000000009,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.553400000000002,
+                "selection_ms": 0.6337999999999988
+              },
+              {
+                "aggregate_ms": 6.659700000000012,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.4831999999999965,
+                "selection_ms": 0.6435000000000003
+              },
+              {
+                "aggregate_ms": 6.701500000000003,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 5.4567000000000005,
+                "selection_ms": 0.7532000000000005
+              },
+              {
+                "aggregate_ms": 6.518400000000015,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.3687000000000005,
+                "selection_ms": 0.6283999999999995
+              },
+              {
+                "aggregate_ms": 6.550400000000023,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.4594000000000005,
+                "selection_ms": 0.6294999999999993
+              },
+              {
+                "aggregate_ms": 6.61770000000001,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.3549000000000015,
+                "selection_ms": 0.6254999999999995
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.4831999999999965,
+              "selection_ms": 0.6337999999999988,
+              "aggregate_ms": 6.659700000000012
+            },
+            "full_scrub_bytes": 24000000
+          },
+          "candidate": {
+            "version": "0.3.10",
+            "samples_ms": [
+              11.6758,
+              11.516,
+              11.8164,
+              11.877600000000001,
+              11.7943,
+              11.5253,
+              11.9335
+            ],
+            "median_ms": 11.7943,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 19,
+                "sha256": "15c32eff07e549c37762a9bbfe345dc4744f4ffd8c98fae19981da48a338eea4",
+                "first": [
+                  [
+                    -9,
+                    26316,
+                    6565717
+                  ],
+                  [
+                    999927,
+                    26316,
+                    6565982
+                  ],
+                  [
+                    1999863,
+                    26316,
+                    6565544
+                  ]
+                ],
+                "last": [
+                  [
+                    15998967,
+                    26316,
+                    6565829
+                  ],
+                  [
+                    16998903,
+                    26316,
+                    6565928
+                  ],
+                  [
+                    17998839,
+                    26315,
+                    6565656
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 6.5432000000000095,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.4060000000000015,
+                "selection_ms": 0.6322999999999996
+              },
+              {
+                "aggregate_ms": 6.481500000000006,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.319399999999999,
+                "selection_ms": 0.6265999999999992
+              },
+              {
+                "aggregate_ms": 6.6165000000000065,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.466500000000002,
+                "selection_ms": 0.6389
+              },
+              {
+                "aggregate_ms": 6.640900000000011,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.4940000000000015,
+                "selection_ms": 0.649499999999999
+              },
+              {
+                "aggregate_ms": 6.6044000000000125,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.464800000000001,
+                "selection_ms": 0.6307999999999993
+              },
+              {
+                "aggregate_ms": 6.498900000000013,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.310799999999999,
+                "selection_ms": 0.6295999999999993
+              },
+              {
+                "aggregate_ms": 6.774499999999998,
+                "blocks": 245,
+                "candidate_rows": 1000000,
+                "matched_rows": 500000,
+                "page_read_ms": 4.431300000000002,
+                "selection_ms": 0.6400000000000007
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 4.431300000000002,
+              "selection_ms": 0.6322999999999996,
+              "aggregate_ms": 6.6044000000000125
+            },
+            "full_scrub_bytes": 24000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 11.638499999999999,
+      "candidate_median_ms": 11.7943,
+      "paired_candidate_over_baseline_median": 0.9974587148850392,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 4.393399999999995,
+          "selection_ms": 0.6305999999999999,
+          "aggregate_ms": 6.521300000000012
+        },
+        "candidate": {
+          "page_read_ms": 4.431300000000002,
+          "selection_ms": 0.6322999999999996,
+          "aggregate_ms": 6.6044000000000125
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "completed_at_utc": "2026-10-06T18:36:43.546350+00:00"
+}

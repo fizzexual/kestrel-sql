@@ -73,3 +73,7 @@ The measured sparse reduction path keeps [Rust's standard randomized HashMap](ht
 ## 0.3.10 first-filter selection
 
 Stage instrumentation located the added unordered-scan cost in selection. An `inline(never)` trial produced no reliable end-to-end gain. [Rust's reference describes inline annotations as hints](https://doc.rust-lang.org/reference/attributes/codegen.html#the-inline-attribute), so an annotation is a hypothesis to measure, not a speed guarantee. Building row positions directly from the first residual predicate removes an initial range fill and indirect value lookups. Operator fusion is established prior art; no novelty claim is made. [Final controls, complete matrix and retained unsuccessful evidence](PERFORMANCE_040.md) support the measured scope.
+
+## 0.3.11 seeded sparse-cache indexing
+
+Low-bit-aligned keys defeated the xor-fold index. A full-width multiply spreads those keys, but fixed multipliers have their own adversarial spacings. The candidate derives an odd multiplier once per query using [Rust RandomState](https://doc.rust-lang.org/std/collections/hash_map/struct.RandomState.html) and [BuildHasher::hash_one](https://doc.rust-lang.org/std/hash/trait.BuildHasher.html#method.hash_one). Exact tags and the authoritative randomized HashMap retain correctness. Tests invert each actual multiplier to force real collisions; the matrix adds Fibonacci/power-of-two patterns. This is established cache/indexing work, without cryptographic or novelty claims. [Current measurements and remaining losses](PERFORMANCE_041.md).
