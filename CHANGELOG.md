@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.14 experimental adaptive sparse SUM candidate
+
+- Avoid rewriting exact cache-hit tags. Fuse a shared SUM/AVG into sparse lookup only for blocks entered with the small cache active; retain the preceding wider and fallback mapper, dense kernels, readers and storage policy.
+- Preserve four trials, including wide/high-cardinality fusion regressions. Rebuild and compare the selected adaptive kernel with 60 fresh shapes and small/wide/irregular/high-cardinality/dense/scan/tiny/10M/100M controls.
+- Pass 74 Rust tests in both modes, both Clippy configurations and 4,000 SQL cases against each DuckDB/SQLite. Confirm exact signed wide shared SUM/AVG JSON, retry/reopen and current publication/source/process-kill/Parquet checks. Preserve and repair a test-only Clippy failure. [Every result and limit](PERFORMANCE_044.md).
+
 ## 0.3.13 experimental fused dense SUM candidate
 
 - Fuse key validation, exact row counts and shared i128 SUM/AVG updates in one pass over selected dense-group rows. Retain existing mixed-reduction and sparse paths; no additional query allocation or storage-format change.

@@ -85,3 +85,7 @@ Measured reuse can justify a wider lookup table after small-cache fallback. The 
 ## 0.3.13 dense reduction fusion
 
 A selected-row slot pass followed by another reduction pass imposed measurable aggregation cost on dense GROUP SUM. Combining exact counts and a shared SUM/AVG column removes that second traversal while preserving metadata bounds and signed wide reductions. Final binaries are independently rebuilt and compared at 10M and 100M rows; mixed and sparse paths retain their preceding implementation. This is established loop fusion and specialization, without a novelty claim. [Evidence and tradeoffs](PERFORMANCE_043.md).
+
+## 0.3.14 sparse kernel selection
+
+A fused loop can help small sparse states yet regress wider key sets. Exact cache hits need no tag rewrite; a typed shared SUM can be reduced during small-cache lookup, while wider kernels retain a separately measured two-pass mapper. Four preserved trials and alternating guards support this bounded choice. Source identity proves unchanged dense/scan/read/write paths; changes in their measured timings are retained without attribution. This is established specialization, without a novelty claim. [Evidence and unsuccessful trials](PERFORMANCE_044.md).

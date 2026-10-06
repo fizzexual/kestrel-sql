@@ -1,0 +1,2838 @@
+{
+  "version": "0.3.14",
+  "completed_at_utc": "2026-10-06T21:39:00.643747+00:00",
+  "source_sha256": {
+    "Cargo.lock": "396c682635e804750b80ecda4c6b493ea4aea617b94e83e6e5b3249e72a20c4d",
+    "Cargo.toml": "5489bc6d2785d5ce75206976793e6c4ca0444becbcf10da5cd778249780cd958",
+    "examples/group_probe.rs": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+    "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+    "src/archive.rs": "f9aa97ed0acff763b82a6f55e5cbb6ebd17952a4c5d835b0622c1e3dc422b37b",
+    "src/bin/kestrel-stress.rs": "d1b85ef5c5ef97f2b1a9c47eed202cafeb64affe9d7f37839326117c48420ae4",
+    "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "2ca3a08a7c695af7fcf284fd52a1741c374dfff60a29383ad3313515b10cc734",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "src/wire_json.rs": "42b5322f74ce4adf5fe7314d3362055e4d469dccfa4a1de88ea016ba4bc184c3",
+    "tests/archive.rs": "5455e13db38f381b500e7f560859d1f8734f153696aa8ad77c460f5527d48793",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+  },
+  "rust_tests_each_mode": 74,
+  "baseline": "0.3.13",
+  "baseline_provenance": {
+    "version": "0.3.13",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\outputs\\kestrel-sql-0.3.13.zip",
+    "archive_sha256": "6e92e9d0e80beb8a3e5ed42e839e50caeae0d1663b00c7380acc7817b7d2fcad",
+    "core_source_sha256": {
+      "Cargo.lock": "bfc667a4a42698ca80a2ebdb2347362d9c2cd69429b0cf9cf9db08c37af4a074",
+      "Cargo.toml": "33469559a080f115e39b14f7cc460a5ba843f38cb08e34420af0e757d721a1ca",
+      "examples/group_probe.rs": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+      "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+      "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+      "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+      "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+      "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+      "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+      "src/archive.rs": "3de5be6bbd819d28f594f20a92f59649e585895d399828fb9ef98585b28d4b15",
+      "src/bin/kestrel-stress.rs": "d1b85ef5c5ef97f2b1a9c47eed202cafeb64affe9d7f37839326117c48420ae4",
+      "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+      "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+      "src/main.rs": "2ca3a08a7c695af7fcf284fd52a1741c374dfff60a29383ad3313515b10cc734",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "src/wire_json.rs": "42b5322f74ce4adf5fe7314d3362055e4d469dccfa4a1de88ea016ba4bc184c3",
+      "tests/archive.rs": "5455e13db38f381b500e7f560859d1f8734f153696aa8ad77c460f5527d48793",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+      "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+    },
+    "baseline_binary_sha256": {
+      "group-probe.exe": "151ffddcf2e0b9a74c8456a7231e668cf166203babf732cfe334bb93f5f8b40a",
+      "kestrel-stress.exe": "0b62d7341f548c03355d9ba18af4c1941affd8e7057c68d371756da788a67608",
+      "kestrel.exe": "4b313b34508940eb65f5f39622aac3abfca2458b6d9cff09a9c9d8988f05e0f2",
+      "performance-probe.exe": "a268b58edcbce1a70e9786f6e1cc5d7973a9b29d738403ecd0cf4f0ead7afd08",
+      "publication-probe.exe": "07e6050923405ea29da0e6b14a9530c8d9476fbc0e71dc7ab4c4cdb7c61ad98b",
+      "receipt-seed.exe": "0e576f4852af7f560802bd79c06011c403577c2031a4583284f6fa5f7d9e1b4a",
+      "scan-profile.exe": "37b825b8e9292cca19f39f76d8543fd7c01a7ac2cfb197caeb57882f59b5c5ee"
+    },
+    "same_group_probe_source": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f"
+  },
+  "primary_score": {
+    "wins": 30,
+    "losses": 0,
+    "query_shapes": 30
+  },
+  "extended_score": {
+    "wins": 15,
+    "losses": 0,
+    "query_shapes": 15
+  },
+  "pattern_score": {
+    "wins": 10,
+    "losses": 0,
+    "query_shapes": 10
+  },
+  "irregular_score": {
+    "wins": 3,
+    "losses": 2,
+    "query_shapes": 5
+  },
+  "current_comparison_cases": 108,
+  "current_query_shapes": 60,
+  "current_timed_query_samples": 5940,
+  "previous_release_scores": {
+    "primary_score": {
+      "wins": 30,
+      "losses": 0,
+      "query_shapes": 30
+    },
+    "extended_score": {
+      "wins": 15,
+      "losses": 0,
+      "query_shapes": 15
+    },
+    "pattern_score": {
+      "wins": 10,
+      "losses": 0,
+      "query_shapes": 10
+    },
+    "irregular_score": {
+      "wins": 3,
+      "losses": 2,
+      "query_shapes": 5
+    }
+  },
+  "current_comparisons": [
+    {
+      "fixture": "dense97",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 6.2940000000000005,
+        "candidate": 6.4117999999999995,
+        "duckdb": 7.5293
+      },
+      "run_medians_ms": {
+        "baseline": [
+          6.2940000000000005,
+          6.3209,
+          6.240500000000001
+        ],
+        "candidate": [
+          6.362699999999999,
+          6.4117999999999995,
+          6.6403
+        ],
+        "duckdb": [
+          7.5011,
+          7.5293,
+          7.5953
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9858230138182726,
+      "paired_speedup_range": [
+        0.939791876873033,
+        0.9892026969682683
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "dense97",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 9.1309,
+        "candidate": 9.1663,
+        "duckdb": 11.3368
+      },
+      "run_medians_ms": {
+        "baseline": [
+          9.1271,
+          9.1309,
+          9.2034
+        ],
+        "candidate": [
+          9.066899999999999,
+          9.1663,
+          9.42
+        ],
+        "duckdb": [
+          11.4361,
+          11.3368,
+          11.1794
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9961380273392755,
+      "paired_speedup_range": [
+        0.9770063694267517,
+        1.0066395350119668
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "dense97",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 5.988099999999999,
+        "candidate": 5.8215,
+        "duckdb": 8.0233
+      },
+      "run_medians_ms": {
+        "baseline": [
+          5.988099999999999,
+          5.900200000000001,
+          6.3229999999999995
+        ],
+        "candidate": [
+          5.8142000000000005,
+          5.8215,
+          6.0947
+        ],
+        "duckdb": [
+          8.056,
+          8.0233,
+          7.9735
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.02990953183585,
+      "paired_speedup_range": [
+        1.013518852529417,
+        1.0374587756575384
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "dense97",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 3.1039000000000003,
+        "candidate": 2.984,
+        "duckdb": 3.7552
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.0292000000000003,
+          3.1731,
+          3.1039000000000003
+        ],
+        "candidate": [
+          2.984,
+          3.2098,
+          2.9488000000000003
+        ],
+        "duckdb": [
+          3.8239,
+          3.7552,
+          3.7372
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.01514745308311,
+      "paired_speedup_range": [
+        0.9885662658109539,
+        1.0525976668475312
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "dense97",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0058000000000000005,
+        "candidate": 0.005699999999999999,
+        "duckdb": 1.6793
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0058000000000000005,
+          0.0059,
+          0.005699999999999999
+        ],
+        "candidate": [
+          0.005699999999999999,
+          0.0056,
+          0.0059
+        ],
+        "duckdb": [
+          1.6682,
+          1.6793,
+          1.7599
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.017543859649123,
+      "paired_speedup_range": [
+        0.9661016949152541,
+        1.0535714285714286
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "sparse19",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 8.4948,
+        "candidate": 8.1152,
+        "duckdb": 11.2006
+      },
+      "run_medians_ms": {
+        "baseline": [
+          8.353599999999998,
+          8.4948,
+          8.538
+        ],
+        "candidate": [
+          8.1495,
+          8.1152,
+          8.056000000000001
+        ],
+        "duckdb": [
+          11.2886,
+          11.1647,
+          11.2006
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0467764195583595,
+      "paired_speedup_range": [
+        1.0250444812565187,
+        1.0598311817279045
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "sparse19",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 10.3746,
+        "candidate": 10.230599999999999,
+        "duckdb": 14.7769
+      },
+      "run_medians_ms": {
+        "baseline": [
+          10.6123,
+          10.3746,
+          10.2493
+        ],
+        "candidate": [
+          10.230599999999999,
+          10.138,
+          10.310400000000001
+        ],
+        "duckdb": [
+          14.6256,
+          15.0795,
+          14.7769
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0233379364766226,
+      "paired_speedup_range": [
+        0.9940739447548105,
+        1.0373096397083261
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "sparse19",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 6.9068000000000005,
+        "candidate": 6.6534,
+        "duckdb": 10.47
+      },
+      "run_medians_ms": {
+        "baseline": [
+          6.9068000000000005,
+          6.812,
+          7.0074
+        ],
+        "candidate": [
+          6.6534,
+          6.5475,
+          6.6832
+        ],
+        "duckdb": [
+          10.47,
+          10.56,
+          10.4105
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.040397098129057,
+      "paired_speedup_range": [
+        1.03808579072354,
+        1.0485096959540339
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "sparse19",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 3.0344,
+        "candidate": 2.9439,
+        "duckdb": 3.7923
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.0344,
+          2.9984,
+          3.2534
+        ],
+        "candidate": [
+          2.9168000000000003,
+          3.0542,
+          2.9439
+        ],
+        "duckdb": [
+          3.7932,
+          3.7679,
+          3.7923
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0403181568842568,
+      "paired_speedup_range": [
+        0.9817300766158079,
+        1.1051326471687217
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "sparse19",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0056,
+        "candidate": 0.0056,
+        "duckdb": 1.6984
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0054,
+          0.0056,
+          0.0059
+        ],
+        "candidate": [
+          0.0053,
+          0.0056,
+          0.005699999999999999
+        ],
+        "duckdb": [
+          1.6984,
+          1.8484,
+          1.6607
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0188679245283019,
+      "paired_speedup_range": [
+        1.0,
+        1.0350877192982457
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality5003",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 7.557300000000001,
+        "candidate": 7.642399999999999,
+        "duckdb": 18.6742
+      },
+      "run_medians_ms": {
+        "baseline": [
+          8.0067,
+          7.5353,
+          7.557300000000001
+        ],
+        "candidate": [
+          7.7152,
+          7.642399999999999,
+          7.6262
+        ],
+        "duckdb": [
+          18.6742,
+          18.6389,
+          18.7803
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9909653562717999,
+      "paired_speedup_range": [
+        0.9859860776719357,
+        1.037782559104106
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality5003",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 10.8979,
+        "candidate": 10.8886,
+        "duckdb": 27.4858
+      },
+      "run_medians_ms": {
+        "baseline": [
+          10.8979,
+          11.03,
+          10.7939
+        ],
+        "candidate": [
+          10.8577,
+          10.8886,
+          10.9065
+        ],
+        "duckdb": [
+          27.5908,
+          27.4858,
+          27.0471
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0037024415852345,
+      "paired_speedup_range": [
+        0.9896758813551553,
+        1.012986058813805
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality5003",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 6.8556,
+        "candidate": 6.7987,
+        "duckdb": 17.2696
+      },
+      "run_medians_ms": {
+        "baseline": [
+          6.7542,
+          6.9343,
+          6.8556
+        ],
+        "candidate": [
+          6.7987,
+          6.9124,
+          6.7959
+        ],
+        "duckdb": [
+          17.2696,
+          17.31,
+          17.1639
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.003168219431746,
+      "paired_speedup_range": [
+        0.9934546310324032,
+        1.00878470842714
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality5003",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 2.9965,
+        "candidate": 2.9321,
+        "duckdb": 3.8698
+      },
+      "run_medians_ms": {
+        "baseline": [
+          2.9965,
+          3.0171,
+          2.9759
+        ],
+        "candidate": [
+          2.8985,
+          2.9321,
+          3.003
+        ],
+        "duckdb": [
+          3.8082,
+          3.9974,
+          3.8698
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0289894614781214,
+      "paired_speedup_range": [
+        0.990975690975691,
+        1.0338105916853546
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality5003",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0058000000000000005,
+        "candidate": 0.0058000000000000005,
+        "duckdb": 1.7154
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0058000000000000005,
+          0.0061,
+          0.0054
+        ],
+        "candidate": [
+          0.0058000000000000005,
+          0.0056,
+          0.0058000000000000005
+        ],
+        "duckdb": [
+          1.7154,
+          1.7496,
+          1.7124
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0,
+      "paired_speedup_range": [
+        0.9310344827586207,
+        1.0892857142857144
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "nyc",
+      "query": "month",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1735707600 AND ts < 1738386000",
+      "rows": 3475077,
+      "run_median_ms": {
+        "baseline": 0.0052,
+        "candidate": 0.0045000000000000005,
+        "duckdb": 17.4218
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0052,
+          0.0052,
+          0.0049
+        ],
+        "candidate": [
+          0.0045000000000000005,
+          0.0045000000000000005,
+          0.0044
+        ],
+        "duckdb": [
+          17.397,
+          17.5086,
+          17.4218
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.1555555555555554,
+      "paired_speedup_range": [
+        1.1136363636363635,
+        1.1555555555555554
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "nyc",
+      "query": "day",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1736917200 AND ts < 1737003600",
+      "rows": 3475077,
+      "run_median_ms": {
+        "baseline": 0.0055,
+        "candidate": 0.0051,
+        "duckdb": 1.6142
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0056,
+          0.0055,
+          0.0052
+        ],
+        "candidate": [
+          0.0051,
+          0.0051,
+          0.0049
+        ],
+        "duckdb": [
+          1.658,
+          1.6056,
+          1.6142
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0784313725490196,
+      "paired_speedup_range": [
+        1.0612244897959184,
+        1.0980392156862744
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "nyc",
+      "query": "hour",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE ts >= 1736949600 AND ts < 1736953200",
+      "rows": 3475077,
+      "run_median_ms": {
+        "baseline": 0.0048,
+        "candidate": 0.0043,
+        "duckdb": 0.6951
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0048,
+          0.005,
+          0.0046
+        ],
+        "candidate": [
+          0.0044,
+          0.0043,
+          0.0042
+        ],
+        "duckdb": [
+          0.6959,
+          0.6832,
+          0.6951
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0952380952380953,
+      "paired_speedup_range": [
+        1.0909090909090908,
+        1.1627906976744187
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "nyc",
+      "query": "zone",
+      "sql": "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE device = 237 AND ts >= 1736917200 AND ts < 1737003600",
+      "rows": 3475077,
+      "run_median_ms": {
+        "baseline": 1.1152,
+        "candidate": 1.1028,
+        "duckdb": 1.7591
+      },
+      "run_medians_ms": {
+        "baseline": [
+          1.1071,
+          1.1152,
+          1.1166
+        ],
+        "candidate": [
+          1.1475000000000002,
+          1.0946,
+          1.1028
+        ],
+        "duckdb": [
+          1.7591,
+          1.738,
+          1.7661
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0125136017410228,
+      "paired_speedup_range": [
+        0.96479302832244,
+        1.0188196601498263
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "nyc",
+      "query": "all_zones",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS total FROM events GROUP BY device ORDER BY device",
+      "rows": 3475077,
+      "run_median_ms": {
+        "baseline": 22.7003,
+        "candidate": 22.5279,
+        "duckdb": 25.7145
+      },
+      "run_medians_ms": {
+        "baseline": [
+          22.7003,
+          23.2862,
+          22.6007
+        ],
+        "candidate": [
+          21.9861,
+          22.5279,
+          23.634999999999998
+        ],
+        "duckdb": [
+          25.6962,
+          25.7145,
+          25.9063
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0324841604468278,
+      "paired_speedup_range": [
+        0.9562386291516819,
+        1.0336604832230258
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "10000000",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 10000000,
+      "run_median_ms": {
+        "baseline": 67.2099,
+        "candidate": 66.6148,
+        "duckdb": 70.8127
+      },
+      "run_medians_ms": {
+        "baseline": [
+          67.2099,
+          67.27900000000001,
+          66.5237
+        ],
+        "candidate": [
+          68.0034,
+          66.6148,
+          65.97269999999999
+        ],
+        "duckdb": [
+          70.493,
+          70.8127,
+          71.4699
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0083519395143752,
+      "paired_speedup_range": [
+        0.9883314657796523,
+        1.0099707572491399
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "10000000",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 10000000,
+      "run_median_ms": {
+        "baseline": 95.9364,
+        "candidate": 95.69229999999999,
+        "duckdb": 106.225
+      },
+      "run_medians_ms": {
+        "baseline": [
+          95.4261,
+          95.9364,
+          97.2852
+        ],
+        "candidate": [
+          95.69229999999999,
+          94.95240000000001,
+          96.95819999999999
+        ],
+        "duckdb": [
+          106.225,
+          106.615,
+          105.5854
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0033725873623893,
+      "paired_speedup_range": [
+        0.9972181669789525,
+        1.0103630871889493
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "10000000",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 10000000,
+      "run_median_ms": {
+        "baseline": 63.74870000000001,
+        "candidate": 63.356399999999994,
+        "duckdb": 75.5833
+      },
+      "run_medians_ms": {
+        "baseline": [
+          64.163,
+          63.74870000000001,
+          63.196799999999996
+        ],
+        "candidate": [
+          63.725699999999996,
+          63.356399999999994,
+          62.5673
+        ],
+        "duckdb": [
+          75.3626,
+          78.1096,
+          75.5833
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0068622235612947,
+      "paired_speedup_range": [
+        1.0061919553509986,
+        1.0100611661363044
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "10000000",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 10000000,
+      "run_median_ms": {
+        "baseline": 32.9304,
+        "candidate": 31.718499999999995,
+        "duckdb": 35.7958
+      },
+      "run_medians_ms": {
+        "baseline": [
+          32.9304,
+          33.1478,
+          31.757399999999997
+        ],
+        "candidate": [
+          32.6364,
+          31.6208,
+          31.718499999999995
+        ],
+        "duckdb": [
+          35.7958,
+          36.9358,
+          35.7407
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.009008346508806,
+      "paired_speedup_range": [
+        1.0012264136072009,
+        1.0482909983302129
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "10000000",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 2500000 AND ts < 5000000",
+      "rows": 10000000,
+      "run_median_ms": {
+        "baseline": 0.0038,
+        "candidate": 0.0037,
+        "duckdb": 8.2672
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0038,
+          0.004,
+          0.0037
+        ],
+        "candidate": [
+          0.0037,
+          0.0036,
+          0.0037
+        ],
+        "duckdb": [
+          8.1302,
+          8.366,
+          8.2672
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.027027027027027,
+      "paired_speedup_range": [
+        1.0,
+        1.1111111111111112
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "100000000",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 100000000,
+      "run_median_ms": {
+        "baseline": 677.1187,
+        "candidate": 664.237,
+        "duckdb": 794.6046
+      },
+      "run_medians_ms": {
+        "baseline": [
+          688.2946,
+          677.1187,
+          664.558
+        ],
+        "candidate": [
+          664.237,
+          668.1352,
+          662.389
+        ],
+        "duckdb": [
+          797.4391,
+          786.9106,
+          794.6046
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0134456319619143,
+      "paired_speedup_range": [
+        1.0032745108991845,
+        1.0362183979513335
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "100000000",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 100000000,
+      "run_median_ms": {
+        "baseline": 948.9492,
+        "candidate": 957.7168,
+        "duckdb": 1139.4059
+      },
+      "run_medians_ms": {
+        "baseline": [
+          948.9492,
+          954.9852,
+          939.0072
+        ],
+        "candidate": [
+          957.7168,
+          949.6419000000001,
+          980.8633
+        ],
+        "duckdb": [
+          1149.0532,
+          1139.4059,
+          1132.4034
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9908453104299726,
+      "paired_speedup_range": [
+        0.9573272850559298,
+        1.0056266472656692
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "100000000",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 100000000,
+      "run_median_ms": {
+        "baseline": 636.7796999999999,
+        "candidate": 625.5014,
+        "duckdb": 838.6328
+      },
+      "run_medians_ms": {
+        "baseline": [
+          636.7796999999999,
+          629.4863,
+          641.3636
+        ],
+        "candidate": [
+          625.5014,
+          702.9312,
+          622.973
+        ],
+        "duckdb": [
+          847.5117,
+          838.6328,
+          832.6782
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0180308149590072,
+      "paired_speedup_range": [
+        0.8955162325985815,
+        1.029520701539232
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-dense-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "100000000",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 100000000,
+      "run_median_ms": {
+        "baseline": 328.007,
+        "candidate": 323.69100000000003,
+        "duckdb": 357.9638
+      },
+      "run_medians_ms": {
+        "baseline": [
+          327.8254,
+          343.9757,
+          328.007
+        ],
+        "candidate": [
+          323.69100000000003,
+          321.8058,
+          381.4045
+        ],
+        "duckdb": [
+          356.9565,
+          357.9638,
+          369.0494
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0127726751747808,
+      "paired_speedup_range": [
+        0.8599977189571701,
+        1.0688921703710748
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 2,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "100000000",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 25000000 AND ts < 50000000",
+      "rows": 100000000,
+      "run_median_ms": {
+        "baseline": 0.007,
+        "candidate": 0.0076,
+        "duckdb": 74.2263
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0058000000000000005,
+          0.007,
+          0.007500000000000001
+        ],
+        "candidate": [
+          0.0076,
+          0.005699999999999999,
+          0.0079
+        ],
+        "duckdb": [
+          73.8596,
+          74.2263,
+          75.5343
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9493670886075949,
+      "paired_speedup_range": [
+        0.7631578947368421,
+        1.2280701754385968
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    }
+  ],
+  "extended_comparisons": [
+    {
+      "fixture": "wide5003",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 13.7181,
+        "candidate": 13.2195,
+        "duckdb": 20.142
+      },
+      "run_medians_ms": {
+        "baseline": [
+          13.7181,
+          15.2228,
+          13.4152
+        ],
+        "candidate": [
+          14.010299999999999,
+          13.2195,
+          12.6871
+        ],
+        "duckdb": [
+          20.2908,
+          20.142,
+          20.0833
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.057389001426646,
+      "paired_speedup_range": [
+        0.979143915547847,
+        1.1515412837096712
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "wide5003",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 16.5211,
+        "candidate": 15.4829,
+        "duckdb": 28.7353
+      },
+      "run_medians_ms": {
+        "baseline": [
+          15.4208,
+          16.5211,
+          16.8518
+        ],
+        "candidate": [
+          15.4829,
+          14.576,
+          16.1376
+        ],
+        "duckdb": [
+          30.2259,
+          28.7195,
+          28.7353
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0442568907396392,
+      "paired_speedup_range": [
+        0.9959891234846184,
+        1.1334453896816685
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "wide5003",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 12.239999999999998,
+        "candidate": 10.361600000000001,
+        "duckdb": 17.7708
+      },
+      "run_medians_ms": {
+        "baseline": [
+          10.305,
+          12.4925,
+          12.239999999999998
+        ],
+        "candidate": [
+          11.1807,
+          9.9642,
+          10.361600000000001
+        ],
+        "duckdb": [
+          17.7571,
+          17.7708,
+          18.6196
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.181284743668931,
+      "paired_speedup_range": [
+        0.9216775336070192,
+        1.2537383834126172
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "wide5003",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 3.2361999999999997,
+        "candidate": 3.3007,
+        "duckdb": 4.0796
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.2361999999999997,
+          3.0855,
+          3.4989
+        ],
+        "candidate": [
+          3.3007,
+          3.0624,
+          3.3061000000000003
+        ],
+        "duckdb": [
+          3.9305,
+          4.0796,
+          4.5781
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.007543103448276,
+      "paired_speedup_range": [
+        0.9804586905807858,
+        1.0583164453585794
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "wide5003",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0061,
+        "candidate": 0.0061,
+        "duckdb": 1.8394
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.006,
+          0.0061,
+          0.0066
+        ],
+        "candidate": [
+          0.0062,
+          0.006,
+          0.0061
+        ],
+        "duckdb": [
+          1.694,
+          1.8394,
+          2.1192
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0166666666666666,
+      "paired_speedup_range": [
+        0.967741935483871,
+        1.081967213114754
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "collision19",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 8.4415,
+        "candidate": 7.8388,
+        "duckdb": 11.1377
+      },
+      "run_medians_ms": {
+        "baseline": [
+          8.917100000000001,
+          8.4415,
+          8.3904
+        ],
+        "candidate": [
+          7.947900000000001,
+          7.8259,
+          7.8388
+        ],
+        "duckdb": [
+          11.1839,
+          11.1072,
+          11.1377
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0786618791448908,
+      "paired_speedup_range": [
+        1.0703679134561412,
+        1.1219441613507972
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "collision19",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 10.816600000000001,
+        "candidate": 10.133,
+        "duckdb": 14.8129
+      },
+      "run_medians_ms": {
+        "baseline": [
+          11.8428,
+          10.5718,
+          10.816600000000001
+        ],
+        "candidate": [
+          10.220099999999999,
+          10.029100000000001,
+          10.133
+        ],
+        "duckdb": [
+          14.9996,
+          14.7798,
+          14.8129
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0674627454850492,
+      "paired_speedup_range": [
+        1.0541125325303364,
+        1.1587753544485868
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "collision19",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 7.1964999999999995,
+        "candidate": 6.7396,
+        "duckdb": 10.3907
+      },
+      "run_medians_ms": {
+        "baseline": [
+          7.672,
+          7.0152,
+          7.1964999999999995
+        ],
+        "candidate": [
+          6.6251,
+          7.0285,
+          6.7396
+        ],
+        "duckdb": [
+          10.3808,
+          10.3907,
+          10.4114
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.067793340851089,
+      "paired_speedup_range": [
+        0.9981077043465889,
+        1.1580202562980182
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "collision19",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 2.9886,
+        "candidate": 2.9391,
+        "duckdb": 3.7482
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.0477999999999996,
+          2.9743999999999997,
+          2.9886
+        ],
+        "candidate": [
+          2.9391,
+          3.0561999999999996,
+          2.9361
+        ],
+        "duckdb": [
+          3.7368,
+          3.7482,
+          3.7937
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0178808623684479,
+      "paired_speedup_range": [
+        0.9732347359466004,
+        1.0369841107822122
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "collision19",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0056,
+        "candidate": 0.0056,
+        "duckdb": 1.6681
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0056,
+          0.0056,
+          0.005699999999999999
+        ],
+        "candidate": [
+          0.0055,
+          0.0058000000000000005,
+          0.0056
+        ],
+        "duckdb": [
+          1.7086,
+          1.6681,
+          1.6602
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0178571428571428,
+      "paired_speedup_range": [
+        0.9655172413793103,
+        1.0181818181818183
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality70001",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 40.7347,
+        "candidate": 41.1198,
+        "duckdb": 91.0915
+      },
+      "run_medians_ms": {
+        "baseline": [
+          42.894099999999995,
+          40.7011,
+          40.7347
+        ],
+        "candidate": [
+          41.1198,
+          41.0293,
+          41.168000000000006
+        ],
+        "duckdb": [
+          91.417,
+          91.0915,
+          90.3497
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9920008384252229,
+      "paired_speedup_range": [
+        0.9894748348231633,
+        1.0431495289373975
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality70001",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 50.5841,
+        "candidate": 52.025099999999995,
+        "duckdb": 131.8961
+      },
+      "run_medians_ms": {
+        "baseline": [
+          50.799299999999995,
+          50.5841,
+          49.910999999999994
+        ],
+        "candidate": [
+          50.014500000000005,
+          55.286500000000004,
+          52.025099999999995
+        ],
+        "duckdb": [
+          131.8961,
+          136.8811,
+          129.5362
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9593638455284084,
+      "paired_speedup_range": [
+        0.9149448780443689,
+        1.0156914494796507
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality70001",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 34.500099999999996,
+        "candidate": 34.5858,
+        "duckdb": 94.4214
+      },
+      "run_medians_ms": {
+        "baseline": [
+          34.4608,
+          34.9627,
+          34.500099999999996
+        ],
+        "candidate": [
+          34.5858,
+          34.381,
+          34.8088
+        ],
+        "duckdb": [
+          94.4214,
+          94.861,
+          92.8987
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9963857999525817,
+      "paired_speedup_range": [
+        0.9911315529406356,
+        1.0169192286437276
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality70001",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 3.0669,
+        "candidate": 2.9238,
+        "duckdb": 3.8332
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.0669,
+          3.0715,
+          2.9045
+        ],
+        "candidate": [
+          2.8827000000000003,
+          2.9238,
+          2.9543999999999997
+        ],
+        "duckdb": [
+          3.8332,
+          3.7803,
+          3.9864
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.050516451193652,
+      "paired_speedup_range": [
+        0.983109937720011,
+        1.0638984285565614
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "cardinality70001",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0056,
+        "candidate": 0.0055,
+        "duckdb": 1.7067
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0055,
+          0.0056,
+          0.006
+        ],
+        "candidate": [
+          0.005699999999999999,
+          0.0055,
+          0.0055
+        ],
+        "duckdb": [
+          1.7018,
+          1.7067,
+          1.8874
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0181818181818183,
+      "paired_speedup_range": [
+        0.9649122807017544,
+        1.090909090909091
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    }
+  ],
+  "pattern_comparisons": [
+    {
+      "fixture": "fibonacci19",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 8.6417,
+        "candidate": 8.0482,
+        "duckdb": 11.2487
+      },
+      "run_medians_ms": {
+        "baseline": [
+          8.5311,
+          8.6417,
+          8.9011
+        ],
+        "candidate": [
+          8.0209,
+          8.0482,
+          8.1196
+        ],
+        "duckdb": [
+          11.0976,
+          11.2487,
+          11.2667
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0737431972366493,
+      "paired_speedup_range": [
+        1.063608821952649,
+        1.0962485836740725
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "fibonacci19",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 11.564,
+        "candidate": 10.358600000000001,
+        "duckdb": 14.7997
+      },
+      "run_medians_ms": {
+        "baseline": [
+          10.3647,
+          11.564,
+          12.0131
+        ],
+        "candidate": [
+          10.358600000000001,
+          11.9773,
+          10.0459
+        ],
+        "duckdb": [
+          14.7997,
+          15.2983,
+          14.7408
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0005888826675418,
+      "paired_speedup_range": [
+        0.9654930577008174,
+        1.1958211807802188
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "fibonacci19",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 7.2120999999999995,
+        "candidate": 6.682600000000001,
+        "duckdb": 10.2829
+      },
+      "run_medians_ms": {
+        "baseline": [
+          7.2120999999999995,
+          7.3022,
+          7.0016
+        ],
+        "candidate": [
+          6.682600000000001,
+          6.9327,
+          6.53
+        ],
+        "duckdb": [
+          10.2668,
+          10.613,
+          10.2829
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0722205206738131,
+      "paired_speedup_range": [
+        1.0532981378106654,
+        1.079235626851824
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "fibonacci19",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 2.9478,
+        "candidate": 2.9156,
+        "duckdb": 3.7556
+      },
+      "run_medians_ms": {
+        "baseline": [
+          3.0402,
+          2.9449,
+          2.9478
+        ],
+        "candidate": [
+          2.8973,
+          2.9156,
+          2.9684999999999997
+        ],
+        "duckdb": [
+          3.7262,
+          3.829,
+          3.7556
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0100493894910139,
+      "paired_speedup_range": [
+        0.9930267812026277,
+        1.0493217823490837
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "fibonacci19",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.005699999999999999,
+        "candidate": 0.0056,
+        "duckdb": 1.6659
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0059,
+          0.005699999999999999,
+          0.0056
+        ],
+        "candidate": [
+          0.0056,
+          0.0056,
+          0.0055
+        ],
+        "duckdb": [
+          1.6659,
+          1.8472,
+          1.65
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0181818181818183,
+      "paired_speedup_range": [
+        1.0178571428571428,
+        1.0535714285714286
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    },
+    {
+      "fixture": "power19",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 8.6456,
+        "candidate": 7.9551,
+        "duckdb": 11.2629
+      },
+      "run_medians_ms": {
+        "baseline": [
+          9.5402,
+          8.6456,
+          8.4765
+        ],
+        "candidate": [
+          8.113499999999998,
+          7.744199999999999,
+          7.9551
+        ],
+        "duckdb": [
+          11.2629,
+          11.671,
+          11.0008
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.116396787273056,
+      "paired_speedup_range": [
+        1.065542859297809,
+        1.1758427312503854
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "power19",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 10.8818,
+        "candidate": 10.512799999999999,
+        "duckdb": 14.9925
+      },
+      "run_medians_ms": {
+        "baseline": [
+          10.8947,
+          10.8818,
+          10.7039
+        ],
+        "candidate": [
+          10.5414,
+          10.1274,
+          10.512799999999999
+        ],
+        "duckdb": [
+          15.4463,
+          14.9925,
+          14.837
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0335154723281539,
+      "paired_speedup_range": [
+        1.0181778403470059,
+        1.0744909848529731
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "power19",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 7.0636,
+        "candidate": 6.637,
+        "duckdb": 10.4628
+      },
+      "run_medians_ms": {
+        "baseline": [
+          7.166600000000001,
+          7.0636,
+          7.035900000000001
+        ],
+        "candidate": [
+          6.637,
+          6.586200000000001,
+          7.0171
+        ],
+        "duckdb": [
+          10.717,
+          10.4628,
+          10.2923
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0724848926543378,
+      "paired_speedup_range": [
+        1.0026791694574684,
+        1.0797950881422331
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "power19",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 2.9968999999999997,
+        "candidate": 2.9101,
+        "duckdb": 3.7443
+      },
+      "run_medians_ms": {
+        "baseline": [
+          2.9968999999999997,
+          3.3491,
+          2.9279
+        ],
+        "candidate": [
+          2.9101,
+          2.9387,
+          2.8729
+        ],
+        "duckdb": [
+          3.8331,
+          3.7443,
+          3.7439
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0298271537060582,
+      "paired_speedup_range": [
+        1.0191444185317973,
+        1.1396535883213665
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "power19",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0058000000000000005,
+        "candidate": 0.005699999999999999,
+        "duckdb": 1.6796
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0058000000000000005,
+          0.0059,
+          0.0058000000000000005
+        ],
+        "candidate": [
+          0.005699999999999999,
+          0.0058000000000000005,
+          0.0054
+        ],
+        "duckdb": [
+          1.6975,
+          1.6796,
+          1.6626
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.017543859649123,
+      "paired_speedup_range": [
+        1.0172413793103448,
+        1.0740740740740742
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    }
+  ],
+  "irregular_comparisons": [
+    {
+      "fixture": "irregular5003",
+      "query": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 20.950300000000002,
+        "candidate": 20.6515,
+        "duckdb": 17.4288
+      },
+      "run_medians_ms": {
+        "baseline": [
+          21.0679,
+          20.950300000000002,
+          20.8385
+        ],
+        "candidate": [
+          20.6515,
+          20.6035,
+          21.8104
+        ],
+        "duckdb": [
+          16.95,
+          17.7233,
+          17.4288
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0168320916349165,
+      "paired_speedup_range": [
+        0.9554386897993618,
+        1.020163184272329
+      ],
+      "candidate_vs_duckdb": "loss",
+      "candidate_faster_than_duckdb_rounds": 0,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "irregular5003",
+      "query": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 23.0843,
+        "candidate": 22.9453,
+        "duckdb": 25.7774
+      },
+      "run_medians_ms": {
+        "baseline": [
+          23.0843,
+          23.0504,
+          23.5092
+        ],
+        "candidate": [
+          23.2159,
+          22.6565,
+          22.9453
+        ],
+        "duckdb": [
+          25.7774,
+          25.7028,
+          25.8461
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0173857391918433,
+      "paired_speedup_range": [
+        0.9943314711038554,
+        1.0245758390607227
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "irregular5003",
+      "query": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 14.1312,
+        "candidate": 13.802800000000001,
+        "duckdb": 15.4901
+      },
+      "run_medians_ms": {
+        "baseline": [
+          14.1312,
+          13.8641,
+          14.277099999999999
+        ],
+        "candidate": [
+          14.4183,
+          13.5915,
+          13.802800000000001
+        ],
+        "duckdb": [
+          15.3479,
+          15.6991,
+          15.4901
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0200566530552184,
+      "paired_speedup_range": [
+        0.9800878050810428,
+        1.0343625930970526
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "streamed-hash-group",
+      "results_equal": true
+    },
+    {
+      "fixture": "irregular5003",
+      "query": "unordered_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 5.8718,
+        "candidate": 5.7073,
+        "duckdb": 3.8106
+      },
+      "run_medians_ms": {
+        "baseline": [
+          5.8100000000000005,
+          5.8718,
+          6.1371
+        ],
+        "candidate": [
+          6.3218,
+          5.6916,
+          5.7073
+        ],
+        "duckdb": [
+          3.7276,
+          3.8241,
+          3.8106
+        ]
+      },
+      "paired_baseline_over_candidate_median": 1.0316606929510155,
+      "paired_speedup_range": [
+        0.9190420449871873,
+        1.0753070628843762
+      ],
+      "candidate_vs_duckdb": "loss",
+      "candidate_faster_than_duckdb_rounds": 0,
+      "candidate_plan": "streamed-column-scan",
+      "results_equal": true
+    },
+    {
+      "fixture": "irregular5003",
+      "query": "prefix_control",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000",
+      "rows": 1000000,
+      "run_median_ms": {
+        "baseline": 0.0053,
+        "candidate": 0.0054,
+        "duckdb": 1.6872
+      },
+      "run_medians_ms": {
+        "baseline": [
+          0.0053,
+          0.0054,
+          0.0053
+        ],
+        "candidate": [
+          0.0055,
+          0.0053,
+          0.0054
+        ],
+        "duckdb": [
+          1.6872,
+          1.712,
+          1.6706
+        ]
+      },
+      "paired_baseline_over_candidate_median": 0.9814814814814814,
+      "paired_speedup_range": [
+        0.9636363636363637,
+        1.0188679245283019
+      ],
+      "candidate_vs_duckdb": "win",
+      "candidate_faster_than_duckdb_rounds": 3,
+      "candidate_plan": "segmented-sparse-prefix",
+      "results_equal": true
+    }
+  ],
+  "paired_controls": {
+    "final-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 8.5662,
+        "candidate_median_ms": 8.0128,
+        "paired_candidate_over_baseline_median": 0.9307385626264162
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 10.6736,
+        "candidate_median_ms": 10.3449,
+        "paired_candidate_over_baseline_median": 0.9565143504531722
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 7.0432999999999995,
+        "candidate_median_ms": 6.7216000000000005,
+        "paired_candidate_over_baseline_median": 0.9534658054050923
+      }
+    ],
+    "wide-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 12.4751,
+        "candidate_median_ms": 12.178899999999999,
+        "paired_candidate_over_baseline_median": 0.9540408107965709
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 14.9833,
+        "candidate_median_ms": 14.4894,
+        "paired_candidate_over_baseline_median": 0.9797634548611112
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 10.1285,
+        "candidate_median_ms": 9.7414,
+        "paired_candidate_over_baseline_median": 0.9740780681508956
+      }
+    ],
+    "irregular-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 20.7696,
+        "candidate_median_ms": 20.792,
+        "paired_candidate_over_baseline_median": 0.979968638990253
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 24.3562,
+        "candidate_median_ms": 24.215600000000002,
+        "paired_candidate_over_baseline_median": 0.9967674762100778
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 14.9955,
+        "candidate_median_ms": 14.7163,
+        "paired_candidate_over_baseline_median": 0.981637886579978
+      },
+      {
+        "name": "unordered_control",
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+        "all_results_equal": true,
+        "baseline_median_ms": 7.7957,
+        "candidate_median_ms": 7.7791,
+        "paired_candidate_over_baseline_median": 0.9926386368608676
+      }
+    ],
+    "highcard-guard-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 41.2103,
+        "candidate_median_ms": 41.537,
+        "paired_candidate_over_baseline_median": 1.0073404520966893
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 51.1538,
+        "candidate_median_ms": 51.2703,
+        "paired_candidate_over_baseline_median": 0.9951421008800911
+      }
+    ],
+    "dense-guard-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 7.6061000000000005,
+        "candidate_median_ms": 7.6918999999999995,
+        "paired_candidate_over_baseline_median": 1.0026518868174705
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 11.255700000000001,
+        "candidate_median_ms": 11.111899999999999,
+        "paired_candidate_over_baseline_median": 0.982524829828122
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 7.0085,
+        "candidate_median_ms": 6.901,
+        "paired_candidate_over_baseline_median": 0.9908168405901404
+      }
+    ],
+    "scan-guard-pairs": [
+      {
+        "name": "unordered",
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0",
+        "all_results_equal": true,
+        "baseline_median_ms": 3.0865,
+        "candidate_median_ms": 2.9979,
+        "paired_candidate_over_baseline_median": 0.9754906684655166
+      },
+      {
+        "name": "sparse",
+        "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events WHERE device = 7",
+        "all_results_equal": true,
+        "baseline_median_ms": 4.8439,
+        "candidate_median_ms": 4.8469999999999995,
+        "paired_candidate_over_baseline_median": 0.9948922361990225
+      },
+      {
+        "name": "multi",
+        "sql": "SELECT COUNT(*), SUM(value), SUM(device) FROM events WHERE ts >= 200317 AND ts < 700123 AND value >= 0 AND device <> 7",
+        "all_results_equal": true,
+        "baseline_median_ms": 4.069500000000001,
+        "candidate_median_ms": 4.0668,
+        "paired_candidate_over_baseline_median": 1.001132391315051
+      },
+      {
+        "name": "dense_group_guard",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 9.322000000000001,
+        "candidate_median_ms": 9.2661,
+        "paired_candidate_over_baseline_median": 0.9997473970917717
+      }
+    ],
+    "tiny-guard-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 0.1164,
+        "candidate_median_ms": 0.1142,
+        "paired_candidate_over_baseline_median": 0.9844020797227035
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 0.12840000000000001,
+        "candidate_median_ms": 0.1338,
+        "paired_candidate_over_baseline_median": 1.0421974522292996
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 0.1098,
+        "candidate_median_ms": 0.1098,
+        "paired_candidate_over_baseline_median": 1.006340579710145
+      }
+    ],
+    "10m-guard-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 67.5568,
+        "candidate_median_ms": 66.4475,
+        "paired_candidate_over_baseline_median": 0.989632427823698
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 93.70530000000001,
+        "candidate_median_ms": 93.7839,
+        "paired_candidate_over_baseline_median": 0.9983991598791047
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 63.1219,
+        "candidate_median_ms": 62.4602,
+        "paired_candidate_over_baseline_median": 0.9912710941926122
+      }
+    ],
+    "100m-guard-pairs": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 667.588,
+        "candidate_median_ms": 658.5151000000001,
+        "paired_candidate_over_baseline_median": 0.987631742931269
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 940.8125,
+        "candidate_median_ms": 934.3084,
+        "paired_candidate_over_baseline_median": 0.9906356473792599
+      }
+    ],
+    "final-profiles": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 8.658000000000001,
+        "candidate_median_ms": 8.0021,
+        "paired_candidate_over_baseline_median": 0.9236804901036757,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 4.362699999999999,
+            "selection_ms": 0.16760000000000014,
+            "aggregate_ms": 3.987799999999994
+          },
+          "candidate": {
+            "page_read_ms": 4.315299999999998,
+            "selection_ms": 0.16610000000000028,
+            "aggregate_ms": 3.3915999999999986
+          }
+        }
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 10.6372,
+        "candidate_median_ms": 10.2075,
+        "paired_candidate_over_baseline_median": 0.9565197050787828,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 4.362499999999998,
+            "selection_ms": 0.16500000000000026,
+            "aggregate_ms": 5.932499999999997
+          },
+          "candidate": {
+            "page_read_ms": 4.382099999999996,
+            "selection_ms": 0.16530000000000022,
+            "aggregate_ms": 5.580800000000008
+          }
+        }
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 7.1167,
+        "candidate_median_ms": 6.7531,
+        "paired_candidate_over_baseline_median": 0.9556817064088692,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 4.292800000000002,
+            "selection_ms": 0.6987000000000023,
+            "aggregate_ms": 2.0119999999999996
+          },
+          "candidate": {
+            "page_read_ms": 4.2533,
+            "selection_ms": 0.6337,
+            "aggregate_ms": 1.6953999999999936
+          }
+        }
+      }
+    ],
+    "irregular-profiles": [
+      {
+        "name": "group_sum",
+        "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 20.7844,
+        "candidate_median_ms": 20.4162,
+        "paired_candidate_over_baseline_median": 0.9896649040174917,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 5.920400000000005,
+            "selection_ms": 0.18050000000000008,
+            "aggregate_ms": 12.994000000000005
+          },
+          "candidate": {
+            "page_read_ms": 5.867400000000003,
+            "selection_ms": 0.1789000000000003,
+            "aggregate_ms": 12.732400000000004
+          }
+        }
+      },
+      {
+        "name": "group_full",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 23.1561,
+        "candidate_median_ms": 22.6904,
+        "paired_candidate_over_baseline_median": 0.9846063480322841,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 5.903800000000001,
+            "selection_ms": 0.1787000000000005,
+            "aggregate_ms": 15.0886
+          },
+          "candidate": {
+            "page_read_ms": 5.945700000000003,
+            "selection_ms": 0.18070000000000003,
+            "aggregate_ms": 14.697499999999984
+          }
+        }
+      },
+      {
+        "name": "filtered_group",
+        "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+        "all_results_equal": true,
+        "baseline_median_ms": 14.353,
+        "candidate_median_ms": 14.067400000000001,
+        "paired_candidate_over_baseline_median": 0.97321387060566,
+        "stage_median_ms": {
+          "baseline": {
+            "page_read_ms": 5.917399999999999,
+            "selection_ms": 0.7140000000000017,
+            "aggregate_ms": 6.037599999999999
+          },
+          "candidate": {
+            "page_read_ms": 5.885300000000002,
+            "selection_ms": 0.6436999999999997,
+            "aggregate_ms": 5.795300000000006
+          }
+        }
+      }
+    ]
+  },
+  "observed_slower_unprofiled_controls": [
+    {
+      "control": "highcard-guard-pairs",
+      "rows": 1000000,
+      "query": "group_sum",
+      "paired_candidate_over_baseline_median": 1.0073404520966893
+    },
+    {
+      "control": "dense-guard-pairs",
+      "rows": 1000000,
+      "query": "group_sum",
+      "paired_candidate_over_baseline_median": 1.0026518868174705
+    },
+    {
+      "control": "scan-guard-pairs",
+      "rows": 1000000,
+      "query": "multi",
+      "paired_candidate_over_baseline_median": 1.001132391315051
+    },
+    {
+      "control": "tiny-guard-pairs",
+      "rows": 1000,
+      "query": "group_full",
+      "paired_candidate_over_baseline_median": 1.0421974522292996
+    },
+    {
+      "control": "tiny-guard-pairs",
+      "rows": 1000,
+      "query": "filtered_group",
+      "paired_candidate_over_baseline_median": 1.006340579710145
+    }
+  ],
+  "unprofiled_control_samples": 23030,
+  "profiled_control_samples_excluded": 924,
+  "sql_cases_against_each_reference": 4000,
+  "publication_cut_points": 56,
+  "catalog_corruption_rejections": 22,
+  "forced_kills": 32,
+  "source_fault_cut_points": 14,
+  "source_forced_kills": 8,
+  "parquet_rows": 30000,
+  "source_intervals": 300,
+  "parquet_sql_oracles": 42,
+  "no_compilation_overlap_with_timed_database_work": true,
+  "storage_publication_live_source_prefix_reader_and_dense_helpers_unchanged": true,
+  "service_qualification": "No new network requests/s qualification; previous mixed-write losses and stalls remain visible",
+  "qualification_harness_failures": [],
+  "qualification_harness_repairs": [],
+  "test_only_clippy_repair": {
+    "repaired_at_utc": "2026-10-06T21:14:04.631605+00:00",
+    "failed_build_logs": "benchmarks/build-044-before-clippy-repair-logs",
+    "preserved_original_source": "benchmarks/trial-044-small-cache-shared-sum/source/src/archive.rs",
+    "reason": "Clippy manual_is_multiple_of in new unit-test parity predicate; equivalent expression, no runtime change.",
+    "before_sha256": "b307f49217a3ea7404123313851ffa3c5966747d5ce272985db1f2981cf92cea",
+    "after_sha256": "f9aa97ed0acff763b82a6f55e5cbb6ebd17952a4c5d835b0622c1e3dc422b37b",
+    "production_code_before_cfg_test_byte_identical": true,
+    "full_checks_rerun_required": true,
+    "workflow_retry_note": "Restricted PowerShell rejected System.IO.Path.GetFullPath; a subsequent Split-Path parameter combination was invalid. Both attempts stopped before moving or replacing logs. Native Resolve-Path and exact absolute-path checks then preserved the directory with Move-Item before rerunning checks.",
+    "preserved_failed_build_records": 4
+  },
+  "preserved_initial_build_failure": [
+    {
+      "job": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-06T21:11:38.921540+00:00",
+      "completed_at_utc": "2026-10-06T21:11:39.207053+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "debug",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T21:11:39.207053+00:00",
+      "completed_at_utc": "2026-10-06T21:12:23.619239+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T21:12:23.619239+00:00",
+      "completed_at_utc": "2026-10-06T21:13:25.727555+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T21:13:25.728564+00:00",
+      "completed_at_utc": "2026-10-06T21:13:30.235773+00:00",
+      "returncode": 101
+    }
+  ],
+  "preserved_development_trials": [
+    "write-on-miss: useful baseline for cache stores",
+    "fused-shared-sum: rejected for wide and high-cardinality SUM regressions",
+    "typed-shared-sum: small-group benefit, not selected for wider kernels",
+    "small-cache-shared-sum: selected adaptive kernel, separately rebuilt and remeasured"
+  ],
+  "sparse_reduction_policy": "Only cache misses rewrite tags. At small-cache block entry, a single shared SUM/AVG column can reduce directly in the lookup loop; wider and fallback modes retain the preceding two-pass mapper.",
+  "limits": [
+    "Warm single-thread queries on one shared Windows computer",
+    "Rust direct query timer versus DuckDB Python execute/fetchall; native storage layouts differ",
+    "Cache budgets and seeded exact tags are retained; small-cache block fusion changes query code without new allocations",
+    "Only DuckDB freshly compared; last multi-server matrix remains 0.3.1",
+    "No new network, cold-I/O, power-loss, distributed-scale or production qualification"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "status": "rejected development trial",
+  "completed_at_utc": "2026-10-06T20:59:29.666218+00:00",
+  "reason": "Enum-based sparse SUM fusion regressed paired SUM timing on irregular, wide and high-cardinality guards; do not promote.",
+  "proof": "benchmarks/trial-044-fused-shared-sum/proof.json",
+  "timing_order": "benchmarks/sparse-044-fused-shared-sum-run-order.json",
+  "ratios": {
+    "irregular": {
+      "group_sum": 1.0575401120973758,
+      "group_full": 0.9736917257226207,
+      "filtered_group": 1.0517365696948064,
+      "unordered_control": 1.0077641965547188
+    },
+    "wide": {
+      "group_sum": 1.0939150916012175,
+      "group_full": 0.977832596704012,
+      "filtered_group": 1.0453030840127615
+    },
+    "highcard": {
+      "group_sum": 1.085061423125043,
+      "group_full": 0.9999759888107858
+    }
+  }
+}

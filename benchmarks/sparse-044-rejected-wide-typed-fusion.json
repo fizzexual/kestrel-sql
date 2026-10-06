@@ -1,0 +1,29 @@
+{
+  "status": "not selected development trial",
+  "completed_at_utc": "2026-10-06T21:05:15.075299+00:00",
+  "reason": "Typed fusion helps the small sparse guard but gives no irregular-SUM improvement and regresses high-cardinality SUM; retain two-pass mapping for larger kernels.",
+  "proof": "benchmarks/trial-044-typed-shared-sum/proof.json",
+  "timing_order": "benchmarks/sparse-044-typed-shared-sum-run-order.json",
+  "ratios": {
+    "irregular-pairs": {
+      "group_sum": 1.005096238490638,
+      "group_full": 0.9816488324741152,
+      "filtered_group": 1.0201625970439463,
+      "unordered_control": 1.0025138135297924
+    },
+    "sparse-guards": {
+      "group_sum": 0.9135489920300046,
+      "group_full": 0.970976604462359,
+      "filtered_group": 0.9379531471157457
+    },
+    "wide-guards": {
+      "group_sum": 0.9957653193418837,
+      "group_full": 1.0035722275040546,
+      "filtered_group": 1.0184755100553013
+    },
+    "highcard-guards": {
+      "group_sum": 1.037793513805906,
+      "group_full": 0.9953049463581038
+    }
+  }
+}

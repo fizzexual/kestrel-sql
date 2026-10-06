@@ -1,0 +1,6377 @@
+{
+  "started_at_utc": "2026-10-06T21:28:40.763926+00:00",
+  "binary_sha256": {
+    "baseline": "151ffddcf2e0b9a74c8456a7231e668cf166203babf732cfe334bb93f5f8b40a",
+    "candidate": "a496419ff0bd101cc47e1851aeaac5707d390c822725781d64ccaa7de29e0211"
+  },
+  "probe_source_sha256": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+  "harness_sha256": "e45904aaea24504463677c8f19d11b6fa0c20f0fbdd8a0e2ce2b8876477fb0a0",
+  "fixture": {
+    "label": "cardinality70001",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\cardinality70001\\archive",
+    "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\cardinality70001\\reference.duckdb",
+    "rows": 1000000,
+    "reference_bytes": 3944448,
+    "queries": [
+      [
+        "group_sum",
+        "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "group_full",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "filtered_group",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+      ],
+      [
+        "unordered_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+      ],
+      [
+        "prefix_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+      ]
+    ]
+  },
+  "methodology": {
+    "turns": 21,
+    "repeats": 11,
+    "warmups": 3,
+    "threads": 1,
+    "same_archive": true,
+    "sequential_open_close": true,
+    "instrumented": false,
+    "timing": "ArchiveSnapshot::query; setup/open/close/assertions/full scrubs excluded",
+    "limits": "warm shared Windows desktop; profiled stage samples excluded from competitive claims; no network or power-loss qualification"
+  },
+  "cases": [
+    {
+      "name": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.600199999999994,
+              41.2204,
+              38.9428,
+              40.2903,
+              40.7459,
+              41.4756,
+              40.1654,
+              40.005199999999995,
+              40.6698,
+              40.6214,
+              39.9225
+            ],
+            "median_ms": 40.6214,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              45.756699999999995,
+              43.739599999999996,
+              45.536100000000005,
+              40.9423,
+              40.4743,
+              40.4257,
+              40.7864,
+              39.554199999999994,
+              41.3003,
+              39.9594,
+              40.3697
+            ],
+            "median_ms": 40.7864,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              41.1413,
+              42.8207,
+              42.6933,
+              45.5635,
+              41.374500000000005,
+              41.1385,
+              41.3255,
+              40.974700000000006,
+              41.4998,
+              42.4159,
+              40.3433
+            ],
+            "median_ms": 41.374500000000005,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              42.368700000000004,
+              41.0048,
+              40.9623,
+              40.5657,
+              40.0158,
+              40.0126,
+              42.1144,
+              49.024100000000004,
+              70.2668,
+              82.65060000000001,
+              61.9988
+            ],
+            "median_ms": 42.1144,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.450199999999995,
+              40.6521,
+              40.5984,
+              46.7344,
+              42.1415,
+              41.105799999999995,
+              41.8826,
+              47.2946,
+              40.571999999999996,
+              40.176700000000004,
+              40.7757
+            ],
+            "median_ms": 40.7757,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.7763,
+              46.7781,
+              48.1568,
+              41.3448,
+              40.282,
+              40.5824,
+              40.4019,
+              42.8969,
+              40.151199999999996,
+              50.8001,
+              46.791199999999996
+            ],
+            "median_ms": 41.3448,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.814,
+              40.1186,
+              41.6122,
+              40.892900000000004,
+              43.4767,
+              40.6291,
+              40.5761,
+              40.940400000000004,
+              42.122600000000006,
+              42.6241,
+              41.7573
+            ],
+            "median_ms": 40.940400000000004,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              43.0615,
+              42.9012,
+              41.624500000000005,
+              40.7876,
+              41.352199999999996,
+              41.7183,
+              42.092200000000005,
+              41.8124,
+              41.1009,
+              50.601800000000004,
+              44.0698
+            ],
+            "median_ms": 41.8124,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.5147,
+              39.9853,
+              41.090799999999994,
+              42.264900000000004,
+              40.2998,
+              41.207800000000006,
+              40.6878,
+              40.765299999999996,
+              40.8131,
+              42.8532,
+              39.46319999999999
+            ],
+            "median_ms": 40.765299999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.1313,
+              40.2526,
+              42.267399999999995,
+              48.4447,
+              40.270399999999995,
+              44.3753,
+              40.2312,
+              39.891999999999996,
+              40.075399999999995,
+              42.235099999999996,
+              40.8906
+            ],
+            "median_ms": 40.270399999999995,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              41.4381,
+              41.615399999999994,
+              40.821400000000004,
+              45.3584,
+              42.8454,
+              41.924099999999996,
+              44.513799999999996,
+              42.9816,
+              43.2954,
+              41.028299999999994,
+              41.0884
+            ],
+            "median_ms": 41.924099999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.205799999999996,
+              40.62820000000001,
+              39.8814,
+              40.4894,
+              41.0293,
+              42.2296,
+              41.1934,
+              41.622899999999994,
+              41.9681,
+              41.8844,
+              41.5069
+            ],
+            "median_ms": 41.1934,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.837199999999996,
+              40.246700000000004,
+              41.9799,
+              40.6883,
+              49.3604,
+              40.5346,
+              41.2304,
+              42.2742,
+              41.406400000000005,
+              40.798,
+              41.1432
+            ],
+            "median_ms": 41.1432,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              45.7969,
+              42.2273,
+              41.4727,
+              45.0495,
+              42.1888,
+              44.8072,
+              41.2692,
+              42.7179,
+              44.5713,
+              52.317099999999996,
+              43.9075
+            ],
+            "median_ms": 43.9075,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              48.3626,
+              43.1982,
+              40.3067,
+              40.866800000000005,
+              42.2004,
+              42.6983,
+              43.288,
+              41.207100000000004,
+              43.6808,
+              40.3203,
+              42.5035
+            ],
+            "median_ms": 42.5035,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.639,
+              40.2275,
+              42.1877,
+              40.8813,
+              41.467200000000005,
+              40.3262,
+              47.6655,
+              43.1828,
+              41.0102,
+              42.054300000000005,
+              43.515100000000004
+            ],
+            "median_ms": 41.467200000000005,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              42.2541,
+              43.262,
+              42.323899999999995,
+              41.9152,
+              41.142199999999995,
+              41.944,
+              40.6434,
+              42.6354,
+              41.495400000000004,
+              52.6791,
+              41.0573
+            ],
+            "median_ms": 41.944,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              45.011,
+              42.034299999999995,
+              41.1296,
+              43.1358,
+              41.516799999999996,
+              41.338899999999995,
+              40.9268,
+              43.191300000000005,
+              41.918,
+              42.3025,
+              54.1272
+            ],
+            "median_ms": 42.034299999999995,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              42.996399999999994,
+              41.6102,
+              42.264900000000004,
+              43.2943,
+              44.9689,
+              41.6097,
+              44.7426,
+              40.7007,
+              40.5859,
+              41.5494,
+              42.0098
+            ],
+            "median_ms": 42.0098,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.9518,
+              42.2784,
+              42.281800000000004,
+              40.523900000000005,
+              41.3709,
+              41.1319,
+              40.7057,
+              40.9272,
+              41.549099999999996,
+              40.947900000000004,
+              41.2103
+            ],
+            "median_ms": 41.2103,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.5709,
+              40.9793,
+              46.3895,
+              41.5338,
+              42.308,
+              40.991,
+              41.607600000000005,
+              40.8365,
+              41.5656,
+              43.1642,
+              45.6589
+            ],
+            "median_ms": 41.5709,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              47.8926,
+              40.7812,
+              40.468900000000005,
+              40.4171,
+              40.217299999999994,
+              40.9057,
+              40.2429,
+              40.7984,
+              42.1298,
+              49.9313,
+              41.576
+            ],
+            "median_ms": 40.7984,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              41.8529,
+              44.7561,
+              51.6567,
+              44.9645,
+              43.072,
+              41.8399,
+              41.285500000000006,
+              41.2674,
+              41.0832,
+              40.4861,
+              39.7594
+            ],
+            "median_ms": 41.8399,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.2107,
+              42.175999999999995,
+              40.601,
+              46.1632,
+              41.0163,
+              40.95,
+              41.888799999999996,
+              42.4852,
+              42.063900000000004,
+              41.622899999999994,
+              46.5319
+            ],
+            "median_ms": 41.888799999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.8963,
+              42.3976,
+              41.5213,
+              42.9666,
+              42.053599999999996,
+              42.2044,
+              41.849900000000005,
+              42.0289,
+              42.9418,
+              41.864,
+              42.0032
+            ],
+            "median_ms": 42.0289,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.8452,
+              40.419,
+              41.5302,
+              40.887600000000006,
+              40.6546,
+              40.891,
+              40.410599999999995,
+              40.6292,
+              41.295199999999994,
+              41.8623,
+              42.9217
+            ],
+            "median_ms": 40.887600000000006,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              41.6119,
+              41.387100000000004,
+              45.410399999999996,
+              43.435500000000005,
+              41.235,
+              41.5475,
+              41.6232,
+              40.9358,
+              41.610800000000005,
+              41.2912,
+              41.2605
+            ],
+            "median_ms": 41.5475,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              42.7098,
+              41.5809,
+              43.0118,
+              41.6186,
+              41.594899999999996,
+              42.4056,
+              41.0298,
+              41.5993,
+              41.092,
+              42.981,
+              41.4544
+            ],
+            "median_ms": 41.5993,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.1798,
+              40.982200000000006,
+              41.6601,
+              41.562799999999996,
+              40.9363,
+              41.9684,
+              41.955600000000004,
+              50.0527,
+              41.2901,
+              41.4627,
+              45.3508
+            ],
+            "median_ms": 41.562799999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              41.2013,
+              40.1154,
+              41.0859,
+              49.0033,
+              42.3748,
+              42.3586,
+              42.8163,
+              59.428000000000004,
+              43.5033,
+              41.2932,
+              40.710499999999996
+            ],
+            "median_ms": 42.3586,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              55.0231,
+              42.9934,
+              46.6768,
+              44.019999999999996,
+              42.599199999999996,
+              40.425999999999995,
+              41.537,
+              40.4079,
+              39.8881,
+              39.9129,
+              39.9672
+            ],
+            "median_ms": 41.537,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              43.9019,
+              40.7286,
+              41.362,
+              40.4207,
+              39.518100000000004,
+              39.756,
+              42.7641,
+              40.8279,
+              41.915,
+              41.022200000000005,
+              48.3432
+            ],
+            "median_ms": 41.022200000000005,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              40.474700000000006,
+              40.57899999999999,
+              40.5364,
+              42.5573,
+              40.8797,
+              43.035900000000005,
+              45.422900000000006,
+              42.5892,
+              41.7371,
+              40.2955,
+              40.8184
+            ],
+            "median_ms": 40.8797,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              42.0063,
+              43.140100000000004,
+              40.6119,
+              41.8284,
+              40.345600000000005,
+              40.2948,
+              40.876200000000004,
+              42.3262,
+              41.483399999999996,
+              42.4388,
+              40.6787
+            ],
+            "median_ms": 41.483399999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.3699,
+              40.0495,
+              41.4803,
+              42.007200000000005,
+              40.5139,
+              41.0553,
+              40.4758,
+              42.8056,
+              42.4488,
+              39.906499999999994,
+              40.744
+            ],
+            "median_ms": 40.744,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.7794,
+              40.6459,
+              39.724799999999995,
+              40.220600000000005,
+              40.422,
+              39.4277,
+              39.853699999999996,
+              40.4471,
+              40.976,
+              41.0674,
+              41.7487
+            ],
+            "median_ms": 40.4471,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              43.891600000000004,
+              46.9756,
+              40.7909,
+              46.980199999999996,
+              46.783,
+              41.4687,
+              40.800999999999995,
+              41.471000000000004,
+              41.8055,
+              40.6231,
+              40.484899999999996
+            ],
+            "median_ms": 41.471000000000004,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              43.2053,
+              41.4377,
+              40.4088,
+              43.6134,
+              50.3978,
+              42.412600000000005,
+              41.1655,
+              47.9328,
+              49.4548,
+              42.1667,
+              47.9753
+            ],
+            "median_ms": 43.2053,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              45.5804,
+              47.178,
+              47.227,
+              44.9596,
+              42.9573,
+              45.183099999999996,
+              43.829899999999995,
+              43.8512,
+              40.9915,
+              46.5986,
+              44.6682
+            ],
+            "median_ms": 44.9596,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              43.4324,
+              41.5213,
+              39.973099999999995,
+              39.9392,
+              39.838100000000004,
+              39.8659,
+              40.473099999999995,
+              40.4227,
+              40.207699999999996,
+              40.3657,
+              40.4947
+            ],
+            "median_ms": 40.3657,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              41.2677,
+              41.3797,
+              40.213,
+              43.396499999999996,
+              41.4087,
+              40.527899999999995,
+              40.6709,
+              39.959300000000006,
+              42.247,
+              40.6358,
+              39.8742
+            ],
+            "median_ms": 40.6709,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 24000000
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              40.4354,
+              40.135600000000004,
+              44.2437,
+              40.5202,
+              39.695800000000006,
+              42.2237,
+              40.0996,
+              40.4626,
+              39.8851,
+              42.7046,
+              40.8892
+            ],
+            "median_ms": 40.4626,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "9c8a8a0b3a4d3a8c59bb8d0335d7f0ae2b0da698f7436c120ea4de615379e9f2",
+                "first": [
+                  [
+                    -35000,
+                    -3615
+                  ],
+                  [
+                    -34999,
+                    3199
+                  ],
+                  [
+                    -34998,
+                    -2969
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    1907
+                  ],
+                  [
+                    34999,
+                    -2700
+                  ],
+                  [
+                    35000,
+                    3053
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 24000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 41.2103,
+      "candidate_median_ms": 41.537,
+      "paired_candidate_over_baseline_median": 1.0073404520966893
+    },
+    {
+      "name": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.748000000000005,
+              51.9624,
+              51.2493,
+              49.6855,
+              50.824099999999994,
+              51.0404,
+              50.2432,
+              50.797200000000004,
+              51.419399999999996,
+              54.170700000000004,
+              50.937200000000004
+            ],
+            "median_ms": 50.937200000000004,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              52.755,
+              52.249900000000004,
+              50.638299999999994,
+              50.5043,
+              58.0895,
+              56.541599999999995,
+              50.8154,
+              51.1817,
+              61.2961,
+              61.050399999999996,
+              58.413
+            ],
+            "median_ms": 52.755,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              52.5222,
+              60.4787,
+              50.8591,
+              54.427099999999996,
+              55.0924,
+              50.751400000000004,
+              57.0381,
+              57.2667,
+              56.0457,
+              58.5947,
+              63.5873
+            ],
+            "median_ms": 56.0457,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              51.0473,
+              53.4942,
+              52.8891,
+              51.504599999999996,
+              59.242999999999995,
+              52.5105,
+              51.5229,
+              50.509499999999996,
+              50.6892,
+              50.5475,
+              49.915099999999995
+            ],
+            "median_ms": 51.504599999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.3345,
+              50.4985,
+              51.5546,
+              51.081300000000006,
+              50.0781,
+              51.1601,
+              49.7465,
+              50.3662,
+              49.509699999999995,
+              50.3703,
+              51.2711
+            ],
+            "median_ms": 50.3703,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.7573,
+              49.6971,
+              55.6186,
+              50.6537,
+              51.9398,
+              49.4765,
+              52.331500000000005,
+              53.9134,
+              50.466499999999996,
+              51.5657,
+              50.617399999999996
+            ],
+            "median_ms": 51.5657,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              50.039,
+              50.6052,
+              52.8802,
+              50.8934,
+              50.5259,
+              49.1442,
+              49.6059,
+              50.2617,
+              51.185,
+              53.493199999999995,
+              50.9207
+            ],
+            "median_ms": 50.6052,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.3061,
+              50.2396,
+              49.4205,
+              51.2009,
+              49.3938,
+              48.988,
+              49.573,
+              50.9127,
+              50.458000000000006,
+              50.0676,
+              52.1856
+            ],
+            "median_ms": 50.2396,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              51.433800000000005,
+              49.266999999999996,
+              51.4724,
+              52.1301,
+              51.4821,
+              50.3894,
+              50.4045,
+              50.6866,
+              50.5256,
+              51.1207,
+              50.2849
+            ],
+            "median_ms": 50.6866,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              48.5411,
+              49.9136,
+              49.9283,
+              52.7857,
+              51.0162,
+              50.5064,
+              50.5034,
+              50.0787,
+              50.001799999999996,
+              49.6326,
+              50.8023
+            ],
+            "median_ms": 50.0787,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              49.749,
+              49.736200000000004,
+              49.628899999999994,
+              50.352199999999996,
+              50.498000000000005,
+              52.5465,
+              49.6407,
+              50.681200000000004,
+              50.9959,
+              49.5655,
+              50.1669
+            ],
+            "median_ms": 50.1669,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              52.9032,
+              49.8175,
+              52.2921,
+              51.241299999999995,
+              51.0373,
+              49.6706,
+              50.2221,
+              51.633900000000004,
+              49.5982,
+              53.4024,
+              52.1562
+            ],
+            "median_ms": 51.241299999999995,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.7128,
+              50.5892,
+              50.9685,
+              51.4065,
+              50.1088,
+              49.9727,
+              49.8754,
+              49.5475,
+              50.6618,
+              50.4232,
+              54.1861
+            ],
+            "median_ms": 50.5892,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.524899999999995,
+              51.2833,
+              50.9437,
+              49.7209,
+              50.6673,
+              55.6345,
+              50.3902,
+              51.530300000000004,
+              52.4046,
+              49.8636,
+              50.852799999999995
+            ],
+            "median_ms": 50.9437,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              50.905300000000004,
+              53.6946,
+              50.2467,
+              50.029700000000005,
+              49.7668,
+              49.9362,
+              52.2888,
+              51.5971,
+              50.076,
+              57.939299999999996,
+              51.1558
+            ],
+            "median_ms": 50.905300000000004,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.8362,
+              51.348,
+              52.8971,
+              51.1538,
+              49.8622,
+              51.0273,
+              51.0766,
+              56.0166,
+              52.8543,
+              51.238600000000005,
+              48.6299
+            ],
+            "median_ms": 51.1538,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              64.33850000000001,
+              60.824000000000005,
+              57.8092,
+              62.4921,
+              57.355799999999995,
+              58.515100000000004,
+              56.8893,
+              50.489399999999996,
+              51.1392,
+              60.091499999999996,
+              52.1359
+            ],
+            "median_ms": 57.8092,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              54.1725,
+              51.9737,
+              56.3415,
+              60.8239,
+              54.0098,
+              51.4705,
+              49.355999999999995,
+              49.2505,
+              51.9178,
+              51.6891,
+              50.0412
+            ],
+            "median_ms": 51.9178,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.0822,
+              51.536199999999994,
+              54.1306,
+              50.8353,
+              49.5634,
+              50.9052,
+              64.2006,
+              53.2543,
+              50.2719,
+              50.5124,
+              50.8568
+            ],
+            "median_ms": 50.9052,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              52.1562,
+              50.6916,
+              54.3924,
+              48.7436,
+              51.0795,
+              50.7914,
+              51.4422,
+              56.8175,
+              49.82,
+              52.3025,
+              50.1344
+            ],
+            "median_ms": 51.0795,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              51.4332,
+              52.2025,
+              48.7817,
+              50.882,
+              51.1049,
+              51.2922,
+              49.620200000000004,
+              50.2694,
+              52.301300000000005,
+              50.6108,
+              52.897600000000004
+            ],
+            "median_ms": 51.1049,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              49.9111,
+              48.1181,
+              50.994200000000006,
+              52.1887,
+              51.320699999999995,
+              52.604600000000005,
+              49.8796,
+              51.3118,
+              50.636,
+              50.647400000000005,
+              50.6391
+            ],
+            "median_ms": 50.647400000000005,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              52.6625,
+              50.3876,
+              51.2703,
+              54.0331,
+              51.0452,
+              51.1312,
+              52.254799999999996,
+              50.9161,
+              52.131,
+              51.130700000000004,
+              55.4609
+            ],
+            "median_ms": 51.2703,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.997,
+              60.320100000000004,
+              60.1556,
+              59.1804,
+              68.5895,
+              54.6425,
+              54.688100000000006,
+              67.6423,
+              51.492000000000004,
+              56.3923,
+              56.6298
+            ],
+            "median_ms": 56.6298,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.533300000000004,
+              53.801700000000004,
+              52.718,
+              51.901799999999994,
+              50.4747,
+              50.7943,
+              50.2172,
+              50.1571,
+              49.6611,
+              49.978300000000004,
+              54.2793
+            ],
+            "median_ms": 50.533300000000004,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.1259,
+              52.6622,
+              50.4061,
+              51.4391,
+              55.1109,
+              52.8709,
+              51.3931,
+              60.796299999999995,
+              51.123799999999996,
+              59.138000000000005,
+              49.097300000000004
+            ],
+            "median_ms": 51.4391,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.6058,
+              51.1641,
+              51.153,
+              51.0167,
+              52.8628,
+              54.1297,
+              56.019,
+              53.1712,
+              51.911699999999996,
+              50.5875,
+              52.4195
+            ],
+            "median_ms": 51.911699999999996,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.7266,
+              54.5433,
+              55.5519,
+              54.8596,
+              55.093700000000005,
+              51.4113,
+              53.2487,
+              49.562799999999996,
+              54.0714,
+              50.223,
+              51.070299999999996
+            ],
+            "median_ms": 53.2487,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              51.894999999999996,
+              51.157000000000004,
+              52.002399999999994,
+              50.2777,
+              50.6186,
+              51.2123,
+              50.5108,
+              49.7209,
+              49.757200000000005,
+              50.7541,
+              51.547799999999995
+            ],
+            "median_ms": 50.7541,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              52.4692,
+              50.6106,
+              57.0338,
+              50.3986,
+              50.073100000000004,
+              49.4738,
+              50.4881,
+              49.759299999999996,
+              50.3726,
+              52.140899999999995,
+              50.1467
+            ],
+            "median_ms": 50.3986,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              50.9179,
+              53.6991,
+              51.1333,
+              52.102000000000004,
+              51.1682,
+              51.4302,
+              52.3735,
+              51.2952,
+              50.08,
+              50.9282,
+              50.4446
+            ],
+            "median_ms": 51.1682,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              53.0273,
+              52.69,
+              52.711800000000004,
+              50.7919,
+              50.5103,
+              51.5867,
+              51.865899999999996,
+              51.3305,
+              50.1138,
+              52.5283,
+              50.301199999999994
+            ],
+            "median_ms": 51.5867,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              50.3285,
+              49.520599999999995,
+              52.5708,
+              50.1097,
+              49.8863,
+              50.2009,
+              52.4257,
+              50.625,
+              49.792,
+              51.3783,
+              54.7919
+            ],
+            "median_ms": 50.3285,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              63.0808,
+              54.0613,
+              54.9715,
+              60.0865,
+              57.6147,
+              60.5476,
+              61.1364,
+              52.587,
+              51.873799999999996,
+              50.8095,
+              58.5425
+            ],
+            "median_ms": 57.6147,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              51.1929,
+              49.7665,
+              50.480999999999995,
+              49.7568,
+              49.8225,
+              50.111799999999995,
+              50.2864,
+              51.5884,
+              50.2922,
+              50.2907,
+              50.2809
+            ],
+            "median_ms": 50.2864,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              52.3883,
+              50.563700000000004,
+              50.8348,
+              55.5199,
+              49.8352,
+              53.241499999999995,
+              51.5194,
+              49.9175,
+              51.5971,
+              50.8932,
+              51.899300000000004
+            ],
+            "median_ms": 51.5194,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              58.6278,
+              50.710499999999996,
+              50.0085,
+              55.8062,
+              52.0844,
+              50.980900000000005,
+              53.8838,
+              60.1741,
+              54.0543,
+              53.1492,
+              61.1181
+            ],
+            "median_ms": 53.8838,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              53.90410000000001,
+              53.997499999999995,
+              58.4948,
+              54.3378,
+              53.3116,
+              52.7969,
+              60.670300000000005,
+              57.563700000000004,
+              52.5886,
+              49.6425,
+              50.0398
+            ],
+            "median_ms": 53.90410000000001,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              54.9176,
+              52.821,
+              54.193,
+              56.792,
+              63.054100000000005,
+              60.5025,
+              56.2487,
+              82.0907,
+              61.6731,
+              67.08709999999999,
+              81.4132
+            ],
+            "median_ms": 60.5025,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              78.0377,
+              54.605399999999996,
+              53.2945,
+              51.0916,
+              57.046800000000005,
+              62.98140000000001,
+              51.621599999999994,
+              61.3764,
+              58.1538,
+              61.340199999999996,
+              72.3596
+            ],
+            "median_ms": 58.1538,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.13",
+            "samples_ms": [
+              256.0173,
+              248.3742,
+              249.6514,
+              235.7919,
+              232.4166,
+              119.3646,
+              70.9973,
+              56.2,
+              67.5736,
+              66.67620000000001,
+              52.3955
+            ],
+            "median_ms": 119.3646,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 24000000
+          },
+          "candidate": {
+            "version": "0.3.14",
+            "samples_ms": [
+              52.7545,
+              60.682300000000005,
+              51.0124,
+              50.3539,
+              52.3329,
+              52.32,
+              56.2656,
+              58.075300000000006,
+              58.895999999999994,
+              49.469899999999996,
+              51.477799999999995
+            ],
+            "median_ms": 52.3329,
+            "result": {
+              "bytes_read": 16000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-hash-group",
+              "rows": {
+                "count": 70001,
+                "sha256": "78f6a2e12683470a9961278b627aa7f056a3e4877e8d97027a7e3df5d36078c0",
+                "first": [
+                  [
+                    -35000,
+                    15,
+                    -3615,
+                    -241.0,
+                    -500,
+                    18
+                  ],
+                  [
+                    -34999,
+                    14,
+                    3199,
+                    228.5,
+                    -12,
+                    469
+                  ],
+                  [
+                    -34998,
+                    14,
+                    -2969,
+                    -212.07142857142858,
+                    -487,
+                    476
+                  ]
+                ],
+                "last": [
+                  [
+                    34998,
+                    14,
+                    1907,
+                    136.21428571428572,
+                    -483,
+                    480
+                  ],
+                  [
+                    34999,
+                    15,
+                    -2700,
+                    -180.0,
+                    -439,
+                    79
+                  ],
+                  [
+                    35000,
+                    14,
+                    3053,
+                    218.07142857142858,
+                    -470,
+                    493
+                  ]
+                ]
+              },
+              "rows_scanned": 1000000,
+              "segments_considered": 1,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 24000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 51.1538,
+      "candidate_median_ms": 51.2703,
+      "paired_candidate_over_baseline_median": 0.9951421008800911
+    }
+  ],
+  "complete": true,
+  "completed_at_utc": "2026-10-06T21:30:00.796004+00:00"
+}

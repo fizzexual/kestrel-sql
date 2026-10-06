@@ -1,5 +1,7 @@
 # KestrelSQL: data-engineering portfolio case study
 
+The [0.3.14 adaptive sparse-kernel case study](PERFORMANCE_044.md) retains two unsuccessful wider-fusion trials, then selects a small-cache kernel with guarded wider fallback. It independently verifies signed wide shared SUM/AVG across cache modes and durable retry/crash behavior. The final release retains 60 fresh shapes, 74 Rust tests and 4,000 SQL cases against each reference.
+
 The [0.3.13 dense-reduction case study](PERFORMANCE_043.md) follows a measured 10M-row aggregation bottleneck through stage profiling, a preserved development trial and separately rebuilt 10M/100M comparisons. Independent oracles cover exact counts, signed extremes, shared AVG, repeated SUM and beyond-i64 JSON, alongside durable retry/crash and Parquet source workflows. It retains 60 fresh query shapes, 73 Rust tests and 3,400 SQL comparisons against each reference.
 
 The [0.3.12 medium-cache case study](PERFORMANCE_042.md) profiles a remaining wide-key aggregation loss, retains a tiny-query regression, and verifies deferred allocation with irregular signed keys, adaptive memory bounds and exact wide sums. It includes 60 fresh shapes, 72 Rust tests and 2,800 SQL comparisons against each reference. Prior failures and unsuccessful experiments remain accessible.

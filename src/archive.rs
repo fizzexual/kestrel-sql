@@ -2011,7 +2011,14 @@ impl SparseGroups {
         let repeated = if self.large_cache.is_some() {
             self.map_selected::<2, false>(column, columns, selected)?
         } else if self.cache.is_some() {
-            self.map_selected::<1, true>(column, columns, selected)?
+            if matches!(
+                self.state.aggregates.as_slice(),
+                [DenseAggregate::Sum(_, _)]
+            ) {
+                self.map_small_shared_sum(column, columns, selected)?
+            } else {
+                self.map_selected::<1, true>(column, columns, selected)?
+            }
         } else if self.cache_learning {
             self.map_selected::<0, true>(column, columns, selected)?
         } else {
@@ -2025,7 +2032,9 @@ impl SparseGroups {
                 self.cache_learning = false;
             }
         }
-        self.state.update_aggregates(columns, selected);
+        if !self.state.slots.is_empty() {
+            self.state.update_aggregates(columns, selected);
+        }
         Ok(())
     }
     fn map_selected<const MODE: u8, const LEARN: bool>(
@@ -2085,18 +2094,137 @@ impl SparseGroups {
                     }
                 }
             };
+            // A hit already stores this exact key/slot pair. Only misses
+            // need to populate or replace the tagged lookup entry.
             if MODE == 1
+                && cached.is_none()
                 && let Some(cache) = &mut self.cache
             {
                 cache[cache_slot] = Some((key, slot));
             }
             if MODE == 2
+                && cached.is_none()
                 && let Some(cache) = &mut self.large_cache
             {
                 cache[cache_slot] = Some((key, slot));
             }
             self.state.slots.push(slot);
             self.state.counts[slot] += 1;
+        }
+        // A representative block with fewer than half cache hits should use
+        // the plain hash mapping kernel for the rest of this query. Tiny row
+        // selections retain the cache to avoid premature decisions.
+        if MODE == 1 && selected.len() >= 64 && cache_hits * 2 < selected.len() {
+            self.cache = None;
+        }
+        if MODE == 2 && selected.len() >= 64 && cache_hits * 2 < selected.len() {
+            self.large_cache = None;
+        }
+        Ok(cache_hits + occupied_misses)
+    }
+    fn map_small_shared_sum(
+        &mut self,
+        column: usize,
+        columns: &[Vec<i64>],
+        selected: &[usize],
+    ) -> Result<usize> {
+        let DenseAggregate::Sum(value_column, mut sums) = self.state.aggregates.pop().unwrap()
+        else {
+            unreachable!("small shared-sum mapping requires one sum accumulator")
+        };
+        // Keep the typed vector outside enum dispatch in the lookup loop.
+        // Restore it even when mapping rejects a group-budget overflow.
+        let result =
+            self.map_rows::<1, true, true>(column, columns, selected, value_column, &mut sums);
+        self.state
+            .aggregates
+            .push(DenseAggregate::Sum(value_column, sums));
+        result
+    }
+    fn map_rows<const MODE: u8, const LEARN: bool, const SHARED_SUM: bool>(
+        &mut self,
+        column: usize,
+        columns: &[Vec<i64>],
+        selected: &[usize],
+        value_column: usize,
+        sums: &mut Vec<i128>,
+    ) -> Result<usize> {
+        let mut cache_hits = 0;
+        let mut occupied_misses = 0;
+        for &row in selected {
+            let key = columns[column][row];
+            // This is a tagged lookup cache, not the authoritative hash table.
+            // Exact key comparison handles every collision and signed value.
+            let cache_slot = if MODE == 2 {
+                large_group_cache_slot(key, self.cache_multiplier)
+            } else {
+                group_cache_slot(key, self.cache_multiplier)
+            };
+            let cached = if MODE == 1 {
+                self.cache.as_ref().and_then(|cache| {
+                    cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
+                })
+            } else if MODE == 2 {
+                self.large_cache.as_ref().and_then(|cache| {
+                    cache[cache_slot].filter(|(cached_key, _)| *cached_key == key)
+                })
+            } else {
+                None
+            };
+            let slot = if let Some((_, slot)) = cached {
+                cache_hits += 1;
+                slot
+            } else {
+                match self.index.entry(key) {
+                    std::collections::hash_map::Entry::Occupied(entry) => {
+                        if LEARN {
+                            occupied_misses += 1;
+                        }
+                        *entry.get()
+                    }
+                    std::collections::hash_map::Entry::Vacant(entry) => {
+                        if self.keys.len() >= crate::query::MAX_RESULT_ROWS {
+                            return Err(Error::new("archive group budget exceeded"));
+                        }
+                        let slot = self.keys.len();
+                        entry.insert(slot);
+                        self.keys.push(key);
+                        self.state.push_group();
+                        if SHARED_SUM {
+                            sums.push(0);
+                        }
+                        if MODE == 1 && self.keys.len() > GROUP_KEY_CACHE_MAX_KEYS {
+                            self.cache = None;
+                        }
+                        if MODE == 2 && self.keys.len() > LARGE_GROUP_CACHE_MAX_KEYS {
+                            self.large_cache = None;
+                        }
+                        slot
+                    }
+                }
+            };
+            // A hit already stores this exact key/slot pair. Only misses
+            // need to populate or replace the tagged lookup entry.
+            if MODE == 1
+                && cached.is_none()
+                && let Some(cache) = &mut self.cache
+            {
+                cache[cache_slot] = Some((key, slot));
+            }
+            if MODE == 2
+                && cached.is_none()
+                && let Some(cache) = &mut self.large_cache
+            {
+                cache[cache_slot] = Some((key, slot));
+            }
+            self.state.counts[slot] += 1;
+            if SHARED_SUM {
+                // Counts and a shared exact SUM/AVG consume the mapped slot
+                // immediately; other reducers retain their intermediate slots.
+                sums[slot] += i128::from(columns[value_column][row]);
+            } else {
+                self.state.slots.push(slot);
+            }
         }
         // A representative block with fewer than half cache hits should use
         // the plain hash mapping kernel for the rest of this query. Tiny row
@@ -2468,6 +2596,102 @@ mod dense_group_tests {
             );
         }
         assert!(expected.is_empty());
+    }
+
+    #[test]
+    fn sparse_shared_sum_preserves_filtered_wide_outputs_across_mapping_modes() {
+        let expressions = [
+            AExpr::Group(0),
+            AExpr::Count,
+            AExpr::Sum(1),
+            AExpr::Avg(1),
+            AExpr::Sum(1),
+        ];
+        for mode in ["small", "collision", "large", "plain"] {
+            let mut groups = SparseGroups::new(&expressions);
+            let mut inverse = groups.cache_multiplier;
+            for _ in 0..6 {
+                inverse = inverse.wrapping_mul(
+                    2_u64.wrapping_sub(groups.cache_multiplier.wrapping_mul(inverse)),
+                );
+            }
+            let keys = if mode == "collision" {
+                cache_colliding_keys(groups.cache_multiplier, 19)
+            } else if mode == "large" {
+                groups.cache = None;
+                groups.cache_learning = false;
+                groups.large_cache = Some(
+                    vec![None; LARGE_GROUP_CACHE_SLOTS]
+                        .into_boxed_slice()
+                        .try_into()
+                        .unwrap(),
+                );
+                (0..5003_u64)
+                    .map(|i| (inverse.wrapping_mul(i << 50)) as i64)
+                    .collect()
+            } else {
+                if mode == "plain" {
+                    groups.cache = None;
+                    groups.cache_learning = false;
+                }
+                (0..19_u64)
+                    .map(|i| (inverse.wrapping_mul(i << 56)) as i64)
+                    .collect()
+            };
+            let mut keys: Vec<i64> = keys;
+            keys[0] = i64::MIN;
+            keys[1] = i64::MAX;
+            let columns = vec![
+                (0..25015)
+                    .map(|i| keys[i * 17 % keys.len()])
+                    .collect::<Vec<_>>(),
+                (0..25015)
+                    .map(|i| {
+                        if (i * 17 % keys.len()).is_multiple_of(2) {
+                            i64::MAX
+                        } else {
+                            i64::MIN
+                        }
+                    })
+                    .collect(),
+            ];
+            let mut expected = BTreeMap::<i64, (usize, i128)>::new();
+            for lo in (0..columns[0].len()).step_by(BLOCK_ROWS) {
+                let selected: Vec<usize> = (lo..(lo + BLOCK_ROWS).min(columns[0].len()))
+                    .filter(|i| i % 7 != 0)
+                    .collect();
+                groups.update_selected(0, &columns, &selected).unwrap();
+                for row in selected {
+                    let entry = expected.entry(columns[0][row]).or_default();
+                    entry.0 += 1;
+                    entry.1 += i128::from(columns[1][row]);
+                }
+            }
+            groups.update_selected(0, &columns, &[]).unwrap();
+            assert!(
+                expected
+                    .values()
+                    .any(|(_, sum)| *sum > i128::from(i64::MAX) || *sum < i128::from(i64::MIN))
+            );
+            for row in groups.into_rows(&expressions) {
+                let Value::Int(key) = row[0] else {
+                    unreachable!()
+                };
+                let (count, sum) = expected.remove(&(key as i64)).unwrap();
+                assert_eq!(
+                    row,
+                    vec![
+                        Value::Int(key),
+                        Value::Int(count as i128),
+                        Value::Int(sum),
+                        Value::Float(sum as f64 / count as f64),
+                        Value::Int(sum)
+                    ],
+                    "{mode}"
+                );
+            }
+            assert!(expected.is_empty(), "{mode}");
+        }
     }
 
     #[test]
