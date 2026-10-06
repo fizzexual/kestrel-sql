@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--sql-binary',type=Path,default=ROOT/'bin'/'kestrel.exe')
     parser.add_argument('--servers',type=Path,default=ROOT.parent.parent/'work'/'stress-engines'/'running.json')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'capability-{time.time_ns()}')
+    parser.add_argument('--output',type=Path,default=ROOT/'benchmarks'/'capability-results.json')
     args = parser.parse_args()
     args.work.mkdir(parents=True)
     servers = json.loads(args.servers.read_text())
@@ -71,7 +72,7 @@ def main():
         engine.finish()
         report['engines'].append({'engine':name,'version':engine.version,'probes':probes})
         print(json.dumps(report['engines'][-1]),flush=True)
-    (ROOT/'benchmarks'/'capability-results.json').write_text(json.dumps(report,indent=2)+'\n')
+    args.output.write_text(json.dumps(report,indent=2)+'\n')
 
 
 if __name__=='__main__':

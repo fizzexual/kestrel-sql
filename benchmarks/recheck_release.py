@@ -8,6 +8,7 @@ import json
 import struct
 import subprocess
 import time
+import tomllib
 from pathlib import Path
 
 import compare
@@ -42,6 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--binary", type=Path, default=ROOT / "bin" / "kestrel.exe")
     parser.add_argument("--work", type=Path, default=ROOT.parent.parent / "work" / f"release-check-{time.time_ns()}")
+    parser.add_argument("--output", type=Path, default=ROOT / "benchmarks" / "release-recheck.json")
     args = parser.parse_args()
     binary = args.binary.resolve()
     scale, windows, nyc = read("large-results.json"), read("random-window-results.json"), read("nyc-results.json")
@@ -82,14 +84,14 @@ def main():
         capture_output=True, text=True)
     assert failed.returncode != 0 and "partial row" in failed.stderr
     check_queries(binary, empty, [("SELECT COUNT(*) FROM events", [[0]])])
-    report = {"version": "0.2.0", "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
+    report = {"version": tomllib.loads((ROOT/'Cargo.toml').read_text())['package']['version'], "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
         "retained_fixed_scale_cases": fixed_count, "retained_random_window_cases": window_count,
         "retained_real_data_cases": real_count, "all_retained_results_match": True,
         "timing": "untimed result checks; original measurements retained",
         "wide_import": {"rows": rows, "columns": 64, "segments": 2,
             "full_scrub_passed": True, "uppercase_schema_reopen_and_query_passed": True},
         "partial_row_import_rejected_before_publication": True}
-    (ROOT / "benchmarks" / "release-recheck.json").write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
+    args.output.write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
 

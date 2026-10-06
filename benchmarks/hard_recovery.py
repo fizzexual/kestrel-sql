@@ -22,6 +22,8 @@ def main():
     parser.add_argument('--sql-binary',type=Path,default=ROOT/'bin'/'kestrel.exe')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'hard-recovery-{time.time_ns()}')
     parser.add_argument('--cycles',type=int,default=24)
+    parser.add_argument('--identified',action='store_true',help='Persist batch IDs and reconcile retries after every kill')
+    parser.add_argument('--output',type=Path,default=ROOT/'benchmarks'/'hard-recovery-results.json')
     args = parser.parse_args()
     if not 1<=args.cycles<=100:
         parser.error('forced-kill cycles must be 1..100')
@@ -43,7 +45,7 @@ def main():
                     attempts.append(batch)
                     data = [[i,i,1] for i in range(1000+batch*1000,2000+batch*1000)]
                     active.set()
-                    connection.append(data)
+                    connection.call({'op':'append','data':data,**({'id':f'crash:{batch}'} if args.identified else {})})
                     acks.append(batch)
                     if finished.is_set(): break
             except (OSError, ValueError):
@@ -74,12 +76,25 @@ def main():
         assert total==expected, ('non-prefix/partial publication',count,total,expected)
         scrub = connection.call({'op':'verify'})
         assert scrub['verified_bytes']==count*24
+        if args.identified:
+            duplicates=0
+            for batch in attempts:
+                data=[[i,i,1] for i in range(1000+batch*1000,2000+batch*1000)]
+                receipt=connection.call({'op':'append','id':f'crash:{batch}','data':data})
+                duplicates+=int(receipt['duplicate'])
+            assert duplicates==published, 'deduplication ledger differs from recovered rows'
+            assert connection.query('SELECT COUNT(*) FROM events')==[[1000+len(attempts)*1000]]
+            connection.call({'op':'verify'})
         connection.close()
         engine.finish()
         record = {'cycle':cycle,'kill_after_seconds':delays[cycle%len(delays)],
             'acknowledged_batches':len(acks),'attempted_batches':len(attempts),
             'published_batches':published,'recovered_rows':count,'sum_and_full_scrub_passed':True,
             'unacknowledged_committed_batches':published-len(acks)}
+        if args.identified:
+            record['retry_deduplication_passed']=True
+            record['replayed_existing_batches']=duplicates
+            record['retry_rows']=1000+len(attempts)*1000
         report['cycles'].append(record)
         print(json.dumps(record),flush=True)
         directory = engine.directory.resolve()
@@ -143,7 +158,7 @@ def main():
         'page_read_rejected':True,'full_scrub_rejected':True,'errors':failures}
     connection.close()
     engine.finish()
-    output = ROOT/'benchmarks'/'hard-recovery-results.json'
+    output = args.output
     output.write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'report':str(output),'forced_kill_cycles_passed':len(report['cycles']),
         'boundaries':report['boundaries']},indent=2))

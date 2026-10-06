@@ -4,10 +4,13 @@
 use crate::sql::{Expr, Op, Query, Statement};
 use crate::{Error, QueryResult, Result, Value};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeSet, HashMap};
+use sha2::{Digest, Sha256};
+use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::{Arc, Mutex};
 
 pub const BLOCK_ROWS: usize = 4096;
 pub const MAX_SEGMENT_ROWS: usize = 1_000_000;
@@ -16,7 +19,67 @@ const MAX_SEGMENTS: usize = 10_000;
 const MAX_BATCH_BYTES: usize = 64 * 1024 * 1024;
 const MAX_INDEX_MEMORY: usize = 128 * 1024 * 1024;
 const SEG_MAGIC: &[u8; 8] = b"KSQLSEG2";
-const CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
+const CAT_MAGIC: &[u8; 8] = b"KSQLCAT3";
+const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
+const MAX_BATCH_IDS: usize = 100_000;
+const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
+
+struct Page {
+    values: Vec<i64>,
+    prefix: Vec<i128>,
+}
+type PageKey = (u64, usize, usize);
+#[derive(Default)]
+struct CachedPages {
+    pages: HashMap<PageKey, Arc<Page>>,
+    fifo: VecDeque<PageKey>,
+    bytes: usize,
+}
+#[derive(Default)]
+struct PageCache {
+    state: Mutex<CachedPages>,
+    hits: AtomicU64,
+    misses: AtomicU64,
+}
+impl PageCache {
+    fn get(&self, key: PageKey) -> Option<Arc<Page>> {
+        let found = self
+            .state
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .pages
+            .get(&key)
+            .cloned();
+        if found.is_some() {
+            self.hits.fetch_add(1, Ordering::Relaxed);
+        } else {
+            self.misses.fetch_add(1, Ordering::Relaxed);
+        }
+        found
+    }
+    fn insert(&self, key: PageKey, page: Arc<Page>) -> Arc<Page> {
+        let mut cache = self.state.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some(previous) = cache.pages.get(&key) {
+            return Arc::clone(previous);
+        }
+        let size = page.values.len() * 8 + page.prefix.len() * 16 + 128;
+        while cache.bytes + size > MAX_PAGE_CACHE_BYTES {
+            let Some(old) = cache.fifo.pop_front() else {
+                break;
+            };
+            if let Some(page) = cache.pages.remove(&old) {
+                cache.bytes -= page.values.len() * 8 + page.prefix.len() * 16 + 128;
+            }
+        }
+        cache.bytes += size;
+        cache.fifo.push_back(key);
+        cache.pages.insert(key, Arc::clone(&page));
+        page
+    }
+    fn clear(&self) {
+        *self.state.lock().unwrap_or_else(|e| e.into_inner()) = CachedPages::default();
+    }
+}
 
 #[derive(Clone, Serialize, Deserialize)]
 struct Index {
@@ -39,9 +102,31 @@ struct Catalog {
     table: String,
     columns: Vec<String>,
     segments: Vec<String>,
+    #[serde(default)]
+    batches: BTreeMap<String, BatchRecord>,
+}
+#[derive(Clone, Serialize, Deserialize)]
+struct BatchRecord {
+    digest: [u8; 32],
+    rows: usize,
+    generation: u64,
+}
+
+/// An optional durable batch ID makes retries idempotent within this archive.
+pub struct IngestBatch {
+    pub id: Option<String>,
+    pub columns: Vec<Vec<i64>>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct IngestReceipt {
+    pub rows: usize,
+    pub duplicate: bool,
+    pub generation: u64,
 }
 struct Segment {
     name: String,
+    file: File,
     metadata: SegmentMetadata,
     offset: u64,
     index_bytes: usize,
@@ -78,15 +163,35 @@ pub struct ArchiveStats {
     pub physical_bytes: u64,
     pub metadata_bytes: usize,
     pub block_rows: usize,
+    pub generation: u64,
+    pub recorded_batch_ids: usize,
+    pub retained_page_cache_bytes: usize,
+    pub page_cache_hits: u64,
+    pub page_cache_misses: u64,
 }
 
 pub struct Archive {
     path: PathBuf,
-    _lock: File,
+    _lock: Arc<File>,
     catalog: Catalog,
-    segments: Vec<Segment>,
+    segments: Vec<Arc<Segment>>,
+    retired: Vec<Arc<Segment>>,
     next_generation: u64,
+    generation: u64,
     poisoned: bool,
+    cache: Arc<PageCache>,
+}
+
+/// An immutable committed view. Holding it retains the store lock and any
+/// replaced segment files, so compaction cannot invalidate an active query.
+pub struct ArchiveSnapshot {
+    path: PathBuf,
+    _lock: Arc<File>,
+    catalog: Catalog,
+    segments: Vec<Arc<Segment>>,
+    generation: u64,
+    recorded_batch_ids: usize,
+    cache: Arc<PageCache>,
 }
 
 fn write_envelope(file: &mut File, magic: &[u8; 8], bytes: &[u8]) -> Result<()> {
@@ -167,6 +272,7 @@ fn load_segment(path: &Path, name: String, columns: usize) -> Result<Segment> {
     }
     Ok(Segment {
         name,
+        file,
         metadata,
         offset,
         index_bytes: bytes.len(),
@@ -217,7 +323,15 @@ impl Archive {
         }
         let catalog = if let Some(n) = latest {
             let mut file = File::open(path.join(format!("catalog-{n:020}.ks2")))?;
-            let bytes = read_envelope(&mut file, CAT_MAGIC)?;
+            let mut signature = [0; 8];
+            file.read_exact(&mut signature)?;
+            file.seek(SeekFrom::Start(0))?;
+            let magic = if &signature == OLD_CAT_MAGIC {
+                OLD_CAT_MAGIC
+            } else {
+                CAT_MAGIC
+            };
+            let bytes = read_envelope(&mut file, magic)?;
             if file.metadata()?.len() != bytes.len() as u64 + 16 {
                 return Err(Error::new("catalog has trailing bytes"));
             }
@@ -227,11 +341,13 @@ impl Archive {
                 table: table.clone(),
                 columns: columns.clone(),
                 segments: Vec::new(),
+                batches: BTreeMap::new(),
             }
         };
         if catalog.table != table
             || catalog.columns != columns
             || catalog.segments.len() > MAX_SEGMENTS
+            || catalog.batches.len() > MAX_BATCH_IDS
         {
             return Err(Error::new(
                 "archive schema mismatch or segment budget exceeded",
@@ -239,6 +355,15 @@ impl Archive {
         }
         if catalog.segments.iter().collect::<BTreeSet<_>>().len() != catalog.segments.len() {
             return Err(Error::new("duplicate segment reference"));
+        }
+        if catalog.batches.iter().any(|(id, record)| {
+            !valid_batch_id(id)
+                || record.rows == 0
+                || record.rows > MAX_SEGMENT_ROWS
+                || record.generation == 0
+                || record.generation > latest.unwrap_or(0)
+        }) {
+            return Err(Error::new("invalid durable batch receipt"));
         }
         let mut segments = Vec::new();
         let mut index_memory = 0;
@@ -248,15 +373,18 @@ impl Archive {
             if index_memory > MAX_INDEX_MEMORY {
                 return Err(Error::new("archive index memory budget exceeded"));
             }
-            segments.push(segment);
+            segments.push(Arc::new(segment));
         }
         Ok(Self {
             path,
-            _lock: lock,
+            _lock: Arc::new(lock),
             catalog,
             segments,
+            retired: Vec::new(),
             next_generation: next,
+            generation: latest.unwrap_or(0),
             poisoned: false,
+            cache: Arc::new(PageCache::default()),
         })
     }
     fn healthy(&self) -> Result<()> {
@@ -270,7 +398,115 @@ impl Archive {
     }
     /// One atomic batch, limited to one million rows. Physical order follows the first
     /// column; independent sorted runs support arbitrarily late arrivals across batches.
-    pub fn append(&mut self, mut columns: Vec<Vec<i64>>) -> Result<usize> {
+    pub fn append(&mut self, columns: Vec<Vec<i64>>) -> Result<usize> {
+        Ok(self
+            .append_group(vec![IngestBatch { id: None, columns }])?
+            .remove(0)
+            .rows)
+    }
+
+    pub fn append_once(&mut self, id: &str, columns: Vec<Vec<i64>>) -> Result<IngestReceipt> {
+        Ok(self
+            .append_group(vec![IngestBatch {
+                id: Some(id.into()),
+                columns,
+            }])?
+            .remove(0))
+    }
+
+    /// Publish several independent batches as one durable commit. All validation
+    /// precedes I/O. A receipt is returned only after catalog publication succeeds.
+    pub fn append_group(&mut self, batches: Vec<IngestBatch>) -> Result<Vec<IngestReceipt>> {
+        self.healthy()?;
+        let width = self.catalog.columns.len();
+        let mut combined = vec![Vec::new(); width];
+        let mut records = self.catalog.batches.clone();
+        let mut receipts = Vec::with_capacity(batches.len());
+        let mut total = 0usize;
+        for batch in batches {
+            if batch.columns.len() != width {
+                return Err(Error::new("archive column count mismatch"));
+            }
+            let rows = batch.columns[0].len();
+            if batch.columns.iter().any(|c| c.len() != rows) {
+                return Err(Error::new("archive column lengths differ"));
+            }
+            if rows > MAX_SEGMENT_ROWS || rows * width * 8 > MAX_BATCH_BYTES {
+                return Err(Error::new("archive batch budget exceeded"));
+            }
+            if let Some(id) = batch.id {
+                if !valid_batch_id(&id) || rows == 0 {
+                    return Err(Error::new(
+                        "batch ID must contain 1..128 ASCII identifier bytes and a nonempty batch",
+                    ));
+                }
+                let mut digest = Sha256::new();
+                digest.update((width as u64).to_le_bytes());
+                digest.update((rows as u64).to_le_bytes());
+                for column in &batch.columns {
+                    for value in column {
+                        digest.update(value.to_le_bytes());
+                    }
+                }
+                let digest: [u8; 32] = digest.finalize().into();
+                if let Some(previous) = records.get(&id) {
+                    if previous.digest != digest || previous.rows != rows {
+                        return Err(Error::new(
+                            "batch ID already committed with different content",
+                        ));
+                    }
+                    receipts.push(IngestReceipt {
+                        rows,
+                        duplicate: true,
+                        generation: previous.generation,
+                    });
+                    continue;
+                }
+                if records.len() >= MAX_BATCH_IDS {
+                    return Err(Error::new(
+                        "durable batch ID budget exceeded; no IDs are silently evicted",
+                    ));
+                }
+                records.insert(
+                    id,
+                    BatchRecord {
+                        digest,
+                        rows,
+                        generation: self.next_generation,
+                    },
+                );
+            }
+            total = total
+                .checked_add(rows)
+                .ok_or_else(|| Error::new("archive group budget exceeded"))?;
+            if total > MAX_SEGMENT_ROWS || total * width * 8 > MAX_BATCH_BYTES {
+                return Err(Error::new("archive group budget exceeded"));
+            }
+            receipts.push(IngestReceipt {
+                rows,
+                duplicate: false,
+                generation: if rows == 0 {
+                    self.generation
+                } else {
+                    self.next_generation
+                },
+            });
+            for (out, column) in combined.iter_mut().zip(batch.columns) {
+                out.extend(column);
+            }
+        }
+        if total > 0 {
+            self.publish(combined, &[], records)?;
+        }
+        Ok(receipts)
+    }
+
+    fn publish(
+        &mut self,
+        mut columns: Vec<Vec<i64>>,
+        remove: &[String],
+        batches: BTreeMap<String, BatchRecord>,
+    ) -> Result<usize> {
         self.healthy()?;
         if columns.len() != self.catalog.columns.len() {
             return Err(Error::new("archive column count mismatch"));
@@ -283,7 +519,7 @@ impl Archive {
             return Ok(0);
         }
         if rows > MAX_SEGMENT_ROWS
-            || self.segments.len() >= MAX_SEGMENTS
+            || self.segments.len() - remove.len() >= MAX_SEGMENTS
             || rows * columns.len() * 8 > MAX_BATCH_BYTES
         {
             return Err(Error::new("archive batch or segment budget exceeded"));
@@ -329,6 +565,7 @@ impl Archive {
             + self
                 .segments
                 .iter()
+                .filter(|s| !remove.contains(&s.name))
                 .map(|s| s.metadata.index_memory())
                 .sum::<usize>()
             > MAX_INDEX_MEMORY
@@ -342,9 +579,22 @@ impl Archive {
             .checked_add(1)
             .ok_or_else(|| Error::new("archive generation overflow"))?;
         let name = format!("segment-{generation:020}.ks2");
-        let publish = (|| -> Result<()> {
-            let mut file = File::create_new(self.path.join(&name))?;
-            write_envelope(&mut file, SEG_MAGIC, &metadata_bytes)?;
+        let mut references = self.catalog.segments.clone();
+        references.retain(|name| !remove.contains(name));
+        references.push(name.clone());
+        let candidate = Catalog {
+            table: self.catalog.table.clone(),
+            columns: self.catalog.columns.clone(),
+            segments: references,
+            batches,
+        };
+        let publish = (|| -> Result<File> {
+            let mut segment_file = OpenOptions::new()
+                .read(true)
+                .write(true)
+                .create_new(true)
+                .open(self.path.join(&name))?;
+            write_envelope(&mut segment_file, SEG_MAGIC, &metadata_bytes)?;
             let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
             for column in &columns {
                 for block in column.chunks(BLOCK_ROWS) {
@@ -352,18 +602,10 @@ impl Archive {
                     for value in block {
                         buffer.extend_from_slice(&value.to_le_bytes());
                     }
-                    file.write_all(&buffer)?;
+                    segment_file.write_all(&buffer)?;
                 }
             }
-            file.sync_all()?;
-            drop(file);
-            let mut references = self.catalog.segments.clone();
-            references.push(name.clone());
-            let candidate = Catalog {
-                table: self.catalog.table.clone(),
-                columns: self.catalog.columns.clone(),
-                segments: references,
-            };
+            segment_file.sync_all()?;
             let bytes = serde_json::to_vec(&candidate).map_err(|e| Error::new(e.to_string()))?;
             let pending = self.path.join(format!("catalog-{generation:020}.pending"));
             let mut file = File::create_new(&pending)?;
@@ -376,29 +618,171 @@ impl Archive {
             )?;
             #[cfg(unix)]
             File::open(&self.path)?.sync_all()?;
-            Ok(())
+            Ok(segment_file)
         })();
-        if let Err(e) = publish {
-            self.poisoned = true;
-            return Err(Error::new(format!(
-                "archive publication outcome unknown; reopen: {e}"
-            )));
-        }
-        self.catalog.segments.push(name.clone());
-        self.segments.push(Segment {
+        let file = match publish {
+            Ok(file) => file,
+            Err(e) => {
+                self.poisoned = true;
+                return Err(Error::new(format!(
+                    "archive publication outcome unknown; reopen: {e}"
+                )));
+            }
+        };
+        self.catalog = candidate;
+        self.generation = generation;
+        self.segments.retain(|segment| {
+            if remove.contains(&segment.name) {
+                self.retired.push(Arc::clone(segment));
+                false
+            } else {
+                true
+            }
+        });
+        self.segments.push(Arc::new(Segment {
             name,
+            file,
             metadata,
             offset: 16 + metadata_bytes.len() as u64,
             index_bytes: metadata_bytes.len(),
-        });
+        }));
         Ok(rows)
+    }
+    /// Merge up to 32 small runs, with a 64K-row and 64-MiB payload ceiling.
+    /// The replacement is atomically published; batch receipts remain unchanged.
+    pub fn compact_small(&mut self) -> Result<usize> {
+        self.healthy()?;
+        let width = self.catalog.columns.len();
+        let mut rows = 0;
+        let mut selected = Vec::new();
+        for segment in &self.segments {
+            let count = segment.metadata.rows;
+            if count >= 32_768
+                || rows + count > 65_536
+                || (rows + count) * width * 8 > MAX_BATCH_BYTES
+            {
+                continue;
+            }
+            selected.push(Arc::clone(segment));
+            rows += count;
+            if selected.len() == 32 {
+                break;
+            }
+        }
+        if selected.len() < 2 {
+            return Ok(0);
+        }
+        let mut columns: Vec<_> = (0..width).map(|_| Vec::with_capacity(rows)).collect();
+        for segment in &selected {
+            let mut reader = Reader {
+                stream_file: None,
+                directory: &self.path,
+                segment,
+                bytes: 0,
+                cache: None,
+                materialized_rows: 0,
+            };
+            for (column, data) in columns.iter_mut().enumerate() {
+                for block in 0..segment.metadata.rows.div_ceil(BLOCK_ROWS) {
+                    data.extend(reader.block(column, block)?);
+                }
+            }
+        }
+        let remove: Vec<_> = selected.iter().map(|s| s.name.clone()).collect();
+        self.publish(columns, &remove, self.catalog.batches.clone())?;
+        Ok(remove.len() - 1)
+    }
+
+    pub fn small_segments(&self) -> usize {
+        self.segments
+            .iter()
+            .filter(|s| s.metadata.rows < 32_768)
+            .count()
+    }
+
+    /// Reclaim superseded catalogs and retired segments only when no snapshot
+    /// references them. Unreferenced crash orphans are left for explicit inspection.
+    pub fn reclaim(&mut self) -> Result<usize> {
+        self.healthy()?;
+        let mut removed = 0;
+        for entry in std::fs::read_dir(&self.path)? {
+            let entry = entry?;
+            let name = entry.file_name().to_string_lossy().to_string();
+            if parse_name(&name, "catalog-", ".ks2").is_some_and(|g| g < self.generation) {
+                std::fs::remove_file(entry.path())?;
+                removed += 1;
+            }
+        }
+        let mut index = 0;
+        while index < self.retired.len() {
+            let segment = &self.retired[index];
+            if Arc::strong_count(segment) > 1 {
+                index += 1;
+            } else {
+                std::fs::remove_file(self.path.join(&segment.name))?;
+                self.retired.swap_remove(index);
+                removed += 1;
+            }
+        }
+        Ok(removed)
+    }
+
+    pub fn snapshot(&self) -> Result<ArchiveSnapshot> {
+        self.healthy()?;
+        Ok(ArchiveSnapshot {
+            path: self.path.clone(),
+            _lock: Arc::clone(&self._lock),
+            catalog: Catalog {
+                table: self.catalog.table.clone(),
+                columns: self.catalog.columns.clone(),
+                segments: Vec::new(),
+                batches: BTreeMap::new(),
+            },
+            segments: self.segments.clone(),
+            generation: self.generation,
+            recorded_batch_ids: self.catalog.batches.len(),
+            cache: Arc::clone(&self.cache),
+        })
+    }
+
+    pub fn stats(&self) -> Result<ArchiveStats> {
+        self.snapshot()?.stats()
+    }
+    pub fn query(&self, sql: &str) -> Result<ArchiveResult> {
+        self.snapshot()?.query(sql)
+    }
+    pub fn verify(&self) -> Result<u64> {
+        self.snapshot()?.verify()
+    }
+}
+
+pub(crate) fn valid_batch_id(id: &str) -> bool {
+    !id.is_empty()
+        && id.len() <= 128
+        && id
+            .bytes()
+            .all(|c| c.is_ascii_alphanumeric() || b"-_.:/".contains(&c))
+}
+
+impl ArchiveSnapshot {
+    pub fn columns(&self) -> &[String] {
+        &self.catalog.columns
+    }
+    pub fn table(&self) -> &str {
+        &self.catalog.table
     }
     pub fn stats(&self) -> Result<ArchiveStats> {
         let rows: u64 = self.segments.iter().map(|s| s.metadata.rows as u64).sum();
-        let physical_bytes = std::fs::read_dir(&self.path)?
-            .try_fold(0_u64, |sum, entry| -> std::io::Result<u64> {
-                Ok(sum + entry?.metadata()?.len())
-            })?;
+        let physical_bytes = std::fs::read_dir(&self.path)?.try_fold(
+            0_u64,
+            |sum, entry| -> std::io::Result<u64> {
+                match entry?.metadata() {
+                    Ok(metadata) => Ok(sum + metadata.len()),
+                    Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(sum),
+                    Err(error) => Err(error),
+                }
+            },
+        )?;
         Ok(ArchiveStats {
             rows,
             segments: self.segments.len(),
@@ -406,10 +790,19 @@ impl Archive {
             physical_bytes,
             metadata_bytes: self.segments.iter().map(|s| s.index_bytes).sum(),
             block_rows: BLOCK_ROWS,
+            generation: self.generation,
+            recorded_batch_ids: self.recorded_batch_ids,
+            retained_page_cache_bytes: self
+                .cache
+                .state
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .bytes,
+            page_cache_hits: self.cache.hits.load(Ordering::Relaxed),
+            page_cache_misses: self.cache.misses.load(Ordering::Relaxed),
         })
     }
     pub fn query(&self, sql: &str) -> Result<ArchiveResult> {
-        self.healthy()?;
         let q = match crate::sql::parse(sql)? {
             Statement::Select(q) => q,
             _ => return Err(Error::new("archive query requires SELECT")),
@@ -450,10 +843,12 @@ impl Archive {
                 && (resolved.filters.is_empty()
                     || segment.metadata.indexes[resolved.filters[0].0].monotonic);
             let mut reader = Reader {
-                file: None,
-                path: self.path.join(&segment.name),
+                stream_file: None,
+                directory: &self.path,
                 segment,
                 bytes: 0,
+                cache: Some(&self.cache),
+                materialized_rows: 0,
             };
             if can_prefix {
                 let mut lo = 0;
@@ -473,6 +868,12 @@ impl Archive {
                 }
                 hi = hi.max(lo);
                 let count = hi - lo;
+                if count == 0 {
+                    bytes_read += reader.bytes;
+                    scanned += reader.materialized_rows;
+                    pruned += 1;
+                    continue;
+                }
                 let mut sums = HashMap::new();
                 let mut extrema = HashMap::new();
                 for (cell, expr) in states.iter_mut().zip(&resolved.exprs) {
@@ -568,6 +969,7 @@ impl Archive {
                 }
             }
             bytes_read += reader.bytes;
+            scanned += reader.materialized_rows;
         }
         let mut rows: Vec<Vec<Value>> = if resolved.limit == Some(0) {
             Vec::new()
@@ -618,14 +1020,22 @@ impl Archive {
     }
     /// Read every data block and validate its checksum and cumulative aggregate index.
     pub fn verify(&self) -> Result<u64> {
-        self.healthy()?;
+        let result = self.verify_payload();
+        if result.is_err() {
+            self.cache.clear();
+        }
+        result
+    }
+    fn verify_payload(&self) -> Result<u64> {
         let mut bytes = 0;
         for segment in &self.segments {
             let mut reader = Reader {
-                file: None,
-                path: self.path.join(&segment.name),
+                stream_file: None,
+                directory: &self.path,
                 segment,
                 bytes: 0,
+                cache: None,
+                materialized_rows: 0,
             };
             for c in 0..self.catalog.columns.len() {
                 let index = &segment.metadata.indexes[c];
@@ -668,25 +1078,61 @@ impl Archive {
 }
 
 struct Reader<'a> {
-    file: Option<File>,
-    path: PathBuf,
+    stream_file: Option<File>,
+    directory: &'a Path,
     segment: &'a Segment,
     bytes: u64,
+    cache: Option<&'a PageCache>,
+    materialized_rows: usize,
 }
 impl Reader<'_> {
+    fn indexed_page(&mut self, column: usize, block: usize) -> Result<Arc<Page>> {
+        let key = (
+            parse_name(&self.segment.name, "segment-", ".ks2").unwrap(),
+            column,
+            block,
+        );
+        if let Some(cache) = self.cache
+            && let Some(page) = cache.get(key)
+        {
+            return Ok(page);
+        }
+        let values = self.read_block(column, block, false)?;
+        self.materialized_rows += values.len();
+        let mut prefix = Vec::with_capacity(values.len() + 1);
+        prefix.push(0_i128);
+        for value in &values {
+            prefix.push(prefix.last().unwrap() + i128::from(*value));
+        }
+        let page = Arc::new(Page { values, prefix });
+        Ok(if let Some(cache) = self.cache {
+            cache.insert(key, page)
+        } else {
+            page
+        })
+    }
     fn block(&mut self, column: usize, block: usize) -> Result<Vec<i64>> {
+        self.read_block(column, block, true)
+    }
+    fn read_block(&mut self, column: usize, block: usize, streaming: bool) -> Result<Vec<i64>> {
         let count = (self.segment.metadata.rows - block * BLOCK_ROWS).min(BLOCK_ROWS);
         let offset = self.segment.offset
             + (column as u64 * self.segment.metadata.rows as u64
                 + block as u64 * BLOCK_ROWS as u64)
                 * 8;
-        if self.file.is_none() {
-            self.file = Some(File::open(&self.path)?);
-        }
-        let file = self.file.as_mut().unwrap();
-        file.seek(SeekFrom::Start(offset))?;
         let mut bytes = vec![0; count * 8];
-        file.read_exact(&mut bytes)?;
+        if streaming {
+            // Long scans need independent synchronous handles on Windows to avoid
+            // serializing all scan I/O on the retained boundary-read handle.
+            if self.stream_file.is_none() {
+                self.stream_file = Some(File::open(self.directory.join(&self.segment.name))?);
+            }
+            let file = self.stream_file.as_mut().unwrap();
+            file.seek(SeekFrom::Start(offset))?;
+            file.read_exact(&mut bytes)?;
+        } else {
+            read_exact_at(&self.segment.file, &mut bytes, offset)?;
+        }
         self.bytes += bytes.len() as u64;
         if crc32fast::hash(&bytes) != self.segment.metadata.indexes[column].crc[block] {
             return Err(Error::new("archive data block checksum mismatch"));
@@ -710,11 +1156,13 @@ impl Reader<'_> {
         if b == index.last.len() {
             return Ok(self.segment.metadata.rows);
         }
-        let data = self.block(column, b)?;
+        let data = self.indexed_page(column, b)?;
         Ok(b * BLOCK_ROWS
-            + data.partition_point(|x| if inclusive { *x <= value } else { *x < value }))
+            + data
+                .values
+                .partition_point(|x| if inclusive { *x <= value } else { *x < value }))
     }
-    fn prefix_at(&mut self, column: usize, end: usize, scanned: &mut usize) -> Result<i128> {
+    fn prefix_at(&mut self, column: usize, end: usize, _scanned: &mut usize) -> Result<i128> {
         let index = &self.segment.metadata.indexes[column];
         if end == self.segment.metadata.rows {
             return Ok(*index.prefix.last().unwrap());
@@ -725,12 +1173,7 @@ impl Reader<'_> {
         if tail == 0 {
             return Ok(sum);
         }
-        *scanned += tail;
-        Ok(sum
-            + self.block(column, b)?[..tail]
-                .iter()
-                .map(|x| i128::from(*x))
-                .sum::<i128>())
+        Ok(sum + self.indexed_page(column, b)?.prefix[tail])
     }
     fn extrema(
         &mut self,
@@ -753,14 +1196,40 @@ impl Reader<'_> {
                 min = min.min(self.segment.metadata.indexes[column].block_min[b]);
                 max = max.max(self.segment.metadata.indexes[column].block_max[b]);
             } else {
-                let block = self.block(column, b)?;
+                let block = self.indexed_page(column, b)?;
                 *scanned += end - start;
-                min = min.min(*block[start..end].iter().min().unwrap());
-                max = max.max(*block[start..end].iter().max().unwrap());
+                min = min.min(*block.values[start..end].iter().min().unwrap());
+                max = max.max(*block.values[start..end].iter().max().unwrap());
             }
         }
         Ok((min, max))
     }
+}
+
+// Every payload read specifies its own absolute offset. No query uses the
+// shared file cursor, including on Windows where seek_read updates that cursor.
+fn read_exact_at(file: &File, mut bytes: &mut [u8], mut offset: u64) -> std::io::Result<()> {
+    while !bytes.is_empty() {
+        #[cfg(unix)]
+        let result = std::os::unix::fs::FileExt::read_at(file, bytes, offset);
+        #[cfg(windows)]
+        let result = std::os::windows::fs::FileExt::seek_read(file, bytes, offset);
+        #[cfg(not(any(unix, windows)))]
+        let result: std::io::Result<usize> = Err(std::io::Error::new(
+            std::io::ErrorKind::Unsupported,
+            "positional archive reads require Unix or Windows",
+        ));
+        match result {
+            Ok(0) => return Err(std::io::ErrorKind::UnexpectedEof.into()),
+            Ok(count) => {
+                offset += count as u64;
+                bytes = &mut bytes[count..];
+            }
+            Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+            Err(error) => return Err(error),
+        }
+    }
+    Ok(())
 }
 fn impossible(index: &Index, op: Op, value: i64) -> bool {
     match op {

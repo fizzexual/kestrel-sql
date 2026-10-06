@@ -1,0 +1,407 @@
+{
+  "platform": "Windows-10-10.0.19045-SP0",
+  "logical_cpu_count": 20,
+  "seed": 20261006,
+  "base_rows": 10000000,
+  "engines_requested": [
+    "kestrel",
+    "duckdb"
+  ],
+  "methodology": {
+    "arrivals": "paced open loop; latency measured from scheduled arrival, including client queue and dispatch delay",
+    "queue_capacity": 256,
+    "max_client_queue_age_seconds": 2,
+    "connection_timeout_seconds": 8,
+    "durability": "Kestrel synchronized segments/catalog; SQLite WAL FULL; PostgreSQL synchronous_commit on; InnoDB flush-at-commit 1; DuckDB durable autocommit",
+    "indexes": "Kestrel sparse prefixes; SQLite/MySQL/MariaDB covering ts,value; PostgreSQL ts INCLUDE(value); DuckDB zonemaps",
+    "interfaces": "Kestrel Rust loopback JSON test bridge with public LiveArchive snapshots/group commits; references native Python bindings/protocols",
+    "parallelism": "one execution thread per query, up to 64 simultaneous clients; no CPU affinity",
+    "workload": "analytics: 95% range COUNT/SUM reads over 25..50% of base rows, random starts in first half; 5% 100-row append batches, 5% append timestamps late",
+    "limits": [
+      "single shared machine and loopback only",
+      "client language/interface costs differ",
+      "short rate sweeps and one-minute soak",
+      "not TAOBench or Facebook-scale traffic",
+      "no replication or distributed failure testing"
+    ],
+    "reused_reference_results": {
+      "source": "stress-v03-analytics.json",
+      "cases": 2,
+      "reason": "reference implementations unchanged; same-session native timings measured before final Kestrel-only read-path changes",
+      "raw_sample_paths": "original paths retained; no results recomputed or fabricated"
+    }
+  },
+  "cases": [
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "analytics",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 8.0001986,
+      "including_drain_seconds": 8.0792965,
+      "successful_operations": 16000,
+      "completed_in_arrival_window": 15979,
+      "successful_rps_in_arrival_window": 1997.375,
+      "successful_rps_including_drain": 1980.3704443821316,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.980625,
+      "latency_ms": {
+        "p50": 1.9353,
+        "p95": 6.9075,
+        "p99": 252.598,
+        "max": 505.0065
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4926,
+        "p99": 3.6466,
+        "max": 16.2347
+      },
+      "write_batch_rows": 100,
+      "read_successes": 15226,
+      "write_successes": 774,
+      "inserted_rows_acknowledged": 77400,
+      "expired_sequences": [],
+      "setup_seconds": 1.6808617999777198,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 364,
+        "ingest": {
+          "committed_batches": 774,
+          "compaction_total_ms": 4000.3143,
+          "compactions": 10,
+          "duplicate_batches": 0,
+          "durable_group_commits": 344,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 89.1779,
+          "publication_total_ms": 1540.1281,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 241857600,
+        "metadata_bytes": 283127,
+        "page_cache_hits": 1000276,
+        "page_cache_misses": 77399,
+        "physical_bytes": 243122158,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33492048,
+        "rows": 10077400,
+        "segments": 44
+      },
+      "reconciliation": {
+        "rows": 10077400,
+        "acknowledged_batches": 774,
+        "published_batches": 774,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 241857600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9967,
+          "latency_p99_ms": 208.2555
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6033,
+          "latency_p99_ms": 285.2716
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-analytics-samples\\kestrel-analytics-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "analytics",
+      "clients": 64,
+      "offered_rps": 1000,
+      "scheduled_seconds": 30.0,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 29.9991231,
+      "including_drain_seconds": 30.0071182,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 29999,
+      "successful_rps_in_arrival_window": 999.9666666666667,
+      "successful_rps_including_drain": 999.7627829519464,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9892,
+      "latency_ms": {
+        "p50": 1.6338,
+        "p95": 4.2323,
+        "p99": 121.1859,
+        "max": 608.6641
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2569,
+        "p99": 1.5643,
+        "max": 11.3201
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28511,
+      "write_successes": 1489,
+      "inserted_rows_acknowledged": 148900,
+      "expired_sequences": [],
+      "setup_seconds": 2.2031664000242017,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 1042,
+        "ingest": {
+          "committed_batches": 1489,
+          "compaction_total_ms": 9620.0245,
+          "compactions": 31,
+          "duplicate_batches": 0,
+          "durable_group_commits": 1001,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 198.5299,
+          "publication_total_ms": 4885.921,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 243573600,
+        "metadata_bytes": 287745,
+        "page_cache_hits": 1399972,
+        "page_cache_misses": 139489,
+        "physical_bytes": 244015857,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33502992,
+        "rows": 10148900,
+        "segments": 50
+      },
+      "reconciliation": {
+        "rows": 10148900,
+        "acknowledged_batches": 1489,
+        "published_batches": 1489,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 243573600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 4993,
+          "latency_p99_ms": 70.0562
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 4996,
+          "latency_p99_ms": 112.1656
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 5010,
+          "latency_p99_ms": 151.6389
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 4996,
+          "latency_p99_ms": 86.5799
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 5002,
+          "latency_p99_ms": 238.1217
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 5002,
+          "latency_p99_ms": 101.0179
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-analytics-samples\\kestrel-analytics-64-1000-30.jsonl.gz"
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "profile": "analytics",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 8.0044698,
+      "including_drain_seconds": 8.5908481,
+      "successful_operations": 4733,
+      "completed_in_arrival_window": 4412,
+      "successful_rps_in_arrival_window": 551.5,
+      "successful_rps_including_drain": 550.9351282791276,
+      "errors": [],
+      "queue_dropped": 11267,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 11267,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.002125,
+      "latency_ms": {
+        "p50": 575.444,
+        "p95": 673.196,
+        "p99": 724.1588,
+        "max": 804.5745
+      },
+      "dispatch_lag_ms": {
+        "p50": 1.5606,
+        "p99": 89.7567,
+        "max": 126.8655
+      },
+      "write_batch_rows": 100,
+      "read_successes": 4505,
+      "write_successes": 228,
+      "inserted_rows_acknowledged": 22800,
+      "expired_sequences": [],
+      "setup_seconds": 2.853481899946928,
+      "reconciliation": {
+        "rows": 10022800,
+        "acknowledged_batches": 228,
+        "published_batches": 228,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2707,
+          "latency_p99_ms": 733.1243
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2026,
+          "latency_p99_ms": 716.8947
+        }
+      ],
+      "raw_samples_file": "stress-v03-analytics-samples\\duckdb-analytics-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "profile": "analytics",
+      "clients": 64,
+      "offered_rps": 1000,
+      "scheduled_seconds": 30.0,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 30.0023921,
+      "including_drain_seconds": 30.5845679,
+      "successful_operations": 18046,
+      "completed_in_arrival_window": 17728,
+      "successful_rps_in_arrival_window": 590.9333333333333,
+      "successful_rps_including_drain": 590.0361273372772,
+      "errors": [],
+      "queue_dropped": 11954,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 11954,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.0033333333333333335,
+      "latency_ms": {
+        "p50": 536.3473,
+        "p95": 637.3297,
+        "p99": 687.4053,
+        "max": 837.4472
+      },
+      "dispatch_lag_ms": {
+        "p50": 1.5565,
+        "p99": 86.4044,
+        "max": 149.2646
+      },
+      "write_batch_rows": 100,
+      "read_successes": 17120,
+      "write_successes": 926,
+      "inserted_rows_acknowledged": 92600,
+      "expired_sequences": [],
+      "setup_seconds": 1.3066519999993034,
+      "reconciliation": {
+        "rows": 10092600,
+        "acknowledged_batches": 926,
+        "published_batches": 926,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 3127,
+          "latency_p99_ms": 658.3103
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2892,
+          "latency_p99_ms": 694.0415
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2965,
+          "latency_p99_ms": 674.3843
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2844,
+          "latency_p99_ms": 697.2147
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2942,
+          "latency_p99_ms": 710.5142
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2958,
+          "latency_p99_ms": 671.8257
+        }
+      ],
+      "raw_samples_file": "stress-v03-analytics-samples\\duckdb-analytics-64-1000-30.jsonl.gz"
+    }
+  ],
+  "failed_cases": [],
+  "kestrel_build": {
+    "rust_tests": {
+      "debug": 30,
+      "release": 30,
+      "passed": true
+    },
+    "format_check": "passed",
+    "clippy_warnings_as_errors": "passed",
+    "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+    "cli_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
+    "bridge_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
+    "concurrent_positional_and_scan_sql_cases": 512,
+    "tested_platform": "Windows 10",
+    "linux_execution": "unverified",
+    "source_sha256": {
+      "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+      "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+      "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+      "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
+      "tests/archive.rs": "74e14a7ad07f17a19e2dfececa88f727f0a6058082df8c5be898e8a6f426b505",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
+      "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413"
+    },
+    "rust_example_smoke": "passed; fresh store, exact retry, pinned and current views, full scrub"
+  }
+}

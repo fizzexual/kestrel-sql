@@ -1,6 +1,7 @@
 //! Experimental embedded, append-only SQL engine with automatic exact aggregate indexes.
 //! This release is a research prototype, not a production-certified database.
 pub mod archive;
+pub mod live;
 mod query;
 pub mod sql;
 mod wal;

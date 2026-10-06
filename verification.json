@@ -1,56 +1,84 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "local_qualification_date": "2026-10-06",
   "status": "experimental prototype; production qualification remains incomplete",
   "rust_tests": {
-    "debug": 23,
-    "release": 23,
+    "debug": 30,
+    "release": 30,
     "passed": true
   },
-  "archive_differential": {
-    "queries_checked_against_each_reference": 500,
-    "references": [
-      "DuckDB 1.5.6",
-      "SQLite 3.49.1"
-    ],
-    "rows": 40024,
-    "segments": 8,
-    "passed": true
+  "format_check": "passed",
+  "clippy_warnings_as_errors": "passed",
+  "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "cli_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
+  "bridge_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
+  "concurrent_positional_and_scan_sql_cases": 512,
+  "tested_platform": "Windows 10",
+  "linux_execution": "unverified",
+  "source_sha256": {
+    "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+    "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+    "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+    "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
+    "tests/archive.rs": "74e14a7ad07f17a19e2dfececa88f727f0a6058082df8c5be898e8a6f426b505",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
+    "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413"
   },
-  "scale": {
-    "rows": [
-      10000000,
-      50000000,
-      100000000,
-      100000000
-    ],
-    "fixed_cases_against_duckdb": 24,
-    "random_window_cases_against_duckdb": 124,
-    "fresh_process_reopen_scenarios": 4,
-    "full_payload_scrubs": 4,
-    "passed": true
-  },
-  "real_data": {
-    "source_rows": 3475226,
-    "accepted_rows": 3475077,
-    "rejected_rows": 149,
-    "query_cases_against_duckdb": 5,
-    "full_import_scrub": "passed",
-    "reconciliation": "passed"
-  },
-  "analytical_sql": {
-    "rows": 248,
-    "checks": {
-      "zone_key_unique_nonnull": true,
-      "counts_and_sums_reconcile": true,
-      "daily_join_reconciliation": true,
-      "lag_uses_complete_calendar": true,
-      "dense_rank_matches_independent_order": true
+  "rust_example_smoke": "passed; fresh store, exact retry, pinned and current views, full scrub",
+  "historical_0_2_proof": "verification-v02.json",
+  "historical_scale_and_pipeline": {
+    "archive_differential": {
+      "queries_checked_against_each_reference": 500,
+      "references": [
+        "DuckDB 1.5.6",
+        "SQLite 3.49.1"
+      ],
+      "rows": 40024,
+      "segments": 8,
+      "passed": true
+    },
+    "scale": {
+      "rows": [
+        10000000,
+        50000000,
+        100000000,
+        100000000
+      ],
+      "fixed_cases_against_duckdb": 24,
+      "random_window_cases_against_duckdb": 124,
+      "fresh_process_reopen_scenarios": 4,
+      "full_payload_scrubs": 4,
+      "passed": true
+    },
+    "real_data": {
+      "source_rows": 3475226,
+      "accepted_rows": 3475077,
+      "rejected_rows": 149,
+      "query_cases_against_duckdb": 5,
+      "full_import_scrub": "passed",
+      "reconciliation": "passed"
+    },
+    "analytical_sql": {
+      "rows": 248,
+      "checks": {
+        "zone_key_unique_nonnull": true,
+        "counts_and_sums_reconcile": true,
+        "daily_join_reconciliation": true,
+        "lag_uses_complete_calendar": true,
+        "dense_rank_matches_independent_order": true
+      }
     }
   },
-  "packaged_binary_recheck": {
-    "version": "0.2.0",
-    "binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
+  "retained_data_recheck": {
+    "version": "0.3.0",
+    "binary_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
     "retained_fixed_scale_cases": 24,
     "retained_random_window_cases": 124,
     "retained_real_data_cases": 5,
@@ -65,52 +93,127 @@
     },
     "partial_row_import_rejected_before_publication": true
   },
-  "historical_v01_evidence": {
-    "ram_sql_cases_against_each_reference": 1002,
-    "note": "Historical timing and differential report retained; final 0.2 reruns its Rust regression tests"
+  "current_stress": {
+    "main": {
+      "completed_cases": 26,
+      "engines": 6,
+      "offered_operations": 785600,
+      "successful_operations": 538612,
+      "unsuccessful_or_unexecuted": 246988,
+      "raw_executed_samples_checked": 538641,
+      "numpy_reference_windows": 520,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "analytics": {
+      "completed_cases": 4,
+      "engines": 2,
+      "offered_operations": 92000,
+      "successful_operations": 68779,
+      "unsuccessful_or_unexecuted": 23221,
+      "raw_executed_samples_checked": 68779,
+      "numpy_reference_windows": 80,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "earlier_cache_iteration": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 129516,
+      "unsuccessful_or_unexecuted": 26084,
+      "raw_executed_samples_checked": 129516,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "first_zero_delay_run": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 105102,
+      "unsuccessful_or_unexecuted": 50498,
+      "raw_executed_samples_checked": 105191,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "zero_delay_confirmation": {
+      "completed_cases": 26,
+      "engines": 6,
+      "offered_operations": 785600,
+      "successful_operations": 543827,
+      "unsuccessful_or_unexecuted": 241773,
+      "raw_executed_samples_checked": 543856,
+      "numpy_reference_windows": 520,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "analytics_before_retained_handles": {
+      "completed_cases": 4,
+      "engines": 2,
+      "offered_operations": 92000,
+      "successful_operations": 67905,
+      "unsuccessful_or_unexecuted": 24095,
+      "raw_executed_samples_checked": 67905,
+      "numpy_reference_windows": 80,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "all_reads_retained_handles": {
+      "completed_cases": 11,
+      "engines": 1,
+      "offered_operations": 155600,
+      "successful_operations": 124410,
+      "unsuccessful_or_unexecuted": 31190,
+      "raw_executed_samples_checked": 124410,
+      "numpy_reference_windows": 220,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "all_reads_retained_handles_analytics": {
+      "completed_cases": 2,
+      "engines": 1,
+      "offered_operations": 46000,
+      "successful_operations": 46000,
+      "unsuccessful_or_unexecuted": 0,
+      "raw_executed_samples_checked": 46000,
+      "numpy_reference_windows": 40,
+      "all_acknowledged_batches_present": true,
+      "batch_atomicity_and_sums": true,
+      "sample_accounting_and_percentiles": true,
+      "no_kestrel_maintenance_errors": true
+    },
+    "mixed_2k_slo_passed": false,
+    "soak_500_slo_passed": true,
+    "analytics_1k_30s_slo_passed": false
   },
-  "format_check": "passed",
-  "clippy_warnings_as_errors": "passed",
-  "verified_platform": "Windows-10-10.0.19045-SP0",
-  "ci": "Windows/Linux workflow included; remote execution unverified",
-  "qualification_limits": [
-    "shared-machine warm timings with uncontrolled OS cache",
-    "historical analytical timings: one execution thread; new stress: up to 64 concurrent clients",
-    "specialized integer append-only aggregate workload",
-    "interfaces and Python load-generator overhead differ between engines",
-    "OS file cache excluded from historical process memory measurements",
-    "eight-second rate sweeps and one-minute soak; no long endurance qualification",
-    "actual Archive process kills passed; physical power loss and disk-full remain unqualified",
-    "no distributed scale, replication or transactional social-graph workload qualification"
-  ],
-  "local_concurrent_stress": {
-    "completed_cases": 66,
-    "engines": 6,
-    "offered_operations": 933600,
-    "successful_operations": 675906,
-    "unsuccessful_or_unexecuted": 257694,
-    "raw_executed_samples_checked": 675940,
-    "max_concurrent_clients": 64,
-    "numpy_reference_windows": 1320,
-    "all_acknowledged_batches_present": true,
-    "batch_atomicity_and_sums": true,
-    "sample_accounting_and_percentiles": true,
-    "initial_setup_errors_retained_and_resolved": 15,
-    "base_rows_per_case": 1000000,
-    "report": "benchmarks/stress-results.json",
-    "audit": "benchmarks/stress-audit.json",
-    "performance_target_met_by_kestrel": false,
-    "conclusion": "mixed-write latency and overload loss block production qualification"
-  },
-  "archive_forced_process_kills": {
+  "archive_identified_process_kills": {
     "cycles_passed": 24,
+    "acknowledged_batches": 472,
+    "unacknowledged_committed_batches": 1,
     "all_acknowledged_batches_present": true,
     "published_batches_atomic": true,
+    "retry_deduplication_passed": true,
     "full_scrubs_passed": true,
     "fault_model": "forcible OS process kill, live filesystem; no power-loss or replicated failover claim",
-    "report": "benchmarks/hard-recovery-results.json"
+    "report": "benchmarks/hard-recovery-v03.json"
   },
-  "archive_hard_boundaries": {
+  "hard_boundaries": {
     "independent_process_opener_rejected": true,
     "malformed_or_unsupported_statements_rejected_without_data_changes": 1007,
     "group_budget_fails_explicitly_and_store_remains_healthy": true,
@@ -128,43 +231,113 @@
       ]
     }
   },
+  "live_pipeline": {
+    "engine_version": "0.3.0",
+    "workflow": "two Parquet sources, durable source-hash/chunk IDs, each source replayed",
+    "initial_rows": 25000,
+    "late_backfill_rows": 5000,
+    "imports": [
+      {
+        "source_sha256": "65ea80a4c74f036a56541107f5c7ad9dac0cfb664e1730507f040eed7538dbbd",
+        "batches": 250,
+        "rows": 25000,
+        "duplicate_batches": 0
+      },
+      {
+        "source_sha256": "65ea80a4c74f036a56541107f5c7ad9dac0cfb664e1730507f040eed7538dbbd",
+        "batches": 250,
+        "rows": 25000,
+        "duplicate_batches": 250
+      },
+      {
+        "source_sha256": "842a69afe609de56b389a818c073ef0c7c1e391f8a6546b3bdfff978319ed8e7",
+        "batches": 50,
+        "rows": 5000,
+        "duplicate_batches": 0
+      },
+      {
+        "source_sha256": "842a69afe609de56b389a818c073ef0c7c1e391f8a6546b3bdfff978319ed8e7",
+        "batches": 50,
+        "rows": 5000,
+        "duplicate_batches": 50
+      }
+    ],
+    "exact_sql_cases_against_duckdb": 42,
+    "replayed_sources_not_duplicated": true,
+    "changed_content_rejected": true,
+    "window_before_backfill": [
+      [
+        2000,
+        -1000
+      ]
+    ],
+    "window_after_backfill": [
+      [
+        4000,
+        -2000
+      ]
+    ],
+    "late_data_correctly_changes_prior_metrics": true,
+    "full_scrub": {
+      "verified_bytes": 720000
+    },
+    "final_stats": {
+      "block_rows": 4096,
+      "generation": 163,
+      "ingest": {
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "maintenance_errors": 0,
+        "publication_max_ms": 0.1007,
+        "publication_total_ms": 0.1007,
+        "queued_payload_bytes": 0
+      },
+      "logical_data_bytes": 720000,
+      "metadata_bytes": 14414,
+      "page_cache_hits": 841,
+      "page_cache_misses": 78,
+      "physical_bytes": 3127109,
+      "recorded_batch_ids": 300,
+      "retained_page_cache_bytes": 1451232,
+      "rows": 30000,
+      "segments": 35
+    },
+    "limits": "batch idempotency for this archive, not end-to-end exactly-once delivery; BIGINT metrics only"
+  },
+  "format_compatibility": {
+    "legacy_binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
+    "legacy_catalog_read": true,
+    "new_catalog_magic": "KSQLCAT3",
+    "older_binary_rejects_new_catalog": true,
+    "downgrade_error": "invalid archive format signature",
+    "receipt_preserved_after_reopen": true,
+    "full_scrub_passed": true
+  },
   "executed_capabilities": {
     "engines": 6,
-    "reference_probes_passed": true,
-    "archive_transactional_parity": false,
-    "report": "benchmarks/capability-results.json",
-    "unexecuted_engines": [
-      {
-        "engine": "ClickHouse",
-        "reason": "No Docker daemon or native supported Linux environment available"
-      },
-      {
-        "engine": "SQL Server",
-        "reason": "No local SQL Server instance; installation/licensing/configuration not undertaken"
-      },
-      {
-        "engine": "Oracle",
-        "reason": "No local Oracle instance"
-      },
-      {
-        "engine": "CockroachDB/TiDB/YugabyteDB/Spanner",
-        "reason": "No distributed cluster; local-only test scope"
-      }
-    ]
+    "report": "benchmarks/capability-v03.json",
+    "archive_transactional_parity": false
   },
   "stress_bridge": {
-    "binary_sha256": "11c92457df042d1b234d31a3db3bacacb4a1c63e3bd8af900a6d88d5fefe2c59",
     "test_only": true,
-    "shared_archive_locking": "RwLock; queries share read locks, append excludes queries"
+    "binary_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
+    "concurrency": "immutable LiveArchive read snapshots; one bounded writer with durable group publication"
   },
-  "portable_reference_helper": {
-    "stop_start_stop_smoke": "passed",
-    "loopback_ports_closed": [
-      55439,
-      53329,
-      53319,
-      33060
-    ],
-    "provenance_and_runtime_settings": "benchmarks/reference-packages.json"
-  }
+  "reference_servers_stopped": true,
+  "qualification_limits": [
+    "shared desktop; uncontrolled host/storage/OS-cache state and sequential engine order",
+    "client/interface overhead differs; percentiles include successes only and loss is separate",
+    "short sweeps and one-minute soak; repeated tails remain unstable",
+    "BIGINT aggregate subset; no raw projection, joins, updates/deletes or SQL transactions in Archive",
+    "no native Arrow/Parquet SDK; Parquet demo uses DuckDB to read sources",
+    "receipt count bounded to 100000; full-ledger endurance and performance unqualified",
+    "queue/cache limits exclude caller allocations, active pinned pages and OS caches",
+    "crash orphans/pending files retained; complete retention/backup/upgrade operation unqualified",
+    "physical power loss, Windows directory-entry durability and Linux execution unqualified",
+    "no distributed scale, replication or TAOBench/Facebook-scale qualification"
+  ]
 }

@@ -1,6 +1,6 @@
 """Local, bounded-arrival stress qualification with explicit overload accounting.
 Not TAOBench, a distributed benchmark, or a universal database leaderboard.
-The Kestrel bridge shares one Archive through a test-only Rust RwLock.
+The Kestrel bridge uses LiveArchive snapshots and group commits.
 """
 import argparse
 import decimal
@@ -76,10 +76,12 @@ class NativeConnection:
 
 
 class Engine:
-    def __init__(self, name, directory, rows, binary, servers):
+    def __init__(self, name, directory, rows, binary, servers, *, existing=False):
+        if existing and name != 'kestrel':
+            raise ValueError('existing fixtures are supported only by the Kestrel bridge')
         self.name, self.directory, self.rows = name, directory, rows
         self.binary, self.servers = binary, servers
-        self.directory.mkdir(parents=True)
+        self.directory.mkdir(parents=True, exist_ok=existing)
         self.process = None
         self.address = None
         self.database_name = 'kestrel_stress_' + str(time.time_ns())
@@ -88,7 +90,6 @@ class Engine:
         start = time.perf_counter()
         if name == 'kestrel':
             self.start_bridge(rows)
-            self.version = '0.2.0'
         else:
             if name in ['postgres','mysql','mariadb']:
                 admin = self.connect(admin=True)
@@ -130,6 +131,7 @@ class Engine:
         self.process = subprocess.Popen([str(self.binary), str(self.directory / 'archive'), str(rows)],
             stdout=subprocess.PIPE, stderr=error, text=True, creationflags=0x08000000 if os.name=='nt' else 0)
         info = json.loads(self.process.stdout.readline())
+        self.version = info['version']
         host, port = info['address'].split(':')
         self.address = (host,int(port))
 
@@ -182,9 +184,13 @@ def rows_for_task(rows, seq, batch):
 
 def make_task(rng, seq, rows, profile):
     chance = rng.random()
-    writes = {'read':0.,'mixed':.05,'write':.25,'scan':.10}[profile]
+    writes = {'read':0.,'mixed':.05,'write':.25,'scan':.10,'analytics':.05}[profile]
     if chance < writes:
         return (seq, 'append', None)
+    if profile=='analytics':
+        lo=rng.randrange(rows//2)
+        hi=lo+rows//4+rng.randrange(rows//4)
+        return (seq,'query',f'SELECT COUNT(*), SUM(value) FROM events WHERE ts >= {lo} AND ts < {hi}')
     if profile == 'scan' and chance < .55:
         sql = 'SELECT device, COUNT(*), SUM(value) FROM events GROUP BY device ORDER BY device' if chance < .30 else 'SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0'
     else:
@@ -329,6 +335,10 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
         'write_batch_rows':batch,'read_successes':sum(s['operation']=='query' for s in successful),
         'write_successes':len(acks),'inserted_rows_acknowledged':len(acks)*batch,
         'samples':samples,'expired_sequences':expired,'setup_seconds':engine.setup_seconds}
+    if engine.name=='kestrel':
+        connection=engine.connect()
+        report['live_state_before_reopen']=connection.call({'op':'stats'})
+        connection.close()
     report['reconciliation'] = verify_final(engine,attempts,acks,batch)
     # Per-five-second successful completion bins expose degradation and stalls.
     bins = []
@@ -353,6 +363,10 @@ def main():
     parser.add_argument('--output',type=Path,default=ROOT/'benchmarks'/'stress-results.json')
     parser.add_argument('--smoke',action='store_true')
     parser.add_argument('--resume',action='store_true',help='Keep completed cases and retry missing cases in fresh task-local fixtures')
+    parser.add_argument('--targets',action='store_true',help='Mixed 2K/s, 10K/s overload and one-minute 500/s cases')
+    parser.add_argument('--analytics',action='store_true',help='Mixed 2K/s with range windows covering 25..50% of the base table')
+    parser.add_argument('--analytics-rps',type=int,default=2000,help='Offered rate for --analytics; defaults to 2000')
+    parser.add_argument('--scan-only',action='store_true',help='Generic grouping/unordered-filter regression case only')
     args = parser.parse_args()
     if any(name not in ['kestrel','postgres','mysql','mariadb','sqlite','duckdb'] for name in args.engines.split(',')):
         parser.error('unknown engine; choose kestrel,postgres,mysql,mariadb,sqlite,duckdb')
@@ -360,26 +374,32 @@ def main():
         parser.error('local fixture guard: rows 1000..10000000, sweeps <=30s, soak <=120s')
     if any(not 1<=int(c)<=64 for c in args.clients.split(',')):
         parser.error('local reference server configuration supports 1..64 client workers')
+    if not 100<=args.analytics_rps<=10000:
+        parser.error('analytics rate must be 100..10000 requests/s')
     args.work.mkdir(parents=True)
     servers = json.loads(args.servers.read_text()) if args.servers.exists() else {}
     configs = [(profile,clients,args.seconds,500) for profile in ['read','mixed'] for clients in map(int,args.clients.split(','))]
     configs += [('write',64,args.seconds,500),('scan',64,args.seconds,200),
         ('mixed',64,args.seconds,2000),('mixed',64,args.seconds,10000),('mixed',64,args.soak_seconds,500)]
     if args.smoke: configs = [('mixed',4,2,100)]
+    if args.targets: configs = [('mixed',64,args.seconds,2000),('mixed',64,args.seconds,10000),('mixed',64,args.soak_seconds,500)]
+    if args.analytics: configs = [('analytics',64,args.seconds,args.analytics_rps)]
+    if args.scan_only: configs = [('scan',64,args.seconds,200)]
     report = {'platform':platform.platform(),'logical_cpu_count':os.cpu_count(),
         'seed':20261006,'base_rows':args.rows,'engines_requested':args.engines.split(','),
         'methodology':{'arrivals':'paced open loop; latency measured from scheduled arrival, including client queue and dispatch delay',
             'queue_capacity':256,'max_client_queue_age_seconds':2,'connection_timeout_seconds':8,
             'durability':'Kestrel synchronized segments/catalog; SQLite WAL FULL; PostgreSQL synchronous_commit on; InnoDB flush-at-commit 1; DuckDB durable autocommit',
             'indexes':'Kestrel sparse prefixes; SQLite/MySQL/MariaDB covering ts,value; PostgreSQL ts INCLUDE(value); DuckDB zonemaps',
-            'interfaces':'Kestrel Rust loopback JSON test bridge; references native Python bindings/protocols',
+            'interfaces':'Kestrel Rust loopback JSON test bridge with public LiveArchive snapshots/group commits; references native Python bindings/protocols',
             'parallelism':'one execution thread per query, up to 64 simultaneous clients; no CPU affinity',
-            'workload':'read hotspot 80% in 1% timestamp domain; mixed 5% append, write 25% append; append timestamps 5% late; scan profile includes full grouping and unordered filters',
+            'workload':('analytics: 95% range COUNT/SUM reads over 25..50% of base rows, random starts in first half; 5% 100-row append batches, 5% append timestamps late' if args.analytics else 'read hotspot 80% in 1% timestamp domain; mixed 5% append, write 25% append; append timestamps 5% late; scan profile includes full grouping and unordered filters'),
             'limits':['single shared machine and loopback only','client language/interface costs differ','short rate sweeps and one-minute soak','not TAOBench or Facebook-scale traffic','no replication or distributed failure testing']},
         'cases':[],'failed_cases':[]}
     if args.resume and args.output.exists():
         report = json.loads(args.output.read_text())
         assert report['base_rows']==args.rows, '--resume requires the same base row count'
+        report['engines_requested']=list(dict.fromkeys(report['engines_requested']+args.engines.split(',')))
     for name in args.engines.split(','):
         for number,(profile,clients,seconds,rate) in enumerate(configs):
             if any(c['engine']==name and c['profile']==profile and c['clients']==clients
@@ -391,9 +411,9 @@ def main():
             try:
                 engine = Engine(name,directory,args.rows,args.binary.resolve(),servers)
                 case = run_load(engine,profile,clients,seconds,rate,100)
-                sample_directory = args.output.parent / 'stress-samples'
+                sample_directory = args.output.parent / ('stress-samples' if args.output.stem=='stress-results' else args.output.stem+'-samples')
                 sample_directory.mkdir(exist_ok=True)
-                sample_file = sample_directory / f'{name}-{number}.jsonl.gz'
+                sample_file = sample_directory / f'{name}-{profile}-{clients}-{rate}-{seconds:g}.jsonl.gz'
                 with gzip.open(sample_file,'wt',encoding='utf-8') as file:
                     for sample in case.pop('samples'):
                         file.write(json.dumps(sample,separators=(',',':'))+'\n')

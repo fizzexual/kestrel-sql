@@ -2,7 +2,7 @@
 
 ## Project statement
 
-Built a Rust embedded analytics engine and a Python/SQL data pipeline to investigate fast exact aggregates over append-only events. The final archive persists 100 million rows, automatically maintains sparse aggregate indexes, accepts overlapping late batches, and keeps raw values on disk. Query results are checked against mature SQL engines rather than inferred from timing alone.
+Built a Rust embedded analytics engine and Python/SQL pipelines to investigate fast exact aggregates over append-only events. The archive persists 100 million rows, automatically maintains sparse aggregate indexes, accepts overlapping late batches and keeps raw values on disk. Version 0.3 adds concurrent immutable read views, durable batch receipts, group publication and bounded small-run compaction. Query results are checked against mature SQL engines rather than inferred from timing alone.
 
 The portfolio demonstrates SQL, source lineage, data modeling, quality controls, reconciliation, ingestion, persistence, and performance measurement. It is a substantial project for interviews; it cannot guarantee a hiring outcome or establish production operating experience.
 
@@ -16,16 +16,19 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](benchmarks/nyc-results.json) |
 | Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](benchmarks/archive-verification.json) |
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
-| Engineering checks | 23 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
+| Engineering checks | 30 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
 | Analytical SQL | Validated 248 category/day rows: dimension join, complete calendar, LAG, and ranking | [gold_analysis.sql](portfolio/gold_analysis.sql), [checks](portfolio/gold-verification.json) |
-| Concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact post-run reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
-| Actual Archive crashes | 24 forced process kills; whole published batches and no lost acknowledged batches | [hard-recovery-results.json](benchmarks/hard-recovery-results.json) |
+| Historical concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
+| Current live ingestion | Snapshots, group commits, identified retries, bounded cache and compaction; fresh comparisons with retained failures | [V03_RESULTS.md](V03_RESULTS.md) |
+| Replay/backfill pipeline | 30,000 Parquet rows; both sources replayed without duplication; 42 exact SQL checks | [live-pipeline-results.json](portfolio/live-pipeline-results.json) |
+| Actual Archive crashes | 24 new process kills with identified retries; whole published batches and no lost acknowledged batches | [hard-recovery-v03.json](benchmarks/hard-recovery-v03.json) |
+| Research decisions | Primary papers and official docs connect architecture decisions to explicit future experiment gates | [RESEARCH.md](RESEARCH.md) |
 
-The hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. The tested reference engines handled this offered rate without loss. Kestrel's Archive also lacks raw point retrieval, joins and transactional updates. Explaining this boundary honestly, retaining the failures, and designing the next profiling experiment are stronger engineering evidence than claiming universal database superiority.
+The 0.2 hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. Version 0.3 addresses writer exclusion, repeated boundary decoding and small-run growth; [current results](V03_RESULTS.md) disclose improvement and substantial repeated-run variation. Durable-write tail latency remains a release gate. Archive also lacks raw point retrieval, joins and transactional updates. Explain those boundaries and retain failed runs when presenting the project.
 
 ## Data model and pipeline
 
-The immutable bronze source is January 2025 yellow taxi Parquet plus the published TLC zone lookup. Download size and SHA-256 values identify the exact source files. A fresh run directory preserves each rebuild and avoids duplicating a prior target through blind appends. There is no incremental exactly-once ingestion contract yet.
+The immutable bronze source is January 2025 yellow taxi Parquet plus the published TLC zone lookup. Download size and SHA-256 values identify the exact source files. That pipeline creates a fresh run directory per rebuild. The separate 0.3 Parquet demonstration uses durable source-hash/chunk IDs for incremental archive retries; this is batch idempotency, not an end-to-end exactly-once contract.
 
 Silver has one row per accepted source record with three typed columns: `ts` (UTC epoch seconds), `value` (integer total-charge cents), and `device` (pickup LocationID). The zone lookup is a small dimension joined by LocationID in DuckDB. Source records have no engine-enforced unique trip key; the pipeline preserves duplicates rather than inventing deduplication semantics.
 
@@ -49,6 +52,8 @@ A real-data zone query exposed a planning weakness: a second predicate initially
 
 > Built a reproducible six-engine stress harness with open-loop arrivals, up to 64 clients, 66 workload cases and explicit overload accounting; reconciled committed batches, audited retained request samples, and verified recovery across 24 forced Archive process kills. Identified mixed-write latency and SQL capability limits that block production qualification.
 
+> Extended an embedded Rust metrics engine with immutable concurrent snapshots, durable SHA-256 batch receipts, group commits and bounded compaction/cache; verified replay and late backfills against 42 DuckDB SQL cases and recovered/retried batches across 24 forced process kills. Published raw performance samples and retained unstable runs instead of claiming universal speed superiority.
+
 Keep the workload qualification when citing latency. Explain the memory counter's exclusion of OS caches and show the slower scan/grouping results. Use the project to demonstrate ownership: reproduce it, trace a query through the planner and storage code, and implement a small extension you can defend live.
 
 ## Five-minute demonstration
@@ -57,15 +62,15 @@ Keep the workload qualification when citing latency. Explain the memory counter'
 2. Run `cargo test --release --locked`, then use the bundled executable with a fresh small archive via the commands in [ARCHIVE.md](ARCHIVE.md).
 3. Show an unaligned time-window SQL query and its `bytes_read` and `plan` fields. Explain the boundary lookup and cumulative subtraction.
 4. Show the 100M random-window report, then the unordered/grouped losses. Explain why the design favors a subset of analytics.
-5. Walk through catalog publication, checksum validation, and one corrupted-file or orphan-segment test. State which recovery behavior is simulated and which has actual process-kill coverage.
+5. Run the [live Rust example](examples/live_ingest.rs) in a fresh directory, showing the stable pinned view, deduplicated replay and new view after a late event. Walk through receipt/catalog publication and one forced-kill recovery result. State that physical power loss remains unqualified.
 
 ## Next milestones with acceptance criteria
 
 | Milestone | Reviewable acceptance criterion |
 |---|---|
 | General scan performance | Profile and reduce scalar/page I/O overhead; rerun the retained operator matrix and publish both latency and memory changes |
-| Retry-safe ingestion | Persist a batch identifier; replay identical input after lost acknowledgment without double-counting; reject changed content for the same identifier |
-| Compaction and retention | Preserve exact query results across interrupted compaction and late batches; quantify peak memory and write amplification |
+| Retry-safe ingestion | Implemented for archive batches; extend to atomic source checkpoints, consumer fencing, receipt-ledger endurance and explicit retention policy |
+| Compaction and retention | Small-run compaction and reference-safe reclamation implemented; extend interrupted-maintenance fault injection, orphan cleanup and bounded retention, and quantify write amplification |
 | Backup and restore | Restore into a clean process from a consistent snapshot; reconcile counts/sums and scrub all payload pages |
 | Mixed-write service performance | Profile catalog publication and locking; sustain 2,000 offered requests/s with zero loss and p99 at or below 100 ms, preserving current commit/reconciliation behavior |
 | Operations | Add stable error codes and metrics, test disk-full and physical power loss, extend endurance testing, and qualify Linux as well as Windows |

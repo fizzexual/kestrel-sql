@@ -1,30 +1,35 @@
 //! Loopback-only test bridge for exercising one shared Archive under concurrency.
 //! This is a benchmark helper, not a supported production SQL server.
-use kestrel_sql::archive::Archive;
+use kestrel_sql::archive::{Archive, IngestBatch};
+use kestrel_sql::live::LiveArchive;
 use serde::Deserialize;
 use serde_json::json;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
-use std::sync::{Arc, RwLock};
 
 #[derive(Deserialize)]
 #[serde(tag = "op", rename_all = "snake_case", deny_unknown_fields)]
 enum Request {
-    Query { sql: String },
-    Append { data: Vec<[i64; 3]> },
+    Query {
+        sql: String,
+    },
+    Append {
+        data: Vec<[i64; 3]>,
+        #[serde(default)]
+        id: Option<String>,
+    },
     Stats,
     Verify,
 }
 
-fn dispatch(store: &RwLock<Archive>, request: Request) -> Result<serde_json::Value, String> {
+fn dispatch(store: &LiveArchive, request: Request) -> Result<serde_json::Value, String> {
     match request {
         Request::Query { sql } => store
-            .read()
-            .map_err(|e| e.to_string())?
+            .snapshot()
             .query(&sql)
             .map(|r| json!(r))
             .map_err(|e| e.to_string()),
-        Request::Append { data } => {
+        Request::Append { data, id } => {
             if data.is_empty() || data.len() > 10_000 {
                 return Err("test bridge append must contain 1..10000 rows".into());
             }
@@ -37,28 +42,31 @@ fn dispatch(store: &RwLock<Archive>, request: Request) -> Result<serde_json::Val
                 }
             }
             store
-                .write()
-                .map_err(|e| e.to_string())?
-                .append(columns)
-                .map(|n| json!({"affected":n}))
+                .append(IngestBatch { id, columns })
+                .map(|receipt| json!({"affected":receipt.rows, "duplicate":receipt.duplicate,"generation":receipt.generation}))
                 .map_err(|e| e.to_string())
         }
         Request::Stats => store
-            .read()
-            .map_err(|e| e.to_string())?
+            .snapshot()
             .stats()
-            .map(|s| json!(s))
+            .map(|s| {
+                let mut value = json!(s);
+                value
+                    .as_object_mut()
+                    .unwrap()
+                    .insert("ingest".into(), json!(store.stats()));
+                value
+            })
             .map_err(|e| e.to_string()),
         Request::Verify => store
-            .read()
-            .map_err(|e| e.to_string())?
+            .snapshot()
             .verify()
             .map(|n| json!({"verified_bytes":n}))
             .map_err(|e| e.to_string()),
     }
 }
 
-fn client(mut stream: TcpStream, store: Arc<RwLock<Archive>>) -> std::io::Result<()> {
+fn client(mut stream: TcpStream, store: LiveArchive) -> std::io::Result<()> {
     stream.set_nodelay(true)?;
     let mut reader = BufReader::new(stream.try_clone()?);
     loop {
@@ -109,15 +117,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ])?;
         }
     }
+    let rows = archive.stats()?.rows;
+    let store = LiveArchive::new(archive)?;
     let listener = TcpListener::bind("127.0.0.1:0")?;
     println!(
         "{}",
-        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":archive.stats()?.rows})
+        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":rows})
     );
     std::io::stdout().flush()?;
-    let store = Arc::new(RwLock::new(archive));
     for stream in listener.incoming() {
-        let store = Arc::clone(&store);
+        let store = store.clone();
         let stream = stream?;
         std::thread::spawn(move || {
             let _ = client(stream, store);

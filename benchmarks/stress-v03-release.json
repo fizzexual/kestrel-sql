@@ -1,0 +1,2402 @@
+{
+  "platform": "Windows-10-10.0.19045-SP0",
+  "logical_cpu_count": 20,
+  "seed": 20261006,
+  "base_rows": 1000000,
+  "engines_requested": [
+    "kestrel",
+    "postgres",
+    "mysql",
+    "mariadb",
+    "sqlite",
+    "duckdb"
+  ],
+  "methodology": {
+    "arrivals": "paced open loop; latency measured from scheduled arrival, including client queue and dispatch delay",
+    "queue_capacity": 256,
+    "max_client_queue_age_seconds": 2,
+    "connection_timeout_seconds": 8,
+    "durability": "Kestrel synchronized segments/catalog; SQLite WAL FULL; PostgreSQL synchronous_commit on; InnoDB flush-at-commit 1; DuckDB durable autocommit",
+    "indexes": "Kestrel sparse prefixes; SQLite/MySQL/MariaDB covering ts,value; PostgreSQL ts INCLUDE(value); DuckDB zonemaps",
+    "interfaces": "Kestrel Rust loopback JSON test bridge with public LiveArchive snapshots/group commits; references native Python bindings/protocols",
+    "parallelism": "one execution thread per query, up to 64 simultaneous clients; no CPU affinity",
+    "workload": "read hotspot 80% in 1% timestamp domain; mixed 5% append, write 25% append; append timestamps 5% late; scan profile includes full grouping and unordered filters",
+    "limits": [
+      "single shared machine and loopback only",
+      "client language/interface costs differ",
+      "short rate sweeps and one-minute soak",
+      "not TAOBench or Facebook-scale traffic",
+      "no replication or distributed failure testing"
+    ],
+    "reused_reference_results": {
+      "source": "stress-v03-confirmation.json",
+      "cases": 15,
+      "reason": "reference implementations unchanged; same-session native timings measured before final Kestrel-only read-path changes",
+      "raw_sample_paths": "original paths retained; no results recomputed or fabricated"
+    }
+  },
+  "cases": [
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "read",
+      "clients": 1,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9985315,
+      "including_drain_seconds": 7.9994248,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 4000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 500.03595258499087,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 1.0,
+      "latency_ms": {
+        "p50": 1.0992,
+        "p95": 1.6802,
+        "p99": 1.947,
+        "max": 4.8447
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3876,
+        "p99": 1.0064,
+        "max": 1.3978
+      },
+      "write_batch_rows": 100,
+      "read_successes": 4000,
+      "write_successes": 0,
+      "inserted_rows_acknowledged": 0,
+      "expired_sequences": [],
+      "setup_seconds": 2.905113800021354,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 1,
+        "ingest": {
+          "committed_batches": 0,
+          "compaction_total_ms": 0.0,
+          "compactions": 0,
+          "duplicate_batches": 0,
+          "durable_group_commits": 0,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 0.0,
+          "publication_total_ms": 0.0,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24000000,
+        "metadata_bytes": 25567,
+        "page_cache_hits": 15288,
+        "page_cache_misses": 710,
+        "physical_bytes": 24025712,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1000000,
+        "segments": 1
+      },
+      "reconciliation": {
+        "rows": 1000000,
+        "acknowledged_batches": 0,
+        "published_batches": 0,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24000000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.914
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1500,
+          "latency_p99_ms": 1.9771
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-read-1-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "read",
+      "clients": 16,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9984586,
+      "including_drain_seconds": 8.0002297,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 4000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.985644162192,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 1.0,
+      "latency_ms": {
+        "p50": 1.1543,
+        "p95": 1.7566,
+        "p99": 2.0832,
+        "max": 2.9542
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.368,
+        "p99": 1.0052,
+        "max": 1.4804
+      },
+      "write_batch_rows": 100,
+      "read_successes": 4000,
+      "write_successes": 0,
+      "inserted_rows_acknowledged": 0,
+      "expired_sequences": [],
+      "setup_seconds": 3.1467257000040263,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 1,
+        "ingest": {
+          "committed_batches": 0,
+          "compaction_total_ms": 0.0,
+          "compactions": 0,
+          "duplicate_batches": 0,
+          "durable_group_commits": 0,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 0.0,
+          "publication_total_ms": 0.0,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24000000,
+        "metadata_bytes": 25567,
+        "page_cache_hits": 15288,
+        "page_cache_misses": 710,
+        "physical_bytes": 24025712,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1000000,
+        "segments": 1
+      },
+      "reconciliation": {
+        "rows": 1000000,
+        "acknowledged_batches": 0,
+        "published_batches": 0,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24000000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 2.1485
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1500,
+          "latency_p99_ms": 1.9078
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-read-16-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "read",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9987695,
+      "including_drain_seconds": 8.003391,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 4000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.7881522969451,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 1.0,
+      "latency_ms": {
+        "p50": 1.0446,
+        "p95": 1.5905,
+        "p99": 1.7825,
+        "max": 3.4724
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3509,
+        "p99": 1.0097,
+        "max": 1.3665
+      },
+      "write_batch_rows": 100,
+      "read_successes": 4000,
+      "write_successes": 0,
+      "inserted_rows_acknowledged": 0,
+      "expired_sequences": [],
+      "setup_seconds": 2.682501200004481,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 1,
+        "ingest": {
+          "committed_batches": 0,
+          "compaction_total_ms": 0.0,
+          "compactions": 0,
+          "duplicate_batches": 0,
+          "durable_group_commits": 0,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 0.0,
+          "publication_total_ms": 0.0,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24000000,
+        "metadata_bytes": 25567,
+        "page_cache_hits": 15288,
+        "page_cache_misses": 710,
+        "physical_bytes": 24025712,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1000000,
+        "segments": 1
+      },
+      "reconciliation": {
+        "rows": 1000000,
+        "acknowledged_batches": 0,
+        "published_batches": 0,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24000000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.8664
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1500,
+          "latency_p99_ms": 1.7429
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-read-64-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 1,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9980784,
+      "including_drain_seconds": 8.6705633,
+      "successful_operations": 3745,
+      "completed_in_arrival_window": 3501,
+      "successful_rps_in_arrival_window": 437.625,
+      "successful_rps_including_drain": 431.92118786561423,
+      "errors": [],
+      "queue_dropped": 255,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 255,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.31575,
+      "latency_ms": {
+        "p50": 347.082,
+        "p95": 647.3525,
+        "p99": 701.7748,
+        "max": 724.8058
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3193,
+        "p99": 0.9893,
+        "max": 1.5083
+      },
+      "write_batch_rows": 100,
+      "read_successes": 3552,
+      "write_successes": 193,
+      "inserted_rows_acknowledged": 19300,
+      "expired_sequences": [],
+      "setup_seconds": 2.9258018999826163,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 199,
+        "ingest": {
+          "committed_batches": 193,
+          "compaction_total_ms": 1273.6959,
+          "compactions": 5,
+          "duplicate_batches": 0,
+          "durable_group_commits": 193,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 212.9411,
+          "publication_total_ms": 3823.3699,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24463200,
+        "metadata_bytes": 42327,
+        "page_cache_hits": 287899,
+        "page_cache_misses": 865,
+        "physical_bytes": 24509034,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33530304,
+        "rows": 1019300,
+        "segments": 39
+      },
+      "reconciliation": {
+        "rows": 1019300,
+        "acknowledged_batches": 193,
+        "published_batches": 193,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24463200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2244,
+          "latency_p99_ms": 675.9193
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1501,
+          "latency_p99_ms": 706.9838
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-1-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 16,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9985452,
+      "including_drain_seconds": 8.0006034,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 4000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.96229034425085,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 1.0,
+      "latency_ms": {
+        "p50": 1.3779,
+        "p95": 3.7324,
+        "p99": 7.2679,
+        "max": 95.9794
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3354,
+        "p99": 1.2904,
+        "max": 8.5277
+      },
+      "write_batch_rows": 100,
+      "read_successes": 3797,
+      "write_successes": 203,
+      "inserted_rows_acknowledged": 20300,
+      "expired_sequences": [],
+      "setup_seconds": 1.8514902000315487,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 200,
+        "ingest": {
+          "committed_batches": 203,
+          "compaction_total_ms": 454.5174,
+          "compactions": 5,
+          "duplicate_batches": 0,
+          "durable_group_commits": 194,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 65.4502,
+          "publication_total_ms": 1075.3652,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24487200,
+        "metadata_bytes": 42755,
+        "page_cache_hits": 310508,
+        "page_cache_misses": 944,
+        "physical_bytes": 24534972,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33513936,
+        "rows": 1020300,
+        "segments": 40
+      },
+      "reconciliation": {
+        "rows": 1020300,
+        "acknowledged_batches": 203,
+        "published_batches": 203,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24487200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 7.1124
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1500,
+          "latency_p99_ms": 7.3177
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-16-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9984085,
+      "including_drain_seconds": 8.0065865,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 4000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.5886823929274,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.99875,
+      "latency_ms": {
+        "p50": 1.3522,
+        "p95": 3.8389,
+        "p99": 5.9718,
+        "max": 192.9623
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3226,
+        "p99": 1.039,
+        "max": 9.2499
+      },
+      "write_batch_rows": 100,
+      "read_successes": 3797,
+      "write_successes": 203,
+      "inserted_rows_acknowledged": 20300,
+      "expired_sequences": [],
+      "setup_seconds": 0.3021075000287965,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 195,
+        "ingest": {
+          "committed_batches": 203,
+          "compaction_total_ms": 514.85,
+          "compactions": 5,
+          "duplicate_batches": 0,
+          "durable_group_commits": 189,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 102.2634,
+          "publication_total_ms": 790.3747,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24487200,
+        "metadata_bytes": 40598,
+        "page_cache_hits": 317016,
+        "page_cache_misses": 938,
+        "physical_bytes": 24837495,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33513504,
+        "rows": 1020300,
+        "segments": 35
+      },
+      "reconciliation": {
+        "rows": 1020300,
+        "acknowledged_batches": 203,
+        "published_batches": 203,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24487200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 5.3032
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1500,
+          "latency_p99_ms": 8.2027
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-64-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "write",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 8,
+      "offered_operations": 4000,
+      "offered_wall_seconds": 7.9984167,
+      "including_drain_seconds": 8.2869586,
+      "successful_operations": 4000,
+      "completed_in_arrival_window": 3997,
+      "successful_rps_in_arrival_window": 499.625,
+      "successful_rps_including_drain": 482.68613288354067,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.91525,
+      "latency_ms": {
+        "p50": 1.5548,
+        "p95": 177.1225,
+        "p99": 283.0862,
+        "max": 414.2401
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3307,
+        "p99": 1.0161,
+        "max": 5.5
+      },
+      "write_batch_rows": 100,
+      "read_successes": 2979,
+      "write_successes": 1021,
+      "inserted_rows_acknowledged": 102100,
+      "expired_sequences": [],
+      "setup_seconds": 0.2562534000026062,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 517,
+        "ingest": {
+          "committed_batches": 1021,
+          "compaction_total_ms": 4181.7857,
+          "compactions": 15,
+          "duplicate_batches": 0,
+          "durable_group_commits": 501,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 41.3427,
+          "publication_total_ms": 1872.9033,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 26450400,
+        "metadata_bytes": 43499,
+        "page_cache_hits": 292292,
+        "page_cache_misses": 1144,
+        "physical_bytes": 26908367,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33552384,
+        "rows": 1102100,
+        "segments": 37
+      },
+      "reconciliation": {
+        "rows": 1102100,
+        "acknowledged_batches": 1021,
+        "published_batches": 1021,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 26450400
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2479,
+          "latency_p99_ms": 312.7604
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 1521,
+          "latency_p99_ms": 254.5921
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-write-64-500-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "scan",
+      "clients": 64,
+      "offered_rps": 200,
+      "scheduled_seconds": 8,
+      "offered_operations": 1600,
+      "offered_wall_seconds": 7.9958593,
+      "including_drain_seconds": 8.0228662,
+      "successful_operations": 1600,
+      "completed_in_arrival_window": 1594,
+      "successful_rps_in_arrival_window": 199.25,
+      "successful_rps_including_drain": 199.4299742902356,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.88875,
+      "latency_ms": {
+        "p50": 6.2403,
+        "p95": 122.3461,
+        "p99": 167.966,
+        "max": 250.798
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4211,
+        "p99": 2.7609,
+        "max": 7.712
+      },
+      "write_batch_rows": 100,
+      "read_successes": 1435,
+      "write_successes": 165,
+      "inserted_rows_acknowledged": 16500,
+      "expired_sequences": [],
+      "setup_seconds": 0.261458000051789,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 166,
+        "ingest": {
+          "committed_batches": 165,
+          "compaction_total_ms": 30.859,
+          "compactions": 4,
+          "duplicate_batches": 0,
+          "durable_group_commits": 161,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 159.6813,
+          "publication_total_ms": 1064.1706,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 24396000,
+        "metadata_bytes": 41767,
+        "page_cache_hits": 51545,
+        "page_cache_misses": 419,
+        "physical_bytes": 24441188,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 25651248,
+        "rows": 1016500,
+        "segments": 38
+      },
+      "reconciliation": {
+        "rows": 1016500,
+        "acknowledged_batches": 165,
+        "published_batches": 165,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 24396000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 990,
+          "latency_p99_ms": 179.6916
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 610,
+          "latency_p99_ms": 146.6068
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-scan-64-200-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 7.999969,
+      "including_drain_seconds": 8.0061741,
+      "successful_operations": 16000,
+      "completed_in_arrival_window": 15998,
+      "successful_rps_in_arrival_window": 1999.75,
+      "successful_rps_including_drain": 1998.4576653160714,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.986375,
+      "latency_ms": {
+        "p50": 1.2915,
+        "p95": 3.7088,
+        "p99": 134.3069,
+        "max": 445.3153
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.418,
+        "p99": 1.0152,
+        "max": 2.9959
+      },
+      "write_batch_rows": 100,
+      "read_successes": 15197,
+      "write_successes": 803,
+      "inserted_rows_acknowledged": 80300,
+      "expired_sequences": [],
+      "setup_seconds": 0.17385209997883067,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 452,
+        "ingest": {
+          "committed_batches": 803,
+          "compaction_total_ms": 3034.8124,
+          "compactions": 13,
+          "duplicate_batches": 0,
+          "durable_group_commits": 438,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 111.9187,
+          "publication_total_ms": 1760.5302,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 25927200,
+        "metadata_bytes": 42788,
+        "page_cache_hits": 496536,
+        "page_cache_misses": 2682,
+        "physical_bytes": 26997218,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33472320,
+        "rows": 1080300,
+        "segments": 36
+      },
+      "reconciliation": {
+        "rows": 1080300,
+        "acknowledged_batches": 803,
+        "published_batches": 803,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 25927200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9997,
+          "latency_p99_ms": 102.2449
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6003,
+          "latency_p99_ms": 210.9621
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0069029,
+      "including_drain_seconds": 8.4236522,
+      "successful_operations": 44487,
+      "completed_in_arrival_window": 44164,
+      "successful_rps_in_arrival_window": 5520.5,
+      "successful_rps_including_drain": 5281.200949868277,
+      "errors": [],
+      "queue_dropped": 35513,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 35513,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.4986875,
+      "latency_ms": {
+        "p50": 40.8987,
+        "p95": 195.1576,
+        "p99": 323.2025,
+        "max": 508.3164
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.8266,
+        "p99": 12.3261,
+        "max": 28.4744
+      },
+      "write_batch_rows": 100,
+      "read_successes": 42257,
+      "write_successes": 2230,
+      "inserted_rows_acknowledged": 223000,
+      "expired_sequences": [],
+      "setup_seconds": 0.21665189997293055,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 583,
+        "ingest": {
+          "committed_batches": 2230,
+          "compaction_total_ms": 4964.7517,
+          "compactions": 17,
+          "duplicate_batches": 0,
+          "durable_group_commits": 565,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 108.1671,
+          "publication_total_ms": 2746.8893,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 29352000,
+        "metadata_bytes": 47855,
+        "page_cache_hits": 720008,
+        "page_cache_misses": 6376,
+        "physical_bytes": 30121402,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33472320,
+        "rows": 1223000,
+        "segments": 39
+      },
+      "reconciliation": {
+        "rows": 1223000,
+        "acknowledged_batches": 2230,
+        "published_batches": 2230,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 29352000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 29810,
+          "latency_p99_ms": 324.6068
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 14677,
+          "latency_p99_ms": 309.0733
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.0",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9982409,
+      "including_drain_seconds": 60.0040261,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 30000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.96645141783245,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9949,
+      "latency_ms": {
+        "p50": 1.4251,
+        "p95": 3.9514,
+        "p99": 14.2809,
+        "max": 441.3148
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3413,
+        "p99": 1.8765,
+        "max": 20.654
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 0.18416040000738576,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "generation": 1315,
+        "ingest": {
+          "committed_batches": 1483,
+          "compaction_total_ms": 9241.133,
+          "compactions": 39,
+          "duplicate_batches": 0,
+          "durable_group_commits": 1275,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 183.2367,
+          "publication_total_ms": 6178.9194,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27559200,
+        "metadata_bytes": 58311,
+        "page_cache_hits": 560488,
+        "page_cache_misses": 4551,
+        "physical_bytes": 27673645,
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1148300,
+        "segments": 67
+      },
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27559200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 7.1232
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2500,
+          "latency_p99_ms": 5.7465
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2499,
+          "latency_p99_ms": 5.799
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2501,
+          "latency_p99_ms": 6.0754
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2500,
+          "latency_p99_ms": 8.7877
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2500,
+          "latency_p99_ms": 27.6329
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 2491,
+          "latency_p99_ms": 7.6031
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2508,
+          "latency_p99_ms": 163.8993
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2500,
+          "latency_p99_ms": 25.4999
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2501,
+          "latency_p99_ms": 14.8413
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2500,
+          "latency_p99_ms": 17.3788
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2500,
+          "latency_p99_ms": 13.4291
+        }
+      ],
+      "raw_samples_file": "stress-v03-release-samples\\kestrel-mixed-64-500-60.jsonl.gz"
+    },
+    {
+      "engine": "postgres",
+      "version": "17.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 7.9995688,
+      "including_drain_seconds": 8.1349508,
+      "successful_operations": 13902,
+      "completed_in_arrival_window": 13891,
+      "successful_rps_in_arrival_window": 1736.375,
+      "successful_rps_including_drain": 1708.9224436366596,
+      "errors": [],
+      "queue_dropped": 2098,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 2098,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.8450625,
+      "latency_ms": {
+        "p50": 1.1721,
+        "p95": 38.0251,
+        "p99": 1165.2275,
+        "max": 1238.6853
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4539,
+        "p99": 6.2558,
+        "max": 29.7484
+      },
+      "write_batch_rows": 100,
+      "read_successes": 13207,
+      "write_successes": 695,
+      "inserted_rows_acknowledged": 69500,
+      "expired_sequences": [],
+      "setup_seconds": 5.180080500023905,
+      "reconciliation": {
+        "rows": 1069500,
+        "acknowledged_batches": 695,
+        "published_batches": 695,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9988,
+          "latency_p99_ms": 42.0529
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 3914,
+          "latency_p99_ms": 1208.5157
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\postgres-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "postgres",
+      "version": "17.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0184556,
+      "including_drain_seconds": 8.0861772,
+      "successful_operations": 32774,
+      "completed_in_arrival_window": 32421,
+      "successful_rps_in_arrival_window": 4052.625,
+      "successful_rps_including_drain": 4053.089511815299,
+      "errors": [],
+      "queue_dropped": 47226,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 47226,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.3771125,
+      "latency_ms": {
+        "p50": 78.9238,
+        "p95": 108.2203,
+        "p99": 180.6416,
+        "max": 814.9256
+      },
+      "dispatch_lag_ms": {
+        "p50": 4.4408,
+        "p99": 74.9694,
+        "max": 127.5366
+      },
+      "write_batch_rows": 100,
+      "read_successes": 31102,
+      "write_successes": 1672,
+      "inserted_rows_acknowledged": 167200,
+      "expired_sequences": [],
+      "setup_seconds": 6.651098800008185,
+      "reconciliation": {
+        "rows": 1167200,
+        "acknowledged_batches": 1672,
+        "published_batches": 1672,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 20044,
+          "latency_p99_ms": 186.3403
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 12730,
+          "latency_p99_ms": 168.9494
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\postgres-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "postgres",
+      "version": "17.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9983027,
+      "including_drain_seconds": 60.0204801,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 30000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.8293907349135,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9922333333333333,
+      "latency_ms": {
+        "p50": 1.328,
+        "p95": 17.3115,
+        "p99": 84.6514,
+        "max": 277.5838
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4343,
+        "p99": 45.0678,
+        "max": 214.4458
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 10.019876200007275,
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 116.0084
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2500,
+          "latency_p99_ms": 112.8254
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2499,
+          "latency_p99_ms": 14.4507
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2501,
+          "latency_p99_ms": 4.9531
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2500,
+          "latency_p99_ms": 88.817
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2500,
+          "latency_p99_ms": 9.1058
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 2500,
+          "latency_p99_ms": 36.1204
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2500,
+          "latency_p99_ms": 9.0162
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2499,
+          "latency_p99_ms": 24.5191
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2501,
+          "latency_p99_ms": 230.0757
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2500,
+          "latency_p99_ms": 38.3965
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2500,
+          "latency_p99_ms": 4.5751
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\postgres-mixed-64-500-60.jsonl.gz"
+    },
+    {
+      "engine": "mysql",
+      "version": "8.4.11",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 8.0003915,
+      "including_drain_seconds": 8.0246119,
+      "successful_operations": 15078,
+      "completed_in_arrival_window": 15075,
+      "successful_rps_in_arrival_window": 1884.375,
+      "successful_rps_including_drain": 1878.9693742073682,
+      "errors": [],
+      "queue_dropped": 922,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 922,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.8695,
+      "latency_ms": {
+        "p50": 2.1597,
+        "p95": 181.9703,
+        "p99": 468.8634,
+        "max": 1313.1615
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.5837,
+        "p99": 20.5096,
+        "max": 46.385
+      },
+      "write_batch_rows": 100,
+      "read_successes": 14327,
+      "write_successes": 751,
+      "inserted_rows_acknowledged": 75100,
+      "expired_sequences": [],
+      "setup_seconds": 11.022862500045449,
+      "reconciliation": {
+        "rows": 1075100,
+        "acknowledged_batches": 751,
+        "published_batches": 751,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9076,
+          "latency_p99_ms": 492.1173
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6002,
+          "latency_p99_ms": 58.1405
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mysql-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "mysql",
+      "version": "8.4.11",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0002459,
+      "including_drain_seconds": 8.0579946,
+      "successful_operations": 41195,
+      "completed_in_arrival_window": 40875,
+      "successful_rps_in_arrival_window": 5109.375,
+      "successful_rps_including_drain": 5112.3141730574,
+      "errors": [],
+      "queue_dropped": 38805,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 38805,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.5071875,
+      "latency_ms": {
+        "p50": 60.5358,
+        "p95": 83.937,
+        "p99": 106.5959,
+        "max": 171.1968
+      },
+      "dispatch_lag_ms": {
+        "p50": 1.1115,
+        "p99": 7.1213,
+        "max": 12.3023
+      },
+      "write_batch_rows": 100,
+      "read_successes": 39107,
+      "write_successes": 2088,
+      "inserted_rows_acknowledged": 208800,
+      "expired_sequences": [],
+      "setup_seconds": 11.19820320000872,
+      "reconciliation": {
+        "rows": 1208800,
+        "acknowledged_batches": 2088,
+        "published_batches": 2088,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 25743,
+          "latency_p99_ms": 111.0586
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 15452,
+          "latency_p99_ms": 104.2149
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mysql-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "mysql",
+      "version": "8.4.11",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9985243,
+      "including_drain_seconds": 60.0690454,
+      "successful_operations": 28931,
+      "completed_in_arrival_window": 28927,
+      "successful_rps_in_arrival_window": 482.1166666666667,
+      "successful_rps_including_drain": 481.6290954408941,
+      "errors": [],
+      "queue_dropped": 1069,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 1069,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.8577333333333333,
+      "latency_ms": {
+        "p50": 1.0886,
+        "p95": 419.2102,
+        "p99": 1341.3953,
+        "max": 5047.3826
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.382,
+        "p99": 113.3607,
+        "max": 313.7025
+      },
+      "write_batch_rows": 100,
+      "read_successes": 27500,
+      "write_successes": 1431,
+      "inserted_rows_acknowledged": 143100,
+      "expired_sequences": [],
+      "setup_seconds": 19.121989400009625,
+      "reconciliation": {
+        "rows": 1143100,
+        "acknowledged_batches": 1431,
+        "published_batches": 1431,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2478,
+          "latency_p99_ms": 1049.1741
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2441,
+          "latency_p99_ms": 965.1568
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2580,
+          "latency_p99_ms": 543.9754
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2501,
+          "latency_p99_ms": 198.6711
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2488,
+          "latency_p99_ms": 782.3421
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2348,
+          "latency_p99_ms": 1131.1966
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 1799,
+          "latency_p99_ms": 3576.2644
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2085,
+          "latency_p99_ms": 2363.49
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2705,
+          "latency_p99_ms": 1858.4021
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2500,
+          "latency_p99_ms": 127.851
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2500,
+          "latency_p99_ms": 111.4661
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2502,
+          "latency_p99_ms": 87.616
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mysql-mixed-64-500-60.jsonl.gz"
+    },
+    {
+      "engine": "mariadb",
+      "version": "11.8.9-MariaDB",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 7.9999036,
+      "including_drain_seconds": 8.0262258,
+      "successful_operations": 16000,
+      "completed_in_arrival_window": 15997,
+      "successful_rps_in_arrival_window": 1999.625,
+      "successful_rps_including_drain": 1993.464973287943,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9798125,
+      "latency_ms": {
+        "p50": 1.3562,
+        "p95": 38.3631,
+        "p99": 126.0578,
+        "max": 464.8091
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4505,
+        "p99": 3.1883,
+        "max": 26.2359
+      },
+      "write_batch_rows": 100,
+      "read_successes": 15197,
+      "write_successes": 803,
+      "inserted_rows_acknowledged": 80300,
+      "expired_sequences": [],
+      "setup_seconds": 40.64056750002783,
+      "reconciliation": {
+        "rows": 1080300,
+        "acknowledged_batches": 803,
+        "published_batches": 803,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9996,
+          "latency_p99_ms": 134.2117
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6004,
+          "latency_p99_ms": 57.1348
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mariadb-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "mariadb",
+      "version": "11.8.9-MariaDB",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0001592,
+      "including_drain_seconds": 8.0972546,
+      "successful_operations": 24684,
+      "completed_in_arrival_window": 24363,
+      "successful_rps_in_arrival_window": 3045.375,
+      "successful_rps_including_drain": 3048.440640609226,
+      "errors": [],
+      "queue_dropped": 55316,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 55316,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.1147125,
+      "latency_ms": {
+        "p50": 106.7182,
+        "p95": 136.5472,
+        "p99": 205.0937,
+        "max": 500.7674
+      },
+      "dispatch_lag_ms": {
+        "p50": 1.4759,
+        "p99": 11.095,
+        "max": 34.184
+      },
+      "write_batch_rows": 100,
+      "read_successes": 23449,
+      "write_successes": 1235,
+      "inserted_rows_acknowledged": 123500,
+      "expired_sequences": [],
+      "setup_seconds": 13.143867699953262,
+      "reconciliation": {
+        "rows": 1123500,
+        "acknowledged_batches": 1235,
+        "published_batches": 1235,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 14662,
+          "latency_p99_ms": 153.1716
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 10022,
+          "latency_p99_ms": 283.2483
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mariadb-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "mariadb",
+      "version": "11.8.9-MariaDB",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9981176,
+      "including_drain_seconds": 60.00991,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 30000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.9174303044281,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9932333333333333,
+      "latency_ms": {
+        "p50": 1.0495,
+        "p95": 6.0581,
+        "p99": 53.4321,
+        "max": 848.0057
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3176,
+        "p99": 4.1347,
+        "max": 47.6299
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 10.714401600009296,
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 2.9718
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2496,
+          "latency_p99_ms": 162.8889
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2503,
+          "latency_p99_ms": 56.3426
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2491,
+          "latency_p99_ms": 82.5517
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2510,
+          "latency_p99_ms": 368.18
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2500,
+          "latency_p99_ms": 4.4639
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 2495,
+          "latency_p99_ms": 226.9229
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2504,
+          "latency_p99_ms": 107.7267
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2501,
+          "latency_p99_ms": 8.9489
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2499,
+          "latency_p99_ms": 20.2698
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2501,
+          "latency_p99_ms": 14.3089
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2500,
+          "latency_p99_ms": 3.7101
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\mariadb-mixed-64-500-60.jsonl.gz"
+    },
+    {
+      "engine": "sqlite",
+      "version": "3.49.1",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 7.9996981,
+      "including_drain_seconds": 8.074075,
+      "successful_operations": 16000,
+      "completed_in_arrival_window": 16000,
+      "successful_rps_in_arrival_window": 2000.0,
+      "successful_rps_including_drain": 1981.6511488932167,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.995125,
+      "latency_ms": {
+        "p50": 0.861,
+        "p95": 8.0956,
+        "p99": 31.7838,
+        "max": 1319.2579
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.527,
+        "p99": 13.4271,
+        "max": 33.5853
+      },
+      "write_batch_rows": 100,
+      "read_successes": 15197,
+      "write_successes": 803,
+      "inserted_rows_acknowledged": 80300,
+      "expired_sequences": [],
+      "setup_seconds": 2.4472113000229,
+      "reconciliation": {
+        "rows": 1080300,
+        "acknowledged_batches": 803,
+        "published_batches": 803,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9991,
+          "latency_p99_ms": 17.1405
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6009,
+          "latency_p99_ms": 45.1568
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\sqlite-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "sqlite",
+      "version": "3.49.1",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0001846,
+      "including_drain_seconds": 9.50155,
+      "successful_operations": 59578,
+      "completed_in_arrival_window": 59279,
+      "successful_rps_in_arrival_window": 7409.875,
+      "successful_rps_including_drain": 6270.345364703654,
+      "errors": [
+        {
+          "sequence": 34,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 565,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 1029,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 1545,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 1965,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 2504,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 2642,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3060,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3099,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3089,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3067,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3135,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3197,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3801,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 3931,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 4030,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 4468,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 4864,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 5192,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 8436,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 12319,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 13190,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 15630,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 15604,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 16906,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 19431,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 21483,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 27746,
+          "operation": "append",
+          "error": "database is locked"
+        },
+        {
+          "sequence": 31776,
+          "operation": "append",
+          "error": "database is locked"
+        }
+      ],
+      "queue_dropped": 20393,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 20422,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.73125,
+      "latency_ms": {
+        "p50": 29.0444,
+        "p95": 54.25,
+        "p99": 121.1773,
+        "max": 5339.4037
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.379,
+        "p99": 1.6231,
+        "max": 22.6978
+      },
+      "write_batch_rows": 100,
+      "read_successes": 56570,
+      "write_successes": 3008,
+      "inserted_rows_acknowledged": 300800,
+      "expired_sequences": [],
+      "setup_seconds": 3.399174000020139,
+      "reconciliation": {
+        "rows": 1300800,
+        "acknowledged_batches": 3008,
+        "published_batches": 3008,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 37117,
+          "latency_p99_ms": 140.3851
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 22461,
+          "latency_p99_ms": 87.0439
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\sqlite-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "sqlite",
+      "version": "3.49.1",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9987973,
+      "including_drain_seconds": 60.0649367,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 30000,
+      "successful_rps_in_arrival_window": 500.0,
+      "successful_rps_including_drain": 499.45944586336344,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9989666666666667,
+      "latency_ms": {
+        "p50": 0.5778,
+        "p95": 1.5783,
+        "p99": 11.7326,
+        "max": 641.2712
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3389,
+        "p99": 2.4155,
+        "max": 44.8916
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 2.6395687000476755,
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 7.4104
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2500,
+          "latency_p99_ms": 3.4428
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.9447
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.9338
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.997
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2500,
+          "latency_p99_ms": 1.9401
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 2500,
+          "latency_p99_ms": 13.9869
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2500,
+          "latency_p99_ms": 13.8277
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2499,
+          "latency_p99_ms": 25.5026
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2501,
+          "latency_p99_ms": 18.6489
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2500,
+          "latency_p99_ms": 10.7817
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2500,
+          "latency_p99_ms": 12.4999
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\sqlite-mixed-64-500-60.jsonl.gz"
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 2000,
+      "scheduled_seconds": 8,
+      "offered_operations": 16000,
+      "offered_wall_seconds": 7.9999938,
+      "including_drain_seconds": 8.0565766,
+      "successful_operations": 16000,
+      "completed_in_arrival_window": 15998,
+      "successful_rps_in_arrival_window": 1999.75,
+      "successful_rps_including_drain": 1985.955176048348,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 1.0,
+      "latency_ms": {
+        "p50": 1.2834,
+        "p95": 11.8254,
+        "p99": 19.0857,
+        "max": 68.6799
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2937,
+        "p99": 1.1535,
+        "max": 2.6992
+      },
+      "write_batch_rows": 100,
+      "read_successes": 15197,
+      "write_successes": 803,
+      "inserted_rows_acknowledged": 80300,
+      "expired_sequences": [],
+      "setup_seconds": 0.5094947000034153,
+      "reconciliation": {
+        "rows": 1080300,
+        "acknowledged_batches": 803,
+        "published_batches": 803,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9998,
+          "latency_p99_ms": 30.4548
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 6002,
+          "latency_p99_ms": 14.6999
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\duckdb-mixed-64-2000-8.jsonl.gz"
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 10000,
+      "scheduled_seconds": 8,
+      "offered_operations": 80000,
+      "offered_wall_seconds": 8.0002974,
+      "including_drain_seconds": 8.2079281,
+      "successful_operations": 34638,
+      "completed_in_arrival_window": 34318,
+      "successful_rps_in_arrival_window": 4289.75,
+      "successful_rps_including_drain": 4220.066206476638,
+      "errors": [],
+      "queue_dropped": 45362,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 45362,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.425325,
+      "latency_ms": {
+        "p50": 73.9632,
+        "p95": 94.1223,
+        "p99": 104.4005,
+        "max": 139.5545
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.5581,
+        "p99": 4.5,
+        "max": 10.8643
+      },
+      "write_batch_rows": 100,
+      "read_successes": 32831,
+      "write_successes": 1807,
+      "inserted_rows_acknowledged": 180700,
+      "expired_sequences": [],
+      "setup_seconds": 0.3411399999749847,
+      "reconciliation": {
+        "rows": 1180700,
+        "acknowledged_batches": 1807,
+        "published_batches": 1807,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 22881,
+          "latency_p99_ms": 111.9652
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 11757,
+          "latency_p99_ms": 102.9421
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\duckdb-mixed-64-10000-8.jsonl.gz"
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "profile": "mixed",
+      "clients": 64,
+      "offered_rps": 500,
+      "scheduled_seconds": 60,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 59.9986156,
+      "including_drain_seconds": 60.1246642,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 29998,
+      "successful_rps_in_arrival_window": 499.96666666666664,
+      "successful_rps_including_drain": 498.9632856860097,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9750666666666666,
+      "latency_ms": {
+        "p50": 2.1853,
+        "p95": 35.339,
+        "p99": 170.2883,
+        "max": 302.3118
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.3512,
+        "p99": 2.2171,
+        "max": 26.2999
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 0.288921500032302,
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": null
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 2500,
+          "latency_p99_ms": 10.9916
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 2500,
+          "latency_p99_ms": 37.7514
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 2499,
+          "latency_p99_ms": 15.27
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 2500,
+          "latency_p99_ms": 29.4407
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 2501,
+          "latency_p99_ms": 27.6915
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 2499,
+          "latency_p99_ms": 13.8131
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 2500,
+          "latency_p99_ms": 24.4107
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 2498,
+          "latency_p99_ms": 165.6699
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 2502,
+          "latency_p99_ms": 265.2544
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 2444,
+          "latency_p99_ms": 59.2683
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 2556,
+          "latency_p99_ms": 240.8742
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 2499,
+          "latency_p99_ms": 247.0796
+        }
+      ],
+      "raw_samples_file": "stress-v03-confirmation-samples\\duckdb-mixed-64-500-60.jsonl.gz"
+    }
+  ],
+  "failed_cases": [],
+  "kestrel_build": {
+    "rust_tests": {
+      "debug": 30,
+      "release": 30,
+      "passed": true
+    },
+    "format_check": "passed",
+    "clippy_warnings_as_errors": "passed",
+    "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+    "cli_sha256": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
+    "bridge_sha256": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
+    "concurrent_positional_and_scan_sql_cases": 512,
+    "tested_platform": "Windows 10",
+    "linux_execution": "unverified",
+    "source_sha256": {
+      "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+      "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+      "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+      "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
+      "tests/archive.rs": "74e14a7ad07f17a19e2dfececa88f727f0a6058082df8c5be898e8a6f426b505",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
+      "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413"
+    },
+    "rust_example_smoke": "passed; fresh store, exact retry, pinned and current views, full scrub"
+  }
+}

@@ -1,6 +1,8 @@
-# Disk-backed analytics in KestrelSQL 0.2
+# Disk-backed analytics in KestrelSQL 0.3
 
 The `Archive` path is an append-only SQL analytics store. It writes batches to immutable column segments and answers eligible aggregate queries with sparse indexes. Raw rows stay on disk. The original `Database` API is a separate implementation with transactional, RAM-resident tables; its old 10-million-row and full-prefix limits do not govern Archive.
+
+Version 0.3 adds immutable snapshots, durable identified batches, bounded small-run compaction and a shared decoded-page cache. The concurrent embedded wrapper and replay contract are described in [LIVE_METRICS.md](LIVE_METRICS.md); current evidence is in [V03_RESULTS.md](V03_RESULTS.md).
 
 ## Reproduce
 
@@ -45,7 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-Each `append` publishes one atomic segment. This API has no multi-batch transaction, UPDATE, DELETE, incremental deduplication, or automatic retention. Repeating an append repeats its events. The portfolio pipeline creates a fresh target per rebuild, so rerunning a job does not append a duplicate copy to its previous target.
+Each anonymous `append` publishes one atomic segment and repeating it repeats its events. `append_once(id, columns)` persists a SHA-256 payload identity and a receipt; exact retries return the original receipt without duplicating rows. `append_group` validates all members before publishing one combined segment and their receipts. It is an ingestion group, not a SQL transaction with UPDATE/DELETE. The original NYC portfolio pipeline still creates a fresh target per rebuild; the additional live pipeline demonstrates identified incremental retries.
 
 `--import-i64 FILE` streams a headerless row-major file of little-endian signed 64-bit integers into segments. The caller supplies column order and schema. The importer checks complete-row alignment before ingesting, caps its batch size, then verifies all published blocks. The provenance sidecar records the exported file's SHA-256; this binary interface is an internal, explicitly typed interchange format, not a general data ingestion protocol.
 
@@ -82,8 +84,12 @@ Internal guards limit batch payloads to 64 MiB, each segment to one million rows
 
 Every segment and catalog has a checksummed, versioned metadata envelope. Segments are synchronized before the new catalog is synchronized and renamed into place. A cooperating second opener fails on the held OS lock. Orphan segments and `.pending` catalogs are ignored; a later append uses a new generation rather than overwriting them. Published corrupt catalogs and referenced missing/corrupt metadata fail on reopening. An I/O error during publication reports an unknown outcome and poisons the handle.
 
-Read pages validate their CRC32. Metadata-only aggregates do not reread all underlying payloads; `verify()` performs the full scrub and checks both data and derived indexes. The scale suite and importer run that scrub. CRC32 detects accidental damage and provides no adversarial authentication. Old catalogs and orphan files currently accumulate, so compaction and garbage collection are operational work still to implement.
+Uncached read pages validate CRC32; boundary pages can then be reused from the 32 MiB retained decoded-page/prefix cache. Metadata-only aggregates do not reread all underlying payloads; `verify()` bypasses the cache, performs a full scrub and checks both data and derived indexes. A failed scrub clears the shared cache. CRC32 detects accidental damage and provides no adversarial authentication. External mutation of a live store is unsupported.
 
-Tests cover simulated interrupted Archive publication, checksum failures, and source/result reconciliation. The new [hard-test suite](HARD_TESTS.md) also passed 24 actual forced OS process kills during Archive ingestion, with no lost acknowledged batches, whole published batches and full integrity scrubs. All 11 concurrent Kestrel stress cases reconciled after reopening, but mixed-write tail latency and loss failed the proposed service target. The separate RAM/WAL implementation has its own process-kill regression test.
+`compact_small()` replaces up to 32 small runs with one synchronized segment and catalog, preserving receipts. `reclaim()` removes superseded catalogs and retired payloads only when no snapshot pins those payloads. `LiveArchive` schedules this bounded maintenance automatically. Crash orphans and pending files are left for inspection; complete orphan cleanup and a retention policy remain operational work.
 
-Physical power loss, Windows directory-entry durability, multiple reader/writer snapshots, online schema migration, long endurance testing, and a stable on-disk compatibility contract remain unqualified. The test-only loopback bridge shares one Archive handle with read/write locking; it does not add production SQL server semantics. This release remains a research and portfolio artifact; production certification is incomplete.
+Tests cover interrupted publication, checksums, pinned snapshots, identified retries, compaction and independent result reconciliation. The historical [0.2 hard tests](HARD_TESTS.md) and [0.3 results](V03_RESULTS.md) retain separate evidence; the new forced-kill suite additionally replays identified batches after recovery. The separate RAM/WAL implementation has its own process-kill regression test.
+
+Snapshots retain immutable committed generations while the single writer appends and compacts. They also retain the store's OS lock; this is in-process concurrency, not independent process readers. 0.3 opens `KSQLCAT2` catalogs and writes `KSQLCAT3` catalogs with receipts; older binaries reject the new catalog. Segment payloads remain `KSQLSEG2`.
+
+Physical power loss, Windows directory-entry durability, online schema migration, long endurance testing and a stable future on-disk compatibility contract remain unqualified. The loopback JSON bridge is test-only and uses `LiveArchive` snapshots and group commits. Production certification is incomplete.
