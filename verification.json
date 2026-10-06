@@ -74,10 +74,97 @@
   "verified_platform": "Windows-10-10.0.19045-SP0",
   "ci": "Windows/Linux workflow included; remote execution unverified",
   "qualification_limits": [
-    "warm shared-machine timings",
-    "one execution thread per engine",
-    "specialized integer append-only data",
-    "OS file cache excluded from process memory",
-    "Archive interruption states simulated; physical power-loss unqualified"
-  ]
+    "shared-machine warm timings with uncontrolled OS cache",
+    "historical analytical timings: one execution thread; new stress: up to 64 concurrent clients",
+    "specialized integer append-only aggregate workload",
+    "interfaces and Python load-generator overhead differ between engines",
+    "OS file cache excluded from historical process memory measurements",
+    "eight-second rate sweeps and one-minute soak; no long endurance qualification",
+    "actual Archive process kills passed; physical power loss and disk-full remain unqualified",
+    "no distributed scale, replication or transactional social-graph workload qualification"
+  ],
+  "local_concurrent_stress": {
+    "completed_cases": 66,
+    "engines": 6,
+    "offered_operations": 933600,
+    "successful_operations": 675906,
+    "unsuccessful_or_unexecuted": 257694,
+    "raw_executed_samples_checked": 675940,
+    "max_concurrent_clients": 64,
+    "numpy_reference_windows": 1320,
+    "all_acknowledged_batches_present": true,
+    "batch_atomicity_and_sums": true,
+    "sample_accounting_and_percentiles": true,
+    "initial_setup_errors_retained_and_resolved": 15,
+    "base_rows_per_case": 1000000,
+    "report": "benchmarks/stress-results.json",
+    "audit": "benchmarks/stress-audit.json",
+    "performance_target_met_by_kestrel": false,
+    "conclusion": "mixed-write latency and overload loss block production qualification"
+  },
+  "archive_forced_process_kills": {
+    "cycles_passed": 24,
+    "all_acknowledged_batches_present": true,
+    "published_batches_atomic": true,
+    "full_scrubs_passed": true,
+    "fault_model": "forcible OS process kill, live filesystem; no power-loss or replicated failover claim",
+    "report": "benchmarks/hard-recovery-results.json"
+  },
+  "archive_hard_boundaries": {
+    "independent_process_opener_rejected": true,
+    "malformed_or_unsupported_statements_rejected_without_data_changes": 1007,
+    "group_budget_fails_explicitly_and_store_remains_healthy": true,
+    "corrupt_payload": {
+      "metadata_only_query_succeeds_by_design": [
+        [
+          11250074500
+        ]
+      ],
+      "page_read_rejected": true,
+      "full_scrub_rejected": true,
+      "errors": [
+        "archive data block checksum mismatch",
+        "archive data block checksum mismatch"
+      ]
+    }
+  },
+  "executed_capabilities": {
+    "engines": 6,
+    "reference_probes_passed": true,
+    "archive_transactional_parity": false,
+    "report": "benchmarks/capability-results.json",
+    "unexecuted_engines": [
+      {
+        "engine": "ClickHouse",
+        "reason": "No Docker daemon or native supported Linux environment available"
+      },
+      {
+        "engine": "SQL Server",
+        "reason": "No local SQL Server instance; installation/licensing/configuration not undertaken"
+      },
+      {
+        "engine": "Oracle",
+        "reason": "No local Oracle instance"
+      },
+      {
+        "engine": "CockroachDB/TiDB/YugabyteDB/Spanner",
+        "reason": "No distributed cluster; local-only test scope"
+      }
+    ]
+  },
+  "stress_bridge": {
+    "binary_sha256": "11c92457df042d1b234d31a3db3bacacb4a1c63e3bd8af900a6d88d5fefe2c59",
+    "test_only": true,
+    "shared_archive_locking": "RwLock; queries share read locks, append excludes queries"
+  },
+  "portable_reference_helper": {
+    "stop_start_stop_smoke": "passed",
+    "loopback_ports_closed": [
+      55439,
+      53329,
+      53319,
+      33060
+    ],
+    "provenance_and_runtime_settings": "benchmarks/reference-packages.json"
+  }
 }

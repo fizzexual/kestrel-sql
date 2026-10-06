@@ -18,6 +18,10 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
 | Engineering checks | 23 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
 | Analytical SQL | Validated 248 category/day rows: dimension join, complete calendar, LAG, and ranking | [gold_analysis.sql](portfolio/gold_analysis.sql), [checks](portfolio/gold-verification.json) |
+| Concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact post-run reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
+| Actual Archive crashes | 24 forced process kills; whole published batches and no lost acknowledged batches | [hard-recovery-results.json](benchmarks/hard-recovery-results.json) |
+
+The hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. The tested reference engines handled this offered rate without loss. Kestrel's Archive also lacks raw point retrieval, joins and transactional updates. Explaining this boundary honestly, retaining the failures, and designing the next profiling experiment are stronger engineering evidence than claiming universal database superiority.
 
 ## Data model and pipeline
 
@@ -43,6 +47,8 @@ A real-data zone query exposed a planning weakness: a second predicate initially
 
 > Developed a Rust/Python SQL analytics project with 100M persisted events and a 3.48M-record NYC data pipeline; added source hashes, quality/reconciliation checks, sparse aggregate indexes, late-batch support, and 500 SQL differential cases. Measured 2.095 ms median for indexed random time-window aggregates at 100M rows, versus 165.798 ms in the tested single-thread DuckDB setup.
 
+> Built a reproducible six-engine stress harness with open-loop arrivals, up to 64 clients, 66 workload cases and explicit overload accounting; reconciled committed batches, audited retained request samples, and verified recovery across 24 forced Archive process kills. Identified mixed-write latency and SQL capability limits that block production qualification.
+
 Keep the workload qualification when citing latency. Explain the memory counter's exclusion of OS caches and show the slower scan/grouping results. Use the project to demonstrate ownership: reproduce it, trace a query through the planner and storage code, and implement a small extension you can defend live.
 
 ## Five-minute demonstration
@@ -61,7 +67,8 @@ Keep the workload qualification when citing latency. Explain the memory counter'
 | Retry-safe ingestion | Persist a batch identifier; replay identical input after lost acknowledgment without double-counting; reject changed content for the same identifier |
 | Compaction and retention | Preserve exact query results across interrupted compaction and late batches; quantify peak memory and write amplification |
 | Backup and restore | Restore into a clean process from a consistent snapshot; reconcile counts/sums and scrub all payload pages |
-| Operations | Add stable error codes and metrics, test disk-full and forced termination during Archive publication, and qualify Linux as well as Windows |
+| Mixed-write service performance | Profile catalog publication and locking; sustain 2,000 offered requests/s with zero loss and p99 at or below 100 ms, preserving current commit/reconciliation behavior |
+| Operations | Add stable error codes and metrics, test disk-full and physical power loss, extend endurance testing, and qualify Linux as well as Windows |
 | Pipeline deployment | Add scheduled incremental runs, source-manifest tracking, quarantined rows, automated data assertions, and a monitored backfill policy |
 
 These milestones distinguish a measured prototype from a supported production database. The current repository does not claim distributed processing, an orchestration deployment, full SQL parity, or production qualification.

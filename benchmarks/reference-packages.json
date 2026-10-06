@@ -1,0 +1,70 @@
+{
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "drivers": {
+    "duckdb": "1.5.6",
+    "psycopg": "3.2.10",
+    "psycopg-binary": "3.2.10",
+    "PyMySQL": "1.1.2"
+  },
+  "packages": {
+    "postgres": {
+      "source": "https://get.enterprisedb.com/postgresql/postgresql-17.6-1-windows-x64-binaries.zip",
+      "sha256": "d378882abd001a186735acd6f6ba716bca6ccd192e800412d4fd15ed25376b3e",
+      "archive_bytes": 329891687
+    },
+    "mariadb": {
+      "source": "https://archive.mariadb.org/mariadb-11.8.9/winx64-packages/mariadb-11.8.9-winx64.zip",
+      "sha256": "830c46727d9278eae212ae3eca44eeb9e71b2a68704e95f344a64fba7b1963f5",
+      "archive_bytes": 97016251
+    },
+    "mysql": {
+      "source": "https://cdn.mysql.com/Downloads/MySQL-8.4/mysql-8.4.11-winx64.zip",
+      "sha256": "a492371d687d2bab088b0062581144a0044b8964baefdf4faa579292b423d25c",
+      "archive_bytes": 281191914
+    }
+  },
+  "native_server_settings": {
+    "postgres": {
+      "server_version": "17.6",
+      "fsync": "on",
+      "synchronous_commit": "on",
+      "full_page_writes": "on",
+      "shared_buffers": "128MB",
+      "max_parallel_workers_per_gather": "0",
+      "max_connections": "100",
+      "listen_addresses": "127.0.0.1",
+      "port": "55439"
+    },
+    "mariadb": {
+      "bind_address": "127.0.0.1",
+      "innodb_buffer_pool_size": "134217728",
+      "innodb_flush_log_at_trx_commit": "1",
+      "log_bin": "OFF",
+      "max_connections": "100",
+      "port": "53319",
+      "sync_binlog": "0",
+      "version": "11.8.9-MariaDB"
+    },
+    "mysql": {
+      "bind_address": "127.0.0.1",
+      "innodb_buffer_pool_size": "134217728",
+      "innodb_flush_log_at_trx_commit": "1",
+      "log_bin": "OFF",
+      "max_connections": "100",
+      "mysqlx_bind_address": "127.0.0.1",
+      "port": "53329",
+      "sync_binlog": "1",
+      "version": "8.4.11"
+    }
+  },
+  "hardware": {
+    "TotalPhysicalMemory": 34259976192,
+    "NumberOfLogicalProcessors": 20
+  },
+  "processor": {
+    "Name": "Intel(R) Core(TM) i9-10900F CPU @ 2.80GHz",
+    "NumberOfCores": 10,
+    "NumberOfLogicalProcessors": 20
+  }
+}

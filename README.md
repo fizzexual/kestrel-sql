@@ -6,6 +6,8 @@ An experimental embedded SQL database for exact live metrics over append-only ev
 
 **Readiness: research prototype.** This repository demonstrates a specialized speed advantage and tests important recovery behavior. Production release still requires the work and acceptance criteria below. There is no verified claim that this is the world's fastest database or that the underlying algorithm is novel.
 
+**New local stress evidence:** 66 cases against PostgreSQL, MySQL, MariaDB, SQLite and DuckDB, 933,600 offered requests, up to 64 clients, and 24 forced Archive process kills. Correctness reconciliation passed, but Kestrel failed the mixed-write performance target: at 2,000 offered requests/s, 53.94% were unsuccessful or unexecuted and successful-request p99 was 611.30 ms. The Archive SQL capability gaps also prevent a transactional social-graph comparison. See [HARD_TESTS.md](HARD_TESTS.md) for the complete matrix, raw samples, reproduction commands and limits.
+
 ## Why this direction
 
 The opportunity is the combination of embedding, fresh committed data, and automatically maintained exact range aggregates. For example, an application can ask for a count, total, and average for any interval of its event timeline immediately after ingestion.
