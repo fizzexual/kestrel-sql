@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.6 experimental reusable-batch candidate
+
+- Add immutable, process-local `PreparedBatch` and `LiveArchive::append_prepared` for embedded input reuse. Hash once inside the library, share caller-owned vectors through Arc, and compare confirmed original receipt identity without hashing/copying every retry.
+- Keep fingerprints and payloads private; reject invalid IDs/shapes/limits and archive-width mismatch. Unknown/pending IDs retain ordinary bounded admission, publication hashing and synchronized ACKs. Prepared input is not a durable receipt.
+- Preserve index-off and zero-delay defaults, writer health checks, original generations and CAT4/SEG2 compatibility. Add a prepared-hit counter as a subset of confirmed fast retries.
+- Test immutable ownership, conflicts, reopen, cross-archive input and concurrent first submissions. Extend the feature-only driver to prepared submissions, stalled-writer checks, disk-full failures and exact process exits.
+- Preserve a weak/slower chunked-hash CPU trial without adopting it. Publish ordinary, amortized-preparation and preparation-per-call controls with all raw samples. See [PERFORMANCE_036.md](PERFORMANCE_036.md).
+
 ## 0.3.5 experimental opt-in live-retry candidate
 
 - Offer `LiveArchive::with_retry_index` to validate confirmed retries independently of the live writer queue, optional collection window and publication I/O. Preserve exact submitted payload identity, original receipt generation and visibility before any success.

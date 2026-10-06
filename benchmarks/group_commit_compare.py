@@ -62,7 +62,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     variants, scenarios = args.variants.split(','), args.profiles.split(',')
-    policies = {'baseline': None, 'baseline8': 8, 'delay0': 0, 'delay2': 2, 'delay8': 8, 'delay20': 20, 'indexed0':0, 'indexed8':8, 'duckdb': None}
+    policies = {'baseline': None, 'baseline8': 8, 'baseline-indexed0': 0, 'delay0': 0, 'delay2': 2, 'delay8': 8, 'delay20': 20, 'indexed0':0, 'indexed8':8, 'duckdb': None}
     assert len(set(variants)) == len(variants) and set(variants) <= policies.keys()
     assert len(set(scenarios)) == len(scenarios) and set(scenarios) <= SCENARIOS.keys()
     assert not ('duckdb' in variants and any(SCENARIOS[s][3] for s in scenarios))
@@ -100,7 +100,7 @@ def main():
                         seeded = json.loads(subprocess.check_output([str(seeds[family]), str(directory/'archive'), str(args.ids), str(args.rows)], text=True, timeout=120))
                         assert seeded['version'] == versions[family] and seeded['full_scrub_passed']
                     bridge_args = () if variant in ['baseline','duckdb'] else (policies[variant],)
-                    if variant.startswith('indexed'):
+                    if variant.startswith('indexed') or variant.startswith('baseline-indexed'):
                         bridge_args=(policies[variant],1)
                     engine = Engine(name, directory, args.rows, binaries[family], {}, existing=identified, bridge_args=bridge_args)
                     if name == 'kestrel':

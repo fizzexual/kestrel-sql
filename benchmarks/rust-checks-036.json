@@ -1,0 +1,147 @@
+{
+  "version": "0.3.6",
+  "rust_tests": {
+    "debug": 45,
+    "release": 45,
+    "passed": true
+  },
+  "format_check": "passed",
+  "clippy_warnings_as_errors": "passed",
+  "feature_clippy_warnings_as_errors": "passed",
+  "build_run_order": [
+    {
+      "job": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-06T13:21:02.159853+00:00",
+      "completed_at_utc": "2026-10-06T13:21:02.449701+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "debug",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:21:02.451206+00:00",
+      "completed_at_utc": "2026-10-06T13:21:25.134647+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:21:25.135695+00:00",
+      "completed_at_utc": "2026-10-06T13:22:06.821065+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T13:22:06.822065+00:00",
+      "completed_at_utc": "2026-10-06T13:22:11.286281+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--bins",
+        "--examples",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:22:11.287281+00:00",
+      "completed_at_utc": "2026-10-06T13:22:11.467632+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T13:22:11.467632+00:00",
+      "completed_at_utc": "2026-10-06T13:22:19.210352+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--example",
+        "publication_fault_probe",
+        "--example",
+        "live_retry_probe",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:22:19.210352+00:00",
+      "completed_at_utc": "2026-10-06T13:22:41.494586+00:00",
+      "returncode": 0
+    }
+  ],
+  "cli_sha256": "865994928268ac76924585d10b70f907fa525f3d105695e088456b66602db3a0",
+  "bridge_sha256": "a68c7e959db19562d1bad0a78dd1a20b08c8b4cd6558d62da0badf95132e238f",
+  "probe_sha256": "91eb918a129b73db42a06d73278e4d60e67b58df685a48558791c55dd30581e0",
+  "scan_probe_sha256": "d449fa69e723b682fed849ad9e08a174b157190a28e7c49bf06e4296adb1fc0a",
+  "publication_probe_sha256": "6ca77e74964b5e093fc1545ed73dac1a315512884dbb95423e2675dd26ca361b",
+  "receipt_seed_sha256": "c5cdb25a6481da75a148dad1c4bcc768de78de92870d1a47b4b560d139f25b88",
+  "fault_driver_sha256": "9043f3687995c7ab9184a13cb72432dc74531f42878fd5103f6d75e81f9e7f4d",
+  "live_retry_driver_sha256": "30fa0491de76a519b041cbb7627cdeee90af9fe367404242e0cdd0cd576ec382",
+  "source_sha256": {
+    "Cargo.lock": "34cb12e3cd8474b0a7752064e3f1be3e5c3758aef0b070ff8d92e412dcdd0d46",
+    "Cargo.toml": "4d7b74ab1c4228f126f054f146c682b39963670968efafa99804e6456803dc87",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "src/archive.rs": "772c8b817b3f259710dbf9997f96b6ccb5e5aff2b215c0a9fbca42810a72e243",
+    "src/bin/kestrel-stress.rs": "1aedc21b6350209f70d327c0f2ce9184703e717c3f0b97d21682dcd522ae84fc",
+    "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "tests/archive.rs": "be999a6fc796bcaf647083dc5f720b01f972d65fbf4d19b94f4eb462cb2090dd",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c"
+  }
+}

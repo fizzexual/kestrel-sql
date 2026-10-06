@@ -26,6 +26,35 @@ With the lookup enabled, known retries bypass queue admission, collection waitin
 
 This costs an extra ledger bounded by the existing 100,000-ID limit. `retry_index_ids` and `retry_index_logical_bytes` expose its size; logical bytes count key capacities, String values and fixed receipt records, excluding BTree nodes and allocator overhead. This is additional memory beyond the archive ledger, caches and runtime, and is not a process-memory guarantee. `fast_retry_hits`, `fast_retry_conflicts` and `fast_retry_validation_total_ms` distinguish this work from writer publication profiling; the timer covers payload validation after lookup, excluding shape checks and lookup time. `duplicate_batches` includes both fast and queued duplicates. `writer_poisoned` and `writer_stopped` expose writer health.
 
+## Reuse immutable input in Rust
+
+Version 0.3.6 adds `PreparedBatch` for retrying the same input from an embedded pipeline. Construction consumes and validates owned vectors and computes their fingerprint inside the library; fields stay private and no mutable payload/digest or deserialization API is exposed. Clones share the payload through Arc. This input is process-local and does not represent a successful commit.
+
+```rust
+use kestrel_sql::archive::Archive;
+use kestrel_sql::live::{LiveArchive, LiveOptions, PreparedBatch};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let archive = Archive::open("prepared-events", "events", &["ts", "value", "device"])?;
+    let live = LiveArchive::with_retry_index(archive, LiveOptions::default())?;
+    let batch = PreparedBatch::new(
+        "source:partition0:offset0-1",
+        vec![vec![100, 101], vec![12, 18], vec![1, 2]],
+    )?;
+    let first = live.append_prepared(&batch)?;
+    let replay = live.append_prepared(&batch)?;
+    assert!(replay.duplicate && replay.generation == first.generation);
+    assert_eq!(live.snapshot().stats()?.rows, 2);
+    Ok(())
+}
+```
+
+Use a fresh directory for this example. On reopen, reconstructing the same prepared input matches its original receipt. Batch IDs remain scoped to each archive; source offset naming alone does not implement atomic offset commits or consumer fencing.
+
+Preparation requires 1..64 equal-length columns, 1..10K rows and a valid identified batch ID. The receiving archive also checks width. With the optional lookup, a confirmed retry compares the stored rows/digest and original generation, avoiding payload hashing/copying on reuse. Writer health still gates it. A changed payload/order conflicts. Without the lookup, or for unknown/pending IDs, input is copied into the ordinary writer path and hashed again; first writes have additional preparation work. The loopback JSON adapter accepts ordinary input and has no prepared-fingerprint protocol.
+
+Callers budget and release prepared buffers; the engine does not cache them in the receipt map. `payload_bytes()` gives logical i64 bytes, excluding spare vector capacity, IDs, metadata and allocator overhead. `prepared_retry_hits` counts a subset of `fast_retry_hits`; validation time for this path measures a digest comparison. [PERFORMANCE_036.md](PERFORMANCE_036.md) separates one-time preparation, reuse and preparation on every call, and preserves ordinary protocol/write controls. Millions of confirmed retries insert no new rows.
+
 Version 0.3.4 adds an explicit, optional coalescing policy. `LiveArchive::new` still uses zero delay. Applications can evaluate `LiveArchive::with_options(archive, LiveOptions { max_group_delay: Duration::from_millis(2) })`; delays above 20 ms are rejected. The writer starts one deadline when it receives the first request, collects up to 64 requests, and does not extend that deadline for later arrivals. A disconnected queue drains without waiting. Queue bytes and request limits continue to apply during collection.
 
 The configured window bounds intentional collection waiting. OS scheduling, an existing queue, synchronization and compaction can make actual acknowledgment latency much longer. The full window can add latency to a single write or a queued retry; confirmed retries bypass it when the optional lookup is enabled. This is a tuning tradeoff, not a low-latency guarantee. Statistics expose exact configured nanoseconds (`group_delay_ns`), the legacy rounded-down `flush_delay_ms`, total collection time, collected groups and largest request group. The loopback test bridge accepts optional `GROUP_DELAY_MS` and `RETRY_INDEX_0_OR_1` arguments; the latter defaults to 0. It remains test infrastructure. The [policy experiment](PERFORMANCE_034.md) records every measured setting and failure.

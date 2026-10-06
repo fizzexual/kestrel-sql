@@ -22,6 +22,8 @@ def main():
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--driver', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--expected-version', default='0.3.5')
+    parser.add_argument('--process-exits', action='store_true')
     args = parser.parse_args()
     binary,driver = args.binary.resolve(),args.driver.resolve()
     work = ROOT.parent.parent/'work'/f'live-retry-faults-{time.time_ns()}'
@@ -30,9 +32,13 @@ def main():
         'driver_sha256':hashlib.sha256(driver.read_bytes()).hexdigest(),
         'fault_model':'feature-only deterministic writer stall and seven disk-full OS-error injection points; default bridge recovery; live filesystem; no physical-power-loss claim',
         'cases':[], 'failed_cases':[]}
-    for mode,point in [('pause',None),*[('poison',p) for p in POINTS]]:
+    cases=[('pause',None),*[('poison',p) for p in POINTS]]
+    if args.process_exits:
+        cases += [('exit', p) for p in POINTS]
+    for mode,point in cases:
         directory = work/f'{mode}-{point}'
         engine = Engine('kestrel',directory,0,binary,{})
+        assert engine.version == args.expected_version
         connection = engine.connect()
         known = {'op':'append','id':'known','data':[[1000,3,1]]*100}
         receipt = connection.call(known)
@@ -44,11 +50,15 @@ def main():
             if mode=='pause':
                 environment['KESTREL_LIVE_PAUSE'] = str(directory/'pause')
             else:
-                environment.update(KESTREL_FAULT_POINT=point,KESTREL_FAULT_MODE='io_error')
-            result = subprocess.run([str(driver),str(directory/'archive'),mode],env=environment,text=True,capture_output=True,timeout=20)
-            assert result.returncode==0,(mode,point,result)
-            proof=json.loads(result.stdout)
-            assert proof['version']=='0.3.5' and proof['passed']
+                environment.update(KESTREL_FAULT_POINT=point,KESTREL_FAULT_MODE='exit' if mode=='exit' else 'io_error')
+            result = subprocess.run([str(driver),str(directory/'archive'),'poison' if mode=='exit' else mode],env=environment,text=True,capture_output=True,timeout=20)
+            if mode == 'exit':
+                assert result.returncode == 86, (mode, point, result)
+                proof = {'exact_prepared_publication_process_exit': 86}
+            else:
+                assert result.returncode==0,(mode,point,result)
+                proof=json.loads(result.stdout)
+                assert proof['version']==args.expected_version and proof['passed']
             engine=Engine('kestrel',directory,0,binary,{},existing=True)
             connection=engine.connect()
             replay=connection.call(known)
@@ -68,7 +78,7 @@ def main():
         finally:
             engine.finish()
             args.output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    assert len(report['cases'])==8 and not report['failed_cases']
+    assert len(report['cases'])==len(cases) and not report['failed_cases']
 
 
 if __name__=='__main__':

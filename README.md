@@ -1,6 +1,8 @@
 # KestrelSQL
 
-**Current source: 0.3.5 experimental opt-in live-retry candidate.** `LiveArchive::with_retry_index` lets confirmed exact retries validate their payload and return the original receipt independently of the writer queue. The added lookup stays off by default after a write-heavy trial regression. It adds bounded ledger memory and startup work; new and pending IDs still wait for synchronized publication. Writer poisoning rejects cached retries until reopening. See [PERFORMANCE_035.md](PERFORMANCE_035.md) for repeated comparisons, default/enabled write controls and retained failures. CAT4/SEG2 remain compatible with 0.3.3 and 0.3.4. Previous packages and measurements remain preserved.
+**Current source: 0.3.6 experimental reusable-batch candidate.** `PreparedBatch` owns immutable input and computes its SHA-256 fingerprint once. `LiveArchive::append_prepared` reuses it for confirmed retries when the optional receipt index is enabled, preserving original generations and writer health checks. Unknown IDs still synchronize through the writer; first submissions add preparation work. The index stays off by default. See [PERFORMANCE_036.md](PERFORMANCE_036.md) for preparation-inclusive controls, repeated embedded/protocol comparisons and retained failures, and [LIVE_METRICS.md](LIVE_METRICS.md) for the Rust API. CAT4/SEG2 remain compatible with 0.3.3–0.3.5. Previous packages and measurements remain preserved.
+
+The [0.3.5 lookup experiment](PERFORMANCE_035.md) separates confirmed retries from writer queueing. Its initial write-heavy regression is preserved; the additional lookup remains opt-in.
 
 The [0.3.4 coalescing experiment](PERFORMANCE_034.md) adds an explicit `LiveOptions` window and collection diagnostics. Optional waiting can regress latency and loss, so the default remains zero delay.
 

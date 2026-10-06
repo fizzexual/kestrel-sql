@@ -1,6 +1,6 @@
 //! Test-only deterministic stall/poison driver; excluded from supported binaries.
 use kestrel_sql::archive::{Archive, IngestBatch};
-use kestrel_sql::live::{LiveArchive, LiveOptions};
+use kestrel_sql::live::{LiveArchive, LiveOptions, PreparedBatch};
 use kestrel_sql::{Result, Value};
 use std::time::{Duration, Instant};
 
@@ -18,9 +18,13 @@ fn main() -> Result<()> {
         LiveOptions::default(),
     )?;
     let pinned = live.snapshot();
+    let known = PreparedBatch::new("known", batch("known", 3).columns)?;
+    let conflict = PreparedBatch::new("known", batch("known", 4).columns)?;
     let writer = {
         let live = live.clone();
-        std::thread::spawn(move || live.append(batch("target", 7)))
+        std::thread::spawn(move || {
+            live.append_prepared(&PreparedBatch::new("target", batch("target", 7).columns).unwrap())
+        })
     };
     if args[2] == "pause" {
         let path = std::path::PathBuf::from(std::env::var_os("KESTREL_LIVE_PAUSE").unwrap());
@@ -33,9 +37,12 @@ fn main() -> Result<()> {
         let receipt = live.append(batch("known", 3))?;
         assert!(receipt.duplicate && receipt.generation == 1);
         assert!(live.append(batch("known", 4)).is_err());
+        assert_eq!(live.append_prepared(&known)?.generation, 1);
+        assert!(live.append_prepared(&conflict).is_err());
         assert_eq!(live.snapshot().stats()?.rows, 100);
-        assert_eq!(live.stats().fast_retry_hits, 1);
-        assert_eq!(live.stats().fast_retry_conflicts, 1);
+        assert_eq!(live.stats().fast_retry_hits, 2);
+        assert_eq!(live.stats().prepared_retry_hits, 1);
+        assert_eq!(live.stats().fast_retry_conflicts, 2);
         assert_eq!(live.stats().queued_payload_bytes, 2400);
         std::fs::write(path.with_extension("release"), b"allow publication")?;
         let receipt = writer.join().unwrap()?;
@@ -51,7 +58,13 @@ fn main() -> Result<()> {
         // Previously committed IDs must not hide a failed writer.
         assert!(live.append(batch("known", 3)).is_err());
         assert!(live.append(batch("unknown", 3)).is_err());
+        assert!(live.append_prepared(&known).is_err());
+        assert!(
+            live.append_prepared(&PreparedBatch::new("unknown", batch("unknown", 3).columns)?)
+                .is_err()
+        );
         assert_eq!(live.stats().fast_retry_hits, 0);
+        assert_eq!(live.stats().prepared_retry_hits, 0);
         assert_eq!(live.stats().retry_index_ids, 1);
     }
     assert_eq!(

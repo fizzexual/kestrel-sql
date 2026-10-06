@@ -243,7 +243,16 @@ pub(crate) struct BatchRecord {
 
 impl BatchRecord {
     pub(crate) fn retry(&self, columns: &[Vec<i64>]) -> Result<IngestReceipt> {
-        if self.rows != columns[0].len() || self.digest != batch_digest(columns) {
+        if self.rows != columns[0].len() {
+            return Err(Error::new(
+                "batch ID already committed with different content",
+            ));
+        }
+        self.retry_digest(columns[0].len(), &batch_digest(columns))
+    }
+
+    pub(crate) fn retry_digest(&self, rows: usize, digest: &[u8; 32]) -> Result<IngestReceipt> {
+        if self.rows != rows || &self.digest != digest {
             return Err(Error::new(
                 "batch ID already committed with different content",
             ));
@@ -257,7 +266,7 @@ impl BatchRecord {
 }
 
 // Hash the submitted order, before physical sorting, using the existing receipt domain.
-fn batch_digest(columns: &[Vec<i64>]) -> [u8; 32] {
+pub(crate) fn batch_digest(columns: &[Vec<i64>]) -> [u8; 32] {
     let mut digest = Sha256::new();
     digest.update((columns.len() as u64).to_le_bytes());
     digest.update((columns[0].len() as u64).to_le_bytes());

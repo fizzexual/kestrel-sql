@@ -1,5 +1,6 @@
 use kestrel_sql::archive::{Archive, BLOCK_ROWS, IngestBatch};
 use kestrel_sql::live::LiveArchive;
+use kestrel_sql::live::{LiveOptions, PreparedBatch};
 use kestrel_sql::{Database, Value};
 use std::path::PathBuf;
 
@@ -23,6 +24,128 @@ fn open(path: &std::path::Path) -> Archive {
 }
 fn int(n: i128) -> Vec<Vec<Value>> {
     vec![vec![Value::Int(n)]]
+}
+
+#[test]
+fn prepared_batches_preserve_order_conflicts_generation_and_reopen() {
+    let path = temp("prepared-reopen");
+    let columns = vec![vec![2, 1, 3], vec![i64::MAX, i64::MIN, -7], vec![1, 2, 3]];
+    let batch = PreparedBatch::new("prepared:known", columns.clone()).unwrap();
+    let live = LiveArchive::with_retry_index(open(&path), LiveOptions::default()).unwrap();
+    let before = live.snapshot();
+    let original = live.append_prepared(&batch).unwrap();
+    assert!(!original.duplicate && original.rows == 3);
+    assert_eq!(before.stats().unwrap().rows, 0);
+    assert_eq!(live.snapshot().stats().unwrap().rows, 3);
+    let later = PreparedBatch::new("prepared:later", vec![vec![4], vec![1], vec![1]]).unwrap();
+    let second = live.append_prepared(&later).unwrap();
+    assert!(second.generation > original.generation);
+    let replay = live.append_prepared(&batch.clone()).unwrap();
+    assert!(replay.duplicate && replay.generation == original.generation);
+    let mut changed = columns.clone();
+    changed[1][2] = -6;
+    assert!(
+        live.append_prepared(&PreparedBatch::new(batch.id(), changed).unwrap())
+            .is_err()
+    );
+    let reordered: Vec<Vec<i64>> = columns.iter().map(|c| vec![c[1], c[0], c[2]]).collect();
+    assert!(
+        live.append_prepared(&PreparedBatch::new(batch.id(), reordered).unwrap())
+            .is_err()
+    );
+    assert!(
+        live.append_prepared(&PreparedBatch::new(batch.id(), vec![vec![1]; 3]).unwrap())
+            .is_err()
+    );
+    assert!(
+        live.append_prepared(&PreparedBatch::new("width", vec![vec![1]; 2]).unwrap())
+            .is_err()
+    );
+    assert_eq!(live.stats().prepared_retry_hits, 1);
+    assert_eq!(live.stats().fast_retry_conflicts, 3);
+    drop(before);
+    drop(live);
+    let archive = open(&path);
+    assert_eq!(archive.verify().unwrap(), 4 * 24);
+    let live = LiveArchive::with_retry_index(archive, LiveOptions::default()).unwrap();
+    assert_eq!(
+        live.append_prepared(&batch).unwrap().generation,
+        original.generation
+    );
+    assert_eq!(
+        live.append(IngestBatch {
+            id: Some(batch.id().into()),
+            columns
+        })
+        .unwrap()
+        .generation,
+        original.generation
+    );
+    assert_eq!(live.stats().prepared_retry_hits, 1);
+    assert_eq!(live.stats().fast_retry_hits, 2);
+}
+
+#[test]
+fn prepared_batches_queue_without_index_and_cross_archive_ownership() {
+    let batch = PreparedBatch::new("portable", vec![vec![1], vec![7], vec![2]]).unwrap();
+    let first_path = temp("prepared-plain");
+    let live = LiveArchive::new(open(&first_path)).unwrap();
+    let receipt = live.append_prepared(&batch).unwrap();
+    assert!(!receipt.duplicate);
+    assert!(live.append_prepared(&batch).unwrap().duplicate);
+    assert_eq!(live.stats().durable_group_commits, 1);
+    assert_eq!(live.stats().collected_groups, 2);
+    assert_eq!(live.stats().fast_retry_hits, 0);
+    assert_eq!(live.stats().prepared_retry_hits, 0);
+    assert_eq!(live.stats().retry_index_ids, 0);
+    let other_path = temp("prepared-other-store");
+    let other = LiveArchive::with_retry_index(open(&other_path), LiveOptions::default()).unwrap();
+    assert!(!other.append_prepared(&batch).unwrap().duplicate);
+    assert!(other.append_prepared(&batch).unwrap().duplicate);
+    assert_eq!(other.snapshot().verify().unwrap(), 24);
+    assert_eq!(live.snapshot().verify().unwrap(), 24);
+}
+
+#[test]
+fn concurrent_prepared_first_submissions_publish_one_batch() {
+    let path = temp("prepared-concurrent");
+    let live = LiveArchive::with_retry_index(
+        open(&path),
+        LiveOptions {
+            max_group_delay: std::time::Duration::from_millis(8),
+        },
+    )
+    .unwrap();
+    let prepared = PreparedBatch::new(
+        "prepared:concurrent",
+        vec![(0..100).collect(), vec![7; 100], vec![2; 100]],
+    )
+    .unwrap();
+    let gate = std::sync::Arc::new(std::sync::Barrier::new(33));
+    let threads: Vec<_> = (0..32)
+        .map(|_| {
+            let live = live.clone();
+            let prepared = prepared.clone();
+            let gate = gate.clone();
+            std::thread::spawn(move || {
+                gate.wait();
+                live.append_prepared(&prepared).unwrap()
+            })
+        })
+        .collect();
+    gate.wait();
+    let receipts: Vec<_> = threads.into_iter().map(|t| t.join().unwrap()).collect();
+    assert_eq!(receipts.iter().filter(|r| !r.duplicate).count(), 1);
+    assert!(
+        receipts
+            .iter()
+            .all(|r| r.rows == 100 && r.generation == receipts[0].generation)
+    );
+    assert_eq!(live.snapshot().stats().unwrap().rows, 100);
+    assert_eq!(live.stats().duplicate_batches, 31);
+    assert_eq!(live.stats().retry_index_ids, 1);
+    assert_eq!(live.stats().queued_payload_bytes, 0);
+    assert_eq!(live.snapshot().verify().unwrap(), 2400);
 }
 
 #[test]
