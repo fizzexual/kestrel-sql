@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--expected-version', default='0.3.4')
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--retry-index',action='store_true')
     args = parser.parse_args()
     binary = args.binary.resolve()
     work = ROOT.parent.parent/'work'/f'group-recovery-{time.time_ns()}'
@@ -31,7 +32,7 @@ def main():
     delays = [.0005,.002,.008,.012,.03,.08,.2,.5]
     for group_delay in [0,2,8,20]:
         for index, kill_delay in enumerate(delays):
-            engine = Engine('kestrel',work/f'{group_delay}-{index}',1000,binary,{},bridge_args=(group_delay,))
+            engine = Engine('kestrel',work/f'{group_delay}-{index}',1000,binary,{},bridge_args=(group_delay,1) if args.retry_index else (group_delay,))
             assert engine.version == args.expected_version
             attempts, acks, errors = set(), {}, []
             gate = threading.Barrier(17)

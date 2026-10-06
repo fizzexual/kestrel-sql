@@ -1,6 +1,8 @@
 # KestrelSQL
 
-**Current source: 0.3.4 experimental coalescing-policy candidate.** An explicit `LiveOptions` window lets applications evaluate fewer synchronized publications against added write latency. The default remains zero delay. Collection diagnostics and repeated 0/2/8 ms policy comparisons expose both gains and regressions; see [PERFORMANCE_034.md](PERFORMANCE_034.md). CAT4/SEG2 remain compatible with 0.3.3. Previous packages and measurements remain preserved.
+**Current source: 0.3.5 experimental opt-in live-retry candidate.** `LiveArchive::with_retry_index` lets confirmed exact retries validate their payload and return the original receipt independently of the writer queue. The added lookup stays off by default after a write-heavy trial regression. It adds bounded ledger memory and startup work; new and pending IDs still wait for synchronized publication. Writer poisoning rejects cached retries until reopening. See [PERFORMANCE_035.md](PERFORMANCE_035.md) for repeated comparisons, default/enabled write controls and retained failures. CAT4/SEG2 remain compatible with 0.3.3 and 0.3.4. Previous packages and measurements remain preserved.
+
+The [0.3.4 coalescing experiment](PERFORMANCE_034.md) adds an explicit `LiveOptions` window and collection diagnostics. Optional waiting can regress latency and loss, so the default remains zero delay.
 
 In the [0.3.3 receipt-catalog experiment](PERFORMANCE_033.md), 50,000 retained retry IDs and 96 new appends wrote 24.72 MB of catalogs versus 788.02 MB in the fresh 0.3.2 baseline (96.86% fewer bytes). CAT4 uses receipt deltas and bounded checkpoints, preserves synchronization before ACK, reads older catalogs and is rejected by pre-CAT4 writers. Checkpoint/storage stalls and service-target failures remain disclosed.
 

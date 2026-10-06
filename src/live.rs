@@ -1,8 +1,9 @@
 //! Concurrent embedded ingestion: immutable reads and bounded durable group commits.
-use crate::archive::{Archive, ArchiveSnapshot, IngestBatch, IngestReceipt};
+use crate::archive::{Archive, ArchiveSnapshot, BatchRecord, IngestBatch, IngestReceipt};
 use crate::{Error, Result};
 use serde::Serialize;
-use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
+use std::collections::BTreeMap;
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, RwLock, mpsc};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
@@ -51,8 +52,30 @@ fn collect_group(
     commands
 }
 
+// Deterministic writer stall for the separate feature-enabled correctness driver.
+// Default library/CLI/bridge builds contain neither the hook nor its environment key.
+#[cfg(feature = "fault-injection")]
+fn test_writer_pause() {
+    if let Some(path) = std::env::var_os("KESTREL_LIVE_PAUSE") {
+        let path = std::path::PathBuf::from(path);
+        std::fs::write(path.with_extension("entered"), b"writer collected group").unwrap();
+        let deadline = Instant::now() + Duration::from_secs(10);
+        while !path.with_extension("release").exists() {
+            assert!(Instant::now() < deadline, "test writer pause timed out");
+            thread::sleep(Duration::from_millis(1));
+        }
+    }
+}
+
 #[derive(Default)]
 struct Counters {
+    writer_poisoned: AtomicBool,
+    writer_stopped: AtomicBool,
+    fast_retry_hits: AtomicU64,
+    fast_retry_conflicts: AtomicU64,
+    fast_retry_validation_ns: AtomicU64,
+    retry_index_ids: AtomicUsize,
+    retry_index_logical_bytes: AtomicUsize,
     queued_bytes: AtomicUsize,
     commits: AtomicU64,
     committed_batches: AtomicU64,
@@ -69,6 +92,15 @@ struct Counters {
 
 #[derive(Debug, Serialize)]
 pub struct LiveStats {
+    pub retry_index_enabled: bool,
+    pub writer_poisoned: bool,
+    pub writer_stopped: bool,
+    pub fast_retry_hits: u64,
+    pub fast_retry_conflicts: u64,
+    pub fast_retry_validation_total_ms: f64,
+    pub retry_index_ids: usize,
+    /// Key capacity plus String and receipt sizes; excludes BTree nodes/allocator overhead.
+    pub retry_index_logical_bytes: usize,
     pub queued_payload_bytes: usize,
     pub durable_group_commits: u64,
     pub committed_batches: u64,
@@ -93,10 +125,22 @@ struct Command {
 struct Inner {
     sender: Option<mpsc::SyncSender<Command>>,
     reader: Arc<RwLock<Arc<ArchiveSnapshot>>>,
+    receipts: Option<Arc<RwLock<BTreeMap<String, BatchRecord>>>>,
     counters: Arc<Counters>,
     writer: Option<JoinHandle<()>>,
     columns: usize,
     options: LiveOptions,
+}
+
+fn receipt_bytes(id: &String) -> usize {
+    std::mem::size_of::<String>() + std::mem::size_of::<BatchRecord>() + id.capacity()
+}
+
+struct WriterExit(Arc<Counters>);
+impl Drop for WriterExit {
+    fn drop(&mut self) {
+        self.0.writer_stopped.store(true, Ordering::Release);
+    }
 }
 impl Drop for Inner {
     fn drop(&mut self) {
@@ -119,7 +163,17 @@ impl LiveArchive {
         Self::with_options(archive, LiveOptions::default())
     }
 
-    pub fn with_options(mut archive: Archive, options: LiveOptions) -> Result<Self> {
+    pub fn with_options(archive: Archive, options: LiveOptions) -> Result<Self> {
+        Self::start(archive, options, false)
+    }
+
+    /// Opt into a second bounded receipt lookup so confirmed retries can validate
+    /// independently of writer queueing. Adds ledger memory and startup copying.
+    pub fn with_retry_index(archive: Archive, options: LiveOptions) -> Result<Self> {
+        Self::start(archive, options, true)
+    }
+
+    fn start(mut archive: Archive, options: LiveOptions, indexed: bool) -> Result<Self> {
         if options.max_group_delay > MAX_GROUP_DELAY {
             return Err(Error::new("live group delay must be at most 20 ms"));
         }
@@ -127,12 +181,24 @@ impl LiveArchive {
         let columns = initial.columns().len();
         let reader = Arc::new(RwLock::new(Arc::new(initial)));
         let counters = Arc::new(Counters::default());
+        let receipts = indexed.then(|| {
+            let ledger = archive.committed_receipts();
+            counters
+                .retry_index_ids
+                .store(ledger.len(), Ordering::Relaxed);
+            counters
+                .retry_index_logical_bytes
+                .store(ledger.keys().map(receipt_bytes).sum(), Ordering::Relaxed);
+            Arc::new(RwLock::new(ledger))
+        });
         let (sender, receiver) = mpsc::sync_channel::<Command>(QUEUE_CAPACITY);
         let published = Arc::clone(&reader);
         let metrics = Arc::clone(&counters);
+        let committed = receipts.clone();
         let writer = thread::Builder::new()
             .name("kestrel-ingest".into())
             .spawn(move || {
+                let _exit = WriterExit(Arc::clone(&metrics));
                 while let Ok(first) = receiver.recv() {
                     let started = Instant::now();
                     let commands = collect_group(&receiver, first, options.max_group_delay);
@@ -148,11 +214,17 @@ impl LiveArchive {
                     // by append_group; every member fails if the group is invalid.
                     let mut replies = Vec::new();
                     let mut batches = Vec::new();
+                    let mut pending_ids = Vec::new();
                     for command in commands {
                         replies.push((command.reply, command.bytes));
+                        if committed.is_some() && let Some(id) = &command.batch.id {
+                            pending_ids.push(id.clone());
+                        }
                         batches.push(command.batch);
                     }
                     let started = Instant::now();
+                    #[cfg(feature = "fault-injection")]
+                    test_writer_pause();
                     let outcome = archive.append_group(batches);
                     let elapsed = started.elapsed().as_nanos().min(u64::MAX as u128) as u64;
                     metrics.publication_ns.fetch_add(elapsed, Ordering::Relaxed);
@@ -182,6 +254,26 @@ impl LiveArchive {
                                     .expect("successful publication has a healthy snapshot");
                                 *published.write().unwrap_or_else(|e| e.into_inner()) =
                                     Arc::new(view);
+                                // Make confirmed IDs available only after their data is visible.
+                                // Extend only the new records, never clone the whole ledger here.
+                                if let Some(committed) = &committed {
+                                let mut ledger = committed.write().unwrap_or_else(|e| e.into_inner());
+                                for id in pending_ids {
+                                    if let std::collections::btree_map::Entry::Vacant(entry) =
+                                        ledger.entry(id)
+                                    {
+                                        let record = archive.committed_receipt(entry.key()).expect(
+                                            "successful identified publication has a receipt",
+                                        );
+                                        metrics.retry_index_logical_bytes.fetch_add(
+                                            receipt_bytes(entry.key()),
+                                            Ordering::Relaxed,
+                                        );
+                                        entry.insert(record);
+                                        metrics.retry_index_ids.fetch_add(1, Ordering::Relaxed);
+                                    }
+                                }
+                                }
                             }
                             for ((reply, bytes), receipt) in replies.into_iter().zip(receipts) {
                                 metrics.queued_bytes.fetch_sub(bytes, Ordering::Relaxed);
@@ -199,6 +291,9 @@ impl LiveArchive {
                                     }
                                     Ok(_) => (),
                                     Err(_) => {
+                                        metrics
+                                            .writer_poisoned
+                                            .store(archive.is_poisoned(), Ordering::Release);
                                         metrics.maintenance_errors.fetch_add(1, Ordering::Relaxed);
                                     }
                                 }
@@ -215,6 +310,9 @@ impl LiveArchive {
                             }
                         }
                         Err(error) => {
+                            metrics
+                                .writer_poisoned
+                                .store(archive.is_poisoned(), Ordering::Release);
                             let message = error.to_string();
                             for (reply, bytes) in replies {
                                 metrics.queued_bytes.fetch_sub(bytes, Ordering::Relaxed);
@@ -228,6 +326,7 @@ impl LiveArchive {
             inner: Arc::new(Inner {
                 sender: Some(sender),
                 reader,
+                receipts,
                 counters,
                 writer: Some(writer),
                 columns,
@@ -241,6 +340,7 @@ impl LiveArchive {
     }
 
     pub fn append(&self, batch: IngestBatch) -> Result<IngestReceipt> {
+        self.writer_healthy()?;
         if batch.columns.len() != self.inner.columns
             || batch
                 .columns
@@ -257,6 +357,42 @@ impl LiveArchive {
             return Err(Error::new(
                 "identified live batches need a valid ASCII batch ID and nonempty rows",
             ));
+        }
+        if let Some(id) = &batch.id
+            && let Some(ledger) = &self.inner.receipts
+        {
+            // Release the lookup lock before hashing: large retry payloads must not
+            // stall publication or other readers. Unknown/in-flight IDs use the writer.
+            let record = ledger
+                .read()
+                .unwrap_or_else(|e| e.into_inner())
+                .get(id)
+                .cloned();
+            if let Some(record) = record {
+                let started = Instant::now();
+                let receipt = record.retry(&batch.columns);
+                self.inner.counters.fast_retry_validation_ns.fetch_add(
+                    started.elapsed().as_nanos().min(u64::MAX as u128) as u64,
+                    Ordering::Relaxed,
+                );
+                self.writer_healthy()?;
+                if receipt.is_ok() {
+                    self.inner
+                        .counters
+                        .fast_retry_hits
+                        .fetch_add(1, Ordering::Relaxed);
+                    self.inner
+                        .counters
+                        .duplicate_batches
+                        .fetch_add(1, Ordering::Relaxed);
+                } else {
+                    self.inner
+                        .counters
+                        .fast_retry_conflicts
+                        .fetch_add(1, Ordering::Relaxed);
+                }
+                return receipt;
+            }
         }
         let bytes = batch.columns.iter().map(|c| c.len() * 8).sum::<usize>();
         self.inner
@@ -295,9 +431,30 @@ impl LiveArchive {
         })?
     }
 
+    fn writer_healthy(&self) -> Result<()> {
+        if self.inner.counters.writer_poisoned.load(Ordering::Acquire)
+            || self.inner.counters.writer_stopped.load(Ordering::Acquire)
+        {
+            return Err(Error::new(
+                "ingest writer unhealthy; publication outcome unknown; close and reopen",
+            ));
+        }
+        Ok(())
+    }
+
     pub fn stats(&self) -> LiveStats {
         let c = &self.inner.counters;
         LiveStats {
+            retry_index_enabled: self.inner.receipts.is_some(),
+            writer_poisoned: c.writer_poisoned.load(Ordering::Acquire),
+            writer_stopped: c.writer_stopped.load(Ordering::Acquire),
+            fast_retry_hits: c.fast_retry_hits.load(Ordering::Relaxed),
+            fast_retry_conflicts: c.fast_retry_conflicts.load(Ordering::Relaxed),
+            fast_retry_validation_total_ms: c.fast_retry_validation_ns.load(Ordering::Relaxed)
+                as f64
+                / 1e6,
+            retry_index_ids: c.retry_index_ids.load(Ordering::Relaxed),
+            retry_index_logical_bytes: c.retry_index_logical_bytes.load(Ordering::Relaxed),
             queued_payload_bytes: c.queued_bytes.load(Ordering::Relaxed),
             durable_group_commits: c.commits.load(Ordering::Relaxed),
             committed_batches: c.committed_batches.load(Ordering::Relaxed),

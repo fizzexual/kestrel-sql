@@ -32,6 +32,7 @@ def main():
     parser.add_argument('--sql-binary', type=Path, required=True)
     parser.add_argument('--fault-driver', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--expected-version', default='0.3.3')
     args = parser.parse_args()
     args.binary, args.sql_binary, args.fault_driver = [p.resolve() for p in [args.binary, args.sql_binary, args.fault_driver]]
     work = ROOT.parent.parent/'work'/f'catalog-faults-{time.time_ns()}'
@@ -50,7 +51,7 @@ def main():
         directory = work/f'source-{count}'
         engine = Engine('kestrel', directory, 0, args.binary, {})
         try:
-            assert engine.version == '0.3.3'
+            assert engine.version == args.expected_version
             connection = engine.connect()
             for i in range(count):
                 receipt = connection.call({'op': 'append', 'id': f'seed:{i}', 'data': [[i, i*2, 1]]})

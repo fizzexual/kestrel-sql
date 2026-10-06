@@ -1,5 +1,6 @@
 """Measure bounded coalescing policies with fresh fixtures and complete loss evidence."""
 import argparse
+import concurrent.futures
 import gzip
 import hashlib
 import json
@@ -19,7 +20,29 @@ SCENARIOS = {
     'single-mixed': ('mixed', 1, 500, False),
     'burst': ('mixed', 64, 10000, False),
     'scan': ('scan', 64, 200, False),
+    'retry-only': ('retry', 64, 2000, True),
+    'retry-mixed': ('retry_mixed', 64, 2000, True),
+    'retry-burst': ('retry', 64, 10000, True),
 }
+
+
+def prepare_replays(engine):
+    """128 distinct committed batches; setup and original receipt capture untimed."""
+    def commit(index):
+        lo = engine.rows + index*100
+        data = [[i,(i*37)%1000-500,(i*17)%97] for i in range(lo,lo+100)]
+        connection = engine.connect()
+        try:
+            identifier = f'known:{index}'
+            receipt = connection.call({'op':'append','id':identifier,'data':data})
+            assert not receipt['duplicate'] and receipt['affected']==100
+            return identifier,data,receipt['generation']
+        finally:
+            connection.close()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+        catalog = list(pool.map(commit,range(128)))
+    engine.rows += 12800
+    return catalog
 
 
 def main():
@@ -39,7 +62,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     variants, scenarios = args.variants.split(','), args.profiles.split(',')
-    policies = {'baseline': None, 'delay0': 0, 'delay2': 2, 'delay8': 8, 'delay20': 20, 'duckdb': None}
+    policies = {'baseline': None, 'baseline8': 8, 'delay0': 0, 'delay2': 2, 'delay8': 8, 'delay20': 20, 'indexed0':0, 'indexed8':8, 'duckdb': None}
     assert len(set(variants)) == len(variants) and set(variants) <= policies.keys()
     assert len(set(scenarios)) == len(scenarios) and set(scenarios) <= SCENARIOS.keys()
     assert not ('duckdb' in variants and any(SCENARIOS[s][3] for s in scenarios))
@@ -67,7 +90,7 @@ def main():
         for scenario in scenarios:
             profile, clients, rate, identified = SCENARIOS[scenario]
             for variant in order:
-                family = 'baseline' if variant == 'baseline' else 'candidate'
+                family = 'baseline' if variant.startswith('baseline') else 'candidate'
                 name = 'duckdb' if variant == 'duckdb' else 'kestrel'
                 directory = work/f'{turn}-{scenario}-{variant}'
                 engine = None
@@ -77,24 +100,32 @@ def main():
                         seeded = json.loads(subprocess.check_output([str(seeds[family]), str(directory/'archive'), str(args.ids), str(args.rows)], text=True, timeout=120))
                         assert seeded['version'] == versions[family] and seeded['full_scrub_passed']
                     bridge_args = () if variant in ['baseline','duckdb'] else (policies[variant],)
+                    if variant.startswith('indexed'):
+                        bridge_args=(policies[variant],1)
                     engine = Engine(name, directory, args.rows, binaries[family], {}, existing=identified, bridge_args=bridge_args)
                     if name == 'kestrel':
                         assert engine.version == versions[family]
                         assert engine.bridge_info.get('group_delay_ms',0) == (policies[variant] or 0)
+                    replays = prepare_replays(engine) if profile in ['retry','retry_mixed'] else None
                     with HostMonitor() as monitor:
-                        case = run_load(engine, profile, clients, args.seconds, rate, 100, identified=identified)
+                        case = run_load(engine, profile, clients, args.seconds, rate, 100, identified=identified, replay_catalog=replays)
                     if identified:
                         connection = engine.connect()
                         stats = connection.call({'op':'stats'})
-                        assert stats['recorded_batch_ids'] == args.ids + case['reconciliation']['published_batches']
+                        assert stats['recorded_batch_ids'] == args.ids + (128 if replays else 0) + case['reconciliation']['published_batches']
                         size = args.rows//args.ids
                         receipt = connection.call({'op':'append','id':'seed:0','data':[[i,(i*37)%1000-500,(i*17)%97] for i in range(size)]})
                         assert receipt['duplicate'] and receipt['generation'] == 1
+                        if replays:
+                            for identifier,data,generation in replays:
+                                receipt = connection.call({'op':'append','id':identifier,'data':data})
+                                assert receipt['duplicate'] and receipt['generation']==generation and receipt['affected']==100
+                            case['known_receipts_after_reopen'] = 128
                         connection.close()
                         case['seed_replay_passed'] = True
                         case['final_receipt_count'] = stats['recorded_batch_ids']
                     case.update(variant=variant, round=turn, scenario=scenario, configured_group_delay_ms=policies[variant], host_telemetry=monitor.arrival_samples(case))
-                    for operation in ['query','append']:
+                    for operation in ['query','append','replay']:
                         good = [s['latency_ms'] for s in case['samples'] if s['ok'] and s['operation'] == operation]
                         case[f'{operation}_latency_ms'] = {k: percentile(good,p) for k,p in [('p50',.5),('p95',.95),('p99',.99)]}
                     if name == 'kestrel':

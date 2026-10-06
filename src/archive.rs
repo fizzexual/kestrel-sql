@@ -235,10 +235,38 @@ impl Serialize for CombinedBatches<'_> {
     }
 }
 #[derive(Clone, Serialize, Deserialize)]
-struct BatchRecord {
+pub(crate) struct BatchRecord {
     digest: [u8; 32],
     rows: usize,
     generation: u64,
+}
+
+impl BatchRecord {
+    pub(crate) fn retry(&self, columns: &[Vec<i64>]) -> Result<IngestReceipt> {
+        if self.rows != columns[0].len() || self.digest != batch_digest(columns) {
+            return Err(Error::new(
+                "batch ID already committed with different content",
+            ));
+        }
+        Ok(IngestReceipt {
+            rows: self.rows,
+            duplicate: true,
+            generation: self.generation,
+        })
+    }
+}
+
+// Hash the submitted order, before physical sorting, using the existing receipt domain.
+fn batch_digest(columns: &[Vec<i64>]) -> [u8; 32] {
+    let mut digest = Sha256::new();
+    digest.update((columns.len() as u64).to_le_bytes());
+    digest.update((columns[0].len() as u64).to_le_bytes());
+    for column in columns {
+        for value in column {
+            digest.update(value.to_le_bytes());
+        }
+    }
+    digest.finalize().into()
 }
 
 /// An optional durable batch ID makes retries idempotent within this archive.
@@ -604,6 +632,18 @@ impl Archive {
             Ok(())
         }
     }
+    pub(crate) fn is_poisoned(&self) -> bool {
+        self.poisoned
+    }
+
+    // LiveArchive clones this bounded ledger once at startup; snapshots remain cheap.
+    pub(crate) fn committed_receipts(&self) -> BTreeMap<String, BatchRecord> {
+        self.catalog.batches.clone()
+    }
+
+    pub(crate) fn committed_receipt(&self, id: &str) -> Option<BatchRecord> {
+        self.catalog.batches.get(id).cloned()
+    }
     /// One atomic batch, limited to one million rows. Physical order follows the first
     /// column; independent sorted runs support arbitrarily late arrivals across batches.
     pub fn append(&mut self, columns: Vec<Vec<i64>>) -> Result<usize> {
@@ -649,15 +689,7 @@ impl Archive {
                         "batch ID must contain 1..128 ASCII identifier bytes and a nonempty batch",
                     ));
                 }
-                let mut digest = Sha256::new();
-                digest.update((width as u64).to_le_bytes());
-                digest.update((rows as u64).to_le_bytes());
-                for column in &batch.columns {
-                    for value in column {
-                        digest.update(value.to_le_bytes());
-                    }
-                }
-                let digest: [u8; 32] = digest.finalize().into();
+                let digest = batch_digest(&batch.columns);
                 if let Some(previous) = new_records
                     .get(&id)
                     .or_else(|| self.catalog.batches.get(&id))

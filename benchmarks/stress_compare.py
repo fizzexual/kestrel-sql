@@ -187,6 +187,8 @@ def rows_for_task(rows, seq, batch):
 
 def make_task(rng, seq, rows, profile):
     chance = rng.random()
+    if profile in ['retry','retry_mixed']:
+        return (seq, 'append', None) if profile=='retry_mixed' and chance<.05 else (seq,'replay',seq%128)
     writes = {'read':0.,'mixed':.05,'write':.25,'scan':.10,'analytics':.05}[profile]
     if chance < writes:
         return (seq, 'append', None)
@@ -248,9 +250,11 @@ def verify_final(engine, attempts, acknowledgments, batch):
         'numpy_reference_windows':20,'full_kestrel_scrub':scrub}
 
 
-def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, identified=False):
+def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, identified=False, replay_catalog=None):
     if identified and engine.name != 'kestrel':
         raise ValueError('identified appends require the Kestrel receipt API')
+    if profile in ['retry','retry_mixed'] and (engine.name!='kestrel' or replay_catalog is None or len(replay_catalog)!=128):
+        raise ValueError('retry profiles need 128 known Kestrel batches and original receipts')
     publication_before = None
     ingest_before = None
     if engine.name == 'kestrel':
@@ -296,6 +300,10 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, 
                         else:
                             connection.append(data)
                         with lock: acks.append(seq)
+                    elif kind=='replay':
+                        identifier,data,generation = replay_catalog[sql]
+                        receipt = connection.call({'op':'append','id':identifier,'data':data})
+                        assert receipt['duplicate'] and receipt['generation']==generation and receipt['affected']==len(data), receipt
                     else:
                         connection.query(sql)
                     success = True
@@ -355,6 +363,8 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, 
         'write_batch_rows':batch,'read_successes':sum(s['operation']=='query' for s in successful),
         'write_successes':len(acks),'inserted_rows_acknowledged':len(acks)*batch,
         'samples':samples,'expired_sequences':expired,'setup_seconds':engine.setup_seconds}
+    if replay_catalog is not None:
+        report['replay_successes']=sum(s['ok'] and s['operation']=='replay' for s in samples)
     if engine.name=='kestrel':
         connection=engine.connect()
         report['live_state_before_reopen']=connection.call({'op':'stats'})

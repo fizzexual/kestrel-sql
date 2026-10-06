@@ -733,6 +733,152 @@ fn live_group_window_validates_the_limit_and_defaults_to_zero() {
 }
 
 #[test]
+fn live_known_retries_validate_order_shape_content_and_survive_reopen() {
+    use kestrel_sql::live::LiveOptions;
+    let path = temp("known-retry-index");
+    let columns = vec![vec![2, 1], vec![7, -3], vec![2, 1]];
+    let mut archive = open(&path);
+    let original = archive
+        .append_once("known:original", columns.clone())
+        .unwrap();
+    let live = LiveArchive::with_retry_index(archive, LiveOptions::default()).unwrap();
+    let pinned = live.snapshot();
+    let retry = |columns| {
+        live.append(IngestBatch {
+            id: Some("known:original".into()),
+            columns,
+        })
+    };
+    let receipt = retry(columns.clone()).unwrap();
+    assert!(receipt.duplicate);
+    assert_eq!(receipt.generation, original.generation);
+    let mut changed = columns.clone();
+    changed[1][0] += 1;
+    assert!(retry(changed).is_err());
+    let reversed = columns
+        .iter()
+        .map(|c| c.iter().rev().copied().collect())
+        .collect();
+    assert!(retry(reversed).is_err());
+    assert!(retry(vec![vec![2], vec![7], vec![2]]).is_err());
+    assert!(retry(vec![vec![2, 1], vec![7], vec![2, 1]]).is_err());
+    assert!(retry(vec![vec![], vec![], vec![]]).is_err());
+    assert!(retry(vec![vec![2, 1]]).is_err());
+    let newer = live
+        .append(IngestBatch {
+            id: Some("newer".into()),
+            columns: vec![vec![3], vec![9], vec![1]],
+        })
+        .unwrap();
+    assert!(newer.generation > original.generation);
+    assert_eq!(
+        retry(columns.clone()).unwrap().generation,
+        original.generation
+    );
+    let stats = live.stats();
+    assert_eq!(stats.fast_retry_hits, 2);
+    assert_eq!(stats.fast_retry_conflicts, 3);
+    assert_eq!(stats.retry_index_ids, 2);
+    assert!(stats.retry_index_logical_bytes > 0);
+    assert_eq!(stats.durable_group_commits, 1);
+    assert_eq!(stats.queued_payload_bytes, 0);
+    assert_eq!(pinned.stats().unwrap().rows, 2);
+    drop(live);
+    drop(pinned);
+    let live = LiveArchive::with_retry_index(open(&path), LiveOptions::default()).unwrap();
+    let receipt = live
+        .append(IngestBatch {
+            id: Some("known:original".into()),
+            columns,
+        })
+        .unwrap();
+    assert!(receipt.duplicate);
+    assert_eq!(receipt.generation, original.generation);
+    assert_eq!(live.stats().fast_retry_hits, 1);
+    assert_eq!(live.stats().durable_group_commits, 0);
+    assert_eq!(live.snapshot().verify().unwrap(), 3 * 24);
+}
+
+#[test]
+fn concurrent_pending_ids_publish_once_then_use_the_confirmed_index() {
+    use kestrel_sql::live::LiveOptions;
+    use std::sync::{Arc, Barrier};
+    use std::time::Duration;
+    let path = temp("pending-id-race");
+    let live = LiveArchive::with_retry_index(
+        open(&path),
+        LiveOptions {
+            max_group_delay: Duration::from_millis(20),
+        },
+    )
+    .unwrap();
+    let gate = Arc::new(Barrier::new(33));
+    let writers: Vec<_> = (0..32)
+        .map(|_| {
+            let live = live.clone();
+            let gate = Arc::clone(&gate);
+            std::thread::spawn(move || {
+                gate.wait();
+                let receipt = live
+                    .append(IngestBatch {
+                        id: Some("same:pending".into()),
+                        columns: vec![vec![1; 100], vec![2; 100], vec![3; 100]],
+                    })
+                    .unwrap();
+                assert!(live.snapshot().stats().unwrap().generation >= receipt.generation);
+                receipt
+            })
+        })
+        .collect();
+    gate.wait();
+    let receipts: Vec<_> = writers.into_iter().map(|w| w.join().unwrap()).collect();
+    assert_eq!(receipts.iter().filter(|r| !r.duplicate).count(), 1);
+    assert!(receipts.iter().all(|r| r.generation == 1));
+    assert_eq!(live.stats().duplicate_batches, 31);
+    assert_eq!(live.stats().retry_index_ids, 1);
+    assert_eq!(live.stats().queued_payload_bytes, 0);
+    assert_eq!(live.snapshot().verify().unwrap(), 100 * 24);
+}
+
+#[test]
+fn live_retry_index_is_explicit_and_default_retries_keep_writer_behavior() {
+    use kestrel_sql::live::LiveOptions;
+    let path = temp("retry-opt-in");
+    let mut archive = open(&path);
+    archive
+        .append_once("known", vec![vec![1], vec![2], vec![3]])
+        .unwrap();
+    let live = LiveArchive::new(archive).unwrap();
+    assert!(!live.stats().retry_index_enabled);
+    assert_eq!(live.stats().retry_index_ids, 0);
+    assert_eq!(live.stats().retry_index_logical_bytes, 0);
+    assert!(
+        live.append(IngestBatch {
+            id: Some("known".into()),
+            columns: vec![vec![1], vec![2], vec![3]]
+        })
+        .unwrap()
+        .duplicate
+    );
+    assert_eq!(live.stats().collected_groups, 1);
+    assert_eq!(live.stats().fast_retry_hits, 0);
+    drop(live);
+    let live = LiveArchive::with_retry_index(open(&path), LiveOptions::default()).unwrap();
+    assert!(live.stats().retry_index_enabled);
+    assert_eq!(live.stats().retry_index_ids, 1);
+    assert!(
+        live.append(IngestBatch {
+            id: Some("known".into()),
+            columns: vec![vec![1], vec![2], vec![3]]
+        })
+        .unwrap()
+        .duplicate
+    );
+    assert_eq!(live.stats().collected_groups, 0);
+    assert_eq!(live.stats().fast_retry_hits, 1);
+}
+
+#[test]
 fn full_scrub_bypasses_warm_pages_and_invalidates_corrupt_cached_data() {
     let path = temp("cache-corruption");
     let mut archive = open(&path);

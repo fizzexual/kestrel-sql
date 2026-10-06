@@ -99,9 +99,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     let path = args
         .next()
-        .ok_or("usage: kestrel-stress DIRECTORY SEED_ROWS [GROUP_DELAY_MS]")?;
+        .ok_or("usage: kestrel-stress DIRECTORY SEED_ROWS [GROUP_DELAY_MS] [RETRY_INDEX_0_OR_1]")?;
     let rows: usize = args.next().ok_or("missing seed row count")?.parse()?;
     let delay_ms: u64 = args.next().map(|v| v.parse()).transpose()?.unwrap_or(0);
+    let retry_index: u8 = args.next().map(|v| v.parse()).transpose()?.unwrap_or(0);
+    if retry_index > 1 {
+        return Err("retry index must be 0 or 1".into());
+    }
     if delay_ms > 20 {
         return Err("group delay must be 0..20 milliseconds".into());
     }
@@ -122,16 +126,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let rows = archive.stats()?.rows;
-    let store = LiveArchive::with_options(
-        archive,
-        LiveOptions {
-            max_group_delay: std::time::Duration::from_millis(delay_ms),
-        },
-    )?;
+    let options = LiveOptions {
+        max_group_delay: std::time::Duration::from_millis(delay_ms),
+    };
+    let store = if retry_index == 1 {
+        LiveArchive::with_retry_index(archive, options)?
+    } else {
+        LiveArchive::with_options(archive, options)?
+    };
     let listener = TcpListener::bind("127.0.0.1:0")?;
     println!(
         "{}",
-        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":rows,"group_delay_ms":delay_ms})
+        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":rows,"group_delay_ms":delay_ms,"retry_index_enabled":retry_index==1})
     );
     std::io::stdout().flush()?;
     for stream in listener.incoming() {

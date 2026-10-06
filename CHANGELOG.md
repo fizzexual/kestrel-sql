@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.5 experimental opt-in live-retry candidate
+
+- Offer `LiveArchive::with_retry_index` to validate confirmed retries independently of the live writer queue, optional collection window and publication I/O. Preserve exact submitted payload identity, original receipt generation and visibility before any success.
+- Clone the bounded receipt lookup once at startup and extend only successfully published IDs after publishing their read view. Pending and unknown IDs retain writer admission and whole-group validation.
+- Reject known and new appends after observed writer poisoning or exit. Keep old snapshots readable. Expose fast retry hits/conflicts, validation time, lookup logical memory and writer health.
+- Add pending-ID races, order/shape/content/reopen regression tests and a feature-only deterministic stalled-writer/poison driver. Preserve the 0.3.4 package, source, binaries and initial retry evidence.
+- Preserve the unsuccessful always-on trial and keep the added lookup off in `new` and `with_options`. Disabled wrappers allocate no second receipt map; compare final defaults and enabled behavior on the same binary.
+
 ## 0.3.4 experimental coalescing-policy candidate
 
 - Add `LiveOptions.max_group_delay` and `LiveArchive::with_options`; keep `LiveArchive::new` at zero delay and reject optional windows above 20 ms.

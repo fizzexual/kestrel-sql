@@ -41,6 +41,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
     parser.add_argument('--group-delay-ms',type=int,choices=range(21),help='Optional coalescing policy for a 0.3.4+ bridge')
+    parser.add_argument('--retry-index',action='store_true',help='Opt into the 0.3.5 confirmed receipt lookup')
     parser.add_argument('--output',type=Path,default=ROOT/'portfolio'/'live-pipeline-results.json')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'live-pipeline-{time.time_ns()}')
     args=parser.parse_args()
@@ -53,9 +54,10 @@ def main():
     db.execute('COPY base TO ? (FORMAT PARQUET)',[str(base)])
     db.execute('COPY late TO ? (FORMAT PARQUET)',[str(late)])
     engine=Engine('kestrel',args.work/'store',0,args.binary.resolve(),{},
-        bridge_args=() if args.group_delay_ms is None else (args.group_delay_ms,))
+        bridge_args=(args.group_delay_ms or 0,1) if args.retry_index else (() if args.group_delay_ms is None else (args.group_delay_ms,)))
     report={'engine_version':engine.version,'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
         'configured_group_delay_ms':args.group_delay_ms,
+        'retry_index_enabled':args.retry_index,
         'workflow':'two Parquet sources, durable source-hash/chunk IDs, each source replayed',
         'initial_rows':25000,'late_backfill_rows':5000,'imports':[]}
     try:
