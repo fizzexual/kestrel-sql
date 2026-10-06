@@ -47,3 +47,5 @@ Each report links its exact raw inputs and samples. Gzipped JSONL sample files r
 The reports explicitly retain the initial overload failures, slow live runs, the rejected always-enabled retry index, the rejected weak hashing trial, setup/profiling mistakes, and the latest parallel-sync diagnostic. Baseline source and binaries are under `benchmarks/baseline-*` and `bin/baseline-*`; rejected source is under `benchmarks/trial-*`. Earlier proof files are `verification-v*.json`.
 
 [Release asset hashes and original package dates](release-history.json) identify the exact downloads. Git tags point to their actual historical snapshot rather than the current source tree. Benchmark execution stays local; repository GitHub Actions is disabled. No deployment is configured.
+
+[Publication verification](repository-publication.json) records all uploaded assets, server SHA-256 checks and matching historical tag commits.
