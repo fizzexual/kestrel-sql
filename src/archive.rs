@@ -632,7 +632,7 @@ impl Archive {
             profile: Arc::new(Mutex::new(PublicationProfile::default())),
         })
     }
-    fn healthy(&self) -> Result<()> {
+    pub(crate) fn healthy(&self) -> Result<()> {
         if self.poisoned {
             Err(Error::new(
                 "archive publication outcome unknown; close and reopen",
@@ -652,6 +652,18 @@ impl Archive {
 
     pub(crate) fn committed_receipt(&self, id: &str) -> Option<BatchRecord> {
         self.catalog.batches.get(id).cloned()
+    }
+
+    pub(crate) fn committed_receipts_with_prefix<'a>(
+        &'a self,
+        prefix: &'a str,
+    ) -> impl Iterator<Item = (&'a str, u64)> + 'a {
+        use std::ops::Bound;
+        self.catalog
+            .batches
+            .range::<str, _>((Bound::Included(prefix), Bound::Unbounded))
+            .take_while(move |(id, _)| id.starts_with(prefix))
+            .map(|(id, record)| (id.as_str(), record.generation))
     }
     /// One atomic batch, limited to one million rows. Physical order follows the first
     /// column; independent sorted runs support arbitrarily late arrivals across batches.

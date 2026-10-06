@@ -3,6 +3,7 @@
 pub mod archive;
 pub mod live;
 mod query;
+pub mod source;
 pub mod sql;
 mod wal;
 

@@ -1,6 +1,8 @@
 # KestrelSQL
 
-**Current source: 0.3.6 experimental reusable-batch candidate.** `PreparedBatch` owns immutable input and computes its SHA-256 fingerprint once. `LiveArchive::append_prepared` reuses it for confirmed retries when the optional receipt index is enabled, preserving original generations and writer health checks. Unknown IDs still synchronize through the writer; first submissions add preparation work. The index stays off by default. See [PERFORMANCE_036.md](PERFORMANCE_036.md) for preparation-inclusive controls, repeated embedded/protocol comparisons and retained failures, and [LIVE_METRICS.md](LIVE_METRICS.md) for the Rust API. CAT4/SEG2 remain compatible with 0.3.3–0.3.5. Previous packages and measurements remain preserved.
+**Current source: 0.3.7 experimental source-checkpoint candidate.** `SourceArchive` commits each nonempty output and its source interval in one synchronized receipt publication. Reopening recovers the resume position with its data; gaps, overlaps, stale offsets and changed retries are rejected. It adds no checkpoint file or sync and preserves CAT4/SEG2. See [PERFORMANCE_037.md](PERFORMANCE_037.md) for measured costs, 55 Rust tests, current recovery/Parquet checks and retained write stalls, and [SOURCE_INGEST.md](SOURCE_INGEST.md) for the SDK. This is archive-local checkpoint atomicity; distributed consumer fencing and zero-output checkpointing remain work.
+
+The [0.3.6 immutable batch experiment](PERFORMANCE_036.md) adds `PreparedBatch` and `LiveArchive::append_prepared` for confirmed embedded retries. Its extra receipt index stays off by default; construction and fresh-write costs remain disclosed. Previous packages and measurements are preserved.
 
 The [0.3.5 lookup experiment](PERFORMANCE_035.md) separates confirmed retries from writer queueing. Its initial write-heavy regression is preserved; the additional lookup remains opt-in.
 

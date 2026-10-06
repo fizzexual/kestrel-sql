@@ -1,0 +1,121 @@
+
+running 5 tests
+test source::tests::source_keys_use_a_stable_domain ... ok
+test source::tests::canonical_interval_ids_validate_and_sort_numerically ... ok
+test live::tests::collection_caps_groups_and_drains_a_closed_queue ... ok
+test live::tests::prepared_shape_limits_and_shared_ownership ... ok
+test failure_tests::io_failures_poison_the_handle_and_report_unknown_commit_outcome ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 28 tests
+test invalid_identified_batches_do_not_publish_receipts_or_data ... ok
+test extreme_sums_survive_disk_metadata_serialization ... ok
+test concurrent_prepared_first_submissions_publish_one_batch ... ok
+test live_retry_index_is_explicit_and_default_retries_keep_writer_behavior ... ok
+test concurrent_pending_ids_publish_once_then_use_the_confirmed_index ... ok
+test data_corruption_is_detected_on_read_and_full_verification ... ok
+test full_scrub_bypasses_warm_pages_and_invalidates_corrupt_cached_data ... ok
+test live_group_window_validates_the_limit_and_defaults_to_zero ... ok
+test concurrent_positional_reads_preserve_column_and_page_offsets ... ok
+test out_of_order_input_and_late_batches_preserve_fast_exact_results ... ok
+test empty_archives_schema_and_locks_have_explicit_behavior ... ok
+test orphan_segments_and_pending_catalogs_are_not_published ... ok
+test failed_delta_publication_poisons_writer_and_preserves_retry_after_reopen ... ok
+test live_known_retries_validate_order_shape_content_and_survive_reopen ... ok
+test batch_ids_survive_reopening_and_compaction_without_double_counting ... ok
+test prepared_batches_preserve_order_conflicts_generation_and_reopen ... ok
+test metadata_corruption_and_missing_referenced_files_fail_closed ... ok
+test prepared_batches_queue_without_index_and_cross_archive_ownership ... ok
+test grouped_scans_filters_and_empty_input_match_memory_engine ... ok
+test selected_scan_kernels_preserve_extremes_partial_pages_and_profile_counts ... ok
+test sparse_prefix_crosses_pages_duplicates_and_segment_boundaries ... ok
+test pinned_snapshots_survive_append_compaction_and_writer_drop ... ok
+test bounded_group_window_preserves_concurrent_acknowledgments_and_retries ... ok
+test receipt_catalog_dependencies_and_semantics_fail_closed ... ok
+test concurrent_ingestion_retries_and_snapshot_reads_reconcile ... ok
+test full_receipt_budget_preserves_replays_without_new_publications ... ok
+test live_compaction_bounds_small_run_growth_and_preserves_receipts ... ok
+test receipt_deltas_checkpoint_and_reclaim_preserve_every_original_receipt ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+
+running 14 tests
+test late_events_fall_back_without_stale_index_results ... ok
+test malformed_batches_are_atomic ... ok
+test groups_projections_sort_and_limit ... ok
+test prefix_handles_duplicates_and_closed_open_ranges ... ok
+test signed_extremes_do_not_overflow ... ok
+test rollback_restores_catalog_data_and_order_detection ... ok
+test rejects_unsupported_or_ambiguous_sql_even_for_empty_data ... ok
+test empty_and_contradictory_ranges_use_sql_null_semantics ... ok
+test random_ranges_match_an_independent_scan ... ok
+test exclusive_lock_is_released_on_drop ... ok
+test committed_transactions_recover_and_uncommitted_drop_does_not ... ok
+test process_kill_preserves_acknowledged_commit_and_releases_lock ... ok
+test complete_corruption_is_rejected_without_modifying_the_wal ... ok
+test every_partial_final_frame_is_discarded_and_all_prior_commits_survive ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.24s
+
+
+running 8 tests
+test concurrent_callers_serialized_by_owner_publish_one_interval ... ok
+test gaps_overlaps_stale_tokens_and_bad_data_do_not_advance_positions ... ok
+test unrelated_receipts_do_not_become_source_checkpoints ... ok
+test output_and_source_position_reopen_together_and_retries_keep_original_generations ... ok
+test distinct_sources_allow_same_offsets_and_signed_extremes ... ok
+test checkpoint_budget_rejects_new_sources_without_hiding_existing_progress ... ok
+test reserved_histories_fail_closed_if_noncanonical_discontinuous_or_reversed ... ok
+test compaction_and_reclaim_preserve_positions_and_pinned_data ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.41s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+warn: could not canonicalize path C:\Users\Frizer
+   Compiling version_check v0.9.5
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling typenum v1.20.1
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling cfg-if v1.0.4
+   Compiling serde v1.0.229
+   Compiling crc32fast v1.5.2
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling cpufeatures v0.2.17
+   Compiling generic-array v0.14.7
+   Compiling syn v3.0.5
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling serde_derive v1.0.229
+   Compiling kestrel-sql v0.3.7 (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\outputs\kestrel-sql)
+    Finished `release` profile [optimized] target(s) in 44.90s
+     Running unittests src\lib.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\kestrel_sql-3f1e1769cb9a6ea5.exe)
+     Running unittests src\main.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\kestrel-34b931c62d702c47.exe)
+     Running unittests src\bin\kestrel-stress.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\kestrel_stress-54ed362c1d6dda11.exe)
+     Running tests\archive.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\archive-c0f32eae18330b8e.exe)
+     Running tests\engine.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\engine-6c876c166d61ebd8.exe)
+     Running tests\source.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\kestrel-037-build\release\deps\source-0c367332ebfdf661.exe)
+   Doc-tests kestrel_sql

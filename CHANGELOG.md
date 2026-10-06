@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.7 experimental source-checkpoint candidate
+
+- Add `SourceArchive` with exclusive archive ownership, source positions and contiguous half-open interval commits. Publish source identity/offsets in a canonical durable receipt ID alongside its exact output, with no checkpoint file or extra sync.
+- Recover at most 4096 source positions through a borrowed receipt prefix range. Reject malformed reserved IDs, gaps, overlaps, branches and reversed original generations; retain all receipts under the existing 100K ceiling.
+- Preserve exact retries, original generations, source/data atomicity, poisoned-owner behavior, stable pinned views and compaction/reclaim. Source identifiers are bounded UTF-8 labels hashed under a versioned domain; positions are u64.
+- Add 10 tests, a Rust SDK demo, exact failure/forced-kill checks and a Parquet/SQL workflow. Compare against matched manually encoded IDs and retain stalls; claim no durable-write speed fix.
+- Keep live/prepared ingestion, SQL/query/WAL behavior and CAT4/SEG2 unchanged. Empty-output advances, source reset, consumer leases/fencing and retention are not implemented. See [PERFORMANCE_037.md](PERFORMANCE_037.md).
+
 ## 0.3.6 experimental reusable-batch candidate
 
 - Add immutable, process-local `PreparedBatch` and `LiveArchive::append_prepared` for embedded input reuse. Hash once inside the library, share caller-owned vectors through Arc, and compare confirmed original receipt identity without hashing/copying every retry.

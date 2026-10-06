@@ -2,6 +2,8 @@
 
 KestrelSQL 0.3 adds `LiveArchive`, a concurrent embedded wrapper around the disk-backed `Archive`. Version 0.3.3 adds bounded receipt deltas/checkpoints after the retry/compaction and scan experiments. It is intended to demonstrate exact time-window metrics during ingestion, with durable batch retries and stable read views. SQL coverage remains the narrow BIGINT aggregate subset documented in [ARCHIVE.md](ARCHIVE.md).
 
+Version 0.3.7 also offers an exclusive `SourceArchive` wrapper that commits source intervals and output together, recovers resume positions and rejects noncontiguous new intervals. Its API is separate from the concurrent live/prepared wrapper: see [SOURCE_INGEST.md](SOURCE_INGEST.md). It has no consumer lease or distributed fencing and cannot advance an interval with zero output.
+
 ## Try the Rust workflow
 
 ```powershell

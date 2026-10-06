@@ -1,6 +1,6 @@
 [package]
 name = "kestrel-sql"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2024"
 rust-version = "1.89"
 description = "Experimental embedded SQL engine for exact live range aggregates"
@@ -29,6 +29,10 @@ required-features = ["fault-injection"]
 
 [[example]]
 name = "live_retry_probe"
+required-features = ["fault-injection"]
+
+[[example]]
+name = "source_fault_probe"
 required-features = ["fault-injection"]
 
 [profile.release]

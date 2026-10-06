@@ -51,6 +51,8 @@ A real-data zone query exposed a planning weakness: a second predicate initially
 
 ## Suggested CV bullet
 
+> Implemented archive-local source checkpointing in an embedded Rust metrics engine: published source intervals with output in one synchronized receipt, enforced contiguous progress and recovered offsets/data together. Verified 300 Parquet intervals against 42 DuckDB queries, 14 exact publication failures and eight forced-kill/resume cycles; disclosed write stalls and the absence of distributed consumer fencing.
+
 > Profiled embedded batch-retry costs and implemented immutable prepared input with library-computed payload identity; retained preparation-inclusive and ordinary controls, rejected a weak hashing optimization, and verified original receipts and whole batches across stalled-writer, disk-full and process-exit tests. Published the narrower confirmed-retry gain separately from durable-write capacity and service failures.
 
 > Diagnosed repeated receipt-ledger rewriting in an embedded Rust metrics store; implemented bounded catalog deltas/checkpoints, reducing catalog bytes for 96 appends from 788.02 MB to 24.72 MB with 50K retained IDs. Verified recovery through 56 exact process-exit/injected-error cases and retained checkpoint stalls and concurrent-load failures alongside performance gains.

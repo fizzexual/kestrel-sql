@@ -1,0 +1,185 @@
+{
+  "version": "0.3.7",
+  "current_rust_tests_each_mode": 55,
+  "sequential_cases": 18,
+  "timed_new_commits": 1728,
+  "timed_known_retries": 18000,
+  "source_sha256": {
+    "Cargo.lock": "aa94b6b3dd680b6982fe14ce15e9c60135839482b2255d68cb9632da638b8f14",
+    "Cargo.toml": "be7230e824344e819b5b634abb9c5fddb973733fca5fd20d44fc493e8a59bd20",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+    "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+    "src/archive.rs": "145e1aac3677c2320be5c522fcc4006ffa1bf3e7032ea630b9f2e604ef8fd7ea",
+    "src/bin/kestrel-stress.rs": "1aedc21b6350209f70d327c0f2ce9184703e717c3f0b97d21682dcd522ae84fc",
+    "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "tests/archive.rs": "be999a6fc796bcaf647083dc5f720b01f972d65fbf4d19b94f4eb462cb2090dd",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+  },
+  "unchanged_core_files": [
+    "examples/live_ingest.rs",
+    "examples/live_retry_probe.rs",
+    "examples/performance_probe.rs",
+    "examples/publication_fault_probe.rs",
+    "examples/publication_probe.rs",
+    "examples/receipt_seed.rs",
+    "examples/scan_profile.rs",
+    "src/bin/kestrel-stress.rs",
+    "src/live.rs",
+    "src/main.rs",
+    "src/query.rs",
+    "src/scale.rs",
+    "src/sql.rs",
+    "src/wal.rs",
+    "tests/archive.rs",
+    "tests/engine.rs"
+  ],
+  "archive_storage_query_publication_byte_identical_except_readonly_helpers": true,
+  "groups": {
+    "0/baseline": {
+      "median_run_p50_ms": 54.7136,
+      "median_run_p99_ms": 489.67490000000004,
+      "run_p99_range_ms": [
+        121.2971,
+        708.6208
+      ],
+      "median_retry_p50_us": 12.2,
+      "median_source_map_rebuild_us": 0.09999999999999999,
+      "publication_stage_totals_ms": {
+        "prepare": 13.125500000000002,
+        "segment_write": 245.0786999999999,
+        "segment_sync": 13223.593500000003,
+        "catalog_encode": 3.326900000000001,
+        "catalog_write": 1222.7181000000005,
+        "catalog_sync": 12496.932400000003,
+        "catalog_rename": 179.46970000000002
+      },
+      "sync_share_percent": 93.92453977770458
+    },
+    "0/ordinary": {
+      "median_run_p50_ms": 55.518299999999996,
+      "median_run_p99_ms": 314.7736,
+      "run_p99_range_ms": [
+        49.9129,
+        442.3297
+      ],
+      "median_retry_p50_us": 12.3,
+      "median_source_map_rebuild_us": 0.19999999999999998,
+      "publication_stage_totals_ms": {
+        "prepare": 12.7701,
+        "segment_write": 152.15789999999998,
+        "segment_sync": 10163.9609,
+        "catalog_encode": 3.2002000000000006,
+        "catalog_write": 114.33080000000001,
+        "catalog_sync": 10134.954,
+        "catalog_rename": 126.38520000000003
+      },
+      "sync_share_percent": 98.02564730434787
+    },
+    "0/checkpoint": {
+      "median_run_p50_ms": 56.45,
+      "median_run_p99_ms": 148.42440000000002,
+      "run_p99_range_ms": [
+        53.9339,
+        536.0625
+      ],
+      "median_retry_p50_us": 12.2,
+      "median_source_map_rebuild_us": 21.9,
+      "publication_stage_totals_ms": {
+        "prepare": 13.449500000000002,
+        "segment_write": 247.52010000000007,
+        "segment_sync": 12260.403400000001,
+        "catalog_encode": 3.4698,
+        "catalog_write": 327.4702,
+        "catalog_sync": 12455.0219,
+        "catalog_rename": 132.63190000000003
+      },
+      "sync_share_percent": 97.15195579579137
+    },
+    "50000/baseline": {
+      "median_run_p50_ms": 56.8333,
+      "median_run_p99_ms": 1171.0265,
+      "run_p99_range_ms": [
+        1149.3211999999999,
+        1313.9509999999998
+      ],
+      "median_retry_p50_us": 12.1,
+      "median_source_map_rebuild_us": 0.19999999999999998,
+      "publication_stage_totals_ms": {
+        "prepare": 12.580599999999983,
+        "segment_write": 344.0635,
+        "segment_sync": 9187.1727,
+        "catalog_encode": 143.66759999999996,
+        "catalog_write": 767.9919,
+        "catalog_sync": 16762.875300000003,
+        "catalog_rename": 636.0154
+      },
+      "sync_share_percent": 93.16330182624506
+    },
+    "50000/ordinary": {
+      "median_run_p50_ms": 7.577,
+      "median_run_p99_ms": 113.44999999999999,
+      "run_p99_range_ms": [
+        91.9627,
+        1107.2907
+      ],
+      "median_retry_p50_us": 12.1,
+      "median_source_map_rebuild_us": 0.3,
+      "publication_stage_totals_ms": {
+        "prepare": 12.381599999999985,
+        "segment_write": 159.01750000000007,
+        "segment_sync": 3925.2581,
+        "catalog_encode": 151.00480000000005,
+        "catalog_write": 203.71650000000005,
+        "catalog_sync": 7104.244599999999,
+        "catalog_rename": 122.46440000000004
+      },
+      "sync_share_percent": 94.44613854794288
+    },
+    "50000/checkpoint": {
+      "median_run_p50_ms": 6.5663,
+      "median_run_p99_ms": 215.2706,
+      "run_p99_range_ms": [
+        86.647,
+        1145.2093
+      ],
+      "median_retry_p50_us": 12.2,
+      "median_source_map_rebuild_us": 25.9,
+      "publication_stage_totals_ms": {
+        "prepare": 12.46959999999995,
+        "segment_write": 127.3278,
+        "segment_sync": 3257.9510999999993,
+        "catalog_encode": 142.37650000000005,
+        "catalog_write": 559.9629,
+        "catalog_sync": 6518.7178,
+        "catalog_rename": 294.45279999999997
+      },
+      "sync_share_percent": 89.58524074180045
+    }
+  },
+  "service_qualification": "incomplete; archive-local source checkpoint contract verified, production write/service envelope remains unqualified",
+  "historical_evidence": "0.3.6 raw open-loop/embedded performance, SQL/recovery and large-scale reports remain historical; no current 7.85M/s or Facebook-scale claim",
+  "source_publication_fault_cases": 14,
+  "source_process_kill_cycles": 8,
+  "parquet_rows": 30000,
+  "parquet_batches": 300,
+  "parquet_exact_sql_cases": 42,
+  "identical_catalog_bytes_for_matched_ids": true,
+  "no_compilation_overlap_with_timed_database_work": true,
+  "current_sdk_demo_passed": true,
+  "initial_runner_failure": "source-037-initial-runner-failure.json"
+}
