@@ -1,20 +1,20 @@
 {
-  "version": "0.3.2",
+  "version": "0.3.3",
   "rust_tests": {
-    "debug": 32,
-    "release": 32,
+    "debug": 35,
+    "release": 35,
     "passed": true
   },
   "format_check": "passed",
   "clippy_warnings_as_errors": "passed",
-  "tested_platform": "Windows 10",
-  "linux_execution": "unverified",
-  "cli_sha256": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
-  "bridge_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
-  "probe_sha256": "9d62901b97108810cec89e036bf9b405293287777eadd2f13d12c43ea0ea2f5d",
-  "scan_probe_sha256": "94ea94c4a7a5f7688d7d41ae9446690a5670b846315be31461a1b35d74c9ad1b",
+  "feature_clippy_warnings_as_errors": "passed",
+  "rustc": "1.97.1",
+  "default_features": [],
+  "fault_driver_feature": "separate fault-injection build only",
   "source_sha256": {
-    "src/archive.rs": "2830291063706244a24dced95041cc8931de91ba878326669e6dd6bb31a90823",
+    "Cargo.toml": "c4c3fe26602bc134011c59d9c740b93d1d26cb03c3c70f497d79be873cbecb4b",
+    "Cargo.lock": "50d7e5b94b88e48a3bff0d9f8d27bc730d1b72bd688ee4ff7a5b733eb5c1fe22",
+    "src/archive.rs": "82568b99d108a506b2a3567bb1363776c4eb800bfea16af8b80e30b60859719c",
     "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
     "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
     "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
@@ -23,14 +23,24 @@
     "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
     "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
     "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
-    "tests/archive.rs": "733b3644d26c16499c75837afa18b53fcb14ec4bc4d24fd6eef6fb946762f4fd",
+    "tests/archive.rs": "092791178e0b77c3ec4cbdf88a7dd7742bdc454e0103845b3f004c68532ec842",
     "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
     "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
     "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
-    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
-    "Cargo.toml": "6490787ef75d82cb89d71771159f5b35f5b5b9a23dc933dc28603610bf73e501",
-    "Cargo.lock": "7478d79609e20c36a8ec13f41023410b122cf5441f077389babbbb3308c57c5d"
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1"
   },
+  "cli_sha256": "42391c0c85a072ac6980fa795400386ca39f693c6d4b2c40e496bf067f4ab235",
+  "bridge_sha256": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
+  "probe_sha256": "a2a33d109d0f0452631b41f4f0ac8ad525d5a7de911c4c234ec334e547fd556e",
+  "scan_probe_sha256": "524b8e0a03c491b8a76d57e80d126fb174b726ea008d4cfe549eb5212d5249e3",
+  "publication_probe_sha256": "34ee07aa375a846208a0e1402ea7669ad709f5b0cab0312894575a2922091aca",
+  "receipt_seed_sha256": "e90368a2153a5fd4f36141cc35a42e38de7ce1dbd21f8bfd7607fd469b4f2149",
+  "fault_driver_sha256": "928ebeb4a1a3d25a6a0dd012d976afd98ebb64850fa09f126618d2c7d93b968a",
+  "tested_platform": "Windows 10",
+  "linux_execution": "unverified",
   "local_qualification_date": "2026-10-06",
   "status": "experimental prototype; production qualification remains incomplete",
   "historical_0_3_proof": "verification-v03.json",
@@ -79,8 +89,8 @@
     }
   },
   "retained_data_recheck": {
-    "version": "0.3.2",
-    "binary_sha256": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
+    "version": "0.3.3",
+    "binary_sha256": "42391c0c85a072ac6980fa795400386ca39f693c6d4b2c40e496bf067f4ab235",
     "retained_fixed_scale_cases": 24,
     "retained_random_window_cases": 124,
     "retained_real_data_cases": 5,
@@ -100,9 +110,9 @@
       "completed_cases": 11,
       "engines": 1,
       "offered_operations": 155600,
-      "successful_operations": 148295,
-      "unsuccessful_or_unexecuted": 7305,
-      "raw_executed_samples_checked": 148295,
+      "successful_operations": 136326,
+      "unsuccessful_or_unexecuted": 19274,
+      "raw_executed_samples_checked": 136326,
       "numpy_reference_windows": 220,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
@@ -113,27 +123,38 @@
       "completed_cases": 18,
       "engines": 2,
       "offered_operations": 284400,
-      "successful_operations": 248509,
-      "unsuccessful_or_unexecuted": 35891,
-      "raw_executed_samples_checked": 248509,
+      "successful_operations": 258712,
+      "unsuccessful_or_unexecuted": 25688,
+      "raw_executed_samples_checked": 258712,
       "numpy_reference_windows": 360,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
     },
-    "analytics": {
-      "completed_cases": 6,
+    "receipts": {
+      "completed_cases": 12,
       "engines": 1,
-      "offered_operations": 180000,
-      "successful_operations": 168484,
-      "unsuccessful_or_unexecuted": 11516,
-      "raw_executed_samples_checked": 168484,
-      "numpy_reference_windows": 120,
+      "offered_operations": 360000,
+      "successful_operations": 203685,
+      "unsuccessful_or_unexecuted": 156315,
+      "raw_executed_samples_checked": 203685,
+      "numpy_reference_windows": 240,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
+    },
+    "publication": {
+      "completed_cases": 18,
+      "raw_append_timings": 1728,
+      "reopen_retry_and_scrub_passed": true
+    },
+    "cut_points": {
+      "cases_passed": 56,
+      "corruption_cases_rejected": 22,
+      "test_only_feature": true,
+      "physical_power_loss_tested": false
     },
     "core": {
       "cases": 6,
@@ -141,25 +162,19 @@
       "timings_checked": 1116,
       "all_results_equal": true
     },
-    "profiling": {
-      "cases": 6,
-      "sql_cases": 30,
-      "timings_checked": 330,
-      "full_scrubs_passed": true,
-      "instrumented_baseline_separate_from_original_release": true,
-      "initial_setup_failures_excluded": "cold/warm byte-count invariant fixed before accepted runs; harness flattened-JSON key corrected before accepted comparisons"
-    }
+    "service_target_passed": false,
+    "service_target": "all repeated candidate mixed/scan and retained-receipt mixed/write runs: zero loss, p99 <=100 ms"
   },
   "archive_identified_process_kills": {
     "cycles_passed": 24,
-    "acknowledged_batches": 414,
-    "unacknowledged_committed_batches": 2,
+    "acknowledged_batches": 52,
+    "unacknowledged_committed_batches": 0,
     "all_acknowledged_batches_present": true,
     "published_batches_atomic": true,
     "retry_deduplication_passed": true,
     "full_scrubs_passed": true,
     "fault_model": "forcible OS process kill, live filesystem; no power-loss or replicated failover claim",
-    "report": "benchmarks/perf-032-recovery.json"
+    "report": "benchmarks/perf-033-recovery.json"
   },
   "hard_boundaries": {
     "independent_process_opener_rejected": true,
@@ -180,8 +195,8 @@
     }
   },
   "live_pipeline": {
-    "engine_version": "0.3.2",
-    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+    "engine_version": "0.3.3",
+    "binary_sha256": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
     "workflow": "two Parquet sources, durable source-hash/chunk IDs, each source replayed",
     "initial_rows": 25000,
     "late_backfill_rows": 5000,
@@ -232,7 +247,8 @@
     },
     "final_stats": {
       "block_rows": 4096,
-      "generation": 149,
+      "catalog_chain_files": 24,
+      "generation": 152,
       "ingest": {
         "committed_batches": 0,
         "compaction_total_ms": 0.0,
@@ -241,17 +257,20 @@
         "durable_group_commits": 0,
         "flush_delay_ms": 0,
         "maintenance_errors": 0,
-        "publication_max_ms": 0.0186,
-        "publication_total_ms": 0.0186,
+        "publication_max_ms": 0.0169,
+        "publication_total_ms": 0.0169,
         "queued_payload_bytes": 0
       },
       "logical_data_bytes": 720000,
-      "metadata_bytes": 21830,
-      "page_cache_hits": 702,
-      "page_cache_misses": 84,
-      "physical_bytes": 1978562,
+      "metadata_bytes": 23070,
+      "page_cache_hits": 789,
+      "page_cache_misses": 88,
+      "physical_bytes": 851804,
       "publication_profile": {
         "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
         "catalog_encode": {
           "count": 0,
           "histogram": [
@@ -375,29 +394,41 @@
         }
       },
       "recorded_batch_ids": 300,
-      "retained_page_cache_bytes": 1341696,
+      "retained_page_cache_bytes": 1284672,
       "rows": 30000,
-      "segments": 53
+      "segments": 56
     },
     "limits": "batch idempotency for this archive, not end-to-end exactly-once delivery; BIGINT metrics only"
   },
   "format_compatibility": {
     "legacy_binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
-    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+    "binary_sha256": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
     "legacy_catalog_read": true,
-    "new_catalog_magic": "KSQLCAT3",
+    "new_catalog_magic": "KSQLCAT4",
     "older_binary_rejects_new_catalog": true,
     "downgrade_error": "invalid archive format signature",
     "receipt_preserved_after_reopen": true,
-    "full_scrub_passed": true
+    "full_scrub_passed": true,
+    "cat3_catalog_read_and_upgrade": true,
+    "cat3_original_receipt_generation_preserved": true,
+    "cat3_binary_rejects_cat4": true,
+    "cat3_downgrade_error": "Error: Error(\"invalid archive format signature\")",
+    "cat3_binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8"
   },
   "baseline_provenance": {
-    "origin": "kestrel-sql-0.3.1.zip",
-    "original_package_sha256": "256952b903bd61b7993dd2cefde387a9f16a586454627d136897ea2cc7eaf211",
+    "release": "0.3.2",
+    "release_zip_sha256": "da2c27ba272a3ea6f42ba13a0b44aeccc2f6a0fd905accf9b27a46021a0f94a4",
+    "new_probe_source_sha256": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
     "core_source_sha256": {
-      "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
-      "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23",
-      "src/archive.rs": "4c7a30288b9fdd5da5d4983cc23bfc18c924b832c6e694f4e96fd8dce5b2a9ef",
+      "Cargo.lock": "7478d79609e20c36a8ec13f41023410b122cf5441f077389babbbb3308c57c5d",
+      "Cargo.toml": "6490787ef75d82cb89d71771159f5b35f5b5b9a23dc933dc28603610bf73e501",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "examples/live_metrics.sql": "1a4de583fc39a6be170fcaf6a1f67ad8b215d5102985f968e1a2661f25bb1297",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+      "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+      "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+      "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+      "src/archive.rs": "2830291063706244a24dced95041cc8931de91ba878326669e6dd6bb31a90823",
       "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
       "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
       "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
@@ -405,42 +436,27 @@
       "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
       "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
       "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
-      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
-      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84"
+      "tests/archive.rs": "733b3644d26c16499c75837afa18b53fcb14ec4bc4d24fd6eef6fb946762f4fd",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549"
     },
     "baseline_binary_sha256": {
-      "kestrel-stress.exe": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
-      "kestrel.exe": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
-      "performance-probe.exe": "2accbf4b54a139343442a315c18bdf2b321041986764510d1499b5b77737ecc3"
+      "kestrel-stress.exe": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+      "kestrel.exe": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
+      "publication-probe.exe": "cd9a635e625203a488643016bcc97858e1c0e2e459d01b33473251803bdef3b5",
+      "receipt-seed.exe": "13d9a8076409f6cd60e70c4ca83c634e6c9b90f64512ab3a23674a419e286b0f"
     },
-    "profiled_baseline": {
-      "note": "0.3.1 library plus opt-in scan timing instrumentation; ordinary baseline comparisons use the original release CLI/bridge",
-      "binary_sha256": "7d7947fe6473a85be7698645e8063682bf267024e5f3e1dc15f74924525ccd62",
-      "source_sha256": {
-        "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23",
-        "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
-        "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
-        "src/archive.rs": "cf0c1004fec67e237e4bf580cb2f841b5b84fd6bf6a166ca641e849dc54d7ac3",
-        "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
-        "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
-        "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
-        "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
-        "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
-        "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
-        "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
-        "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549"
-      }
-    }
+    "new_seed_source_sha256": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a"
   },
   "executed_capabilities": {
     "engines": 2,
-    "report": "benchmarks/capability-032.json",
+    "report": "benchmarks/capability-033.json",
     "previous_six_engine_report": "benchmarks/capability-031.json",
     "archive_transactional_parity": false
   },
   "stress_bridge": {
     "test_only": true,
-    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+    "binary_sha256": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
     "concurrency": "immutable LiveArchive snapshots; one bounded durable group writer"
   },
   "reference_servers_stopped": true,
@@ -450,7 +466,7 @@
     "all overload loss and slow service cases disclosed; generic scan gains do not qualify durable tails",
     "BIGINT aggregate subset; no raw projection, joins, updates/deletes or SQL transactions in Archive",
     "no native Arrow/Parquet SDK; Parquet demo reads sources through DuckDB",
-    "receipt capacity correctness tested at 100000 IDs; full-ledger unique-write endurance unqualified",
+    "receipt capacity correctness tested at 100000 IDs; long unique-write endurance unqualified",
     "queue/cache budgets exclude caller allocations, active pinned pages and OS caches",
     "backup/retention/orphan cleanup, upgrades and disk exhaustion remain unqualified",
     "physical power loss, Windows directory-entry durability and Linux execution unqualified",
@@ -463,7 +479,28 @@
       "DuckDB 1.5.6",
       "SQLite 3.49.1"
     ],
-    "report": "benchmarks/archive-verification-032.json"
+    "report": "benchmarks/archive-verification-033.json"
   },
-  "service_qualification": "failed; retain all mixed/overload losses and publication stalls"
+  "service_qualification": "experimental candidate; repeated local target failed; production envelope unqualified",
+  "historical_0_3_2_proof": "verification-v032.json",
+  "publication_format": {
+    "reads": [
+      "CAT2",
+      "CAT3",
+      "CAT4"
+    ],
+    "writes": "CAT4",
+    "payload": "SEG2",
+    "max_catalog_chain_files": 32,
+    "older_writers_reject": true,
+    "downgrade_converter": false
+  },
+  "publication_cut_points": {
+    "report": "benchmarks/publication-033-faults.json",
+    "cases_passed": 56,
+    "additional_corruption_cases_rejected": 22,
+    "physical_power_loss": false,
+    "actual_disk_full": false,
+    "default_binaries_have_fault_hooks": false
+  }
 }

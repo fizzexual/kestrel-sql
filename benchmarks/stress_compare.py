@@ -246,7 +246,9 @@ def verify_final(engine, attempts, acknowledgments, batch):
         'numpy_reference_windows':20,'full_kestrel_scrub':scrub}
 
 
-def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
+def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, identified=False):
+    if identified and engine.name != 'kestrel':
+        raise ValueError('identified appends require the Kestrel receipt API')
     publication_before = None
     if engine.name == 'kestrel':
         diagnostic = engine.connect()
@@ -283,7 +285,11 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256):
                         connection = engine.connect()
                     if kind=='append':
                         with lock: attempts.append(seq)
-                        connection.append(rows_for_task(engine.rows,seq,batch))
+                        data = rows_for_task(engine.rows,seq,batch)
+                        if identified:
+                            connection.call({'op':'append','id':f'load:{seq}','data':data})
+                        else:
+                            connection.append(data)
                         with lock: acks.append(seq)
                     else:
                         connection.query(sql)

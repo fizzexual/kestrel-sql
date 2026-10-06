@@ -1,5 +1,14 @@
 # Changes
 
+## 0.3.3 experimental receipt-catalog candidate
+
+- Write CAT4 receipt deltas between full checkpoints, retaining at most 32 catalog dependencies. Every catalog still contains the complete current segment set.
+- Serialize borrowed old/new receipt maps at checkpoints; eliminate the committed-ledger clone from new appends and compaction. Keep the 100K ID ceiling and original replay receipt generations.
+- Read CAT2/CAT3/CAT4 and reject damaged/missing dependencies, duplicate receipt keys, invalid generations/parents and excessive chain depth. Older writers reject CAT4.
+- Preserve buffer flush, segment/catalog synchronization, atomic publication, unknown-outcome poisoning and pinned-reader behavior. Reclaim retains the complete current catalog chain.
+- Expose checkpoint/delta counts, published catalog bytes and snapshot chain length. Add sequential new-ID probes, concurrent 50K-ID fixtures and a separately feature-enabled cut-point driver.
+- Preserve the 0.3.2 source/binaries, all raw baseline samples, service failures and older release artifacts. See [PERFORMANCE_033.md](PERFORMANCE_033.md) for focused gains and remaining limitations.
+
 ## 0.3.2 experimental scan candidate
 
 - Reuse query-local byte and decoded-column buffers across streamed pages, preserving CRC validation and independent long-scan handles.

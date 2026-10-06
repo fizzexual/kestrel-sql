@@ -16,12 +16,13 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](benchmarks/nyc-results.json) |
 | Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](benchmarks/archive-verification.json) |
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
-| Engineering checks | 32 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
+| Engineering checks | 35 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
+| Receipt publication | 96.86% fewer catalog bytes in three alternating 50K-ID comparisons; bounded recovery and exact publication-cut checks | [PERFORMANCE_033.md](PERFORMANCE_033.md) |
 | Analytical SQL | Validated 248 category/day rows: dimension join, complete calendar, LAG, and ranking | [gold_analysis.sql](portfolio/gold_analysis.sql), [checks](portfolio/gold-verification.json) |
 | Historical concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
-| Current live ingestion | Snapshots, group commits, identified retries, bounded cache and compaction; repeated comparisons with retained failures | [PERFORMANCE_031.md](PERFORMANCE_031.md) |
-| Replay/backfill pipeline | 30,000 Parquet rows; both sources replayed without duplication; 42 exact SQL checks | [live-pipeline-031-results.json](portfolio/live-pipeline-031-results.json) |
-| Actual Archive crashes | 24 new process kills with identified retries; whole published batches and no lost acknowledged batches | [perf-031-recovery.json](benchmarks/perf-031-recovery.json) |
+| Current live ingestion | Snapshots, group commits, identified retries, bounded cache and compaction; repeated comparisons with retained failures | [PERFORMANCE_033.md](PERFORMANCE_033.md) |
+| Replay/backfill pipeline | 30,000 Parquet rows; both sources replayed without duplication; 42 exact SQL checks | [live-pipeline-033-results.json](portfolio/live-pipeline-033-results.json) |
+| Actual Archive crashes | 24 new process kills with identified retries; whole published batches and no lost acknowledged batches | [perf-033-recovery.json](benchmarks/perf-033-recovery.json) |
 | Research decisions | Primary papers and official docs connect architecture decisions to explicit future experiment gates | [RESEARCH.md](RESEARCH.md) |
 
 The 0.2 hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. Version 0.3 addresses writer exclusion, repeated boundary decoding and small-run growth. Version 0.3.1 adds stage profiling, faster exact retries, buffered durable writes and cheaper compaction input reads. [Current results](PERFORMANCE_031.md) disclose repeated comparisons, intermediate regressions and remaining failures; [0.3 results](V03_RESULTS.md) preserve the earlier evidence. Durable-write tail latency remains a release gate. Archive also lacks raw point retrieval, joins and transactional updates. Explain those boundaries and retain failed runs when presenting the project.
@@ -47,6 +48,8 @@ This is precomputation with known prior art. It trades sorting, write-time index
 A real-data zone query exposed a planning weakness: a second predicate initially forced a broad scan even though a time range could bound it. The planner now uses the sorted time predicate to limit streamed reads before applying the other filter. A Rust regression test and independent multi-filter cases check correctness. The current zone query reads 3,440,640 payload bytes; it still loses to DuckDB, so further work needs profiling rather than another unsupported speed claim.
 
 ## Suggested CV bullet
+
+> Diagnosed repeated receipt-ledger rewriting in an embedded Rust metrics store; implemented bounded catalog deltas/checkpoints, reducing catalog bytes for 96 appends from 788.02 MB to 24.72 MB with 50K retained IDs. Verified recovery through 56 exact process-exit/injected-error cases and retained checkpoint stalls and concurrent-load failures alongside performance gains.
 
 > Profiled and optimized streamed aggregate queries with reusable buffers, row selections and typed reductions; reduced unordered-filter median latency from 6.49 to 3.69 ms in three alternating 1M-row comparisons. Verified results against independent SQL engines and retained mixed-load failures alongside observed publication stalls for further investigation.
 

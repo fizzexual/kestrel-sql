@@ -3,6 +3,7 @@
 //! The original Database remains the transactional, RAM-resident API.
 use crate::sql::{Expr, Op, Query, Statement};
 use crate::{Error, QueryResult, Result, Value};
+use serde::ser::{SerializeMap, Serializer};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
@@ -20,8 +21,10 @@ const MAX_SEGMENTS: usize = 10_000;
 const MAX_BATCH_BYTES: usize = 64 * 1024 * 1024;
 const MAX_INDEX_MEMORY: usize = 128 * 1024 * 1024;
 const SEG_MAGIC: &[u8; 8] = b"KSQLSEG2";
-const CAT_MAGIC: &[u8; 8] = b"KSQLCAT3";
+const CAT_MAGIC: &[u8; 8] = b"KSQLCAT4";
+const RECEIPT_CAT_MAGIC: &[u8; 8] = b"KSQLCAT3";
 const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
+const MAX_CATALOG_CHAIN: usize = 32;
 const MAX_BATCH_IDS: usize = 100_000;
 const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
 
@@ -50,6 +53,9 @@ impl StageProfile {
 pub struct PublicationProfile {
     pub attempts: u64,
     pub completed: u64,
+    pub catalog_checkpoints: u64,
+    pub catalog_deltas: u64,
+    pub catalog_bytes_published: u64,
     pub prepare: StageProfile,
     pub segment_write: StageProfile,
     pub segment_sync: StageProfile,
@@ -148,6 +154,86 @@ struct Catalog {
     #[serde(default)]
     batches: BTreeMap<String, BatchRecord>,
 }
+
+/// A checkpoint contains the complete receipt map. A delta refers to the previous
+/// committed catalog and contains only new receipts, while always storing the full
+/// current segment set. Recovery must validate every referenced catalog.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct DiskCatalog {
+    generation: u64,
+    #[serde(deserialize_with = "required_receipt_base")]
+    receipt_base: Option<u64>,
+    table: String,
+    columns: Vec<String>,
+    segments: Vec<String>,
+    #[serde(deserialize_with = "unique_batches")]
+    batches: BTreeMap<String, BatchRecord>,
+}
+
+fn required_receipt_base<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<Option<u64>, D::Error> {
+    Option::deserialize(deserializer)
+}
+
+fn unique_batches<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<BTreeMap<String, BatchRecord>, D::Error> {
+    struct UniqueBatches;
+    impl<'de> serde::de::Visitor<'de> for UniqueBatches {
+        type Value = BTreeMap<String, BatchRecord>;
+        fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            formatter.write_str("a bounded map of unique receipt IDs")
+        }
+        fn visit_map<M: serde::de::MapAccess<'de>>(
+            self,
+            mut input: M,
+        ) -> std::result::Result<Self::Value, M::Error> {
+            let mut records = BTreeMap::new();
+            while let Some((id, record)) = input.next_entry::<String, BatchRecord>()? {
+                if records.len() >= MAX_BATCH_IDS || records.insert(id, record).is_some() {
+                    return Err(serde::de::Error::custom("receipt budget or duplicate ID"));
+                }
+            }
+            Ok(records)
+        }
+    }
+    deserializer.deserialize_map(UniqueBatches)
+}
+
+#[derive(Serialize)]
+struct CatalogOutput<'a> {
+    generation: u64,
+    receipt_base: Option<u64>,
+    table: &'a str,
+    columns: &'a [String],
+    segments: &'a [String],
+    batches: CombinedBatches<'a>,
+}
+
+// Borrow both maps during checkpoint encoding; new publication never clones the
+// entire committed ledger. Duplicate keys are rejected before this serializer.
+struct CombinedBatches<'a> {
+    committed: Option<&'a BTreeMap<String, BatchRecord>>,
+    added: &'a BTreeMap<String, BatchRecord>,
+}
+impl Serialize for CombinedBatches<'_> {
+    fn serialize<S: Serializer>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error> {
+        let mut map = serializer.serialize_map(Some(
+            self.committed.map_or(0, BTreeMap::len) + self.added.len(),
+        ))?;
+        if let Some(committed) = self.committed {
+            for (id, record) in committed {
+                map.serialize_entry(id, record)?;
+            }
+        }
+        for (id, record) in self.added {
+            map.serialize_entry(id, record)?;
+        }
+        map.end()
+    }
+}
 #[derive(Clone, Serialize, Deserialize)]
 struct BatchRecord {
     digest: [u8; 32],
@@ -208,6 +294,7 @@ pub struct ArchiveStats {
     pub block_rows: usize,
     pub generation: u64,
     pub recorded_batch_ids: usize,
+    pub catalog_chain_files: usize,
     pub retained_page_cache_bytes: usize,
     pub page_cache_hits: u64,
     pub page_cache_misses: u64,
@@ -218,6 +305,7 @@ pub struct Archive {
     path: PathBuf,
     _lock: Arc<File>,
     catalog: Catalog,
+    catalog_chain: Vec<u64>,
     segments: Vec<Arc<Segment>>,
     retired: Vec<Arc<Segment>>,
     next_generation: u64,
@@ -236,6 +324,7 @@ pub struct ArchiveSnapshot {
     segments: Vec<Arc<Segment>>,
     generation: u64,
     recorded_batch_ids: usize,
+    catalog_chain_files: usize,
     cache: Arc<PageCache>,
     profile: Arc<Mutex<PublicationProfile>>,
 }
@@ -274,6 +363,108 @@ fn parse_name(name: &str, prefix: &str, suffix: &str) -> Option<u64> {
         return None;
     }
     digits.parse().ok()
+}
+
+fn load_catalog(
+    path: &Path,
+    latest: u64,
+    table: &str,
+    columns: &[String],
+) -> Result<(Catalog, Vec<u64>)> {
+    if latest == 0 {
+        return Err(Error::new("invalid catalog generation"));
+    }
+    let mut generation = latest;
+    let mut chain = Vec::new();
+    let mut records = BTreeMap::new();
+    let mut newest = None;
+    loop {
+        if chain.len() >= MAX_CATALOG_CHAIN {
+            return Err(Error::new("catalog receipt chain budget exceeded"));
+        }
+        let mut file = File::open(path.join(format!("catalog-{generation:020}.ks2")))?;
+        let mut signature = [0; 8];
+        file.read_exact(&mut signature)?;
+        file.seek(SeekFrom::Start(0))?;
+        let bytes = read_envelope(&mut file, &signature)?;
+        if file.metadata()?.len() != bytes.len() as u64 + 16 {
+            return Err(Error::new("catalog has trailing bytes"));
+        }
+        let (mut catalog, parent) = if &signature == CAT_MAGIC {
+            let disk: DiskCatalog =
+                serde_json::from_slice(&bytes).map_err(|e| Error::new(e.to_string()))?;
+            if disk.generation != generation
+                || disk.receipt_base.is_some_and(|g| g == 0 || g >= generation)
+            {
+                return Err(Error::new("invalid catalog generation or receipt base"));
+            }
+            (
+                Catalog {
+                    table: disk.table,
+                    columns: disk.columns,
+                    segments: disk.segments,
+                    batches: disk.batches,
+                },
+                disk.receipt_base,
+            )
+        } else if &signature == RECEIPT_CAT_MAGIC || &signature == OLD_CAT_MAGIC {
+            (
+                serde_json::from_slice::<Catalog>(&bytes).map_err(|e| Error::new(e.to_string()))?,
+                None,
+            )
+        } else {
+            return Err(Error::new("invalid archive format signature"));
+        };
+        if catalog.table != table
+            || catalog.columns != columns
+            || catalog.segments.len() > MAX_SEGMENTS
+            || catalog.batches.len() > MAX_BATCH_IDS
+            || catalog.segments.iter().collect::<BTreeSet<_>>().len() != catalog.segments.len()
+            || catalog
+                .segments
+                .iter()
+                .any(|name| parse_name(name, "segment-", ".ks2").is_none())
+        {
+            return Err(Error::new("invalid catalog schema or segment references"));
+        }
+        for (id, record) in std::mem::take(&mut catalog.batches) {
+            if !valid_batch_id(&id)
+                || record.rows == 0
+                || record.rows > MAX_SEGMENT_ROWS
+                || record.generation == 0
+                || record.generation > generation
+                || (parent.is_some() && record.generation != generation)
+                || records.len() >= MAX_BATCH_IDS
+                || records.insert(id, record).is_some()
+            {
+                return Err(Error::new("invalid or duplicate durable batch receipt"));
+            }
+        }
+        newest.get_or_insert(catalog);
+        chain.push(generation);
+        match parent {
+            Some(previous) => generation = previous,
+            None => break,
+        }
+    }
+    let mut catalog = newest.unwrap();
+    catalog.batches = records;
+    Ok((catalog, chain))
+}
+
+#[cfg(feature = "fault-injection")]
+fn publication_cut_point(point: &str) -> Result<()> {
+    if std::env::var("KESTREL_FAULT_POINT").as_deref() == Ok(point) {
+        if std::env::var("KESTREL_FAULT_MODE").as_deref() == Ok("io_error") {
+            #[cfg(windows)]
+            let code = 112; // ERROR_DISK_FULL
+            #[cfg(not(windows))]
+            let code = 28; // ENOSPC
+            return Err(std::io::Error::from_raw_os_error(code).into());
+        }
+        std::process::exit(86);
+    }
+    Ok(())
 }
 fn load_segment(path: &Path, name: String, columns: usize) -> Result<Segment> {
     if parse_name(&name, "segment-", ".ks2").is_none() {
@@ -367,50 +558,19 @@ impl Archive {
                 );
             }
         }
-        let catalog = if let Some(n) = latest {
-            let mut file = File::open(path.join(format!("catalog-{n:020}.ks2")))?;
-            let mut signature = [0; 8];
-            file.read_exact(&mut signature)?;
-            file.seek(SeekFrom::Start(0))?;
-            let magic = if &signature == OLD_CAT_MAGIC {
-                OLD_CAT_MAGIC
-            } else {
-                CAT_MAGIC
-            };
-            let bytes = read_envelope(&mut file, magic)?;
-            if file.metadata()?.len() != bytes.len() as u64 + 16 {
-                return Err(Error::new("catalog has trailing bytes"));
-            }
-            serde_json::from_slice::<Catalog>(&bytes).map_err(|e| Error::new(e.to_string()))?
+        let (catalog, catalog_chain) = if let Some(n) = latest {
+            load_catalog(&path, n, &table, &columns)?
         } else {
-            Catalog {
-                table: table.clone(),
-                columns: columns.clone(),
-                segments: Vec::new(),
-                batches: BTreeMap::new(),
-            }
+            (
+                Catalog {
+                    table: table.clone(),
+                    columns: columns.clone(),
+                    segments: Vec::new(),
+                    batches: BTreeMap::new(),
+                },
+                Vec::new(),
+            )
         };
-        if catalog.table != table
-            || catalog.columns != columns
-            || catalog.segments.len() > MAX_SEGMENTS
-            || catalog.batches.len() > MAX_BATCH_IDS
-        {
-            return Err(Error::new(
-                "archive schema mismatch or segment budget exceeded",
-            ));
-        }
-        if catalog.segments.iter().collect::<BTreeSet<_>>().len() != catalog.segments.len() {
-            return Err(Error::new("duplicate segment reference"));
-        }
-        if catalog.batches.iter().any(|(id, record)| {
-            !valid_batch_id(id)
-                || record.rows == 0
-                || record.rows > MAX_SEGMENT_ROWS
-                || record.generation == 0
-                || record.generation > latest.unwrap_or(0)
-        }) {
-            return Err(Error::new("invalid durable batch receipt"));
-        }
         let mut segments = Vec::new();
         let mut index_memory = 0;
         for name in &catalog.segments {
@@ -425,6 +585,7 @@ impl Archive {
             path,
             _lock: Arc::new(lock),
             catalog,
+            catalog_chain,
             segments,
             retired: Vec::new(),
             next_generation: next,
@@ -547,11 +708,7 @@ impl Archive {
             }
         }
         if total > 0 {
-            // Exact replays never clone the committed ledger. New publication
-            // still copies and serializes it to preserve the existing disk format.
-            let mut records = self.catalog.batches.clone();
-            records.extend(new_records);
-            self.publish(combined, &[], records, started)?;
+            self.publish(combined, &[], new_records, started)?;
         } else if !receipts.is_empty() && receipts.iter().all(|r| r.duplicate) {
             self.profile
                 .lock()
@@ -566,7 +723,7 @@ impl Archive {
         &mut self,
         mut columns: Vec<Vec<i64>>,
         remove: &[String],
-        batches: BTreeMap<String, BatchRecord>,
+        new_records: BTreeMap<String, BatchRecord>,
         started: Instant,
     ) -> Result<usize> {
         self.healthy()?;
@@ -644,13 +801,12 @@ impl Archive {
         let mut references = self.catalog.segments.clone();
         references.retain(|name| !remove.contains(name));
         references.push(name.clone());
-        let candidate = Catalog {
-            table: self.catalog.table.clone(),
-            columns: self.catalog.columns.clone(),
-            segments: references,
-            batches,
-        };
+        let checkpoint = self.catalog_chain.is_empty()
+            || self.catalog.batches.is_empty()
+            || self.catalog_chain.len() >= MAX_CATALOG_CHAIN;
+        let receipt_base = (!checkpoint).then_some(self.generation);
         let mut times = [Duration::ZERO; 7];
+        let mut catalog_bytes = 0;
         times[0] = started.elapsed();
         let publish = (|| -> Result<File> {
             let segment_file = measured(&mut times[1], || {
@@ -669,26 +825,50 @@ impl Archive {
                             buffer.extend_from_slice(&value.to_le_bytes());
                         }
                         output.write_all(&buffer)?;
+                        #[cfg(feature = "fault-injection")]
+                        publication_cut_point("segment_partial")?;
                     }
                 }
                 output.flush()?;
                 drop(output);
+                #[cfg(feature = "fault-injection")]
+                publication_cut_point("segment_written")?;
                 Ok(segment_file)
             })?;
             measured(&mut times[2], || Ok(segment_file.sync_all()?))?;
+            #[cfg(feature = "fault-injection")]
+            publication_cut_point("segment_synced")?;
             let bytes = measured(&mut times[3], || {
-                serde_json::to_vec(&candidate).map_err(|e| Error::new(e.to_string()))
+                serde_json::to_vec(&CatalogOutput {
+                    generation,
+                    receipt_base,
+                    table: &self.catalog.table,
+                    columns: &self.catalog.columns,
+                    segments: &references,
+                    batches: CombinedBatches {
+                        committed: checkpoint.then_some(&self.catalog.batches),
+                        added: &new_records,
+                    },
+                })
+                .map_err(|e| Error::new(e.to_string()))
             })?;
+            catalog_bytes = bytes.len() as u64 + 16;
             let pending = self.path.join(format!("catalog-{generation:020}.pending"));
             let file = measured(&mut times[4], || {
                 let mut file = File::create_new(&pending)?;
                 let mut output = BufWriter::with_capacity(64 * 1024, &mut file);
                 write_envelope(&mut output, CAT_MAGIC, &bytes)?;
+                #[cfg(feature = "fault-injection")]
+                publication_cut_point("catalog_partial")?;
                 output.flush()?;
                 drop(output);
+                #[cfg(feature = "fault-injection")]
+                publication_cut_point("catalog_written")?;
                 Ok(file)
             })?;
             measured(&mut times[5], || Ok(file.sync_all()?))?;
+            #[cfg(feature = "fault-injection")]
+            publication_cut_point("catalog_synced")?;
             drop(file);
             measured(&mut times[6], || {
                 std::fs::rename(
@@ -699,12 +879,19 @@ impl Archive {
                 File::open(&self.path)?.sync_all()?;
                 Ok(())
             })?;
+            #[cfg(feature = "fault-injection")]
+            publication_cut_point("catalog_published")?;
             Ok(segment_file)
         })();
         {
             let mut profile = self.profile.lock().unwrap_or_else(|e| e.into_inner());
             profile.attempts += 1;
             profile.completed += u64::from(publish.is_ok());
+            if publish.is_ok() {
+                profile.catalog_checkpoints += u64::from(checkpoint);
+                profile.catalog_deltas += u64::from(!checkpoint);
+                profile.catalog_bytes_published += catalog_bytes;
+            }
             profile.prepare.observe(times[0]);
             profile.segment_write.observe(times[1]);
             profile.segment_sync.observe(times[2]);
@@ -722,7 +909,12 @@ impl Archive {
                 )));
             }
         };
-        self.catalog = candidate;
+        self.catalog.segments = references;
+        self.catalog.batches.extend(new_records);
+        if checkpoint {
+            self.catalog_chain.clear();
+        }
+        self.catalog_chain.insert(0, generation);
         self.generation = generation;
         self.segments.retain(|segment| {
             if remove.contains(&segment.name) {
@@ -787,7 +979,7 @@ impl Archive {
             }
         }
         let remove: Vec<_> = selected.iter().map(|s| s.name.clone()).collect();
-        self.publish(columns, &remove, self.catalog.batches.clone(), started)?;
+        self.publish(columns, &remove, BTreeMap::new(), started)?;
         Ok(remove.len() - 1)
     }
 
@@ -806,7 +998,9 @@ impl Archive {
         for entry in std::fs::read_dir(&self.path)? {
             let entry = entry?;
             let name = entry.file_name().to_string_lossy().to_string();
-            if parse_name(&name, "catalog-", ".ks2").is_some_and(|g| g < self.generation) {
+            if parse_name(&name, "catalog-", ".ks2")
+                .is_some_and(|g| g < self.generation && !self.catalog_chain.contains(&g))
+            {
                 std::fs::remove_file(entry.path())?;
                 removed += 1;
             }
@@ -839,6 +1033,7 @@ impl Archive {
             segments: self.segments.clone(),
             generation: self.generation,
             recorded_batch_ids: self.catalog.batches.len(),
+            catalog_chain_files: self.catalog_chain.len(),
             cache: Arc::clone(&self.cache),
             profile: Arc::clone(&self.profile),
         })
@@ -903,6 +1098,7 @@ impl ArchiveSnapshot {
             block_rows: BLOCK_ROWS,
             generation: self.generation,
             recorded_batch_ids: self.recorded_batch_ids,
+            catalog_chain_files: self.catalog_chain_files,
             retained_page_cache_bytes: self
                 .cache
                 .state

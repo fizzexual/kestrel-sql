@@ -26,6 +26,175 @@ fn int(n: i128) -> Vec<Vec<Value>> {
 }
 
 #[test]
+fn receipt_deltas_checkpoint_and_reclaim_preserve_every_original_receipt() {
+    let path = temp("receipt-deltas");
+    let mut archive = open(&path);
+    let mut receipts = Vec::new();
+    for i in 0..75_i64 {
+        receipts.push(
+            archive
+                .append_once(&format!("chain:{i}"), vec![vec![i], vec![i * 2], vec![1]])
+                .unwrap(),
+        );
+        if i == 20 || i == 45 {
+            archive.compact_small().unwrap();
+        }
+        archive.reclaim().unwrap();
+        let catalogs = std::fs::read_dir(&path)
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().to_string())
+            .filter(|n| n.starts_with("catalog-") && n.ends_with(".ks2"))
+            .count();
+        assert!((1..=32).contains(&catalogs));
+        if i % 16 == 15 {
+            drop(archive);
+            archive = open(&path);
+            assert_eq!(archive.stats().unwrap().recorded_batch_ids, i as usize + 1);
+        }
+    }
+    archive.append(vec![vec![75], vec![150], vec![1]]).unwrap();
+    archive.reclaim().unwrap();
+    drop(archive);
+    let mut archive = open(&path);
+    for (i, original) in receipts.iter().enumerate() {
+        let i = i as i64;
+        let replay = archive
+            .append_once(&format!("chain:{i}"), vec![vec![i], vec![i * 2], vec![1]])
+            .unwrap();
+        assert!(replay.duplicate);
+        assert_eq!(replay.generation, original.generation);
+    }
+    assert!(
+        archive
+            .append_once("chain:0", vec![vec![0], vec![999], vec![1]])
+            .is_err()
+    );
+    assert_eq!(
+        archive
+            .query("SELECT SUM(value) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        int(75 * 76)
+    );
+    assert_eq!(archive.verify().unwrap(), 76 * 24);
+}
+
+#[test]
+fn receipt_catalog_dependencies_and_semantics_fail_closed() {
+    for damage in [
+        "missing",
+        "crc",
+        "cycle",
+        "schema",
+        "generation",
+        "receipt_generation",
+        "duplicate_receipt",
+        "missing_base",
+        "trailing",
+        "unknown_field",
+    ] {
+        let path = temp(damage);
+        let mut archive = open(&path);
+        for i in 0..3_i64 {
+            archive
+                .append_once(&format!("dependency:{i}"), vec![vec![i], vec![i], vec![1]])
+                .unwrap();
+        }
+        drop(archive);
+        let file = path.join(format!(
+            "catalog-{:020}.ks2",
+            if damage == "missing" || damage == "crc" || damage == "schema" {
+                1
+            } else {
+                3
+            }
+        ));
+        if damage == "missing" {
+            std::fs::remove_file(file).unwrap();
+        } else {
+            let mut bytes = std::fs::read(&file).unwrap();
+            if damage == "crc" {
+                bytes[20] ^= 1;
+            } else if damage == "trailing" {
+                bytes.push(0);
+            } else {
+                let mut body: serde_json::Value = serde_json::from_slice(&bytes[16..]).unwrap();
+                match damage {
+                    "cycle" => body["receipt_base"] = serde_json::json!(3),
+                    "schema" => body["columns"][0] = serde_json::json!("other"),
+                    "generation" => body["generation"] = serde_json::json!(2),
+                    "receipt_generation" => {
+                        body["batches"]["dependency:2"]["generation"] = serde_json::json!(2)
+                    }
+                    "duplicate_receipt" => {
+                        let mut record = body["batches"]["dependency:2"].clone();
+                        record["generation"] = serde_json::json!(3);
+                        body["batches"]["dependency:0"] = record;
+                    }
+                    "missing_base" => {
+                        body.as_object_mut().unwrap().remove("receipt_base");
+                    }
+                    "unknown_field" => body["future_unsupported"] = serde_json::json!(true),
+                    _ => unreachable!(),
+                }
+                let data = serde_json::to_vec(&body).unwrap();
+                bytes = b"KSQLCAT4".to_vec();
+                bytes.extend_from_slice(&(data.len() as u32).to_le_bytes());
+                bytes.extend_from_slice(&crc32fast::hash(&data).to_le_bytes());
+                bytes.extend(data);
+            }
+            std::fs::write(file, bytes).unwrap();
+        }
+        assert!(
+            Archive::open(&path, "events", &["ts", "value", "device"]).is_err(),
+            "{damage}"
+        );
+    }
+}
+
+#[test]
+fn failed_delta_publication_poisons_writer_and_preserves_retry_after_reopen() {
+    let path = temp("delta-io-failure");
+    let mut archive = open(&path);
+    archive
+        .append_once("before", vec![vec![1], vec![10], vec![1]])
+        .unwrap();
+    let pinned = archive.snapshot().unwrap();
+    std::fs::create_dir(path.join("catalog-00000000000000000002.pending")).unwrap();
+    let data = vec![vec![2], vec![20], vec![1]];
+    let error = archive.append_once("retry", data.clone()).unwrap_err();
+    assert!(error.to_string().contains("outcome unknown"));
+    assert!(archive.query("SELECT COUNT(*) FROM events").is_err());
+    assert_eq!(
+        pinned
+            .query("SELECT COUNT(*) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        int(1)
+    );
+    drop(pinned);
+    drop(archive);
+    let mut archive = open(&path);
+    let retry = archive.append_once("retry", data.clone()).unwrap();
+    assert!(!retry.duplicate && retry.generation == 3);
+    assert!(archive.append_once("retry", data).unwrap().duplicate);
+    archive.reclaim().unwrap();
+    drop(archive);
+    let archive = open(&path);
+    assert_eq!(
+        archive
+            .query("SELECT SUM(value) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        int(30)
+    );
+    assert_eq!(archive.verify().unwrap(), 2 * 24);
+}
+
+#[test]
 fn selected_scan_kernels_preserve_extremes_partial_pages_and_profile_counts() {
     let path = temp("selected-kernels");
     let mut archive = open(&path);

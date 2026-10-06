@@ -1,6 +1,8 @@
 # KestrelSQL
 
-**Current source: 0.3.2 experimental scan candidate.** Three fresh alternating runs reduced the unordered-filter median from 6.49 to 3.69 ms on a 1M-row fixture. Repeated service tests still failed the zero-loss/100 ms target and exposed long file synchronization/publication stalls. Read [PERFORMANCE_032.md](PERFORMANCE_032.md) for all new cases. The previous 0.3.1 package and its evidence remain preserved; its earlier service measurements below describe that release and run.
+**Current source: 0.3.3 experimental receipt-catalog candidate.** At 50,000 retained retry IDs, 96 new appends wrote 24.72 MB of catalogs versus 788.02 MB in the fresh 0.3.2 baseline (96.86% fewer bytes). The new CAT4 format uses receipt deltas and bounded checkpoints, preserves synchronization before ACK, reads older catalogs and is rejected by older writers. See [PERFORMANCE_033.md](PERFORMANCE_033.md) for repeated timings, service failures and exact fault checks. Previous packages and measurements remain preserved.
+
+The [0.3.2 scan experiment](PERFORMANCE_032.md) reduced unordered-filter median time from 6.49 to 3.69 ms on a paired 1M-row fixture, while failing repeated service targets. The 0.3.1 measurements below describe an earlier release and run; they do not describe the current service envelope.
 
 An experimental embedded SQL database for exact live metrics over append-only events. The working product idea is **automatically indexed, arbitrary time-window totals inside an application**, with durable ingestion and no materialized-view definition per window.
 
