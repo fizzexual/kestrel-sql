@@ -1,5 +1,7 @@
 # KestrelSQL
 
+[Benchmark history: wins, losses and raw evidence](BENCHMARK_HISTORY.md) · [Download every preserved release](https://github.com/fizzexual/kestrel-sql/releases) · [Latest 0.3.7 package](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.7)
+
 **Current source: 0.3.7 experimental source-checkpoint candidate.** `SourceArchive` commits each nonempty output and its source interval in one synchronized receipt publication. Reopening recovers the resume position with its data; gaps, overlaps, stale offsets and changed retries are rejected. It adds no checkpoint file or sync and preserves CAT4/SEG2. See [PERFORMANCE_037.md](PERFORMANCE_037.md) for measured costs, 55 Rust tests, current recovery/Parquet checks and retained write stalls, and [SOURCE_INGEST.md](SOURCE_INGEST.md) for the SDK. This is archive-local checkpoint atomicity; distributed consumer fencing and zero-output checkpointing remain work.
 
 The [0.3.6 immutable batch experiment](PERFORMANCE_036.md) adds `PreparedBatch` and `LiveArchive::append_prepared` for confirmed embedded retries. Its extra receipt index stays off by default; construction and fresh-write costs remain disclosed. Previous packages and measurements are preserved.

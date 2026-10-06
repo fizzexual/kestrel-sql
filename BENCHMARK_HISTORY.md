@@ -1,0 +1,49 @@
+# Benchmark history: wins, losses and exact evidence
+
+[Latest package: 0.3.7](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.7) | [All release downloads](https://github.com/fizzexual/kestrel-sql/releases) | [Raw reports and samples](benchmarks/) | [Current qualification](verification.json)
+
+The repository is private. Every packaged snapshot has its own Git tag and release download. Older archives are immutable; the current tree keeps earlier reports, raw samples, baselines and rejected experiments. Historical measurements are labelled by the version actually tested. A later release does not turn an old result into a fresh benchmark.
+
+## Start here
+
+| Question | Evidence |
+|---|---|
+| Where did Kestrel beat another database? | [Repeated six-engine comparison](PERFORMANCE_031.md), [100M-row wins and losses](SCALE.md) |
+| Where did it lose or drop work? | [Original hard tests](HARD_TESTS.md), [live-service failures](V03_RESULTS.md), [0.3.6 controls](PERFORMANCE_036.md), [0.3.7 write stalls](PERFORMANCE_037.md) |
+| What is faster today? | [Immutable embedded retry reuse](PERFORMANCE_036.md), [filtered scan improvement](PERFORMANCE_032.md), [receipt metadata reduction](PERFORMANCE_033.md) |
+| What can a pipeline rely on locally? | [Source checkpoint contract](SOURCE_INGEST.md), [replay/backfill portfolio](PORTFOLIO.md), [0.3.7 recovery evidence](PERFORMANCE_037.md) |
+| Can this replace a production general-purpose SQL database? | [SQL/API boundaries and release gates](README.md), [executed capability checks](HARD_TESTS.md) |
+| What is the next storage hypothesis? | [I/O primitive measurements](benchmarks/sync-037-io-comparison.json), [rejected parallel-sync audit](benchmarks/sync-037-io-audit.json); these are not database benchmarks |
+
+## Release-by-release evidence
+
+| Snapshot | Main change / experiment | Human-readable report | Raw evidence |
+|---|---|---|---|
+| [0.1.0](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.1.0) | Initial RAM engine and aggregate precomputation | [Initial benchmark](BENCHMARK.md) | [Initial timings](benchmarks/results.json) |
+| [0.2.0](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.2.0) | Disk storage, 100M rows, real taxi-data pipeline | [Scale and tradeoffs](SCALE.md), [portfolio](PORTFOLIO.md) | [Random windows](benchmarks/random-window-results.json), [fixed matrix](benchmarks/large-results.json), [NYC results](benchmarks/nyc-results.json) |
+| [Stress-tested 0.2.0](https://github.com/fizzexual/kestrel-sql/releases/tag/stress-tested-0.2.0) | Six engines, 66 cases; mixed-write losses exposed | [Hard tests](HARD_TESTS.md) | [Stress runs](benchmarks/stress-results.json), [sample audit](benchmarks/stress-audit.json), [capabilities](benchmarks/capability-results.json) |
+| [0.3.0](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.0) | Immutable live snapshots, receipts, group publication | [Live ingestion results](V03_RESULTS.md) | [Final live sweep](benchmarks/stress-v03-release.json), [retained earlier runs](benchmarks/stress-v03-results.json) |
+| [0.3.1](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.1) | Receipt-copy removal, cheaper compaction, stage profiling | [Repeated comparisons](PERFORMANCE_031.md) | [Audit](benchmarks/perf-031-audit.json), [all files](benchmarks/) |
+| [0.3.2](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.2) | Reusable page buffers and typed scan reductions | [Scan gains and service losses](PERFORMANCE_032.md) | [Stage profiles](benchmarks/perf-032-profile.json), [audit](benchmarks/perf-032-audit.json) |
+| [0.3.3](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.3) | Bounded receipt deltas/checkpoints; 96.86% fewer catalog bytes | [Publication measurements](PERFORMANCE_033.md) | [Matched publication runs](benchmarks/publication-033-paired.json), [faults/corruptions](benchmarks/publication-033-faults.json), [audit](benchmarks/perf-033-audit.json) |
+| [0.3.4](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.4) | Optional 0/2/8/20 ms coalescing; zero-delay default retained | [Policy comparisons](PERFORMANCE_034.md) | [Audit and all controls](benchmarks/perf-034-audit.json) |
+| [0.3.5](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.5) | Opt-in confirmed retries; losing always-on trial preserved | [Retry gains and write losses](PERFORMANCE_035.md) | [Audit](benchmarks/retry-035-audit.json), [trial sources](benchmarks/trial-0.3.5-source/), [trial harness](benchmarks/trial-035-harness/) |
+| [0.3.6](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.6) | Immutable prepared input; confirmed retry reuse, zero new rows during timing | [Embedded and ordinary controls](PERFORMANCE_036.md) | [Embedded runs](benchmarks/prepared-036-direct.json), [open-loop controls](benchmarks/prepared-036-write-controls.json), [audit](benchmarks/prepared-036-audit.json) |
+| [0.3.7](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.7) | Output and source resume position in one durable receipt | [Contract and cost measurements](PERFORMANCE_037.md) | [Comparisons](benchmarks/source-037-comparison.json), [faults/kills](benchmarks/source-037-faults.json), [Parquet replay](portfolio/source-pipeline-037-results.json), [audit](benchmarks/source-037-audit.json) |
+
+Each report links its exact raw inputs and samples. Gzipped JSONL sample files remain in their named directories under `benchmarks`; they are downloadable from GitHub and included in the corresponding ZIP. Sample counts, losses and percentiles must be assessed together.
+
+## How to read wins and losses
+
+- Aggregate indexes accelerate eligible ranges; the reference engines were not given equivalent materialized aggregate views. This is a measured design tradeoff, not a universal database ranking.
+- Req/s in paced workloads is capped by the offered rate. Successful-request p99 does not include failed offers; every report exposes losses separately.
+- Prepared retry calls acknowledge existing data. They insert zero new rows in the timed embedded loop and cannot be compared with network SQL throughput.
+- Shared Windows desktop timings vary. Use paired builds within a run; do not divide unrelated release measurements to invent a speedup.
+- The most recent complete six-engine comparison used 0.3.1. Current 0.3.7 source-checkpoint evidence does not refresh that ranking.
+- Publication errors and process kills are local live-filesystem tests. Physical power loss, replication, long endurance and Facebook-scale qualification remain untested.
+
+## Preserved unsuccessful evidence
+
+The reports explicitly retain the initial overload failures, slow live runs, the rejected always-enabled retry index, the rejected weak hashing trial, setup/profiling mistakes, and the latest parallel-sync diagnostic. Baseline source and binaries are under `benchmarks/baseline-*` and `bin/baseline-*`; rejected source is under `benchmarks/trial-*`. Earlier proof files are `verification-v*.json`.
+
+[Release asset hashes and original package dates](release-history.json) identify the exact downloads. Git tags point to their actual historical snapshot rather than the current source tree. Benchmark execution stays local; repository GitHub Actions is disabled. No deployment is configured.

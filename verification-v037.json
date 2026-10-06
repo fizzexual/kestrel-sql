@@ -1,0 +1,430 @@
+{
+  "version": "0.3.7",
+  "rust_tests": {
+    "debug": 55,
+    "release": 55,
+    "passed": true
+  },
+  "format_check": "passed",
+  "clippy_warnings_as_errors": "passed",
+  "feature_clippy_warnings_as_errors": "passed",
+  "build_run_order": [
+    {
+      "job": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-06T13:52:14.507269+00:00",
+      "completed_at_utc": "2026-10-06T13:52:14.831573+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "debug",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:52:14.832549+00:00",
+      "completed_at_utc": "2026-10-06T13:53:34.359702+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:53:34.359702+00:00",
+      "completed_at_utc": "2026-10-06T13:54:24.999763+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T13:54:25.000764+00:00",
+      "completed_at_utc": "2026-10-06T13:54:30.770519+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--bins",
+        "--examples",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:54:30.771556+00:00",
+      "completed_at_utc": "2026-10-06T13:54:30.990607+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T13:54:30.990607+00:00",
+      "completed_at_utc": "2026-10-06T13:54:47.108764+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--example",
+        "publication_fault_probe",
+        "--example",
+        "live_retry_probe",
+        "--example",
+        "source_fault_probe",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T13:54:47.109764+00:00",
+      "completed_at_utc": "2026-10-06T13:55:14.929719+00:00",
+      "returncode": 0
+    }
+  ],
+  "cli_sha256": "6aff2231fdd342132c19ef60a478da4876d7735104ada363c37baaa85549df25",
+  "bridge_sha256": "6b83d8194bb0e7495c4d7d75577b155aa96d112c41ce9fc914a62c935381080a",
+  "probe_sha256": "ee0ac3713edf15372693304a71cf8296992e3ed79dd82ce85ef6619c0f08250d",
+  "scan_probe_sha256": "0b5636d2eeedfa535b5075cb32ad517f860ba979a89f32594025e3b67bab1a6f",
+  "publication_probe_sha256": "0873e16ca5b6a1cfea0756551362d0a40dd56943f97bee6abd8214cad003f51d",
+  "receipt_seed_sha256": "d76f6346d1619a7d8478d2883b81336d106e81580c570aa8547edd2efa391b04",
+  "fault_driver_sha256": "d785b2d509641f910392d1efb2a6602b1e99bd08c522ecfe9c800c060e02c333",
+  "live_retry_driver_sha256": "619a3dc82b17b670b22dabe60a9acf49f49e085b050a076c8726c23ca83eff07",
+  "source_fault_driver_sha256": "61c0f4c0f6c319b1a8ee8df27577880e3a46d7790f53904c8d4f2f734961dd0a",
+  "source_sha256": {
+    "Cargo.lock": "aa94b6b3dd680b6982fe14ce15e9c60135839482b2255d68cb9632da638b8f14",
+    "Cargo.toml": "be7230e824344e819b5b634abb9c5fddb973733fca5fd20d44fc493e8a59bd20",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+    "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+    "src/archive.rs": "145e1aac3677c2320be5c522fcc4006ffa1bf3e7032ea630b9f2e604ef8fd7ea",
+    "src/bin/kestrel-stress.rs": "1aedc21b6350209f70d327c0f2ce9184703e717c3f0b97d21682dcd522ae84fc",
+    "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "tests/archive.rs": "be999a6fc796bcaf647083dc5f720b01f972d65fbf4d19b94f4eb462cb2090dd",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+  },
+  "status": "experimental atomic archive-local source checkpoints; production qualification incomplete",
+  "service_qualification": "incomplete; archive-local source checkpoint contract verified, production write/service envelope remains unqualified",
+  "current_source_audit": {
+    "version": "0.3.7",
+    "current_rust_tests_each_mode": 55,
+    "sequential_cases": 18,
+    "timed_new_commits": 1728,
+    "timed_known_retries": 18000,
+    "source_sha256": {
+      "Cargo.lock": "aa94b6b3dd680b6982fe14ce15e9c60135839482b2255d68cb9632da638b8f14",
+      "Cargo.toml": "be7230e824344e819b5b634abb9c5fddb973733fca5fd20d44fc493e8a59bd20",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+      "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+      "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+      "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+      "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+      "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+      "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+      "src/archive.rs": "145e1aac3677c2320be5c522fcc4006ffa1bf3e7032ea630b9f2e604ef8fd7ea",
+      "src/bin/kestrel-stress.rs": "1aedc21b6350209f70d327c0f2ce9184703e717c3f0b97d21682dcd522ae84fc",
+      "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+      "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+      "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "tests/archive.rs": "be999a6fc796bcaf647083dc5f720b01f972d65fbf4d19b94f4eb462cb2090dd",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+      "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+    },
+    "unchanged_core_files": [
+      "examples/live_ingest.rs",
+      "examples/live_retry_probe.rs",
+      "examples/performance_probe.rs",
+      "examples/publication_fault_probe.rs",
+      "examples/publication_probe.rs",
+      "examples/receipt_seed.rs",
+      "examples/scan_profile.rs",
+      "src/bin/kestrel-stress.rs",
+      "src/live.rs",
+      "src/main.rs",
+      "src/query.rs",
+      "src/scale.rs",
+      "src/sql.rs",
+      "src/wal.rs",
+      "tests/archive.rs",
+      "tests/engine.rs"
+    ],
+    "archive_storage_query_publication_byte_identical_except_readonly_helpers": true,
+    "groups": {
+      "0/baseline": {
+        "median_run_p50_ms": 54.7136,
+        "median_run_p99_ms": 489.67490000000004,
+        "run_p99_range_ms": [
+          121.2971,
+          708.6208
+        ],
+        "median_retry_p50_us": 12.2,
+        "median_source_map_rebuild_us": 0.09999999999999999,
+        "publication_stage_totals_ms": {
+          "prepare": 13.125500000000002,
+          "segment_write": 245.0786999999999,
+          "segment_sync": 13223.593500000003,
+          "catalog_encode": 3.326900000000001,
+          "catalog_write": 1222.7181000000005,
+          "catalog_sync": 12496.932400000003,
+          "catalog_rename": 179.46970000000002
+        },
+        "sync_share_percent": 93.92453977770458
+      },
+      "0/ordinary": {
+        "median_run_p50_ms": 55.518299999999996,
+        "median_run_p99_ms": 314.7736,
+        "run_p99_range_ms": [
+          49.9129,
+          442.3297
+        ],
+        "median_retry_p50_us": 12.3,
+        "median_source_map_rebuild_us": 0.19999999999999998,
+        "publication_stage_totals_ms": {
+          "prepare": 12.7701,
+          "segment_write": 152.15789999999998,
+          "segment_sync": 10163.9609,
+          "catalog_encode": 3.2002000000000006,
+          "catalog_write": 114.33080000000001,
+          "catalog_sync": 10134.954,
+          "catalog_rename": 126.38520000000003
+        },
+        "sync_share_percent": 98.02564730434787
+      },
+      "0/checkpoint": {
+        "median_run_p50_ms": 56.45,
+        "median_run_p99_ms": 148.42440000000002,
+        "run_p99_range_ms": [
+          53.9339,
+          536.0625
+        ],
+        "median_retry_p50_us": 12.2,
+        "median_source_map_rebuild_us": 21.9,
+        "publication_stage_totals_ms": {
+          "prepare": 13.449500000000002,
+          "segment_write": 247.52010000000007,
+          "segment_sync": 12260.403400000001,
+          "catalog_encode": 3.4698,
+          "catalog_write": 327.4702,
+          "catalog_sync": 12455.0219,
+          "catalog_rename": 132.63190000000003
+        },
+        "sync_share_percent": 97.15195579579137
+      },
+      "50000/baseline": {
+        "median_run_p50_ms": 56.8333,
+        "median_run_p99_ms": 1171.0265,
+        "run_p99_range_ms": [
+          1149.3211999999999,
+          1313.9509999999998
+        ],
+        "median_retry_p50_us": 12.1,
+        "median_source_map_rebuild_us": 0.19999999999999998,
+        "publication_stage_totals_ms": {
+          "prepare": 12.580599999999983,
+          "segment_write": 344.0635,
+          "segment_sync": 9187.1727,
+          "catalog_encode": 143.66759999999996,
+          "catalog_write": 767.9919,
+          "catalog_sync": 16762.875300000003,
+          "catalog_rename": 636.0154
+        },
+        "sync_share_percent": 93.16330182624506
+      },
+      "50000/ordinary": {
+        "median_run_p50_ms": 7.577,
+        "median_run_p99_ms": 113.44999999999999,
+        "run_p99_range_ms": [
+          91.9627,
+          1107.2907
+        ],
+        "median_retry_p50_us": 12.1,
+        "median_source_map_rebuild_us": 0.3,
+        "publication_stage_totals_ms": {
+          "prepare": 12.381599999999985,
+          "segment_write": 159.01750000000007,
+          "segment_sync": 3925.2581,
+          "catalog_encode": 151.00480000000005,
+          "catalog_write": 203.71650000000005,
+          "catalog_sync": 7104.244599999999,
+          "catalog_rename": 122.46440000000004
+        },
+        "sync_share_percent": 94.44613854794288
+      },
+      "50000/checkpoint": {
+        "median_run_p50_ms": 6.5663,
+        "median_run_p99_ms": 215.2706,
+        "run_p99_range_ms": [
+          86.647,
+          1145.2093
+        ],
+        "median_retry_p50_us": 12.2,
+        "median_source_map_rebuild_us": 25.9,
+        "publication_stage_totals_ms": {
+          "prepare": 12.46959999999995,
+          "segment_write": 127.3278,
+          "segment_sync": 3257.9510999999993,
+          "catalog_encode": 142.37650000000005,
+          "catalog_write": 559.9629,
+          "catalog_sync": 6518.7178,
+          "catalog_rename": 294.45279999999997
+        },
+        "sync_share_percent": 89.58524074180045
+      }
+    },
+    "service_qualification": "incomplete; archive-local source checkpoint contract verified, production write/service envelope remains unqualified",
+    "historical_evidence": "0.3.6 raw open-loop/embedded performance, SQL/recovery and large-scale reports remain historical; no current 7.85M/s or Facebook-scale claim",
+    "source_publication_fault_cases": 14,
+    "source_process_kill_cycles": 8,
+    "parquet_rows": 30000,
+    "parquet_batches": 300,
+    "parquet_exact_sql_cases": 42,
+    "identical_catalog_bytes_for_matched_ids": true,
+    "no_compilation_overlap_with_timed_database_work": true,
+    "current_sdk_demo_passed": true,
+    "initial_runner_failure": "source-037-initial-runner-failure.json"
+  },
+  "prior_release_proof": "verification-v036.json",
+  "baseline_provenance": {
+    "version": "0.3.6",
+    "archive_sha256": "855dcb2ae72b59a1f4cfac1448e20e1c72819aec52f3b6a7cdc4ee50a3aa85d8",
+    "core_source_sha256": {
+      "Cargo.lock": "34cb12e3cd8474b0a7752064e3f1be3e5c3758aef0b070ff8d92e412dcdd0d46",
+      "Cargo.toml": "4d7b74ab1c4228f126f054f146c682b39963670968efafa99804e6456803dc87",
+      "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+      "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+      "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+      "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+      "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+      "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+      "src/archive.rs": "772c8b817b3f259710dbf9997f96b6ccb5e5aff2b215c0a9fbca42810a72e243",
+      "src/bin/kestrel-stress.rs": "1aedc21b6350209f70d327c0f2ce9184703e717c3f0b97d21682dcd522ae84fc",
+      "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+      "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+      "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+      "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+      "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+      "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+      "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+      "tests/archive.rs": "be999a6fc796bcaf647083dc5f720b01f972d65fbf4d19b94f4eb462cb2090dd",
+      "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c"
+    },
+    "baseline_binary_sha256": {
+      "kestrel.exe": "865994928268ac76924585d10b70f907fa525f3d105695e088456b66602db3a0",
+      "kestrel-stress.exe": "a68c7e959db19562d1bad0a78dd1a20b08c8b4cd6558d62da0badf95132e238f",
+      "receipt-seed.exe": "c5cdb25a6481da75a148dad1c4bcc768de78de92870d1a47b4b560d139f25b88"
+    },
+    "origin": "Exact bytes from the verified immutable 0.3.6 release ZIP; current core matches before edits"
+  },
+  "storage_format": {
+    "catalog": "CAT4",
+    "segment": "SEG2",
+    "unchanged_from": "0.3.3"
+  },
+  "default_group_delay_ms": 0,
+  "default_retry_index_enabled": false,
+  "reference_servers_stopped": true,
+  "source_contract": {
+    "reserved_receipt_prefix": "ksrc1:",
+    "max_sources": 4096,
+    "global_receipt_limit": 100000,
+    "nonempty_output_required": true,
+    "additional_checkpoint_publications": 0,
+    "lease_fencing": false,
+    "source_reset": false,
+    "distributed_atomicity": false,
+    "automatic_retention": false
+  },
+  "current_evidence": {
+    "publication_comparison": "benchmarks/source-037-comparison.json",
+    "source_publication_failures_and_kills": "benchmarks/source-037-faults.json",
+    "parquet_pipeline": "portfolio/source-pipeline-037-results.json",
+    "sdk_demo": "benchmarks/source-037-demo.json",
+    "correctness_order": "benchmarks/correctness-037-run-order.json",
+    "initial_runner_failure": "benchmarks/source-037-initial-runner-failure.json"
+  },
+  "historical_evidence": "0.3.6 raw open-loop/embedded performance, SQL/recovery and large-scale reports remain historical; no current 7.85M/s or Facebook-scale claim",
+  "test_only_drivers": "publication/live-retry/source-fault *-037.exe contain fault hooks; source-pipeline/source-ingest-demo contain no hooks; supported CLI/bridge contain no hooks",
+  "qualification_limits": [
+    "shared desktop and unequal client interfaces; short repeated runs are descriptive",
+    "latency percentiles include successes only; all failed/unexecuted offers reported separately",
+    "all overload loss and slow service cases disclosed; generic scan gains do not qualify durable tails",
+    "BIGINT aggregate subset; no raw projection, joins, updates/deletes or SQL transactions in Archive",
+    "no native Arrow/Parquet SDK; Parquet demo reads sources through DuckDB",
+    "receipt capacity correctness tested at 100000 IDs; long unique-write endurance unqualified",
+    "queue/cache budgets exclude caller allocations, active pinned pages and OS caches",
+    "backup/retention/orphan cleanup, upgrades and disk exhaustion remain unqualified",
+    "physical power loss, Windows directory-entry durability and Linux execution unqualified",
+    "no distributed scale, replication or TAOBench/Facebook-scale qualification",
+    "optional window bounds intentional collection waiting, not OS scheduling, queueing or ACK/storage time",
+    "coalescing can regress low concurrency, retries and tail latency; default remains zero",
+    "one-minute screens and descriptive repeats do not establish long endurance",
+    "unchanged storage/query checks inherited from prior proof are not counted as new tests",
+    "confirmed retries use an extra bounded receipt map; logical counter excludes BTree nodes and allocator overhead",
+    "fast retry successes acknowledge only original committed generations; pending IDs still use writer",
+    "favorable combined retry percentiles can hide slow new writes; operation-specific tails and losses retained",
+    "eight-second 10K retry screens and descriptive repeats do not establish sustained capacity",
+    "PreparedBatch amortizes library hashing only for immutable embedded reuse; unknown IDs copy/hash again at publication",
+    "millions of confirmed retries per second ingest zero new rows; no SQL/network/write capacity claim",
+    "prepared payload memory belongs to the caller; logical bytes exclude spare capacity and allocator overhead",
+    "SourceArchive coordinates one archive output and source interval; external source/other sinks are not transactional",
+    "source receipt history cannot advance empty output, reset sources, fence stale consumers or evict receipts",
+    "source publication comparison uses sequential matched canonical IDs; no causal durable-write speed improvement or current req/s qualification",
+    "older/generic writers must not publish reserved source IDs; format interoperability does not enforce typed source semantics"
+  ]
+}

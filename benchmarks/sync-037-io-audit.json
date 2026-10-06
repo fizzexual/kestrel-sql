@@ -1,0 +1,65 @@
+{
+  "verified_at_utc": "2026-10-06T14:27:09.168893+00:00",
+  "completed_cases": 30,
+  "timed_operations": 2880,
+  "full_byte_comparisons_passed": true,
+  "builds_before_timing": true,
+  "engine_unchanged": true,
+  "core_version": "0.3.7",
+  "report_sha256": "98a2db1980d1cd1a542884ef60869ed24d62e492caa8c9139f8ab887648e47a3",
+  "groups": {
+    "3840/serial": {
+      "median_run_p50_ms": 2.2759,
+      "median_run_p95_ms": 29.973275,
+      "median_run_p99_ms": 39.66401999999999
+    },
+    "3840/write_both": {
+      "median_run_p50_ms": 2.30145,
+      "median_run_p95_ms": 65.3121,
+      "median_run_p99_ms": 106.63887999999994
+    },
+    "3840/parallel": {
+      "median_run_p50_ms": 2.3638,
+      "median_run_p95_ms": 97.89865,
+      "median_run_p99_ms": 111.863655
+    },
+    "3840/bundle": {
+      "median_run_p50_ms": 1.37975,
+      "median_run_p95_ms": 28.58315,
+      "median_run_p99_ms": 30.031239999999993
+    },
+    "3840/append": {
+      "median_run_p50_ms": 0.37965,
+      "median_run_p95_ms": 24.671625,
+      "median_run_p99_ms": 27.56997499999999
+    },
+    "262144/serial": {
+      "median_run_p50_ms": 28.44715,
+      "median_run_p95_ms": 44.197875,
+      "median_run_p99_ms": 62.91800999999977
+    },
+    "262144/write_both": {
+      "median_run_p50_ms": 29.5237,
+      "median_run_p95_ms": 45.25085,
+      "median_run_p99_ms": 69.52622499999998
+    },
+    "262144/parallel": {
+      "median_run_p50_ms": 29.68285,
+      "median_run_p95_ms": 73.990275,
+      "median_run_p99_ms": 115.63699999999982
+    },
+    "262144/bundle": {
+      "median_run_p50_ms": 28.2868,
+      "median_run_p95_ms": 54.26865,
+      "median_run_p99_ms": 108.38063999999991
+    },
+    "262144/append": {
+      "median_run_p50_ms": 26.22815,
+      "median_run_p95_ms": 31.74975,
+      "median_run_p99_ms": 54.44630499999988
+    }
+  },
+  "decision": "Reject parallel sync promotion: no consistent median benefit and worse median p99 in both byte-size groups. Append/bundle are diagnostic hypotheses; they are not a database format or durable-write claim. Define recovery, checksums, generation publication and pinned-reference reclamation before a bundled-file trial.",
+  "qualification": "shared Windows desktop; 96 operations per case; no SQL, receipt, power-loss or crash qualification in this I/O primitive experiment",
+  "next_trial_pending": true
+}

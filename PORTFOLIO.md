@@ -16,7 +16,7 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](benchmarks/nyc-results.json) |
 | Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](benchmarks/archive-verification.json) |
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
-| Engineering checks | 41 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
+| Engineering checks | 55 Rust tests pass in debug and release for 0.3.7; format and Clippy pass | [verification.json](verification.json) |
 | Retry availability | Opt-in confirmed retries validate independently of writer queueing; original receipts, bounded lookup memory, pending-ID races and fail-closed health; unsuccessful always-on trial preserved | [PERFORMANCE_035.md](PERFORMANCE_035.md) |
 | Coalescing policy | Same-binary 0/2/8 ms comparisons, collection diagnostics, explicit latency/loss tradeoffs and zero-delay default | [PERFORMANCE_034.md](PERFORMANCE_034.md) |
 | Receipt publication | 96.86% fewer catalog bytes in three alternating 50K-ID comparisons; bounded recovery and exact publication-cut checks | [PERFORMANCE_033.md](PERFORMANCE_033.md) |
