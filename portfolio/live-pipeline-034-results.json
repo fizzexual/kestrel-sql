@@ -1,0 +1,211 @@
+{
+  "engine_version": "0.3.4",
+  "binary_sha256": "def47e55daabd4756de08aa873c6d34d069cbca6af2e39baff88667dc051f67a",
+  "configured_group_delay_ms": 8,
+  "workflow": "two Parquet sources, durable source-hash/chunk IDs, each source replayed",
+  "initial_rows": 25000,
+  "late_backfill_rows": 5000,
+  "imports": [
+    {
+      "source_sha256": "65ea80a4c74f036a56541107f5c7ad9dac0cfb664e1730507f040eed7538dbbd",
+      "batches": 250,
+      "rows": 25000,
+      "duplicate_batches": 0
+    },
+    {
+      "source_sha256": "65ea80a4c74f036a56541107f5c7ad9dac0cfb664e1730507f040eed7538dbbd",
+      "batches": 250,
+      "rows": 25000,
+      "duplicate_batches": 250
+    },
+    {
+      "source_sha256": "842a69afe609de56b389a818c073ef0c7c1e391f8a6546b3bdfff978319ed8e7",
+      "batches": 50,
+      "rows": 5000,
+      "duplicate_batches": 0
+    },
+    {
+      "source_sha256": "842a69afe609de56b389a818c073ef0c7c1e391f8a6546b3bdfff978319ed8e7",
+      "batches": 50,
+      "rows": 5000,
+      "duplicate_batches": 50
+    }
+  ],
+  "exact_sql_cases_against_duckdb": 42,
+  "replayed_sources_not_duplicated": true,
+  "changed_content_rejected": true,
+  "window_before_backfill": [
+    [
+      2000,
+      -1000
+    ]
+  ],
+  "window_after_backfill": [
+    [
+      4000,
+      -2000
+    ]
+  ],
+  "late_data_correctly_changes_prior_metrics": true,
+  "full_scrub": {
+    "verified_bytes": 720000
+  },
+  "final_stats": {
+    "block_rows": 4096,
+    "catalog_chain_files": 21,
+    "generation": 85,
+    "ingest": {
+      "collected_groups": 1,
+      "collection_total_ms": 11.9534,
+      "committed_batches": 0,
+      "compaction_total_ms": 0.0,
+      "compactions": 0,
+      "duplicate_batches": 0,
+      "durable_group_commits": 0,
+      "flush_delay_ms": 8,
+      "group_delay_ns": 8000000,
+      "maintenance_errors": 0,
+      "max_group_requests": 1,
+      "publication_max_ms": 0.0423,
+      "publication_total_ms": 0.0423,
+      "queued_payload_bytes": 0
+    },
+    "logical_data_bytes": 720000,
+    "metadata_bytes": 21729,
+    "page_cache_hits": 641,
+    "page_cache_misses": 86,
+    "physical_bytes": 844095,
+    "publication_profile": {
+      "attempts": 0,
+      "catalog_bytes_published": 0,
+      "catalog_checkpoints": 0,
+      "catalog_deltas": 0,
+      "catalog_encode": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "catalog_rename": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "catalog_sync": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "catalog_write": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "completed": 0,
+      "prepare": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "replay_validation": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "segment_sync": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      },
+      "segment_write": {
+        "count": 0,
+        "histogram": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "max_ms": 0.0,
+        "total_ms": 0.0
+      }
+    },
+    "recorded_batch_ids": 300,
+    "retained_page_cache_bytes": 1245984,
+    "rows": 30000,
+    "segments": 53
+  },
+  "limits": "batch idempotency for this archive, not end-to-end exactly-once delivery; BIGINT metrics only"
+}

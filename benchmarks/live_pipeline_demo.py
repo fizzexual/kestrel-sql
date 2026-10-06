@@ -40,6 +40,7 @@ def import_file(engine,source):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
+    parser.add_argument('--group-delay-ms',type=int,choices=range(21),help='Optional coalescing policy for a 0.3.4+ bridge')
     parser.add_argument('--output',type=Path,default=ROOT/'portfolio'/'live-pipeline-results.json')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'live-pipeline-{time.time_ns()}')
     args=parser.parse_args()
@@ -51,8 +52,10 @@ def main():
     db.execute('CREATE TABLE late AS SELECT ((i*13)%5000)::BIGINT AS ts, ((i*11)%1000-500)::BIGINT AS "value", ((i*7)%97)::BIGINT AS device FROM range(5000) t(i)')
     db.execute('COPY base TO ? (FORMAT PARQUET)',[str(base)])
     db.execute('COPY late TO ? (FORMAT PARQUET)',[str(late)])
-    engine=Engine('kestrel',args.work/'store',0,args.binary.resolve(),{})
+    engine=Engine('kestrel',args.work/'store',0,args.binary.resolve(),{},
+        bridge_args=() if args.group_delay_ms is None else (args.group_delay_ms,))
     report={'engine_version':engine.version,'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
+        'configured_group_delay_ms':args.group_delay_ms,
         'workflow':'two Parquet sources, durable source-hash/chunk IDs, each source replayed',
         'initial_rows':25000,'late_backfill_rows':5000,'imports':[]}
     try:

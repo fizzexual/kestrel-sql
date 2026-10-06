@@ -5,12 +5,51 @@ use serde::Serialize;
 use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, RwLock, mpsc};
 use std::thread::{self, JoinHandle};
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
 const QUEUE_CAPACITY: usize = 256;
 const QUEUED_BYTES: usize = 64 * 1024 * 1024;
 const GROUP_REQUESTS: usize = 64;
 const BATCH_ROWS: usize = 10_000;
+const MAX_GROUP_DELAY: Duration = Duration::from_millis(20);
+
+/// Optional coalescing window before a synchronized publication. A nonzero
+/// window trades added low-load latency for fewer publications under concurrency.
+/// The deadline starts at the first received request and never slides. It bounds
+/// collection time, not queueing, operating-system scheduling or storage time.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct LiveOptions {
+    pub max_group_delay: Duration,
+}
+
+fn collect_group(
+    receiver: &mpsc::Receiver<Command>,
+    first: Command,
+    delay: Duration,
+) -> Vec<Command> {
+    let deadline = Instant::now() + delay;
+    let mut commands = vec![first];
+    while commands.len() < GROUP_REQUESTS {
+        if !delay.is_zero() && Instant::now() >= deadline {
+            break;
+        }
+        match receiver.try_recv() {
+            Ok(command) => commands.push(command),
+            Err(mpsc::TryRecvError::Disconnected) => break,
+            Err(mpsc::TryRecvError::Empty) => {
+                let remaining = deadline.saturating_duration_since(Instant::now());
+                if remaining.is_zero() {
+                    break;
+                }
+                match receiver.recv_timeout(remaining) {
+                    Ok(command) => commands.push(command),
+                    Err(_) => break,
+                }
+            }
+        }
+    }
+    commands
+}
 
 #[derive(Default)]
 struct Counters {
@@ -23,6 +62,9 @@ struct Counters {
     publication_ns: AtomicU64,
     max_publication_ns: AtomicU64,
     compaction_ns: AtomicU64,
+    collection_ns: AtomicU64,
+    collected_groups: AtomicU64,
+    max_group_requests: AtomicUsize,
 }
 
 #[derive(Debug, Serialize)]
@@ -34,9 +76,13 @@ pub struct LiveStats {
     pub compactions: u64,
     pub maintenance_errors: u64,
     pub flush_delay_ms: u64,
+    pub group_delay_ns: u64,
     pub publication_total_ms: f64,
     pub publication_max_ms: f64,
     pub compaction_total_ms: f64,
+    pub collection_total_ms: f64,
+    pub collected_groups: u64,
+    pub max_group_requests: usize,
 }
 
 struct Command {
@@ -50,6 +96,7 @@ struct Inner {
     counters: Arc<Counters>,
     writer: Option<JoinHandle<()>>,
     columns: usize,
+    options: LiveOptions,
 }
 impl Drop for Inner {
     fn drop(&mut self) {
@@ -68,7 +115,14 @@ pub struct LiveArchive {
 }
 
 impl LiveArchive {
-    pub fn new(mut archive: Archive) -> Result<Self> {
+    pub fn new(archive: Archive) -> Result<Self> {
+        Self::with_options(archive, LiveOptions::default())
+    }
+
+    pub fn with_options(mut archive: Archive, options: LiveOptions) -> Result<Self> {
+        if options.max_group_delay > MAX_GROUP_DELAY {
+            return Err(Error::new("live group delay must be at most 20 ms"));
+        }
         let initial = archive.snapshot()?;
         let columns = initial.columns().len();
         let reader = Arc::new(RwLock::new(Arc::new(initial)));
@@ -80,13 +134,16 @@ impl LiveArchive {
             .name("kestrel-ingest".into())
             .spawn(move || {
                 while let Ok(first) = receiver.recv() {
-                    let mut commands = vec![first];
-                    while commands.len() < GROUP_REQUESTS {
-                        match receiver.try_recv() {
-                            Ok(command) => commands.push(command),
-                            Err(_) => break,
-                        }
-                    }
+                    let started = Instant::now();
+                    let commands = collect_group(&receiver, first, options.max_group_delay);
+                    metrics.collection_ns.fetch_add(
+                        started.elapsed().as_nanos().min(u64::MAX as u128) as u64,
+                        Ordering::Relaxed,
+                    );
+                    metrics.collected_groups.fetch_add(1, Ordering::Relaxed);
+                    metrics
+                        .max_group_requests
+                        .fetch_max(commands.len(), Ordering::Relaxed);
                     // At most 64 * 10K rows. Width/byte limits are checked atomically
                     // by append_group; every member fails if the group is invalid.
                     let mut replies = Vec::new();
@@ -174,6 +231,7 @@ impl LiveArchive {
                 counters,
                 writer: Some(writer),
                 columns,
+                options,
             }),
         })
     }
@@ -246,10 +304,46 @@ impl LiveArchive {
             duplicate_batches: c.duplicate_batches.load(Ordering::Relaxed),
             compactions: c.compactions.load(Ordering::Relaxed),
             maintenance_errors: c.maintenance_errors.load(Ordering::Relaxed),
-            flush_delay_ms: 0,
+            flush_delay_ms: self.inner.options.max_group_delay.as_millis() as u64,
+            group_delay_ns: self.inner.options.max_group_delay.as_nanos() as u64,
             publication_total_ms: c.publication_ns.load(Ordering::Relaxed) as f64 / 1e6,
             publication_max_ms: c.max_publication_ns.load(Ordering::Relaxed) as f64 / 1e6,
             compaction_total_ms: c.compaction_ns.load(Ordering::Relaxed) as f64 / 1e6,
+            collection_total_ms: c.collection_ns.load(Ordering::Relaxed) as f64 / 1e6,
+            collected_groups: c.collected_groups.load(Ordering::Relaxed),
+            max_group_requests: c.max_group_requests.load(Ordering::Relaxed),
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn command() -> Command {
+        Command {
+            batch: IngestBatch {
+                id: None,
+                columns: vec![vec![1]],
+            },
+            bytes: 8,
+            reply: mpsc::channel().0,
+        }
+    }
+
+    #[test]
+    fn collection_caps_groups_and_drains_a_closed_queue() {
+        for delay in [Duration::ZERO, MAX_GROUP_DELAY] {
+            let (sender, receiver) = mpsc::sync_channel(QUEUE_CAPACITY);
+            for _ in 0..65 {
+                sender.send(command()).unwrap();
+            }
+            drop(sender);
+            let first = receiver.recv().unwrap();
+            assert_eq!(collect_group(&receiver, first, delay).len(), GROUP_REQUESTS);
+            let first = receiver.recv().unwrap();
+            assert_eq!(collect_group(&receiver, first, delay).len(), 1);
+            assert!(receiver.recv().is_err());
         }
     }
 }

@@ -18,10 +18,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = ROOT.parent.parent
 VERSION = tomllib.loads((ROOT / 'Cargo.toml').read_text(encoding='utf-8'))['package']['version']
-assert VERSION in ['0.3.1', '0.3.2', '0.3.3'], 'Add explicit qualification gates for this release'
+assert VERSION in ['0.3.1', '0.3.2', '0.3.3', '0.3.4'], 'Add explicit qualification gates for this release'
 TAG = VERSION.replace('.', '')
-TESTS = {'0.3.1': 31, '0.3.2': 32, '0.3.3':35}[VERSION]
-BASELINE_VERSION = {'0.3.1':'0.3', '0.3.2':'0.3.1', '0.3.3':'0.3.2'}[VERSION]
+TESTS = {'0.3.1': 31, '0.3.2': 32, '0.3.3':35, '0.3.4':38}[VERSION]
+BASELINE_VERSION = {'0.3.1':'0.3', '0.3.2':'0.3.1', '0.3.3':'0.3.2', '0.3.4':'0.3.3'}[VERSION]
 PACKAGE = ROOT.parent / f'kestrel-sql-{VERSION}.zip'
 
 
@@ -34,6 +34,9 @@ def read(name):
 
 
 def main():
+    if VERSION == '0.3.4':
+        from package_034 import main as package_policy_release
+        return package_policy_release()
     for port in [55439, 53329, 53319, 33060]:
         with socket.socket() as probe:
             probe.settimeout(.5)

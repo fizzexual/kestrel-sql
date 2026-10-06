@@ -1,0 +1,1863 @@
+{
+  "base_rows": 1000000,
+  "prefill_receipt_ids": 50000,
+  "methodology": "paced open-loop common harness; scheduled-arrival latency; 256-slot client queue; 2s expiry; 8s socket timeout; independent fresh fixture per case; 100-row durable appends; order rotates each round; fixture seed/scrub, reconciliation and sample compression outside load; no compilation or heavy overlap; success percentiles and all offer losses retained; shared Windows desktop",
+  "policy_ms": {
+    "delay0": 0,
+    "delay8": 8
+  },
+  "binary_sha256": {
+    "baseline": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
+    "candidate": "def47e55daabd4756de08aa873c6d34d069cbca6af2e39baff88667dc051f67a"
+  },
+  "seed_binary_sha256": {
+    "baseline": "e90368a2153a5fd4f36141cc35a42e38de7ce1dbd21f8bfd7607fd469b4f2149",
+    "candidate": "0030ab1926bbc713b96b3d6eaa2ccdb8d935d9d9d668158a84c0bc5a20777d34"
+  },
+  "cases": [
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 281494543641000,
+      "offered_rps": 2000,
+      "scheduled_seconds": 60,
+      "offered_operations": 120000,
+      "offered_wall_seconds": 60.00042,
+      "including_drain_seconds": 60.0231838,
+      "successful_operations": 120000,
+      "completed_in_arrival_window": 119996,
+      "successful_rps_in_arrival_window": 1999.9333333333334,
+      "successful_rps_including_drain": 1999.2275051560994,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.992075,
+      "latency_ms": {
+        "p50": 1.4207,
+        "p95": 4.043,
+        "p99": 79.8179,
+        "max": 643.9906
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4213,
+        "p99": 1.0441,
+        "max": 12.5447
+      },
+      "write_batch_rows": 100,
+      "read_successes": 113947,
+      "write_successes": 6053,
+      "inserted_rows_acknowledged": 605300,
+      "expired_sequences": [],
+      "setup_seconds": 0.1342337999958545,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 2958,
+        "ingest": {
+          "collected_groups": 2867,
+          "collection_total_ms": 6.7377,
+          "committed_batches": 6053,
+          "compaction_total_ms": 4265.3938,
+          "compactions": 90,
+          "duplicate_batches": 0,
+          "durable_group_commits": 2867,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 58,
+          "publication_max_ms": 560.8565,
+          "publication_total_ms": 39485.6903,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 38527200,
+        "metadata_bytes": 76242,
+        "page_cache_hits": 1194453,
+        "page_cache_misses": 16375,
+        "physical_bytes": 38655280,
+        "publication_profile": {
+          "attempts": 2958,
+          "catalog_bytes_published": 6049024,
+          "catalog_checkpoints": 2958,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 2958,
+            "histogram": [
+              2955,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.1646,
+            "total_ms": 36.590699999999956
+          },
+          "catalog_rename": {
+            "count": 2958,
+            "histogram": [
+              0,
+              2896,
+              50,
+              5,
+              4,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 225.68849999999998,
+            "total_ms": 2697.9003
+          },
+          "catalog_sync": {
+            "count": 2958,
+            "histogram": [
+              0,
+              1833,
+              768,
+              22,
+              325,
+              10,
+              0,
+              0
+            ],
+            "max_ms": 464.5551,
+            "total_ms": 15415.413199999988
+          },
+          "catalog_write": {
+            "count": 2958,
+            "histogram": [
+              0,
+              2904,
+              31,
+              7,
+              12,
+              4,
+              0,
+              0
+            ],
+            "max_ms": 240.63899999999998,
+            "total_ms": 2951.212799999998
+          },
+          "completed": 2958,
+          "prepare": {
+            "count": 2958,
+            "histogram": [
+              2671,
+              202,
+              82,
+              2,
+              1,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 21.3074,
+            "total_ms": 394.4132000000003
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 2958,
+            "histogram": [
+              0,
+              1549,
+              997,
+              71,
+              326,
+              14,
+              1,
+              0
+            ],
+            "max_ms": 587.8955,
+            "total_ms": 17371.766499999976
+          },
+          "segment_write": {
+            "count": 2958,
+            "histogram": [
+              0,
+              2819,
+              106,
+              13,
+              13,
+              7,
+              0,
+              0
+            ],
+            "max_ms": 384.6732,
+            "total_ms": 3958.001199999994
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33472320,
+        "rows": 1605300,
+        "segments": 78
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0135,
+          "total_ms": 0.0135
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.39809999999999995,
+          "total_ms": 0.39809999999999995
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 1.2366,
+          "total_ms": 1.2366
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.5028,
+          "total_ms": 0.5028
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 21.3074,
+          "total_ms": 21.3074
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 49.1775,
+          "total_ms": 49.1775
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 24.7496,
+          "total_ms": 24.7496
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "group_delay_ns": 0,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1605300,
+        "acknowledged_batches": 6053,
+        "published_batches": 6053,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 38527200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9991,
+          "latency_p99_ms": 25.3677
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 10006,
+          "latency_p99_ms": 34.3422
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9999,
+          "latency_p99_ms": 43.8938
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 10001,
+          "latency_p99_ms": 30.1702
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 9998,
+          "latency_p99_ms": 45.8746
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 9999,
+          "latency_p99_ms": 146.2532
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 9994,
+          "latency_p99_ms": 80.9174
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 10008,
+          "latency_p99_ms": 106.3969
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 9966,
+          "latency_p99_ms": 106.5768
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 10036,
+          "latency_p99_ms": 127.6258
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 9995,
+          "latency_p99_ms": 151.0918
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 10003,
+          "latency_p99_ms": 101.5434
+        }
+      ],
+      "variant": "delay0",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": 0,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 281495518990800,
+            "host_cpu_busy_percent": 22.85491419656786,
+            "physical_available_bytes": 11918098432,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281496532313700,
+            "host_cpu_busy_percent": 22.46153846153846,
+            "physical_available_bytes": 11924385792,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281497545544500,
+            "host_cpu_busy_percent": 46.61538461538461,
+            "physical_available_bytes": 11733950464,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281498547058500,
+            "host_cpu_busy_percent": 67.734375,
+            "physical_available_bytes": 11614846976,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281499554630900,
+            "host_cpu_busy_percent": 66.23076923076923,
+            "physical_available_bytes": 11741646848,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281500560763000,
+            "host_cpu_busy_percent": 50.234375,
+            "physical_available_bytes": 11813257216,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281501575960000,
+            "host_cpu_busy_percent": 26.307692307692307,
+            "physical_available_bytes": 11880316928,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281502581222200,
+            "host_cpu_busy_percent": 43.90625,
+            "physical_available_bytes": 11803037696,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281503584325700,
+            "host_cpu_busy_percent": 51.69230769230769,
+            "physical_available_bytes": 11758542848,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281504594667600,
+            "host_cpu_busy_percent": 52.734375,
+            "physical_available_bytes": 11777740800,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281505599858400,
+            "host_cpu_busy_percent": 39.46153846153846,
+            "physical_available_bytes": 11664330752,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281506605953700,
+            "host_cpu_busy_percent": 55.15625,
+            "physical_available_bytes": 11678498816,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281507608485800,
+            "host_cpu_busy_percent": 61.09375,
+            "physical_available_bytes": 11771523072,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281508622393100,
+            "host_cpu_busy_percent": 86.53846153846153,
+            "physical_available_bytes": 11466067968,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281509630147100,
+            "host_cpu_busy_percent": 61.0,
+            "physical_available_bytes": 11630010368,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281510640172800,
+            "host_cpu_busy_percent": 86.25,
+            "physical_available_bytes": 11544915968,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281511650410500,
+            "host_cpu_busy_percent": 74.6923076923077,
+            "physical_available_bytes": 11490889728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281512660539300,
+            "host_cpu_busy_percent": 53.513513513513516,
+            "physical_available_bytes": 11565764608,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281513673240100,
+            "host_cpu_busy_percent": 56.731517509727624,
+            "physical_available_bytes": 11561328640,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281514682872500,
+            "host_cpu_busy_percent": 61.15384615384615,
+            "physical_available_bytes": 11342868480,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281515696517800,
+            "host_cpu_busy_percent": 84.38461538461539,
+            "physical_available_bytes": 11178270720,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281516707971000,
+            "host_cpu_busy_percent": 88.15384615384616,
+            "physical_available_bytes": 11367219200,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281517717533200,
+            "host_cpu_busy_percent": 85.078125,
+            "physical_available_bytes": 11238318080,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281518727272200,
+            "host_cpu_busy_percent": 76.53846153846153,
+            "physical_available_bytes": 11601633280,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281519734245200,
+            "host_cpu_busy_percent": 52.96875,
+            "physical_available_bytes": 11528298496,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281520748825500,
+            "host_cpu_busy_percent": 78.15384615384616,
+            "physical_available_bytes": 11448492032,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281521755740800,
+            "host_cpu_busy_percent": 67.53846153846153,
+            "physical_available_bytes": 11180457984,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281522759753900,
+            "host_cpu_busy_percent": 64.6875,
+            "physical_available_bytes": 11460362240,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281523766568800,
+            "host_cpu_busy_percent": 46.953125,
+            "physical_available_bytes": 11009114112,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281524775963700,
+            "host_cpu_busy_percent": 51.61538461538461,
+            "physical_available_bytes": 10733080576,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281525776382700,
+            "host_cpu_busy_percent": 53.828125,
+            "physical_available_bytes": 10563084288,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281526784395900,
+            "host_cpu_busy_percent": 63.90625,
+            "physical_available_bytes": 10559234048,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281527786800300,
+            "host_cpu_busy_percent": 73.07692307692308,
+            "physical_available_bytes": 10470088704,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281528797902900,
+            "host_cpu_busy_percent": 91.875,
+            "physical_available_bytes": 10415435776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281529813147600,
+            "host_cpu_busy_percent": 92.38461538461539,
+            "physical_available_bytes": 10404794368,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281530821922100,
+            "host_cpu_busy_percent": 68.15384615384616,
+            "physical_available_bytes": 10325368832,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281531822438600,
+            "host_cpu_busy_percent": 64.140625,
+            "physical_available_bytes": 10254700544,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281532836296600,
+            "host_cpu_busy_percent": 50.07692307692308,
+            "physical_available_bytes": 10016624640,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281533842435500,
+            "host_cpu_busy_percent": 73.90625,
+            "physical_available_bytes": 10072018944,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281534847446700,
+            "host_cpu_busy_percent": 57.07692307692308,
+            "physical_available_bytes": 10068594688,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281535860667800,
+            "host_cpu_busy_percent": 64.375,
+            "physical_available_bytes": 9940922368,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281536872601000,
+            "host_cpu_busy_percent": 87.46177370030581,
+            "physical_available_bytes": 10082705408,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281537881496100,
+            "host_cpu_busy_percent": 89.47368421052632,
+            "physical_available_bytes": 10197221376,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281538892394600,
+            "host_cpu_busy_percent": 94.375,
+            "physical_available_bytes": 10222919680,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281539907971000,
+            "host_cpu_busy_percent": 67.6923076923077,
+            "physical_available_bytes": 10212319232,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281540915756800,
+            "host_cpu_busy_percent": 59.15384615384615,
+            "physical_available_bytes": 10174918656,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281541930060500,
+            "host_cpu_busy_percent": 82.07692307692308,
+            "physical_available_bytes": 10206846976,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281542941607700,
+            "host_cpu_busy_percent": 75.46875,
+            "physical_available_bytes": 10229432320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281543953271000,
+            "host_cpu_busy_percent": 72.6923076923077,
+            "physical_available_bytes": 10207354880,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281544961250900,
+            "host_cpu_busy_percent": 62.0,
+            "physical_available_bytes": 10208313344,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281545971332200,
+            "host_cpu_busy_percent": 74.375,
+            "physical_available_bytes": 10130771968,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281546984623300,
+            "host_cpu_busy_percent": 75.84615384615384,
+            "physical_available_bytes": 10207588352,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281547995368000,
+            "host_cpu_busy_percent": 64.61538461538461,
+            "physical_available_bytes": 10153848832,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281548999489400,
+            "host_cpu_busy_percent": 65.3125,
+            "physical_available_bytes": 10247487488,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281550008400000,
+            "host_cpu_busy_percent": 58.23076923076923,
+            "physical_available_bytes": 9978040320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281551017225300,
+            "host_cpu_busy_percent": 50.625,
+            "physical_available_bytes": 9741672448,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281552024893100,
+            "host_cpu_busy_percent": 65.84615384615384,
+            "physical_available_bytes": 9513476096,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281553034643300,
+            "host_cpu_busy_percent": 62.578125,
+            "physical_available_bytes": 9337192448,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281554035758200,
+            "host_cpu_busy_percent": 51.857585139318886,
+            "physical_available_bytes": 9276960768,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 1.3902,
+        "p95": 2.1636,
+        "p99": 2.5333
+      },
+      "append_latency_ms": {
+        "p50": 31.2539,
+        "p95": 249.5936,
+        "p99": 471.9773
+      },
+      "load_group_commits": 2867,
+      "batches_per_durable_group": 2.1112661318451345,
+      "raw_samples_file": "perf-034-soak-samples\\delay0-anonymous-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 281565578828100,
+      "offered_rps": 2000,
+      "scheduled_seconds": 60,
+      "offered_operations": 120000,
+      "offered_wall_seconds": 59.9996926,
+      "including_drain_seconds": 60.0191048,
+      "successful_operations": 111700,
+      "completed_in_arrival_window": 111693,
+      "successful_rps_in_arrival_window": 1861.55,
+      "successful_rps_including_drain": 1861.0740758665897,
+      "errors": [],
+      "queue_dropped": 8044,
+      "queue_expired": 256,
+      "unsuccessful_or_unexecuted": 8300,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.918925,
+      "latency_ms": {
+        "p50": 1.447,
+        "p95": 14.6133,
+        "p99": 195.7172,
+        "max": 3629.6727
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.4147,
+        "p99": 1.6291,
+        "max": 26.6515
+      },
+      "write_batch_rows": 100,
+      "read_successes": 106092,
+      "write_successes": 5608,
+      "inserted_rows_acknowledged": 560800,
+      "expired_sequences": [
+        32544,
+        32545,
+        32546,
+        32547,
+        32548,
+        32549,
+        32550,
+        32551,
+        32552,
+        32553,
+        32554,
+        32555,
+        32556,
+        32557,
+        32558,
+        32559,
+        32560,
+        32561,
+        32562,
+        32563,
+        32564,
+        32565,
+        32566,
+        32567,
+        32568,
+        32569,
+        32570,
+        32571,
+        32572,
+        32573,
+        32574,
+        32575,
+        32576,
+        32577,
+        32578,
+        32579,
+        32580,
+        32581,
+        32582,
+        32583,
+        32584,
+        32585,
+        32586,
+        32587,
+        32588,
+        32589,
+        32590,
+        32591,
+        32592,
+        32593,
+        32594,
+        32595,
+        32596,
+        32597,
+        32598,
+        32599,
+        32600,
+        32601,
+        32602,
+        32603,
+        32604,
+        32605,
+        32606,
+        32607,
+        32608,
+        32609,
+        32610,
+        32611,
+        32612,
+        32613,
+        32614,
+        32615,
+        32616,
+        32617,
+        32618,
+        32619,
+        32620,
+        32621,
+        32622,
+        32623,
+        32624,
+        32625,
+        32626,
+        32627,
+        32628,
+        32629,
+        32630,
+        32631,
+        32632,
+        32633,
+        32634,
+        32635,
+        32636,
+        32637,
+        32638,
+        32639,
+        32640,
+        32641,
+        32642,
+        32643,
+        32644,
+        32645,
+        32646,
+        32647,
+        32648,
+        32649,
+        32650,
+        32651,
+        32652,
+        32653,
+        32654,
+        32655,
+        32656,
+        32657,
+        32658,
+        32659,
+        32660,
+        32661,
+        32662,
+        32663,
+        32664,
+        32665,
+        32666,
+        32667,
+        32668,
+        32669,
+        32670,
+        32671,
+        32672,
+        32673,
+        32674,
+        32675,
+        32676,
+        32677,
+        32678,
+        32679,
+        32680,
+        32681,
+        32682,
+        32683,
+        32684,
+        32685,
+        32686,
+        32687,
+        32688,
+        32689,
+        32690,
+        32691,
+        32692,
+        32693,
+        32694,
+        32695,
+        32696,
+        32697,
+        32698,
+        32699,
+        32700,
+        32701,
+        32702,
+        32703,
+        32704,
+        32705,
+        32706,
+        32707,
+        32708,
+        32709,
+        32710,
+        32711,
+        32712,
+        32713,
+        32714,
+        32715,
+        32716,
+        32717,
+        32718,
+        32719,
+        32720,
+        32721,
+        32722,
+        32723,
+        32724,
+        32725,
+        32726,
+        32727,
+        32728,
+        32729,
+        32730,
+        32731,
+        32732,
+        32733,
+        32734,
+        32735,
+        32736,
+        32737,
+        32738,
+        32739,
+        32740,
+        32741,
+        32742,
+        32743,
+        32744,
+        32745,
+        32746,
+        32747,
+        32748,
+        32749,
+        32750,
+        32751,
+        32752,
+        32753,
+        32754,
+        32755,
+        32756,
+        32757,
+        32758,
+        32759,
+        32760,
+        32761,
+        32762,
+        32763,
+        32764,
+        32765,
+        32766,
+        32767,
+        32768,
+        32769,
+        32770,
+        32771,
+        32772,
+        32773,
+        32774,
+        32775,
+        32776,
+        32777,
+        32778,
+        32779,
+        32780,
+        32781,
+        32782,
+        32783,
+        32784,
+        32785,
+        32786,
+        32787,
+        32788,
+        32789,
+        32790,
+        32791,
+        32792,
+        32793,
+        32794,
+        32795,
+        32796,
+        32797,
+        32798,
+        32799
+      ],
+      "setup_seconds": 2.588743300002534,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 1577,
+        "ingest": {
+          "collected_groups": 1529,
+          "collection_total_ms": 19457.941,
+          "committed_batches": 5608,
+          "compaction_total_ms": 3426.9638,
+          "compactions": 47,
+          "duplicate_batches": 0,
+          "durable_group_commits": 1529,
+          "flush_delay_ms": 8,
+          "group_delay_ns": 8000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 63,
+          "publication_max_ms": 2714.4633,
+          "publication_total_ms": 29291.8179,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 37459200,
+        "metadata_bytes": 72761,
+        "page_cache_hits": 1126204,
+        "page_cache_misses": 15292,
+        "physical_bytes": 37591616,
+        "publication_profile": {
+          "attempts": 1577,
+          "catalog_bytes_published": 3193992,
+          "catalog_checkpoints": 1577,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 1577,
+            "histogram": [
+              1577,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0926,
+            "total_ms": 20.222599999999993
+          },
+          "catalog_rename": {
+            "count": 1577,
+            "histogram": [
+              0,
+              1539,
+              37,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            "max_ms": 531.7775,
+            "total_ms": 1594.2393000000002
+          },
+          "catalog_sync": {
+            "count": 1577,
+            "histogram": [
+              0,
+              1187,
+              77,
+              18,
+              286,
+              8,
+              0,
+              1
+            ],
+            "max_ms": 1475.9191999999998,
+            "total_ms": 12618.008499999996
+          },
+          "catalog_write": {
+            "count": 1577,
+            "histogram": [
+              0,
+              1558,
+              13,
+              1,
+              3,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 443.5272,
+            "total_ms": 1519.7244999999994
+          },
+          "completed": 1577,
+          "prepare": {
+            "count": 1577,
+            "histogram": [
+              1285,
+              245,
+              41,
+              5,
+              1,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 35.785,
+            "total_ms": 298.28999999999996
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 1577,
+            "histogram": [
+              0,
+              1081,
+              165,
+              68,
+              247,
+              11,
+              4,
+              1
+            ],
+            "max_ms": 2409.7175,
+            "total_ms": 16929.45469999999
+          },
+          "segment_write": {
+            "count": 1577,
+            "histogram": [
+              0,
+              1502,
+              68,
+              2,
+              3,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 479.23310000000004,
+            "total_ms": 2014.245100000001
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33472320,
+        "rows": 1560800,
+        "segments": 73
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.009300000000000001,
+          "total_ms": 0.009300000000000001
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.5337999999999999,
+          "total_ms": 0.5337999999999999
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 1.1098,
+          "total_ms": 1.1098
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 42.3362,
+          "total_ms": 42.3362
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 35.785,
+          "total_ms": 35.785
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "max_ms": 2409.7175,
+          "total_ms": 2409.7175
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 34.0146,
+          "total_ms": 34.0146
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 8,
+        "group_delay_ns": 8000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1560800,
+        "acknowledged_batches": 5608,
+        "published_batches": 5608,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 37459200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9993,
+          "latency_p99_ms": 43.0986
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 10004,
+          "latency_p99_ms": 45.6254
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9996,
+          "latency_p99_ms": 44.0169
+        },
+        {
+          "seconds_from_start": 15,
+          "successful_operations": 4196,
+          "latency_p99_ms": 2914.6764
+        },
+        {
+          "seconds_from_start": 20,
+          "successful_operations": 10000,
+          "latency_p99_ms": 81.2281
+        },
+        {
+          "seconds_from_start": 25,
+          "successful_operations": 10000,
+          "latency_p99_ms": 43.6511
+        },
+        {
+          "seconds_from_start": 30,
+          "successful_operations": 10000,
+          "latency_p99_ms": 48.0959
+        },
+        {
+          "seconds_from_start": 35,
+          "successful_operations": 10002,
+          "latency_p99_ms": 46.5076
+        },
+        {
+          "seconds_from_start": 40,
+          "successful_operations": 10001,
+          "latency_p99_ms": 57.3709
+        },
+        {
+          "seconds_from_start": 45,
+          "successful_operations": 7782,
+          "latency_p99_ms": 1148.8726
+        },
+        {
+          "seconds_from_start": 50,
+          "successful_operations": 9722,
+          "latency_p99_ms": 334.1243
+        },
+        {
+          "seconds_from_start": 55,
+          "successful_operations": 9997,
+          "latency_p99_ms": 75.1786
+        }
+      ],
+      "variant": "delay8",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": 8,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 281566513578300,
+            "host_cpu_busy_percent": 80.93023255813954,
+            "physical_available_bytes": 9826525184,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281567524589000,
+            "host_cpu_busy_percent": 69.23076923076923,
+            "physical_available_bytes": 10139697152,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281568530706100,
+            "host_cpu_busy_percent": 62.96875,
+            "physical_available_bytes": 10620301312,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281569536272800,
+            "host_cpu_busy_percent": 55.0,
+            "physical_available_bytes": 10660716544,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281570548480300,
+            "host_cpu_busy_percent": 86.953125,
+            "physical_available_bytes": 10582630400,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281571559501500,
+            "host_cpu_busy_percent": 64.07692307692308,
+            "physical_available_bytes": 10607661056,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281572571570000,
+            "host_cpu_busy_percent": 83.38461538461539,
+            "physical_available_bytes": 10615590912,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281573582215900,
+            "host_cpu_busy_percent": 39.21875,
+            "physical_available_bytes": 10660790272,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281574590820300,
+            "host_cpu_busy_percent": 48.53846153846154,
+            "physical_available_bytes": 10664669184,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281575598597700,
+            "host_cpu_busy_percent": 45.76923076923077,
+            "physical_available_bytes": 10653593600,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281576609103500,
+            "host_cpu_busy_percent": 53.28125,
+            "physical_available_bytes": 11469930496,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281577624318100,
+            "host_cpu_busy_percent": 84.07692307692308,
+            "physical_available_bytes": 11065372672,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281578634161100,
+            "host_cpu_busy_percent": 76.23076923076923,
+            "physical_available_bytes": 11127861248,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281579646809700,
+            "host_cpu_busy_percent": 66.61538461538461,
+            "physical_available_bytes": 10930319360,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281580661315100,
+            "host_cpu_busy_percent": 63.30769230769231,
+            "physical_available_bytes": 10894123008,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281581673060400,
+            "host_cpu_busy_percent": 55.3125,
+            "physical_available_bytes": 10747371520,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281582681781600,
+            "host_cpu_busy_percent": 42.15384615384615,
+            "physical_available_bytes": 10606411776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281583695858900,
+            "host_cpu_busy_percent": 66.92307692307692,
+            "physical_available_bytes": 10560606208,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281584705409300,
+            "host_cpu_busy_percent": 37.109375,
+            "physical_available_bytes": 10458185728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281585712092700,
+            "host_cpu_busy_percent": 51.15384615384615,
+            "physical_available_bytes": 10451628032,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281586718585400,
+            "host_cpu_busy_percent": 43.125,
+            "physical_available_bytes": 10866282496,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281587729488900,
+            "host_cpu_busy_percent": 45.69230769230769,
+            "physical_available_bytes": 10813779968,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281588732641200,
+            "host_cpu_busy_percent": 43.515625,
+            "physical_available_bytes": 10794618880,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281589740421300,
+            "host_cpu_busy_percent": 49.92307692307692,
+            "physical_available_bytes": 10612109312,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281590748978000,
+            "host_cpu_busy_percent": 52.578125,
+            "physical_available_bytes": 10441531392,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281591752252300,
+            "host_cpu_busy_percent": 62.8125,
+            "physical_available_bytes": 10354839552,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281592762574800,
+            "host_cpu_busy_percent": 51.76923076923077,
+            "physical_available_bytes": 10073493504,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281593768598600,
+            "host_cpu_busy_percent": 50.390625,
+            "physical_available_bytes": 9979146240,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281594784637400,
+            "host_cpu_busy_percent": 59.84615384615385,
+            "physical_available_bytes": 9908056064,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281595794036400,
+            "host_cpu_busy_percent": 91.84615384615384,
+            "physical_available_bytes": 9614491648,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281596802933700,
+            "host_cpu_busy_percent": 86.23076923076923,
+            "physical_available_bytes": 9572532224,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281597803577900,
+            "host_cpu_busy_percent": 68.28125,
+            "physical_available_bytes": 9532174336,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281598816668000,
+            "host_cpu_busy_percent": 72.65625,
+            "physical_available_bytes": 9388392448,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281599824436000,
+            "host_cpu_busy_percent": 60.15384615384615,
+            "physical_available_bytes": 9354936320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281600832197300,
+            "host_cpu_busy_percent": 66.640625,
+            "physical_available_bytes": 9286766592,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281601842993400,
+            "host_cpu_busy_percent": 72.92307692307692,
+            "physical_available_bytes": 9186193408,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281602844273200,
+            "host_cpu_busy_percent": 58.75,
+            "physical_available_bytes": 9042763776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281603858600200,
+            "host_cpu_busy_percent": 67.6923076923077,
+            "physical_available_bytes": 8993243136,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281604864684400,
+            "host_cpu_busy_percent": 90.76923076923077,
+            "physical_available_bytes": 8750403584,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281605876500600,
+            "host_cpu_busy_percent": 90.546875,
+            "physical_available_bytes": 8823439360,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281606879429500,
+            "host_cpu_busy_percent": 88.125,
+            "physical_available_bytes": 8610775040,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281607889390800,
+            "host_cpu_busy_percent": 75.38461538461539,
+            "physical_available_bytes": 8422584320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281608901295500,
+            "host_cpu_busy_percent": 74.53846153846153,
+            "physical_available_bytes": 8281247744,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281609908921300,
+            "host_cpu_busy_percent": 91.640625,
+            "physical_available_bytes": 8851496960,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281610919232400,
+            "host_cpu_busy_percent": 97.76923076923077,
+            "physical_available_bytes": 9981943808,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281611928850300,
+            "host_cpu_busy_percent": 76.07692307692308,
+            "physical_available_bytes": 9784631296,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281612940737000,
+            "host_cpu_busy_percent": 90.703125,
+            "physical_available_bytes": 9404915712,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281613955577700,
+            "host_cpu_busy_percent": 73.23076923076923,
+            "physical_available_bytes": 9343938560,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281614955984200,
+            "host_cpu_busy_percent": 45.3125,
+            "physical_available_bytes": 9425207296,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281615964450900,
+            "host_cpu_busy_percent": 33.76923076923077,
+            "physical_available_bytes": 9426452480,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281616965033200,
+            "host_cpu_busy_percent": 60.390625,
+            "physical_available_bytes": 9078243328,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281617979053900,
+            "host_cpu_busy_percent": 72.46153846153847,
+            "physical_available_bytes": 8921161728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281618986199600,
+            "host_cpu_busy_percent": 95.0,
+            "physical_available_bytes": 9062674432,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281619999951900,
+            "host_cpu_busy_percent": 99.6923076923077,
+            "physical_available_bytes": 9092694016,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281621013693800,
+            "host_cpu_busy_percent": 97.07692307692308,
+            "physical_available_bytes": 8789004288,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281622021224200,
+            "host_cpu_busy_percent": 89.53846153846153,
+            "physical_available_bytes": 8799522816,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281623035741100,
+            "host_cpu_busy_percent": 69.765625,
+            "physical_available_bytes": 8805330944,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281624042287200,
+            "host_cpu_busy_percent": 62.30769230769231,
+            "physical_available_bytes": 8686583808,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 281625055406900,
+            "host_cpu_busy_percent": 59.38461538461539,
+            "physical_available_bytes": 8822505472,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 1.4191,
+        "p95": 2.3342,
+        "p99": 15.1922
+      },
+      "append_latency_ms": {
+        "p50": 34.2756,
+        "p95": 330.4361,
+        "p99": 2796.2684
+      },
+      "load_group_commits": 1529,
+      "batches_per_durable_group": 3.667756703727927,
+      "raw_samples_file": "perf-034-soak-samples\\delay8-anonymous-mixed-0.jsonl.gz"
+    }
+  ],
+  "failed_cases": [],
+  "orders": [
+    [
+      "delay0",
+      "delay8"
+    ]
+  ]
+}

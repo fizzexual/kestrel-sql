@@ -77,11 +77,12 @@ class NativeConnection:
 
 
 class Engine:
-    def __init__(self, name, directory, rows, binary, servers, *, existing=False):
+    def __init__(self, name, directory, rows, binary, servers, *, existing=False, bridge_args=()):
         if existing and name != 'kestrel':
             raise ValueError('existing fixtures are supported only by the Kestrel bridge')
         self.name, self.directory, self.rows = name, directory, rows
         self.binary, self.servers = binary, servers
+        self.bridge_args = tuple(map(str, bridge_args))
         self.directory.mkdir(parents=True, exist_ok=existing)
         self.process = None
         self.address = None
@@ -129,10 +130,11 @@ class Engine:
 
     def start_bridge(self, rows):
         error = (self.directory / 'bridge.log').open('ab')
-        self.process = subprocess.Popen([str(self.binary), str(self.directory / 'archive'), str(rows)],
+        self.process = subprocess.Popen([str(self.binary), str(self.directory / 'archive'), str(rows), *self.bridge_args],
             stdout=subprocess.PIPE, stderr=error, text=True, creationflags=0x08000000 if os.name=='nt' else 0)
         info = json.loads(self.process.stdout.readline())
         self.version = info['version']
+        self.bridge_info = info
         host, port = info['address'].split(':')
         self.address = (host,int(port))
 
@@ -250,10 +252,13 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, 
     if identified and engine.name != 'kestrel':
         raise ValueError('identified appends require the Kestrel receipt API')
     publication_before = None
+    ingest_before = None
     if engine.name == 'kestrel':
         diagnostic = engine.connect()
         try:
-            publication_before = diagnostic.call({'op':'stats'}).get('publication_profile')
+            initial_stats = diagnostic.call({'op':'stats'})
+            publication_before = initial_stats.get('publication_profile')
+            ingest_before = initial_stats.get('ingest')
         finally:
             diagnostic.close()
     tasks = queue.Queue(maxsize=queue_size)
@@ -354,6 +359,7 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, 
         connection=engine.connect()
         report['live_state_before_reopen']=connection.call({'op':'stats'})
         report['publication_profile_before_load']=publication_before
+        report['ingest_state_before_load']=ingest_before
         connection.close()
     report['reconciliation'] = verify_final(engine,attempts,acks,batch)
     # Per-five-second successful completion bins expose degradation and stalls.

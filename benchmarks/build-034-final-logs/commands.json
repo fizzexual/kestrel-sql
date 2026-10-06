@@ -1,0 +1,50 @@
+[
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked"
+    ],
+    "returncode": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--bins",
+      "--examples"
+    ],
+    "returncode": 0
+  }
+]

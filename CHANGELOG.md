@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.4 experimental coalescing-policy candidate
+
+- Add `LiveOptions.max_group_delay` and `LiveArchive::with_options`; keep `LiveArchive::new` at zero delay and reject optional windows above 20 ms.
+- Use one deadline from the first received request, without extending it for arrivals, with at most 64 requests/group. Drain a disconnected queue without waiting. Preserve synchronized publication and read-view visibility before ACK.
+- Expose exact configured nanoseconds, measured collection time, collected-group count and largest request group. Intentional waiting and actual ACK latency are separate quantities.
+- Test concurrent delayed acknowledgments, pinned snapshots, retries, option limits, queue draining and crash/reopen behavior. Repeat every 0/2/8 ms policy on the same binary, retaining losses, slower settings and actual collection overshoot.
+- Keep storage/query/WAL source unchanged; inherit the prior correctness evidence by verified source hashes rather than counting it as fresh testing. Preserve the 0.3.3 source, binaries and package. See [PERFORMANCE_034.md](PERFORMANCE_034.md).
+
 ## 0.3.3 experimental receipt-catalog candidate
 
 - Write CAT4 receipt deltas between full checkpoints, retaining at most 32 catalog dependencies. Every catalog still contains the complete current segment set.

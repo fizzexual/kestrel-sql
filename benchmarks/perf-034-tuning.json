@@ -1,0 +1,5722 @@
+{
+  "base_rows": 1000000,
+  "prefill_receipt_ids": 50000,
+  "methodology": "paced open-loop common harness; scheduled-arrival latency; 256-slot client queue; 2s expiry; 8s socket timeout; independent fresh fixture per case; 100-row durable appends; order rotates each round; fixture seed/scrub, reconciliation and sample compression outside load; no compilation or heavy overlap; success percentiles and all offer losses retained; shared Windows desktop",
+  "policy_ms": {
+    "baseline": null,
+    "delay0": 0,
+    "delay2": 2,
+    "delay8": 8
+  },
+  "binary_sha256": {
+    "baseline": "368e8143f35f2f9a3388de83afba905ab903bd743f1294f43b6d2f94be7d03dc",
+    "candidate": "def47e55daabd4756de08aa873c6d34d069cbca6af2e39baff88667dc051f67a"
+  },
+  "seed_binary_sha256": {
+    "baseline": "e90368a2153a5fd4f36141cc35a42e38de7ce1dbd21f8bfd7607fd469b4f2149",
+    "candidate": "0030ab1926bbc713b96b3d6eaa2ccdb8d935d9d9d668158a84c0bc5a20777d34"
+  },
+  "cases": [
+    {
+      "engine": "kestrel",
+      "version": "0.3.3",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280326665953300,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9995649,
+      "including_drain_seconds": 15.1363415,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 29981,
+      "successful_rps_in_arrival_window": 1998.7333333333333,
+      "successful_rps_including_drain": 1981.9848805604709,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.96,
+      "latency_ms": {
+        "p50": 0.8962,
+        "p95": 2.2668,
+        "p99": 303.7834,
+        "max": 570.5048
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2773,
+        "p99": 0.8085,
+        "max": 1.9769
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 3.2975937000010163,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 149,
+        "ingest": {
+          "committed_batches": 1483,
+          "compaction_total_ms": 554.8752,
+          "compactions": 3,
+          "duplicate_batches": 0,
+          "durable_group_commits": 145,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 335.8559,
+          "publication_total_ms": 14417.3922,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27559200,
+        "metadata_bytes": 50691,
+        "page_cache_hits": 566115,
+        "page_cache_misses": 4508,
+        "physical_bytes": 27641132,
+        "publication_profile": {
+          "attempts": 149,
+          "catalog_bytes_published": 235816,
+          "catalog_checkpoints": 149,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 149,
+            "histogram": [
+              149,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0248,
+            "total_ms": 0.8344000000000006
+          },
+          "catalog_rename": {
+            "count": 149,
+            "histogram": [
+              0,
+              147,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 30.095299999999998,
+            "total_ms": 116.99510000000001
+          },
+          "catalog_sync": {
+            "count": 149,
+            "histogram": [
+              0,
+              20,
+              23,
+              0,
+              95,
+              11,
+              0,
+              0
+            ],
+            "max_ms": 185.1766,
+            "total_ms": 5861.111199999997
+          },
+          "catalog_write": {
+            "count": 149,
+            "histogram": [
+              0,
+              145,
+              1,
+              0,
+              0,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 215.8482,
+            "total_ms": 509.18830000000014
+          },
+          "completed": 149,
+          "prepare": {
+            "count": 149,
+            "histogram": [
+              86,
+              58,
+              4,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 19.424699999999998,
+            "total_ms": 42.94309999999999
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 149,
+            "histogram": [
+              0,
+              11,
+              9,
+              3,
+              103,
+              22,
+              0,
+              1
+            ],
+            "max_ms": 3118.8155,
+            "total_ms": 11237.433999999997
+          },
+          "segment_write": {
+            "count": 149,
+            "histogram": [
+              0,
+              146,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 12.6571,
+            "total_ms": 76.44860000000006
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1148300,
+        "segments": 53
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0168,
+          "total_ms": 0.0168
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.5193,
+          "total_ms": 0.5193
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 74.9929,
+          "total_ms": 74.9929
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 1.903,
+          "total_ms": 1.903
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 19.424699999999998,
+          "total_ms": 19.424699999999998
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "max_ms": 3118.8155,
+          "total_ms": 3118.8155
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 12.6571,
+          "total_ms": 12.6571
+        }
+      },
+      "ingest_state_before_load": {
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "maintenance_errors": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27559200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9979,
+          "latency_p99_ms": 258.582
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9998,
+          "latency_p99_ms": 268.6504
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 10004,
+          "latency_p99_ms": 360.0821
+        }
+      ],
+      "variant": "baseline",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": null,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280327652992700,
+            "host_cpu_busy_percent": 8.307692307692308,
+            "physical_available_bytes": 12233560064,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280328659994500,
+            "host_cpu_busy_percent": 9.453125,
+            "physical_available_bytes": 12229681152,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280329667687600,
+            "host_cpu_busy_percent": 14.0,
+            "physical_available_bytes": 12225306624,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280330672283500,
+            "host_cpu_busy_percent": 10.546875,
+            "physical_available_bytes": 12231671808,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280331679074500,
+            "host_cpu_busy_percent": 11.23076923076923,
+            "physical_available_bytes": 12225863680,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280332688163700,
+            "host_cpu_busy_percent": 11.40625,
+            "physical_available_bytes": 12224294912,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280333694245400,
+            "host_cpu_busy_percent": 14.384615384615385,
+            "physical_available_bytes": 12225822720,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280334701321100,
+            "host_cpu_busy_percent": 12.34375,
+            "physical_available_bytes": 12222627840,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280335706731500,
+            "host_cpu_busy_percent": 10.546875,
+            "physical_available_bytes": 12227256320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280336713227300,
+            "host_cpu_busy_percent": 10.923076923076923,
+            "physical_available_bytes": 12221165568,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280337715324100,
+            "host_cpu_busy_percent": 9.0625,
+            "physical_available_bytes": 12219187200,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280338723602500,
+            "host_cpu_busy_percent": 9.307692307692308,
+            "physical_available_bytes": 12214153216,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280339730558600,
+            "host_cpu_busy_percent": 10.703125,
+            "physical_available_bytes": 12220497920,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280340739776300,
+            "host_cpu_busy_percent": 9.692307692307692,
+            "physical_available_bytes": 12224032768,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.8823,
+        "p95": 1.1815,
+        "p99": 1.5191
+      },
+      "append_latency_ms": {
+        "p50": 198.0608,
+        "p95": 407.1518,
+        "p99": 494.4685
+      },
+      "load_group_commits": 145,
+      "batches_per_durable_group": 10.227586206896552,
+      "raw_samples_file": "perf-034-tuning-samples\\baseline-anonymous-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280346429247200,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9995293,
+      "including_drain_seconds": 15.1464352,
+      "successful_operations": 29782,
+      "completed_in_arrival_window": 29772,
+      "successful_rps_in_arrival_window": 1984.8,
+      "successful_rps_including_drain": 1966.2712451309994,
+      "errors": [],
+      "queue_dropped": 218,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 218,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9382666666666667,
+      "latency_ms": {
+        "p50": 0.9056,
+        "p95": 136.1433,
+        "p99": 322.098,
+        "max": 815.2614
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2816,
+        "p99": 0.894,
+        "max": 2.5593
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28308,
+      "write_successes": 1474,
+      "inserted_rows_acknowledged": 147400,
+      "expired_sequences": [],
+      "setup_seconds": 3.097078800026793,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 110,
+        "ingest": {
+          "collected_groups": 107,
+          "collection_total_ms": 0.9684,
+          "committed_batches": 1474,
+          "compaction_total_ms": 679.2882,
+          "compactions": 2,
+          "duplicate_batches": 0,
+          "durable_group_commits": 107,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 346.7668,
+          "publication_total_ms": 14410.5993,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27537600,
+        "metadata_bytes": 47929,
+        "page_cache_hits": 542197,
+        "page_cache_misses": 4530,
+        "physical_bytes": 27604846,
+        "publication_profile": {
+          "attempts": 110,
+          "catalog_bytes_published": 164137,
+          "catalog_checkpoints": 110,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 110,
+            "histogram": [
+              110,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0266,
+            "total_ms": 0.6480999999999999
+          },
+          "catalog_rename": {
+            "count": 110,
+            "histogram": [
+              0,
+              107,
+              2,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 128.27009999999999,
+            "total_ms": 176.44029999999998
+          },
+          "catalog_sync": {
+            "count": 110,
+            "histogram": [
+              0,
+              8,
+              14,
+              1,
+              66,
+              21,
+              0,
+              0
+            ],
+            "max_ms": 248.3259,
+            "total_ms": 6064.466699999999
+          },
+          "catalog_write": {
+            "count": 110,
+            "histogram": [
+              0,
+              107,
+              1,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 58.6888,
+            "total_ms": 154.14070000000012
+          },
+          "completed": 110,
+          "prepare": {
+            "count": 110,
+            "histogram": [
+              27,
+              80,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 19.5012,
+            "total_ms": 40.89290000000002
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 110,
+            "histogram": [
+              0,
+              1,
+              3,
+              0,
+              83,
+              22,
+              0,
+              1
+            ],
+            "max_ms": 2961.5954,
+            "total_ms": 11146.851300000002
+          },
+          "segment_write": {
+            "count": 110,
+            "histogram": [
+              0,
+              104,
+              4,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 32.0851,
+            "total_ms": 98.81580000000001
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1147400,
+        "segments": 46
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0156,
+          "total_ms": 0.0156
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.381,
+          "total_ms": 0.381
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 31.460099999999997,
+          "total_ms": 31.460099999999997
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 1.0885,
+          "total_ms": 1.0885
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 19.5012,
+          "total_ms": 19.5012
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "max_ms": 2961.5954,
+          "total_ms": 2961.5954
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 14.1965,
+          "total_ms": 14.1965
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "group_delay_ns": 0,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1147400,
+        "acknowledged_batches": 1474,
+        "published_batches": 1474,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27537600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9979,
+          "latency_p99_ms": 304.0555
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9794,
+          "latency_p99_ms": 366.3434
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9999,
+          "latency_p99_ms": 299.0182
+        }
+      ],
+      "variant": "delay0",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": 0,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280347388767200,
+            "host_cpu_busy_percent": 9.846153846153847,
+            "physical_available_bytes": 12152934400,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280348396602700,
+            "host_cpu_busy_percent": 11.0,
+            "physical_available_bytes": 12151164928,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280349406484800,
+            "host_cpu_busy_percent": 12.734375,
+            "physical_available_bytes": 12152135680,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280350414889800,
+            "host_cpu_busy_percent": 10.461538461538462,
+            "physical_available_bytes": 12150415360,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280351423918500,
+            "host_cpu_busy_percent": 11.09375,
+            "physical_available_bytes": 12146655232,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280352435106000,
+            "host_cpu_busy_percent": 10.461538461538462,
+            "physical_available_bytes": 12149649408,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280353442668600,
+            "host_cpu_busy_percent": 8.23076923076923,
+            "physical_available_bytes": 12150996992,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280354451985300,
+            "host_cpu_busy_percent": 10.78125,
+            "physical_available_bytes": 12147056640,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280355459714200,
+            "host_cpu_busy_percent": 10.76923076923077,
+            "physical_available_bytes": 12146475008,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280356465043200,
+            "host_cpu_busy_percent": 10.3125,
+            "physical_available_bytes": 12145577984,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280357471600500,
+            "host_cpu_busy_percent": 11.484375,
+            "physical_available_bytes": 12168728576,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280358476912400,
+            "host_cpu_busy_percent": 11.0,
+            "physical_available_bytes": 12168155136,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280359484323000,
+            "host_cpu_busy_percent": 10.546875,
+            "physical_available_bytes": 12172066816,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280360488972700,
+            "host_cpu_busy_percent": 19.76923076923077,
+            "physical_available_bytes": 12200443904,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.8915,
+        "p95": 1.2743,
+        "p99": 6.1003
+      },
+      "append_latency_ms": {
+        "p50": 226.406,
+        "p95": 449.6633,
+        "p99": 686.2516
+      },
+      "load_group_commits": 107,
+      "batches_per_durable_group": 13.77570093457944,
+      "raw_samples_file": "perf-034-tuning-samples\\delay0-anonymous-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280366186338300,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9999848,
+      "including_drain_seconds": 15.0247607,
+      "successful_operations": 30000,
+      "completed_in_arrival_window": 29989,
+      "successful_rps_in_arrival_window": 1999.2666666666667,
+      "successful_rps_including_drain": 1996.704014061269,
+      "errors": [],
+      "queue_dropped": 0,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 0,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9566666666666667,
+      "latency_ms": {
+        "p50": 0.9036,
+        "p95": 20.201,
+        "p99": 324.6338,
+        "max": 617.5104
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2819,
+        "p99": 0.8578,
+        "max": 2.6265
+      },
+      "write_batch_rows": 100,
+      "read_successes": 28517,
+      "write_successes": 1483,
+      "inserted_rows_acknowledged": 148300,
+      "expired_sequences": [],
+      "setup_seconds": 3.292406300024595,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 130,
+        "ingest": {
+          "collected_groups": 127,
+          "collection_total_ms": 905.2541,
+          "committed_batches": 1483,
+          "compaction_total_ms": 302.208,
+          "compactions": 2,
+          "duplicate_batches": 0,
+          "durable_group_commits": 127,
+          "flush_delay_ms": 2,
+          "group_delay_ns": 2000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 52,
+          "publication_max_ms": 446.1474,
+          "publication_total_ms": 13629.5452,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27559200,
+        "metadata_bytes": 56852,
+        "page_cache_hits": 494079,
+        "page_cache_misses": 4546,
+        "physical_bytes": 27677859,
+        "publication_profile": {
+          "attempts": 130,
+          "catalog_bytes_published": 206307,
+          "catalog_checkpoints": 130,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 130,
+            "histogram": [
+              130,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.012,
+            "total_ms": 0.7228000000000001
+          },
+          "catalog_rename": {
+            "count": 130,
+            "histogram": [
+              0,
+              128,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.638,
+            "total_ms": 53.608699999999985
+          },
+          "catalog_sync": {
+            "count": 130,
+            "histogram": [
+              0,
+              11,
+              29,
+              6,
+              70,
+              14,
+              0,
+              0
+            ],
+            "max_ms": 198.27120000000002,
+            "total_ms": 5671.349700000001
+          },
+          "catalog_write": {
+            "count": 130,
+            "histogram": [
+              0,
+              123,
+              4,
+              1,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 31.5743,
+            "total_ms": 113.4595
+          },
+          "completed": 130,
+          "prepare": {
+            "count": 130,
+            "histogram": [
+              80,
+              47,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 18.4003,
+            "total_ms": 36.291600000000024
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 130,
+            "histogram": [
+              0,
+              1,
+              25,
+              15,
+              57,
+              31,
+              0,
+              1
+            ],
+            "max_ms": 3196.7457,
+            "total_ms": 10790.779800000004
+          },
+          "segment_write": {
+            "count": 130,
+            "histogram": [
+              0,
+              122,
+              1,
+              1,
+              6,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 79.0112,
+            "total_ms": 337.4254999999997
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1148300,
+        "segments": 66
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.012,
+          "total_ms": 0.012
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.36929999999999996,
+          "total_ms": 0.36929999999999996
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 2.6239000000000003,
+          "total_ms": 2.6239000000000003
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 29.6301,
+          "total_ms": 29.6301
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 18.4003,
+          "total_ms": 18.4003
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "max_ms": 3196.7457,
+          "total_ms": 3196.7457
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 14.564,
+          "total_ms": 14.564
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 2,
+        "group_delay_ns": 2000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1148300,
+        "acknowledged_batches": 1483,
+        "published_batches": 1483,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27559200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9971,
+          "latency_p99_ms": 338.0988
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9994,
+          "latency_p99_ms": 343.4632
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 10024,
+          "latency_p99_ms": 291.4423
+        }
+      ],
+      "variant": "delay2",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": 2,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280367174256500,
+            "host_cpu_busy_percent": 10.616705698672911,
+            "physical_available_bytes": 12213420032,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280368181342000,
+            "host_cpu_busy_percent": 10.538461538461538,
+            "physical_available_bytes": 12205432832,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280369190156500,
+            "host_cpu_busy_percent": 10.078125,
+            "physical_available_bytes": 12204744704,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280370198721900,
+            "host_cpu_busy_percent": 9.461538461538462,
+            "physical_available_bytes": 12199006208,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280371204553100,
+            "host_cpu_busy_percent": 9.53125,
+            "physical_available_bytes": 12201308160,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280372210644900,
+            "host_cpu_busy_percent": 11.153846153846153,
+            "physical_available_bytes": 12201713664,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280373215978200,
+            "host_cpu_busy_percent": 9.84375,
+            "physical_available_bytes": 12202643456,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280374224232400,
+            "host_cpu_busy_percent": 14.384615384615385,
+            "physical_available_bytes": 12187938816,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280375229624100,
+            "host_cpu_busy_percent": 12.265625,
+            "physical_available_bytes": 12186533888,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280376238432100,
+            "host_cpu_busy_percent": 15.15625,
+            "physical_available_bytes": 12186193920,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280377245779800,
+            "host_cpu_busy_percent": 10.23076923076923,
+            "physical_available_bytes": 12185149440,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280378253979700,
+            "host_cpu_busy_percent": 9.6875,
+            "physical_available_bytes": 12186218496,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280379260309400,
+            "host_cpu_busy_percent": 9.153846153846153,
+            "physical_available_bytes": 12187504640,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280380267917300,
+            "host_cpu_busy_percent": 12.421875,
+            "physical_available_bytes": 12185063424,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.8889,
+        "p95": 1.2067,
+        "p99": 1.6063
+      },
+      "append_latency_ms": {
+        "p50": 223.5575,
+        "p95": 466.7981,
+        "p99": 582.1621
+      },
+      "load_group_commits": 127,
+      "batches_per_durable_group": 11.67716535433071,
+      "raw_samples_file": "perf-034-tuning-samples\\delay2-anonymous-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280382676173900,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9997456,
+      "including_drain_seconds": 15.0266808,
+      "successful_operations": 29371,
+      "completed_in_arrival_window": 29364,
+      "successful_rps_in_arrival_window": 1957.6,
+      "successful_rps_including_drain": 1954.589998344811,
+      "errors": [],
+      "queue_dropped": 629,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 629,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9668,
+      "latency_ms": {
+        "p50": 0.9233,
+        "p95": 11.1036,
+        "p99": 357.4488,
+        "max": 1228.4955
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2774,
+        "p99": 0.8321,
+        "max": 3.5781
+      },
+      "write_batch_rows": 100,
+      "read_successes": 27915,
+      "write_successes": 1456,
+      "inserted_rows_acknowledged": 145600,
+      "expired_sequences": [],
+      "setup_seconds": 0.14513859996804968,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 1,
+        "generation": 484,
+        "ingest": {
+          "collected_groups": 469,
+          "collection_total_ms": 6095.2259,
+          "committed_batches": 1456,
+          "compaction_total_ms": 122.8046,
+          "compactions": 14,
+          "duplicate_batches": 0,
+          "durable_group_commits": 469,
+          "flush_delay_ms": 8,
+          "group_delay_ns": 8000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 62,
+          "publication_max_ms": 1207.5382,
+          "publication_total_ms": 6131.5665,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27494400,
+        "metadata_bytes": 44599,
+        "page_cache_hits": 504955,
+        "page_cache_misses": 4428,
+        "physical_bytes": 28262448,
+        "publication_profile": {
+          "attempts": 484,
+          "catalog_bytes_published": 877326,
+          "catalog_checkpoints": 484,
+          "catalog_deltas": 0,
+          "catalog_encode": {
+            "count": 484,
+            "histogram": [
+              484,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.028399999999999998,
+            "total_ms": 2.7827999999999977
+          },
+          "catalog_rename": {
+            "count": 484,
+            "histogram": [
+              0,
+              481,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 12.2909,
+            "total_ms": 195.56030000000018
+          },
+          "catalog_sync": {
+            "count": 484,
+            "histogram": [
+              0,
+              176,
+              253,
+              39,
+              15,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 315.21840000000003,
+            "total_ms": 1877.7155999999998
+          },
+          "catalog_write": {
+            "count": 484,
+            "histogram": [
+              0,
+              468,
+              12,
+              2,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 28.8718,
+            "total_ms": 237.68240000000023
+          },
+          "completed": 484,
+          "prepare": {
+            "count": 484,
+            "histogram": [
+              459,
+              14,
+              10,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 17.2723,
+            "total_ms": 58.816900000000004
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 484,
+            "histogram": [
+              0,
+              97,
+              319,
+              42,
+              26,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 81.0988,
+            "total_ms": 1993.761499999999
+          },
+          "segment_write": {
+            "count": 484,
+            "histogram": [
+              0,
+              467,
+              6,
+              1,
+              9,
+              0,
+              0,
+              1
+            ],
+            "max_ms": 1204.6766,
+            "total_ms": 1744.340000000002
+          }
+        },
+        "recorded_batch_ids": 0,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1145600,
+        "segments": 36
+      },
+      "publication_profile_before_load": {
+        "attempts": 1,
+        "catalog_bytes_published": 164,
+        "catalog_checkpoints": 1,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 1,
+          "histogram": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0097,
+          "total_ms": 0.0097
+        },
+        "catalog_rename": {
+          "count": 1,
+          "histogram": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.33340000000000003,
+          "total_ms": 0.33340000000000003
+        },
+        "catalog_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 3.1897,
+          "total_ms": 3.1897
+        },
+        "catalog_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 1.5635000000000001,
+          "total_ms": 1.5635000000000001
+        },
+        "completed": 1,
+        "prepare": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 17.2723,
+          "total_ms": 17.2723
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 81.0988,
+          "total_ms": 81.0988
+        },
+        "segment_write": {
+          "count": 1,
+          "histogram": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 13.0824,
+          "total_ms": 13.0824
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 8,
+        "group_delay_ns": 8000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1145600,
+        "acknowledged_batches": 1456,
+        "published_batches": 1456,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27494400
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9995,
+          "latency_p99_ms": 47.601
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 10002,
+          "latency_p99_ms": 40.8667
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9367,
+          "latency_p99_ms": 434.2642
+        }
+      ],
+      "variant": "delay8",
+      "round": 0,
+      "scenario": "anonymous-mixed",
+      "configured_group_delay_ms": 8,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280383664831500,
+            "host_cpu_busy_percent": 11.692307692307692,
+            "physical_available_bytes": 12202614784,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280384670891100,
+            "host_cpu_busy_percent": 14.21875,
+            "physical_available_bytes": 12186165248,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280385673739200,
+            "host_cpu_busy_percent": 12.734375,
+            "physical_available_bytes": 12197687296,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280386678096700,
+            "host_cpu_busy_percent": 16.076923076923077,
+            "physical_available_bytes": 12191817728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280387685164800,
+            "host_cpu_busy_percent": 14.6875,
+            "physical_available_bytes": 12196859904,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280388692000000,
+            "host_cpu_busy_percent": 13.307692307692308,
+            "physical_available_bytes": 12205641728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280389699556500,
+            "host_cpu_busy_percent": 14.375,
+            "physical_available_bytes": 12199108608,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280390707702200,
+            "host_cpu_busy_percent": 14.23076923076923,
+            "physical_available_bytes": 12195041280,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280391711699300,
+            "host_cpu_busy_percent": 18.359375,
+            "physical_available_bytes": 12193705984,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280392718060200,
+            "host_cpu_busy_percent": 18.4375,
+            "physical_available_bytes": 12190453760,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280393726555200,
+            "host_cpu_busy_percent": 12.615384615384615,
+            "physical_available_bytes": 12200157184,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280394735324600,
+            "host_cpu_busy_percent": 9.453125,
+            "physical_available_bytes": 12201463808,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280395739906500,
+            "host_cpu_busy_percent": 15.923076923076923,
+            "physical_available_bytes": 12191178752,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280396748083700,
+            "host_cpu_busy_percent": 21.015625,
+            "physical_available_bytes": 12196122624,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.9085,
+        "p95": 1.2651,
+        "p99": 15.0776
+      },
+      "append_latency_ms": {
+        "p50": 20.1867,
+        "p95": 386.2599,
+        "p99": 1041.7774
+      },
+      "load_group_commits": 469,
+      "batches_per_durable_group": 3.1044776119402986,
+      "raw_samples_file": "perf-034-tuning-samples\\delay8-anonymous-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.3",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280402910724200,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9998759,
+      "including_drain_seconds": 15.2636401,
+      "successful_operations": 25289,
+      "completed_in_arrival_window": 25255,
+      "successful_rps_in_arrival_window": 1683.6666666666667,
+      "successful_rps_including_drain": 1656.8131739426954,
+      "errors": [],
+      "queue_dropped": 4711,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 4711,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.7653333333333333,
+      "latency_ms": {
+        "p50": 0.9239,
+        "p95": 375.7877,
+        "p99": 845.3092,
+        "max": 1595.9192
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2802,
+        "p99": 0.9444,
+        "max": 7.4038
+      },
+      "write_batch_rows": 100,
+      "read_successes": 24056,
+      "write_successes": 1233,
+      "inserted_rows_acknowledged": 123300,
+      "expired_sequences": [],
+      "setup_seconds": 0.07860389997949824,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 21,
+        "generation": 149,
+        "ingest": {
+          "committed_batches": 1233,
+          "compaction_total_ms": 419.5862,
+          "compactions": 3,
+          "duplicate_batches": 0,
+          "durable_group_commits": 145,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 1214.8358,
+          "publication_total_ms": 14579.808,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 26959200,
+        "metadata_bytes": 50518,
+        "page_cache_hits": 565592,
+        "page_cache_misses": 3810,
+        "physical_bytes": 35503930,
+        "publication_profile": {
+          "attempts": 148,
+          "catalog_bytes_published": 33759852,
+          "catalog_checkpoints": 4,
+          "catalog_deltas": 144,
+          "catalog_encode": {
+            "count": 148,
+            "histogram": [
+              144,
+              0,
+              0,
+              2,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 23.8914,
+            "total_ms": 78.69430000000003
+          },
+          "catalog_rename": {
+            "count": 148,
+            "histogram": [
+              0,
+              147,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.4408999999999998,
+            "total_ms": 59.18349999999999
+          },
+          "catalog_sync": {
+            "count": 148,
+            "histogram": [
+              0,
+              37,
+              27,
+              0,
+              73,
+              7,
+              3,
+              1
+            ],
+            "max_ms": 1021.3614,
+            "total_ms": 8054.7456999999995
+          },
+          "catalog_write": {
+            "count": 148,
+            "histogram": [
+              0,
+              141,
+              1,
+              1,
+              3,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 328.72249999999997,
+            "total_ms": 626.3148999999999
+          },
+          "completed": 148,
+          "prepare": {
+            "count": 148,
+            "histogram": [
+              61,
+              84,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.5196,
+            "total_ms": 32.470000000000006
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 148,
+            "histogram": [
+              0,
+              34,
+              15,
+              3,
+              80,
+              16,
+              0,
+              0
+            ],
+            "max_ms": 201.534,
+            "total_ms": 5584.667000000002
+          },
+          "segment_write": {
+            "count": 148,
+            "histogram": [
+              0,
+              142,
+              2,
+              0,
+              3,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 409.0258,
+            "total_ms": 549.4566000000001
+          }
+        },
+        "recorded_batch_ids": 51233,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1123300,
+        "segments": 53
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "maintenance_errors": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1123300,
+        "acknowledged_batches": 1233,
+        "published_batches": 1233,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 26959200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 8013,
+          "latency_p99_ms": 948.1548
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 8918,
+          "latency_p99_ms": 672.4936
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 8324,
+          "latency_p99_ms": 856.426
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 51233,
+      "variant": "baseline",
+      "round": 0,
+      "scenario": "receipt-mixed",
+      "configured_group_delay_ms": null,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280403884511600,
+            "host_cpu_busy_percent": 13.076923076923077,
+            "physical_available_bytes": 12166635520,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280404890724800,
+            "host_cpu_busy_percent": 5.390625,
+            "physical_available_bytes": 12185088000,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280405901249600,
+            "host_cpu_busy_percent": 14.615384615384615,
+            "physical_available_bytes": 12187877376,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280406908927800,
+            "host_cpu_busy_percent": 11.484375,
+            "physical_available_bytes": 12166520832,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280407921182200,
+            "host_cpu_busy_percent": 10.0,
+            "physical_available_bytes": 12185784320,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280408928993100,
+            "host_cpu_busy_percent": 12.384615384615385,
+            "physical_available_bytes": 12187508736,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280409938762100,
+            "host_cpu_busy_percent": 13.671875,
+            "physical_available_bytes": 12186804224,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280410941930500,
+            "host_cpu_busy_percent": 12.615384615384615,
+            "physical_available_bytes": 12182491136,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280411949058400,
+            "host_cpu_busy_percent": 9.375,
+            "physical_available_bytes": 12199391232,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280412957756200,
+            "host_cpu_busy_percent": 12.076923076923077,
+            "physical_available_bytes": 12191539200,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280413964776200,
+            "host_cpu_busy_percent": 10.9375,
+            "physical_available_bytes": 12186701824,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280414974540700,
+            "host_cpu_busy_percent": 2.5384615384615383,
+            "physical_available_bytes": 12175630336,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280415982270500,
+            "host_cpu_busy_percent": 12.8125,
+            "physical_available_bytes": 12190433280,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280416990059400,
+            "host_cpu_busy_percent": 14.076923076923077,
+            "physical_available_bytes": 12184489984,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.9078,
+        "p95": 196.1766,
+        "p99": 754.2523
+      },
+      "append_latency_ms": {
+        "p50": 195.8156,
+        "p95": 1303.2046,
+        "p99": 1474.4705
+      },
+      "load_group_commits": 145,
+      "batches_per_durable_group": 8.50344827586207,
+      "raw_samples_file": "perf-034-tuning-samples\\baseline-receipt-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280423565462300,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9999512,
+      "including_drain_seconds": 15.6192619,
+      "successful_operations": 25844,
+      "completed_in_arrival_window": 25809,
+      "successful_rps_in_arrival_window": 1720.6,
+      "successful_rps_including_drain": 1654.6236413386473,
+      "errors": [],
+      "queue_dropped": 4156,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 4156,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.7840333333333334,
+      "latency_ms": {
+        "p50": 0.9225,
+        "p95": 394.4138,
+        "p99": 853.2126,
+        "max": 1484.1077
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2836,
+        "p99": 0.8973,
+        "max": 5.4774
+      },
+      "write_batch_rows": 100,
+      "read_successes": 24577,
+      "write_successes": 1267,
+      "inserted_rows_acknowledged": 126700,
+      "expired_sequences": [],
+      "setup_seconds": 0.08115849999012426,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 2,
+        "generation": 162,
+        "ingest": {
+          "collected_groups": 158,
+          "collection_total_ms": 0.653,
+          "committed_batches": 1267,
+          "compaction_total_ms": 536.8965,
+          "compactions": 3,
+          "duplicate_batches": 0,
+          "durable_group_commits": 158,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 1256.3876,
+          "publication_total_ms": 14829.9074,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27040800,
+        "metadata_bytes": 56214,
+        "page_cache_hits": 628657,
+        "page_cache_misses": 4006,
+        "physical_bytes": 44083814,
+        "publication_profile": {
+          "attempts": 161,
+          "catalog_bytes_published": 42287136,
+          "catalog_checkpoints": 5,
+          "catalog_deltas": 156,
+          "catalog_encode": {
+            "count": 161,
+            "histogram": [
+              156,
+              0,
+              0,
+              3,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 24.521500000000003,
+            "total_ms": 97.02260000000001
+          },
+          "catalog_rename": {
+            "count": 161,
+            "histogram": [
+              0,
+              159,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 350.9995,
+            "total_ms": 529.2933999999999
+          },
+          "catalog_sync": {
+            "count": 161,
+            "histogram": [
+              0,
+              47,
+              31,
+              0,
+              75,
+              3,
+              3,
+              2
+            ],
+            "max_ms": 1196.5089,
+            "total_ms": 8632.3545
+          },
+          "catalog_write": {
+            "count": 161,
+            "histogram": [
+              0,
+              154,
+              1,
+              3,
+              3,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 40.183499999999995,
+            "total_ms": 183.6347999999998
+          },
+          "completed": 161,
+          "prepare": {
+            "count": 161,
+            "histogram": [
+              75,
+              81,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.3808000000000002,
+            "total_ms": 35.62949999999999
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 161,
+            "histogram": [
+              0,
+              35,
+              18,
+              3,
+              94,
+              11,
+              0,
+              0
+            ],
+            "max_ms": 180.7487,
+            "total_ms": 5190.270000000001
+          },
+          "segment_write": {
+            "count": 161,
+            "histogram": [
+              0,
+              156,
+              2,
+              0,
+              3,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 56.7901,
+            "total_ms": 178.53349999999995
+          }
+        },
+        "recorded_batch_ids": 51267,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1126700,
+        "segments": 66
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "group_delay_ns": 0,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1126700,
+        "acknowledged_batches": 1267,
+        "published_batches": 1267,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27040800
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9076,
+          "latency_p99_ms": 470.4766
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 7725,
+          "latency_p99_ms": 1076.2973
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9008,
+          "latency_p99_ms": 624.3697
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 51267,
+      "variant": "delay0",
+      "round": 0,
+      "scenario": "receipt-mixed",
+      "configured_group_delay_ms": 0,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280424544117000,
+            "host_cpu_busy_percent": 10.387596899224807,
+            "physical_available_bytes": 12181008384,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280425549981000,
+            "host_cpu_busy_percent": 10.546875,
+            "physical_available_bytes": 12165992448,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280426561082200,
+            "host_cpu_busy_percent": 10.461538461538462,
+            "physical_available_bytes": 12187238400,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280427567877300,
+            "host_cpu_busy_percent": 10.615384615384615,
+            "physical_available_bytes": 12188491776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280428574204700,
+            "host_cpu_busy_percent": 10.0,
+            "physical_available_bytes": 12175003648,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280429583897000,
+            "host_cpu_busy_percent": 8.076923076923077,
+            "physical_available_bytes": 12195299328,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280430590585400,
+            "host_cpu_busy_percent": 12.34375,
+            "physical_available_bytes": 12191334400,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280431600492800,
+            "host_cpu_busy_percent": 11.846153846153847,
+            "physical_available_bytes": 12189052928,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280432603883400,
+            "host_cpu_busy_percent": 5.78125,
+            "physical_available_bytes": 12190228480,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280433610256700,
+            "host_cpu_busy_percent": 13.203125,
+            "physical_available_bytes": 12210311168,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280434617891700,
+            "host_cpu_busy_percent": 14.384615384615385,
+            "physical_available_bytes": 12185518080,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280435623901400,
+            "host_cpu_busy_percent": 8.59375,
+            "physical_available_bytes": 12183539712,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280436633285900,
+            "host_cpu_busy_percent": 12.923076923076923,
+            "physical_available_bytes": 12182720512,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280437639433600,
+            "host_cpu_busy_percent": 10.859375,
+            "physical_available_bytes": 12183273472,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.9078,
+        "p95": 228.0651,
+        "p99": 652.1108
+      },
+      "append_latency_ms": {
+        "p50": 170.2383,
+        "p95": 1173.4368,
+        "p99": 1391.5633
+      },
+      "load_group_commits": 158,
+      "batches_per_durable_group": 8.018987341772151,
+      "raw_samples_file": "perf-034-tuning-samples\\delay0-receipt-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280445016002200,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9997581,
+      "including_drain_seconds": 15.4225315,
+      "successful_operations": 24810,
+      "completed_in_arrival_window": 24490,
+      "successful_rps_in_arrival_window": 1632.6666666666667,
+      "successful_rps_including_drain": 1608.685318619709,
+      "errors": [],
+      "queue_dropped": 5190,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 5190,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.7442666666666666,
+      "latency_ms": {
+        "p50": 0.9243,
+        "p95": 549.3054,
+        "p99": 1001.3001,
+        "max": 1583.0367
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2791,
+        "p99": 0.889,
+        "max": 4.2002
+      },
+      "write_batch_rows": 100,
+      "read_successes": 23566,
+      "write_successes": 1244,
+      "inserted_rows_acknowledged": 124400,
+      "expired_sequences": [],
+      "setup_seconds": 0.08132409997051582,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 5,
+        "generation": 133,
+        "ingest": {
+          "collected_groups": 129,
+          "collection_total_ms": 890.692,
+          "committed_batches": 1244,
+          "compaction_total_ms": 527.0105,
+          "compactions": 3,
+          "duplicate_batches": 0,
+          "durable_group_commits": 129,
+          "flush_delay_ms": 2,
+          "group_delay_ns": 2000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 1351.1203,
+          "publication_total_ms": 13821.2857,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 26985600,
+        "metadata_bytes": 44141,
+        "page_cache_hits": 526875,
+        "page_cache_misses": 3854,
+        "physical_bytes": 35497696,
+        "publication_profile": {
+          "attempts": 132,
+          "catalog_bytes_published": 33902979,
+          "catalog_checkpoints": 4,
+          "catalog_deltas": 128,
+          "catalog_encode": {
+            "count": 132,
+            "histogram": [
+              128,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 18.1603,
+            "total_ms": 68.76100000000002
+          },
+          "catalog_rename": {
+            "count": 132,
+            "histogram": [
+              0,
+              130,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.6713,
+            "total_ms": 57.355800000000016
+          },
+          "catalog_sync": {
+            "count": 132,
+            "histogram": [
+              0,
+              20,
+              7,
+              1,
+              99,
+              1,
+              1,
+              3
+            ],
+            "max_ms": 1120.4270999999999,
+            "total_ms": 8643.220900000004
+          },
+          "catalog_write": {
+            "count": 132,
+            "histogram": [
+              0,
+              122,
+              2,
+              3,
+              2,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 443.14730000000003,
+            "total_ms": 971.4933999999996
+          },
+          "completed": 132,
+          "prepare": {
+            "count": 132,
+            "histogram": [
+              28,
+              101,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 5.1476999999999995,
+            "total_ms": 32.33830000000001
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 132,
+            "histogram": [
+              0,
+              17,
+              2,
+              18,
+              92,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 221.6086,
+            "total_ms": 4331.578400000001
+          },
+          "segment_write": {
+            "count": 132,
+            "histogram": [
+              0,
+              122,
+              2,
+              1,
+              7,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 27.1092,
+            "total_ms": 230.18970000000013
+          }
+        },
+        "recorded_batch_ids": 51244,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1124400,
+        "segments": 37
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 2,
+        "group_delay_ns": 2000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1124400,
+        "acknowledged_batches": 1244,
+        "published_batches": 1244,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 26985600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 8945,
+          "latency_p99_ms": 655.4596
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 8695,
+          "latency_p99_ms": 640.2753
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 6850,
+          "latency_p99_ms": 881.5027
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 51244,
+      "variant": "delay2",
+      "round": 0,
+      "scenario": "receipt-mixed",
+      "configured_group_delay_ms": 2,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280445974127500,
+            "host_cpu_busy_percent": 10.061919504643964,
+            "physical_available_bytes": 12191051776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280446978101800,
+            "host_cpu_busy_percent": 11.796875,
+            "physical_available_bytes": 12191498240,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280447987760500,
+            "host_cpu_busy_percent": 12.03125,
+            "physical_available_bytes": 12169531392,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280448995881700,
+            "host_cpu_busy_percent": 4.461538461538462,
+            "physical_available_bytes": 12184907776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280450002872500,
+            "host_cpu_busy_percent": 13.671875,
+            "physical_available_bytes": 12187099136,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280451008279500,
+            "host_cpu_busy_percent": 12.0,
+            "physical_available_bytes": 12191223808,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280452018706000,
+            "host_cpu_busy_percent": 7.5,
+            "physical_available_bytes": 12181987328,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280453028405500,
+            "host_cpu_busy_percent": 7.0,
+            "physical_available_bytes": 12188012544,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280454039444000,
+            "host_cpu_busy_percent": 11.846153846153847,
+            "physical_available_bytes": 12185366528,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280455044726100,
+            "host_cpu_busy_percent": 11.796875,
+            "physical_available_bytes": 12186017792,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280456050861300,
+            "host_cpu_busy_percent": 8.828125,
+            "physical_available_bytes": 12173254656,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280457058168000,
+            "host_cpu_busy_percent": 6.769230769230769,
+            "physical_available_bytes": 12195995648,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280458062267900,
+            "host_cpu_busy_percent": 12.65625,
+            "physical_available_bytes": 12199161856,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280459067155900,
+            "host_cpu_busy_percent": 9.692307692307692,
+            "physical_available_bytes": 12189179904,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.9101,
+        "p95": 213.6054,
+        "p99": 745.1516
+      },
+      "append_latency_ms": {
+        "p50": 145.467,
+        "p95": 1308.1572,
+        "p99": 1484.2371
+      },
+      "load_group_commits": 129,
+      "batches_per_durable_group": 9.643410852713178,
+      "raw_samples_file": "perf-034-tuning-samples\\delay2-receipt-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "mixed",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280466275620000,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9995389,
+      "including_drain_seconds": 15.0179631,
+      "successful_operations": 28209,
+      "completed_in_arrival_window": 28206,
+      "successful_rps_in_arrival_window": 1880.4,
+      "successful_rps_including_drain": 1878.3506000224493,
+      "errors": [],
+      "queue_dropped": 1791,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 1791,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.8961,
+      "latency_ms": {
+        "p50": 0.9213,
+        "p95": 88.4575,
+        "p99": 555.3239,
+        "max": 1296.5746
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2836,
+        "p99": 0.9436,
+        "max": 2.3378
+      },
+      "write_batch_rows": 100,
+      "read_successes": 26816,
+      "write_successes": 1393,
+      "inserted_rows_acknowledged": 139300,
+      "expired_sequences": [],
+      "setup_seconds": 0.07902720000129193,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 29,
+        "generation": 253,
+        "ingest": {
+          "collected_groups": 246,
+          "collection_total_ms": 3112.0016,
+          "committed_batches": 1393,
+          "compaction_total_ms": 192.384,
+          "compactions": 6,
+          "duplicate_batches": 0,
+          "durable_group_commits": 246,
+          "flush_delay_ms": 8,
+          "group_delay_ns": 8000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 1044.0152,
+          "publication_total_ms": 10719.5975,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 27343200,
+        "metadata_bytes": 55177,
+        "page_cache_hits": 521842,
+        "page_cache_misses": 4150,
+        "physical_bytes": 35938722,
+        "publication_profile": {
+          "attempts": 252,
+          "catalog_bytes_published": 59461139,
+          "catalog_checkpoints": 7,
+          "catalog_deltas": 245,
+          "catalog_encode": {
+            "count": 252,
+            "histogram": [
+              245,
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 22.084300000000002,
+            "total_ms": 132.44110000000006
+          },
+          "catalog_rename": {
+            "count": 252,
+            "histogram": [
+              0,
+              251,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 33.9955,
+            "total_ms": 129.70960000000005
+          },
+          "catalog_sync": {
+            "count": 252,
+            "histogram": [
+              0,
+              104,
+              73,
+              5,
+              63,
+              5,
+              2,
+              0
+            ],
+            "max_ms": 969.0782999999999,
+            "total_ms": 6014.6906999999965
+          },
+          "catalog_write": {
+            "count": 252,
+            "histogram": [
+              0,
+              237,
+              7,
+              4,
+              3,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 229.1045,
+            "total_ms": 511.3779000000003
+          },
+          "completed": 252,
+          "prepare": {
+            "count": 252,
+            "histogram": [
+              151,
+              97,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.2407,
+            "total_ms": 41.79829999999997
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 252,
+            "histogram": [
+              0,
+              71,
+              79,
+              46,
+              53,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 123.8057,
+            "total_ms": 3424.411100000002
+          },
+          "segment_write": {
+            "count": 252,
+            "histogram": [
+              0,
+              246,
+              1,
+              1,
+              4,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 47.4801,
+            "total_ms": 261.47470000000004
+          }
+        },
+        "recorded_batch_ids": 51393,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1139300,
+        "segments": 61
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 8,
+        "group_delay_ns": 8000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1139300,
+        "acknowledged_batches": 1393,
+        "published_batches": 1393,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 27343200
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9121,
+          "latency_p99_ms": 563.7067
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9084,
+          "latency_p99_ms": 591.6842
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 10001,
+          "latency_p99_ms": 112.7143
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 51393,
+      "variant": "delay8",
+      "round": 0,
+      "scenario": "receipt-mixed",
+      "configured_group_delay_ms": 8,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280467253192000,
+            "host_cpu_busy_percent": 13.951675759937647,
+            "physical_available_bytes": 12176637952,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280468259336400,
+            "host_cpu_busy_percent": 11.461538461538462,
+            "physical_available_bytes": 12176195584,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280469266362300,
+            "host_cpu_busy_percent": 12.578125,
+            "physical_available_bytes": 12176244736,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280470271998700,
+            "host_cpu_busy_percent": 11.384615384615385,
+            "physical_available_bytes": 12164923392,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280471279471100,
+            "host_cpu_busy_percent": 9.6875,
+            "physical_available_bytes": 12176461824,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280472285892900,
+            "host_cpu_busy_percent": 10.846153846153847,
+            "physical_available_bytes": 12174483456,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280473295382600,
+            "host_cpu_busy_percent": 12.734375,
+            "physical_available_bytes": 12157984768,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280474304693200,
+            "host_cpu_busy_percent": 7.923076923076923,
+            "physical_available_bytes": 12174737408,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280475312432100,
+            "host_cpu_busy_percent": 14.375,
+            "physical_available_bytes": 12178939904,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280476322215900,
+            "host_cpu_busy_percent": 13.153846153846153,
+            "physical_available_bytes": 12155932672,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280477330116600,
+            "host_cpu_busy_percent": 16.484375,
+            "physical_available_bytes": 12188987392,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280478337043800,
+            "host_cpu_busy_percent": 17.23076923076923,
+            "physical_available_bytes": 12185919488,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280479345994600,
+            "host_cpu_busy_percent": 16.328125,
+            "physical_available_bytes": 12181487616,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280480354031100,
+            "host_cpu_busy_percent": 12.307692307692308,
+            "physical_available_bytes": 12190007296,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 0.907,
+        "p95": 1.4687,
+        "p99": 523.2093
+      },
+      "append_latency_ms": {
+        "p50": 97.9426,
+        "p95": 938.3721,
+        "p99": 1139.1072
+      },
+      "load_group_commits": 246,
+      "batches_per_durable_group": 5.662601626016261,
+      "raw_samples_file": "perf-034-tuning-samples\\delay8-receipt-mixed-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.3",
+      "profile": "write",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280483085305700,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9999591,
+      "including_drain_seconds": 15.0816194,
+      "successful_operations": 29651,
+      "completed_in_arrival_window": 29633,
+      "successful_rps_in_arrival_window": 1975.5333333333333,
+      "successful_rps_including_drain": 1966.035557163046,
+      "errors": [],
+      "queue_dropped": 349,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 349,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.9235333333333333,
+      "latency_ms": {
+        "p50": 1.1403,
+        "p95": 117.9625,
+        "p99": 189.1318,
+        "max": 316.6864
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2891,
+        "p99": 1.5191,
+        "max": 6.3058
+      },
+      "write_batch_rows": 100,
+      "read_successes": 22201,
+      "write_successes": 7450,
+      "inserted_rows_acknowledged": 745000,
+      "expired_sequences": [],
+      "setup_seconds": 0.07927800004836172,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 25,
+        "generation": 1561,
+        "ingest": {
+          "committed_batches": 7450,
+          "compaction_total_ms": 729.2145,
+          "compactions": 47,
+          "duplicate_batches": 0,
+          "durable_group_commits": 1513,
+          "flush_delay_ms": 0,
+          "maintenance_errors": 0,
+          "publication_max_ms": 304.2664,
+          "publication_total_ms": 13103.8507,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 41880000,
+        "metadata_bytes": 69791,
+        "page_cache_hits": 454294,
+        "page_cache_misses": 3717,
+        "physical_bytes": 52358682,
+        "publication_profile": {
+          "attempts": 1560,
+          "catalog_bytes_published": 432279403,
+          "catalog_checkpoints": 48,
+          "catalog_deltas": 1512,
+          "catalog_encode": {
+            "count": 1560,
+            "histogram": [
+              1512,
+              0,
+              0,
+              5,
+              43,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 33.3353,
+            "total_ms": 1133.0277999999996
+          },
+          "catalog_rename": {
+            "count": 1560,
+            "histogram": [
+              0,
+              1551,
+              3,
+              1,
+              3,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 136.0472,
+            "total_ms": 1052.6327000000006
+          },
+          "catalog_sync": {
+            "count": 1560,
+            "histogram": [
+              0,
+              988,
+              504,
+              17,
+              41,
+              10,
+              0,
+              0
+            ],
+            "max_ms": 226.09019999999998,
+            "total_ms": 5234.976999999996
+          },
+          "catalog_write": {
+            "count": 1560,
+            "histogram": [
+              0,
+              1495,
+              54,
+              4,
+              5,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 152.8324,
+            "total_ms": 1255.6558999999988
+          },
+          "completed": 1560,
+          "prepare": {
+            "count": 1560,
+            "histogram": [
+              1135,
+              371,
+              54,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.8728000000000002,
+            "total_ms": 259.04819999999944
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 1560,
+            "histogram": [
+              0,
+              889,
+              646,
+              12,
+              11,
+              2,
+              0,
+              0
+            ],
+            "max_ms": 145.6451,
+            "total_ms": 2687.179399999999
+          },
+          "segment_write": {
+            "count": 1560,
+            "histogram": [
+              0,
+              1528,
+              26,
+              1,
+              2,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 152.9786,
+            "total_ms": 1056.5537000000008
+          }
+        },
+        "recorded_batch_ids": 57450,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1745000,
+        "segments": 57
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "maintenance_errors": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1745000,
+        "acknowledged_batches": 7450,
+        "published_batches": 7450,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 41880000
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9901,
+          "latency_p99_ms": 186.0316
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9837,
+          "latency_p99_ms": 169.9602
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9895,
+          "latency_p99_ms": 213.6011
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 57450,
+      "variant": "baseline",
+      "round": 0,
+      "scenario": "receipt-write",
+      "configured_group_delay_ms": null,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280484044844700,
+            "host_cpu_busy_percent": 15.538461538461538,
+            "physical_available_bytes": 12188524544,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280485052596100,
+            "host_cpu_busy_percent": 19.307692307692307,
+            "physical_available_bytes": 12178055168,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280486058685100,
+            "host_cpu_busy_percent": 23.046875,
+            "physical_available_bytes": 12186415104,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280487064486200,
+            "host_cpu_busy_percent": 21.875,
+            "physical_available_bytes": 12174360576,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280488072494500,
+            "host_cpu_busy_percent": 27.153846153846153,
+            "physical_available_bytes": 12117942272,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280489082566700,
+            "host_cpu_busy_percent": 28.153846153846153,
+            "physical_available_bytes": 12174958592,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280490091090400,
+            "host_cpu_busy_percent": 22.734375,
+            "physical_available_bytes": 12150857728,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280491100305900,
+            "host_cpu_busy_percent": 23.23076923076923,
+            "physical_available_bytes": 12174970880,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280492109311000,
+            "host_cpu_busy_percent": 28.359375,
+            "physical_available_bytes": 12183650304,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280493115935300,
+            "host_cpu_busy_percent": 21.307692307692307,
+            "physical_available_bytes": 12172697600,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280494126217400,
+            "host_cpu_busy_percent": 19.6875,
+            "physical_available_bytes": 12169166848,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280495133628900,
+            "host_cpu_busy_percent": 19.923076923076923,
+            "physical_available_bytes": 12168220672,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280496143482300,
+            "host_cpu_busy_percent": 25.15625,
+            "physical_available_bytes": 12174102528,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280497150181600,
+            "host_cpu_busy_percent": 26.307692307692307,
+            "physical_available_bytes": 12171395072,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 1.0117,
+        "p95": 51.3544,
+        "p99": 151.7431
+      },
+      "append_latency_ms": {
+        "p50": 27.303,
+        "p95": 174.1914,
+        "p99": 258.3976
+      },
+      "load_group_commits": 1513,
+      "batches_per_durable_group": 4.923992068737608,
+      "raw_samples_file": "perf-034-tuning-samples\\baseline-receipt-write-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "write",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280501525343400,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9998848,
+      "including_drain_seconds": 15.0406975,
+      "successful_operations": 28008,
+      "completed_in_arrival_window": 27875,
+      "successful_rps_in_arrival_window": 1858.3333333333333,
+      "successful_rps_including_drain": 1862.1476829781332,
+      "errors": [],
+      "queue_dropped": 1992,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 1992,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.8529666666666667,
+      "latency_ms": {
+        "p50": 1.1449,
+        "p95": 198.8181,
+        "p99": 415.3855,
+        "max": 557.7386
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2882,
+        "p99": 1.484,
+        "max": 7.7225
+      },
+      "write_batch_rows": 100,
+      "read_successes": 20984,
+      "write_successes": 7024,
+      "inserted_rows_acknowledged": 702400,
+      "expired_sequences": [],
+      "setup_seconds": 0.08350419998168945,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 5,
+        "generation": 1637,
+        "ingest": {
+          "collected_groups": 1587,
+          "collection_total_ms": 2.8539,
+          "committed_batches": 7024,
+          "compaction_total_ms": 531.3148,
+          "compactions": 49,
+          "duplicate_batches": 0,
+          "durable_group_commits": 1587,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 508.4363,
+          "publication_total_ms": 12955.616,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 40857600,
+        "metadata_bytes": 73947,
+        "page_cache_hits": 435127,
+        "page_cache_misses": 3603,
+        "physical_bytes": 59873647,
+        "publication_profile": {
+          "attempts": 1636,
+          "catalog_bytes_published": 455379452,
+          "catalog_checkpoints": 51,
+          "catalog_deltas": 1585,
+          "catalog_encode": {
+            "count": 1636,
+            "histogram": [
+              1585,
+              0,
+              0,
+              10,
+              41,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 35.9199,
+            "total_ms": 1186.4504999999983
+          },
+          "catalog_rename": {
+            "count": 1636,
+            "histogram": [
+              0,
+              1627,
+              2,
+              0,
+              2,
+              5,
+              0,
+              0
+            ],
+            "max_ms": 437.6064,
+            "total_ms": 1838.7374999999986
+          },
+          "catalog_sync": {
+            "count": 1636,
+            "histogram": [
+              0,
+              1175,
+              395,
+              19,
+              39,
+              8,
+              0,
+              0
+            ],
+            "max_ms": 452.336,
+            "total_ms": 4744.664100000007
+          },
+          "catalog_write": {
+            "count": 1636,
+            "histogram": [
+              0,
+              1573,
+              55,
+              2,
+              2,
+              4,
+              0,
+              0
+            ],
+            "max_ms": 446.52930000000003,
+            "total_ms": 1717.1055000000006
+          },
+          "completed": 1636,
+          "prepare": {
+            "count": 1636,
+            "histogram": [
+              1292,
+              290,
+              53,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 5.6356,
+            "total_ms": 254.9354
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 1636,
+            "histogram": [
+              0,
+              1037,
+              577,
+              6,
+              13,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 456.5072,
+            "total_ms": 2879.4656000000027
+          },
+          "segment_write": {
+            "count": 1636,
+            "histogram": [
+              0,
+              1588,
+              46,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 63.77380000000001,
+            "total_ms": 712.9670000000003
+          }
+        },
+        "recorded_batch_ids": 57024,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1702400,
+        "segments": 69
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 0,
+        "group_delay_ns": 0,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1702400,
+        "acknowledged_batches": 7024,
+        "published_batches": 7024,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 40857600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9542,
+          "latency_p99_ms": 331.1823
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9112,
+          "latency_p99_ms": 395.6959
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 9221,
+          "latency_p99_ms": 481.6874
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 57024,
+      "variant": "delay0",
+      "round": 0,
+      "scenario": "receipt-write",
+      "configured_group_delay_ms": 0,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280502518886400,
+            "host_cpu_busy_percent": 21.49532710280374,
+            "physical_available_bytes": 12186861568,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280503523947900,
+            "host_cpu_busy_percent": 19.153846153846153,
+            "physical_available_bytes": 12182196224,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280504532311700,
+            "host_cpu_busy_percent": 20.625,
+            "physical_available_bytes": 12168122368,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280505538822800,
+            "host_cpu_busy_percent": 21.846153846153847,
+            "physical_available_bytes": 12186025984,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280506547255400,
+            "host_cpu_busy_percent": 25.9375,
+            "physical_available_bytes": 12173516800,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280507554706000,
+            "host_cpu_busy_percent": 17.846153846153847,
+            "physical_available_bytes": 12172632064,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280508561953300,
+            "host_cpu_busy_percent": 29.609375,
+            "physical_available_bytes": 12168208384,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280509571526600,
+            "host_cpu_busy_percent": 17.53846153846154,
+            "physical_available_bytes": 12183203840,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280510577593400,
+            "host_cpu_busy_percent": 23.515625,
+            "physical_available_bytes": 12182069248,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280511582948200,
+            "host_cpu_busy_percent": 23.076923076923077,
+            "physical_available_bytes": 12177563648,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280512590040200,
+            "host_cpu_busy_percent": 17.421875,
+            "physical_available_bytes": 12185989120,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280513595624700,
+            "host_cpu_busy_percent": 27.65625,
+            "physical_available_bytes": 12178169856,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280514605694600,
+            "host_cpu_busy_percent": 16.46153846153846,
+            "physical_available_bytes": 12176035840,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280515609264100,
+            "host_cpu_busy_percent": 26.5625,
+            "physical_available_bytes": 12168855552,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 1.0156,
+        "p95": 96.5888,
+        "p99": 361.1676
+      },
+      "append_latency_ms": {
+        "p50": 27.8126,
+        "p95": 353.6975,
+        "p99": 504.8433
+      },
+      "load_group_commits": 1587,
+      "batches_per_durable_group": 4.42596093257719,
+      "raw_samples_file": "perf-034-tuning-samples\\delay0-receipt-write-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "write",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280520095858000,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9995287,
+      "including_drain_seconds": 15.4878099,
+      "successful_operations": 26710,
+      "completed_in_arrival_window": 26390,
+      "successful_rps_in_arrival_window": 1759.3333333333333,
+      "successful_rps_including_drain": 1724.5821179662078,
+      "errors": [],
+      "queue_dropped": 3290,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 3290,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.7924666666666667,
+      "latency_ms": {
+        "p50": 1.1606,
+        "p95": 184.6377,
+        "p99": 1367.1486,
+        "max": 1654.106
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2885,
+        "p99": 1.2202,
+        "max": 5.2703
+      },
+      "write_batch_rows": 100,
+      "read_successes": 19993,
+      "write_successes": 6717,
+      "inserted_rows_acknowledged": 671700,
+      "expired_sequences": [],
+      "setup_seconds": 0.0819410000112839,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 4,
+        "generation": 900,
+        "ingest": {
+          "collected_groups": 873,
+          "collection_total_ms": 3017.1726,
+          "committed_batches": 6717,
+          "compaction_total_ms": 350.3216,
+          "compactions": 26,
+          "duplicate_batches": 0,
+          "durable_group_commits": 873,
+          "flush_delay_ms": 2,
+          "group_delay_ns": 2000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 1256.5581,
+          "publication_total_ms": 11460.6385,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 40120800,
+        "metadata_bytes": 72247,
+        "page_cache_hits": 433754,
+        "page_cache_misses": 3377,
+        "physical_bytes": 59012587,
+        "publication_profile": {
+          "attempts": 899,
+          "catalog_bytes_published": 247637617,
+          "catalog_checkpoints": 28,
+          "catalog_deltas": 871,
+          "catalog_encode": {
+            "count": 899,
+            "histogram": [
+              871,
+              0,
+              0,
+              11,
+              17,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 29.3535,
+            "total_ms": 596.4866000000001
+          },
+          "catalog_rename": {
+            "count": 899,
+            "histogram": [
+              0,
+              896,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 141.2701,
+            "total_ms": 539.8380999999996
+          },
+          "catalog_sync": {
+            "count": 899,
+            "histogram": [
+              0,
+              456,
+              368,
+              21,
+              51,
+              2,
+              0,
+              1
+            ],
+            "max_ms": 1221.3364,
+            "total_ms": 5006.2575
+          },
+          "catalog_write": {
+            "count": 899,
+            "histogram": [
+              0,
+              863,
+              24,
+              5,
+              6,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 254.4904,
+            "total_ms": 929.2603999999999
+          },
+          "completed": 899,
+          "prepare": {
+            "count": 899,
+            "histogram": [
+              528,
+              342,
+              29,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 4.295,
+            "total_ms": 178.8327999999999
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 899,
+            "histogram": [
+              0,
+              399,
+              444,
+              5,
+              48,
+              3,
+              0,
+              0
+            ],
+            "max_ms": 165.43949999999998,
+            "total_ms": 3618.0043
+          },
+          "segment_write": {
+            "count": 899,
+            "histogram": [
+              0,
+              876,
+              17,
+              1,
+              4,
+              1,
+              0,
+              0
+            ],
+            "max_ms": 108.28989999999999,
+            "total_ms": 702.0611999999994
+          }
+        },
+        "recorded_batch_ids": 56717,
+        "retained_page_cache_bytes": 33500256,
+        "rows": 1671700,
+        "segments": 69
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 2,
+        "group_delay_ns": 2000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1671700,
+        "acknowledged_batches": 6717,
+        "published_batches": 6717,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 40120800
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 9936,
+          "latency_p99_ms": 137.7275
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 9094,
+          "latency_p99_ms": 221.0405
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 7360,
+          "latency_p99_ms": 560.6964
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 56717,
+      "variant": "delay2",
+      "round": 0,
+      "scenario": "receipt-write",
+      "configured_group_delay_ms": 2,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280521068419000,
+            "host_cpu_busy_percent": 23.692307692307693,
+            "physical_available_bytes": 12183650304,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280522075486100,
+            "host_cpu_busy_percent": 19.21875,
+            "physical_available_bytes": 12173840384,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280523078956500,
+            "host_cpu_busy_percent": 20.3125,
+            "physical_available_bytes": 12165001216,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280524090372000,
+            "host_cpu_busy_percent": 25.307692307692307,
+            "physical_available_bytes": 12175175680,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280525095868700,
+            "host_cpu_busy_percent": 22.109375,
+            "physical_available_bytes": 12179955712,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280526103024200,
+            "host_cpu_busy_percent": 21.307692307692307,
+            "physical_available_bytes": 12173033472,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280527106220400,
+            "host_cpu_busy_percent": 23.046875,
+            "physical_available_bytes": 12169773056,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280528112141800,
+            "host_cpu_busy_percent": 26.171875,
+            "physical_available_bytes": 12166078464,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280529115353800,
+            "host_cpu_busy_percent": 26.46153846153846,
+            "physical_available_bytes": 12163981312,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280530124265800,
+            "host_cpu_busy_percent": 15.078125,
+            "physical_available_bytes": 12171051008,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280531134651700,
+            "host_cpu_busy_percent": 18.923076923076923,
+            "physical_available_bytes": 12169383936,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280532143039600,
+            "host_cpu_busy_percent": 18.59375,
+            "physical_available_bytes": 12164083712,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280533153597700,
+            "host_cpu_busy_percent": 10.76923076923077,
+            "physical_available_bytes": 12173873152,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280534166421900,
+            "host_cpu_busy_percent": 11.76923076923077,
+            "physical_available_bytes": 12153548800,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 1.0237,
+        "p95": 131.1909,
+        "p99": 449.2965
+      },
+      "append_latency_ms": {
+        "p50": 23.6952,
+        "p95": 303.4547,
+        "p99": 1558.2957
+      },
+      "load_group_commits": 873,
+      "batches_per_durable_group": 7.694158075601375,
+      "raw_samples_file": "perf-034-tuning-samples\\delay2-receipt-write-0.jsonl.gz"
+    },
+    {
+      "engine": "kestrel",
+      "version": "0.3.4",
+      "profile": "write",
+      "clients": 64,
+      "arrival_start_monotonic_ns": 280542871014800,
+      "offered_rps": 2000,
+      "scheduled_seconds": 15,
+      "offered_operations": 30000,
+      "offered_wall_seconds": 14.9997804,
+      "including_drain_seconds": 15.1692701,
+      "successful_operations": 21741,
+      "completed_in_arrival_window": 21431,
+      "successful_rps_in_arrival_window": 1428.7333333333333,
+      "successful_rps_including_drain": 1433.2265070552075,
+      "errors": [],
+      "queue_dropped": 8259,
+      "queue_expired": 0,
+      "unsuccessful_or_unexecuted": 8259,
+      "latency_population": "successful operations only; loss/expiry/errors reported separately",
+      "offered_fraction_successful_within_100ms": 0.5236,
+      "latency_ms": {
+        "p50": 41.6627,
+        "p95": 929.1213,
+        "p99": 1166.2766,
+        "max": 1278.1533
+      },
+      "dispatch_lag_ms": {
+        "p50": 0.2912,
+        "p99": 1.7517,
+        "max": 6.7802
+      },
+      "write_batch_rows": 100,
+      "read_successes": 16332,
+      "write_successes": 5409,
+      "inserted_rows_acknowledged": 540900,
+      "expired_sequences": [],
+      "setup_seconds": 0.08754340000450611,
+      "live_state_before_reopen": {
+        "block_rows": 4096,
+        "catalog_chain_files": 31,
+        "generation": 159,
+        "ingest": {
+          "collected_groups": 153,
+          "collection_total_ms": 1337.0431,
+          "committed_batches": 5409,
+          "compaction_total_ms": 1070.703,
+          "compactions": 5,
+          "duplicate_batches": 0,
+          "durable_group_commits": 153,
+          "flush_delay_ms": 8,
+          "group_delay_ns": 8000000,
+          "maintenance_errors": 0,
+          "max_group_requests": 64,
+          "publication_max_ms": 1051.314,
+          "publication_total_ms": 12666.1835,
+          "queued_payload_bytes": 0
+        },
+        "logical_data_bytes": 36981600,
+        "metadata_bytes": 64691,
+        "page_cache_hits": 433193,
+        "page_cache_misses": 2880,
+        "physical_bytes": 47843705,
+        "publication_profile": {
+          "attempts": 158,
+          "catalog_bytes_published": 36006540,
+          "catalog_checkpoints": 4,
+          "catalog_deltas": 154,
+          "catalog_encode": {
+            "count": 158,
+            "histogram": [
+              154,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 18.6844,
+            "total_ms": 76.3282
+          },
+          "catalog_rename": {
+            "count": 158,
+            "histogram": [
+              0,
+              154,
+              2,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 74.63680000000001,
+            "total_ms": 166.93769999999995
+          },
+          "catalog_sync": {
+            "count": 158,
+            "histogram": [
+              0,
+              9,
+              24,
+              0,
+              120,
+              1,
+              4,
+              0
+            ],
+            "max_ms": 999.8209,
+            "total_ms": 7535.110100000004
+          },
+          "catalog_write": {
+            "count": 158,
+            "histogram": [
+              0,
+              151,
+              1,
+              4,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 29.593600000000002,
+            "total_ms": 168.94879999999998
+          },
+          "completed": 158,
+          "prepare": {
+            "count": 158,
+            "histogram": [
+              1,
+              150,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 5.4586,
+            "total_ms": 105.71659999999997
+          },
+          "replay_validation": {
+            "count": 0,
+            "histogram": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0,
+            "total_ms": 0.0
+          },
+          "segment_sync": {
+            "count": 158,
+            "histogram": [
+              0,
+              0,
+              4,
+              45,
+              100,
+              9,
+              0,
+              0
+            ],
+            "max_ms": 191.478,
+            "total_ms": 5432.450000000001
+          },
+          "segment_write": {
+            "count": 158,
+            "histogram": [
+              0,
+              144,
+              5,
+              7,
+              2,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 23.4649,
+            "total_ms": 233.32999999999979
+          }
+        },
+        "recorded_batch_ids": 55409,
+        "retained_page_cache_bytes": 33472320,
+        "rows": 1540900,
+        "segments": 65
+      },
+      "publication_profile_before_load": {
+        "attempts": 0,
+        "catalog_bytes_published": 0,
+        "catalog_checkpoints": 0,
+        "catalog_deltas": 0,
+        "catalog_encode": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_rename": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "catalog_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "completed": 0,
+        "prepare": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "replay_validation": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_sync": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        },
+        "segment_write": {
+          "count": 0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "max_ms": 0.0,
+          "total_ms": 0.0
+        }
+      },
+      "ingest_state_before_load": {
+        "collected_groups": 0,
+        "collection_total_ms": 0.0,
+        "committed_batches": 0,
+        "compaction_total_ms": 0.0,
+        "compactions": 0,
+        "duplicate_batches": 0,
+        "durable_group_commits": 0,
+        "flush_delay_ms": 8,
+        "group_delay_ns": 8000000,
+        "maintenance_errors": 0,
+        "max_group_requests": 0,
+        "publication_max_ms": 0.0,
+        "publication_total_ms": 0.0,
+        "queued_payload_bytes": 0
+      },
+      "reconciliation": {
+        "rows": 1540900,
+        "acknowledged_batches": 5409,
+        "published_batches": 5409,
+        "unacknowledged_but_committed": 0,
+        "all_acknowledged_batches_present": true,
+        "batch_atomicity_and_sums": true,
+        "numpy_reference_windows": 20,
+        "full_kestrel_scrub": {
+          "verified_bytes": 36981600
+        }
+      },
+      "five_second_bins": [
+        {
+          "seconds_from_start": 0,
+          "successful_operations": 8261,
+          "latency_p99_ms": 996.8395
+        },
+        {
+          "seconds_from_start": 5,
+          "successful_operations": 5810,
+          "latency_p99_ms": 1207.5502
+        },
+        {
+          "seconds_from_start": 10,
+          "successful_operations": 7360,
+          "latency_p99_ms": 1148.2649
+        }
+      ],
+      "seed_replay_passed": true,
+      "final_receipt_count": 55409,
+      "variant": "delay8",
+      "round": 0,
+      "scenario": "receipt-write",
+      "configured_group_delay_ms": 8,
+      "host_telemetry": {
+        "method": "GetSystemTimes / GlobalMemoryStatusEx, 1 Hz; whole-host observations within timed arrival window; not disk latency or process attribution",
+        "error": null,
+        "samples": [
+          {
+            "monotonic_ns": 280543832048500,
+            "host_cpu_busy_percent": 16.875,
+            "physical_available_bytes": 12189663232,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280544842375100,
+            "host_cpu_busy_percent": 15.846153846153847,
+            "physical_available_bytes": 12187615232,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280545849004200,
+            "host_cpu_busy_percent": 7.461538461538462,
+            "physical_available_bytes": 12172234752,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280546857512700,
+            "host_cpu_busy_percent": 14.140625,
+            "physical_available_bytes": 12188438528,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280547867223400,
+            "host_cpu_busy_percent": 17.53846153846154,
+            "physical_available_bytes": 12186226688,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280548876439100,
+            "host_cpu_busy_percent": 10.46875,
+            "physical_available_bytes": 12176257024,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280549887992200,
+            "host_cpu_busy_percent": 10.461538461538462,
+            "physical_available_bytes": 12178763776,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280550896696100,
+            "host_cpu_busy_percent": 12.923076923076923,
+            "physical_available_bytes": 12187328512,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280551903870800,
+            "host_cpu_busy_percent": 13.671875,
+            "physical_available_bytes": 12165013504,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280552913788900,
+            "host_cpu_busy_percent": 8.76923076923077,
+            "physical_available_bytes": 12181164032,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280553923309700,
+            "host_cpu_busy_percent": 16.71875,
+            "physical_available_bytes": 12179165184,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280554930315300,
+            "host_cpu_busy_percent": 12.615384615384615,
+            "physical_available_bytes": 12172075008,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280555937971900,
+            "host_cpu_busy_percent": 5.546875,
+            "physical_available_bytes": 12171132928,
+            "physical_total_bytes": 34259976192
+          },
+          {
+            "monotonic_ns": 280556947396300,
+            "host_cpu_busy_percent": 12.23076923076923,
+            "physical_available_bytes": 12175949824,
+            "physical_total_bytes": 34259976192
+          }
+        ]
+      },
+      "query_latency_ms": {
+        "p50": 2.4544,
+        "p95": 306.62,
+        "p99": 1086.4108
+      },
+      "append_latency_ms": {
+        "p50": 128.7234,
+        "p95": 1143.1257,
+        "p99": 1213.0527
+      },
+      "load_group_commits": 153,
+      "batches_per_durable_group": 35.35294117647059,
+      "raw_samples_file": "perf-034-tuning-samples\\delay8-receipt-write-0.jsonl.gz"
+    }
+  ],
+  "failed_cases": [],
+  "orders": [
+    [
+      "baseline",
+      "delay0",
+      "delay2",
+      "delay8"
+    ]
+  ]
+}

@@ -20,6 +20,10 @@ The catalog stores rows and receipts in one publication. A lost connection or pu
 
 Up to 64 already queued requests share a synchronized segment/catalog publication. No fixed batching delay is imposed. An invalid or conflicting member causes its entire group to fail before publication; independent callers in that group can retry. I/O failure poisons the writer and requires reopening. Graceful destruction of the last wrapper drains the accepted queue and joins the writer.
 
+Version 0.3.4 adds an explicit, optional coalescing policy. `LiveArchive::new` still uses zero delay. Applications can evaluate `LiveArchive::with_options(archive, LiveOptions { max_group_delay: Duration::from_millis(2) })`; delays above 20 ms are rejected. The writer starts one deadline when it receives the first request, collects up to 64 requests, and does not extend that deadline for later arrivals. A disconnected queue drains without waiting. Queue bytes and request limits continue to apply during collection.
+
+The configured window bounds intentional collection waiting. OS scheduling, an existing queue, synchronization and compaction can make actual acknowledgment latency much longer. The full window can add latency to a single write or an exact retry. This is a tuning tradeoff, not a low-latency guarantee. Statistics expose exact configured nanoseconds (`group_delay_ns`), the legacy rounded-down `flush_delay_ms`, total collection time, collected groups and largest request group. The loopback test bridge accepts an optional third `GROUP_DELAY_MS` argument; it remains test infrastructure. The [policy experiment](PERFORMANCE_034.md) records every measured setting and failure.
+
 ## Resource and maintenance behavior
 
 The wrapper admits at most 256 requests and 64 MiB of payload bytes, with at most 10,000 rows per request. A full admission queue reports that the batch was not accepted. This bounds queued payload, not all client memory or process RSS.

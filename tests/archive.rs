@@ -620,6 +620,119 @@ fn live_compaction_bounds_small_run_growth_and_preserves_receipts() {
 }
 
 #[test]
+fn bounded_group_window_preserves_concurrent_acknowledgments_and_retries() {
+    use kestrel_sql::live::LiveOptions;
+    use std::sync::{Arc, Barrier};
+    use std::time::Duration;
+    let path = temp("bounded-group-window");
+    let live = LiveArchive::with_options(
+        open(&path),
+        LiveOptions {
+            max_group_delay: Duration::from_millis(8),
+        },
+    )
+    .unwrap();
+    let pinned = live.snapshot();
+    let barrier = Arc::new(Barrier::new(16));
+    let writers: Vec<_> = (0..16)
+        .map(|writer| {
+            let live = live.clone();
+            let barrier = Arc::clone(&barrier);
+            std::thread::spawn(move || {
+                barrier.wait();
+                for batch in 0..5 {
+                    let columns = vec![vec![writer * 100 + batch], vec![1], vec![writer]];
+                    let request = IngestBatch {
+                        id: Some(format!("window:{writer}:{batch}")),
+                        columns,
+                    };
+                    let receipt = live
+                        .append(IngestBatch {
+                            id: request.id.clone(),
+                            columns: request.columns.clone(),
+                        })
+                        .unwrap();
+                    assert!(!receipt.duplicate);
+                    // Every returned receipt is already visible to a new reader.
+                    assert!(live.snapshot().stats().unwrap().generation >= receipt.generation);
+                    let replay = live.append(request).unwrap();
+                    assert!(replay.duplicate);
+                    assert_eq!(replay.generation, receipt.generation);
+                }
+            })
+        })
+        .collect();
+    for writer in writers {
+        writer.join().unwrap();
+    }
+    assert_eq!(pinned.stats().unwrap().rows, 0);
+    assert_eq!(
+        live.snapshot()
+            .query("SELECT COUNT(*), SUM(value) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        vec![vec![Value::Int(80), Value::Int(80)]]
+    );
+    let stats = live.stats();
+    assert_eq!(stats.flush_delay_ms, 8);
+    assert_eq!(stats.group_delay_ns, 8_000_000);
+    assert_eq!(stats.committed_batches, 80);
+    assert_eq!(stats.duplicate_batches, 80);
+    assert_eq!(stats.queued_payload_bytes, 0);
+    assert!((1..=64).contains(&stats.max_group_requests));
+    assert!(stats.collection_total_ms > 0.0);
+    assert_eq!(stats.maintenance_errors, 0);
+    drop(pinned);
+    drop(live);
+    let archive = open(&path);
+    assert_eq!(archive.stats().unwrap().recorded_batch_ids, 80);
+    assert_eq!(archive.verify().unwrap(), 80 * 24);
+}
+
+#[test]
+fn live_group_window_validates_the_limit_and_defaults_to_zero() {
+    use kestrel_sql::live::LiveOptions;
+    use std::time::Duration;
+    let path = temp("group-options");
+    assert!(
+        LiveArchive::with_options(
+            open(&path),
+            LiveOptions {
+                max_group_delay: Duration::from_millis(21),
+            }
+        )
+        .is_err()
+    );
+    let live = LiveArchive::new(open(&path)).unwrap();
+    assert_eq!(live.stats().group_delay_ns, 0);
+    drop(live);
+    let live = LiveArchive::with_options(
+        open(&path),
+        LiveOptions {
+            max_group_delay: Duration::from_millis(20),
+        },
+    )
+    .unwrap();
+    live.append(IngestBatch {
+        id: Some("single".into()),
+        columns: vec![vec![1], vec![2], vec![3]],
+    })
+    .unwrap();
+    assert_eq!(live.stats().collected_groups, 1);
+    assert_eq!(live.stats().max_group_requests, 1);
+    drop(live);
+    let mut archive = open(&path);
+    assert!(
+        archive
+            .append_once("single", vec![vec![1], vec![2], vec![3]])
+            .unwrap()
+            .duplicate
+    );
+    assert_eq!(archive.verify().unwrap(), 24);
+}
+
+#[test]
 fn full_scrub_bypasses_warm_pages_and_invalidates_corrupt_cached_data() {
     let path = temp("cache-corruption");
     let mut archive = open(&path);

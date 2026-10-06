@@ -1,7 +1,7 @@
 //! Loopback-only test bridge for exercising one shared Archive under concurrency.
 //! This is a benchmark helper, not a supported production SQL server.
 use kestrel_sql::archive::{Archive, IngestBatch};
-use kestrel_sql::live::LiveArchive;
+use kestrel_sql::live::{LiveArchive, LiveOptions};
 use serde::Deserialize;
 use serde_json::json;
 use std::io::{BufRead, BufReader, Read, Write};
@@ -99,8 +99,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     let path = args
         .next()
-        .ok_or("usage: kestrel-stress DIRECTORY SEED_ROWS")?;
+        .ok_or("usage: kestrel-stress DIRECTORY SEED_ROWS [GROUP_DELAY_MS]")?;
     let rows: usize = args.next().ok_or("missing seed row count")?.parse()?;
+    let delay_ms: u64 = args.next().map(|v| v.parse()).transpose()?.unwrap_or(0);
+    if delay_ms > 20 {
+        return Err("group delay must be 0..20 milliseconds".into());
+    }
     if rows > 10_000_000 || args.next().is_some() {
         return Err("seed rows must be 0..10000000; no extra arguments".into());
     }
@@ -118,11 +122,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let rows = archive.stats()?.rows;
-    let store = LiveArchive::new(archive)?;
+    let store = LiveArchive::with_options(
+        archive,
+        LiveOptions {
+            max_group_delay: std::time::Duration::from_millis(delay_ms),
+        },
+    )?;
     let listener = TcpListener::bind("127.0.0.1:0")?;
     println!(
         "{}",
-        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":rows})
+        json!({"address":listener.local_addr()?.to_string(),"version":env!("CARGO_PKG_VERSION"),"rows":rows,"group_delay_ms":delay_ms})
     );
     std::io::stdout().flush()?;
     for stream in listener.incoming() {
