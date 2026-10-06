@@ -224,7 +224,7 @@ impl State {
     }
 }
 
-fn compare(a: &Value, b: &Value) -> std::cmp::Ordering {
+pub(crate) fn compare(a: &Value, b: &Value) -> std::cmp::Ordering {
     match (a, b) {
         (Value::Int(a), Value::Int(b)) => a.cmp(b),
         (Value::Float(a), Value::Float(b)) => a.total_cmp(b),

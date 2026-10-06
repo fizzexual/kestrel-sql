@@ -3,6 +3,7 @@ use serde_json::json;
 use std::io::{self, BufRead, Write};
 use std::path::PathBuf;
 use std::time::Instant;
+mod scale;
 
 fn benchmark(
     mut db: Database,
@@ -106,9 +107,47 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
     let mut sql = None;
     let mut file = None;
     let mut bench = None;
+    let mut archive_path = None;
+    let mut scale_bench = None;
+    let mut import = None;
+    let mut late = false;
+    let mut column_names = "ts,value,device".to_string();
     let mut i = 0;
     while i < args.len() {
         match args[i].as_str() {
+            "--archive" => {
+                i += 1;
+                archive_path = Some(PathBuf::from(
+                    args.get(i).ok_or("--archive needs a directory")?,
+                ));
+            }
+            "--columns" => {
+                i += 1;
+                column_names = args
+                    .get(i)
+                    .ok_or("--columns needs comma-separated names")?
+                    .clone();
+            }
+            "--import-i64" => {
+                i += 1;
+                import = Some(PathBuf::from(
+                    args.get(i).ok_or("--import-i64 needs a file")?,
+                ));
+            }
+            "--late" => late = true,
+            "--scale" => {
+                i += 1;
+                let n = args
+                    .get(i)
+                    .ok_or("--scale needs rows and repeats")?
+                    .parse()?;
+                i += 1;
+                let r = args
+                    .get(i)
+                    .ok_or("--scale needs rows and repeats")?
+                    .parse()?;
+                scale_bench = Some((n, r));
+            }
             "--db" => {
                 i += 1;
                 path = Some(PathBuf::from(args.get(i).ok_or("--db needs a path")?));
@@ -136,7 +175,7 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "KestrelSQL 0.1.0 — experimental, not production-ready\nkestrel [--db DIRECTORY] [--sql STATEMENT | --file FILE]\nkestrel [--db EMPTY_DIRECTORY] --bench ROWS REPEATS\nWithout --sql/--file: one SQL statement per stdin line; JSON lines on stdout.\nWithout --db: memory only. File input also requires one statement per line."
+                    "KestrelSQL — experimental, not production-ready\nkestrel [--db DIRECTORY] [--sql STATEMENT | --file FILE]\nkestrel [--db EMPTY_DIRECTORY] --bench ROWS REPEATS\nkestrel --archive DIRECTORY [--sql STATEMENT | --file FILE]\nkestrel --archive EMPTY_DIRECTORY --scale ROWS REPEATS [--late]\nkestrel --archive DIRECTORY --import-i64 FILE [--columns ts,value,device]\nWithout --sql/--file: one SQL statement per stdin line; JSON lines on stdout.\nBinary import: headerless row-major signed little-endian i64 values. One atomic batch per segment."
                 );
                 return Ok(false);
             }
@@ -144,13 +183,52 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
         }
         i += 1;
     }
-    if [sql.is_some(), file.is_some(), bench.is_some()]
-        .iter()
-        .filter(|x| **x)
-        .count()
+    if [
+        sql.is_some(),
+        file.is_some(),
+        bench.is_some(),
+        scale_bench.is_some(),
+        import.is_some(),
+    ]
+    .iter()
+    .filter(|x| **x)
+    .count()
         > 1
     {
-        return Err("--sql, --file and --bench are mutually exclusive".into());
+        return Err("choose one of --sql, --file, --bench, --scale, --import-i64".into());
+    }
+    if archive_path.is_some() && (path.is_some() || bench.is_some()) {
+        return Err("--archive is incompatible with --db and --bench".into());
+    }
+    if archive_path.is_none() && (scale_bench.is_some() || import.is_some() || late) {
+        return Err("archive options require --archive".into());
+    }
+    let mut archive = if let Some(p) = &archive_path {
+        Some(kestrel_sql::archive::Archive::open(
+            p,
+            "events",
+            &column_names.split(',').collect::<Vec<_>>(),
+        )?)
+    } else {
+        None
+    };
+    if let Some((n, r)) = scale_bench {
+        scale::run(
+            archive.as_mut().unwrap(),
+            archive_path.as_ref().unwrap(),
+            n,
+            r,
+            late,
+        )?;
+        return Ok(false);
+    }
+    if let Some(p) = import {
+        scale::import_i64(
+            archive.as_mut().unwrap(),
+            &p,
+            column_names.split(',').count(),
+        )?;
+        return Ok(false);
     }
     let mut db = match &path {
         Some(p) => Database::open(p)?,
@@ -174,7 +252,13 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
         if line.trim().is_empty() || line.trim_start().starts_with("--") {
             continue;
         }
-        match db.execute(&line) {
+        let result: Result<serde_json::Value, Box<dyn std::error::Error>> =
+            if let Some(store) = &archive {
+                store.query(&line).map(|r| json!(r)).map_err(Into::into)
+            } else {
+                db.execute(&line).map(|r| json!(r)).map_err(Into::into)
+            };
+        match result {
             Ok(result) => writeln!(out, "{}", json!({"ok":true, "result":result}))?,
             Err(e) => {
                 failed = true;

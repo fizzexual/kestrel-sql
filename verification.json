@@ -1,24 +1,83 @@
 {
+  "version": "0.2.0",
+  "local_qualification_date": "2026-10-06",
   "status": "experimental prototype; production qualification remains incomplete",
   "rust_tests": {
-    "debug": 15,
-    "release": 15,
+    "debug": 23,
+    "release": 23,
     "passed": true
   },
-  "sql_differential": {
-    "seed": 20261005,
-    "queries_checked_against_each_reference": 1002,
+  "archive_differential": {
+    "queries_checked_against_each_reference": 500,
     "references": [
-      "SQLite 3.49.1",
-      "DuckDB 1.5.6"
+      "DuckDB 1.5.6",
+      "SQLite 3.49.1"
     ],
-    "late_append_and_process_kill_recovery": "passed",
-    "randomized_prefix_aggregate_queries": 200,
-    "prefix_suite_verified_after_timing_run": true
+    "rows": 40024,
+    "segments": 8,
+    "passed": true
+  },
+  "scale": {
+    "rows": [
+      10000000,
+      50000000,
+      100000000,
+      100000000
+    ],
+    "fixed_cases_against_duckdb": 24,
+    "random_window_cases_against_duckdb": 124,
+    "fresh_process_reopen_scenarios": 4,
+    "full_payload_scrubs": 4,
+    "passed": true
+  },
+  "real_data": {
+    "source_rows": 3475226,
+    "accepted_rows": 3475077,
+    "rejected_rows": 149,
+    "query_cases_against_duckdb": 5,
+    "full_import_scrub": "passed",
+    "reconciliation": "passed"
+  },
+  "analytical_sql": {
+    "rows": 248,
+    "checks": {
+      "zone_key_unique_nonnull": true,
+      "counts_and_sums_reconcile": true,
+      "daily_join_reconciliation": true,
+      "lag_uses_complete_calendar": true,
+      "dense_rank_matches_independent_order": true
+    }
+  },
+  "packaged_binary_recheck": {
+    "version": "0.2.0",
+    "binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
+    "retained_fixed_scale_cases": 24,
+    "retained_random_window_cases": 124,
+    "retained_real_data_cases": 5,
+    "all_retained_results_match": true,
+    "timing": "untimed result checks; original measurements retained",
+    "wide_import": {
+      "rows": 131073,
+      "columns": 64,
+      "segments": 2,
+      "full_scrub_passed": true,
+      "uppercase_schema_reopen_and_query_passed": true
+    },
+    "partial_row_import_rejected_before_publication": true
+  },
+  "historical_v01_evidence": {
+    "ram_sql_cases_against_each_reference": 1002,
+    "note": "Historical timing and differential report retained; final 0.2 reruns its Rust regression tests"
   },
   "format_check": "passed",
   "clippy_warnings_as_errors": "passed",
-  "example_script": "passed",
   "verified_platform": "Windows-10-10.0.19045-SP0",
-  "ci": "Windows/Linux workflow included; remote execution unverified"
+  "ci": "Windows/Linux workflow included; remote execution unverified",
+  "qualification_limits": [
+    "warm shared-machine timings",
+    "one execution thread per engine",
+    "specialized integer append-only data",
+    "OS file cache excluded from process memory",
+    "Archive interruption states simulated; physical power-loss unqualified"
+  ]
 }

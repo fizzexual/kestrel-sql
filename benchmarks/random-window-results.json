@@ -1,0 +1,1666 @@
+{
+  "seed": 20261005,
+  "methodology": "Distinct randomly placed windows, widths 5%..75%; new literal SQL each time; Kestrel includes pipe/JSON; DuckDB Python binding; alternating order; existing disk stores, uncontrolled warm OS cache; p95 across variable windows",
+  "runs": [
+    {
+      "rows": 10000000,
+      "late": false,
+      "windows_checked": 31,
+      "kestrel_median_us": 2138.3,
+      "duckdb_median_us": 16538.6,
+      "kestrel_p95_us": 2539.5,
+      "duckdb_p95_us": 31439.0,
+      "median_speedup_ratio": 8.070782885005205,
+      "samples": [
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4577510 AND ts < 7399704",
+          "kestrel_us": 1950.0,
+          "duckdb_us": 26010.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2822194,
+              -1410543,
+              -0.4998036988243898
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3354087 AND ts < 6339879",
+          "kestrel_us": 2202.5,
+          "duckdb_us": 19347.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2985792,
+              -1493320,
+              -0.5001420058731486
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 795772 AND ts < 2591761",
+          "kestrel_us": 2072.7,
+          "duckdb_us": 14658.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              1795989,
+              -896262,
+              -0.49903535043922875
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4377991 AND ts < 9520257",
+          "kestrel_us": 2539.5,
+          "duckdb_us": 28097.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5142266,
+              -2568513,
+              -0.4994904969910152
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1535076 AND ts < 2219037",
+          "kestrel_us": 2003.9,
+          "duckdb_us": 4129.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              683961,
+              -343308,
+              -0.501940900139043
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4818236 AND ts < 6255615",
+          "kestrel_us": 2052.9,
+          "duckdb_us": 7632.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              1437379,
+              -717225,
+              -0.4989811316291667
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2386086 AND ts < 7380833",
+          "kestrel_us": 1973.5,
+          "duckdb_us": 23748.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              4994747,
+              -2496199,
+              -0.499764852954514
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1854418 AND ts < 8538421",
+          "kestrel_us": 2228.1,
+          "duckdb_us": 29901.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6684003,
+              -3341991,
+              -0.4999984290850857
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1733369 AND ts < 7608838",
+          "kestrel_us": 1997.9,
+          "duckdb_us": 26573.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5875469,
+              -2936141,
+              -0.4997287876082743
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3185199 AND ts < 8606603",
+          "kestrel_us": 2298.3,
+          "duckdb_us": 24426.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5421404,
+              -2708826,
+              -0.4996539641760695
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7421715 AND ts < 9828768",
+          "kestrel_us": 1835.3,
+          "duckdb_us": 11927.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2407053,
+              -1203899,
+              -0.5001547535513343
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2509662 AND ts < 3091020",
+          "kestrel_us": 2179.1,
+          "duckdb_us": 3781.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              581358,
+              -294237,
+              -0.5061201531586389
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3404825 AND ts < 6982347",
+          "kestrel_us": 1893.5,
+          "duckdb_us": 16362.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3577522,
+              -1786153,
+              -0.4992710037841836
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2461823 AND ts < 6045609",
+          "kestrel_us": 2486.0,
+          "duckdb_us": 16538.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3583786,
+              -1790329,
+              -0.49956359001346623
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2297623 AND ts < 5945280",
+          "kestrel_us": 2150.6,
+          "duckdb_us": 16760.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3647657,
+              -1827141,
+              -0.5009081171831672
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1262740 AND ts < 4247255",
+          "kestrel_us": 2284.6,
+          "duckdb_us": 14617.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2984515,
+              -1492665,
+              -0.5001365380974798
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3661700 AND ts < 4608445",
+          "kestrel_us": 2138.3,
+          "duckdb_us": 5172.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              946745,
+              -474820,
+              -0.5015289227827979
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 656187 AND ts < 7525922",
+          "kestrel_us": 2387.0,
+          "duckdb_us": 31725.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6869735,
+              -3435970,
+              -0.5001604865398738
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2607042 AND ts < 5298390",
+          "kestrel_us": 2270.1,
+          "duckdb_us": 12932.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2691348,
+              -1341722,
+              -0.49853159086078797
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4186314 AND ts < 9860526",
+          "kestrel_us": 2046.4,
+          "duckdb_us": 25636.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5674212,
+              -2836442,
+              -0.4998829793458545
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 116524 AND ts < 2553178",
+          "kestrel_us": 1962.6,
+          "duckdb_us": 14412.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2436654,
+              -1220601,
+              -0.5009332469854152
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3118981 AND ts < 9947675",
+          "kestrel_us": 2383.3,
+          "duckdb_us": 30269.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6828694,
+              -3408455,
+              -0.4991371702993281
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4368954 AND ts < 6310779",
+          "kestrel_us": 2307.0,
+          "duckdb_us": 9505.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              1941825,
+              -967850,
+              -0.4984228753878439
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 5239919 AND ts < 9707133",
+          "kestrel_us": 2218.8,
+          "duckdb_us": 20094.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              4467214,
+              -2234591,
+              -0.5002202715159829
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3552468 AND ts < 5187624",
+          "kestrel_us": 2030.2,
+          "duckdb_us": 8203.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              1635156,
+              -815874,
+              -0.49895789759509185
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2381993 AND ts < 9482959",
+          "kestrel_us": 1970.3,
+          "duckdb_us": 31439.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7100966,
+              -3550679,
+              -0.5000276018783923
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3031389 AND ts < 6232889",
+          "kestrel_us": 1825.3,
+          "duckdb_us": 14731.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3201500,
+              -1601250,
+              -0.5001561767921286
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2167705 AND ts < 4731690",
+          "kestrel_us": 2071.4,
+          "duckdb_us": 12028.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2563985,
+              -1284335,
+              -0.5009136168893343
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 356775 AND ts < 1396190",
+          "kestrel_us": 2116.1,
+          "duckdb_us": 5601.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              1039415,
+              -517390,
+              -0.4977703804543902
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 221455 AND ts < 6060207",
+          "kestrel_us": 2545.0,
+          "duckdb_us": 25733.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5838752,
+              -2922168,
+              -0.5004781843791276
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 571323 AND ts < 4691348",
+          "kestrel_us": 2167.5,
+          "duckdb_us": 18732.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              4120025,
+              -2060625,
+              -0.5001486641464554
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "rows": 50000000,
+      "late": false,
+      "windows_checked": 31,
+      "kestrel_median_us": 2141.5,
+      "duckdb_median_us": 83832.6,
+      "kestrel_p95_us": 2498.7,
+      "duckdb_p95_us": 159032.6,
+      "median_speedup_ratio": 35.39480683977201,
+      "samples": [
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 18310040 AND ts < 39387592",
+          "kestrel_us": 2379.8,
+          "duckdb_us": 132584.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              21077552,
+              -10532728,
+              -0.4997130596570228
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 13416348 AND ts < 35802689",
+          "kestrel_us": 2244.2,
+          "duckdb_us": 107454.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              22386341,
+              -11194894,
+              -0.500076988910336
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 6366183 AND ts < 19234098",
+          "kestrel_us": 2141.5,
+          "duckdb_us": 71104.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12867915,
+              -6435800,
+              -0.5001431855898955
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 6140305 AND ts < 10111997",
+          "kestrel_us": 2420.0,
+          "duckdb_us": 20422.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3971692,
+              -1988098,
+              -0.5005670127492263
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 19272945 AND ts < 29271981",
+          "kestrel_us": 2267.4,
+          "duckdb_us": 44263.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              9999036,
+              -5002450,
+              -0.5002932282672049
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 24736012 AND ts < 46324707",
+          "kestrel_us": 2498.7,
+          "duckdb_us": 106776.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              21588695,
+              -10788815,
+              -0.49974373161508834
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 13866956 AND ts < 46037644",
+          "kestrel_us": 2045.4,
+          "duckdb_us": 138105.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              32170688,
+              -16080928,
+              -0.4998627321865171
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7628212 AND ts < 35609811",
+          "kestrel_us": 2363.9,
+          "duckdb_us": 120531.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              27981599,
+              -13988707,
+              -0.49992521871248313
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 10038649 AND ts < 13189520",
+          "kestrel_us": 2141.5,
+          "duckdb_us": 14936.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3150871,
+              -1577432,
+              -0.5006336343188915
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 13619302 AND ts < 40739482",
+          "kestrel_us": 2197.6,
+          "duckdb_us": 117573.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              27120180,
+              -13559610,
+              -0.49998230100242697
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 9847294 AND ts < 37017587",
+          "kestrel_us": 2025.8,
+          "duckdb_us": 116840.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              27170293,
+              -13585460,
+              -0.5000115383371095
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 9190493 AND ts < 36871754",
+          "kestrel_us": 2288.9,
+          "duckdb_us": 123887.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              27681261,
+              -13840689,
+              -0.5000021133430301
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 5050962 AND ts < 27427084",
+          "kestrel_us": 1935.0,
+          "duckdb_us": 105620.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              22376122,
+              -11185435,
+              -0.49988264275641686
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 14646800 AND ts < 20720766",
+          "kestrel_us": 2235.9,
+          "duckdb_us": 30256.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6073966,
+              -3036385,
+              -0.4999015470287453
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 17530791 AND ts < 30529787",
+          "kestrel_us": 2043.3,
+          "duckdb_us": 56774.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12998996,
+              -6498198,
+              -0.4998999922763266
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 20696848 AND ts < 44053191",
+          "kestrel_us": 2099.0,
+          "duckdb_us": 102552.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              23356343,
+              -11675371,
+              -0.4998800968113887
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3873308 AND ts < 39863821",
+          "kestrel_us": 1966.5,
+          "duckdb_us": 159032.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              35990513,
+              -17996216,
+              -0.5000266598033766
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 11534605 AND ts < 14966803",
+          "kestrel_us": 2381.0,
+          "duckdb_us": 15802.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3432198,
+              -1717159,
+              -0.500308839991166
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7934428 AND ts < 45386062",
+          "kestrel_us": 2001.8,
+          "duckdb_us": 163967.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              37451634,
+              -18730019,
+              -0.5001121980418798
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 28419750 AND ts < 40001005",
+          "kestrel_us": 1935.2,
+          "duckdb_us": 52022.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              11581255,
+              -5793505,
+              -0.5002484618463198
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 12125559 AND ts < 36237560",
+          "kestrel_us": 2032.7,
+          "duckdb_us": 104765.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              24112001,
+              -12055817,
+              -0.49999238968180204
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 8670820 AND ts < 27682701",
+          "kestrel_us": 2368.5,
+          "duckdb_us": 83832.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              19011881,
+              -9502780,
+              -0.4998337618460793
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 40962824 AND ts < 47778145",
+          "kestrel_us": 2124.6,
+          "duckdb_us": 33696.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6815321,
+              -3408032,
+              -0.5000545095381421
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 42710017 AND ts < 46637117",
+          "kestrel_us": 2325.4,
+          "duckdb_us": 17980.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              3927100,
+              -1961450,
+              -0.49946525425886784
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 28960205 AND ts < 35003494",
+          "kestrel_us": 2065.7,
+          "duckdb_us": 26998.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6043289,
+              -3019143,
+              -0.49958606977094755
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 3731663 AND ts < 10802248",
+          "kestrel_us": 2071.8,
+          "duckdb_us": 32661.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7070585,
+              -3534525,
+              -0.49989145169741966
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 2395039 AND ts < 33597387",
+          "kestrel_us": 1872.3,
+          "duckdb_us": 140103.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              31202348,
+              -15596850,
+              -0.499861420685392
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 33380956 AND ts < 48199156",
+          "kestrel_us": 3069.8,
+          "duckdb_us": 65250.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              14818200,
+              -7407300,
+              -0.4998785277564077
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 11966158 AND ts < 19102817",
+          "kestrel_us": 1966.5,
+          "duckdb_us": 32090.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7136659,
+              -3567979,
+              -0.49995088738301774
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 38354553 AND ts < 41016925",
+          "kestrel_us": 2235.8,
+          "duckdb_us": 13055.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              2662372,
+              -1333286,
+              -0.5007887703145917
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 10665877 AND ts < 33601887",
+          "kestrel_us": 1886.1,
+          "duckdb_us": 100709.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              22936010,
+              -11466845,
+              -0.4999494245075756
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "rows": 100000000,
+      "late": false,
+      "windows_checked": 31,
+      "kestrel_median_us": 2094.6,
+      "duckdb_median_us": 165797.7,
+      "kestrel_p95_us": 2410.7,
+      "duckdb_p95_us": 321514.8,
+      "median_speedup_ratio": 79.19914491449146,
+      "samples": [
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 36620081 AND ts < 78775185",
+          "kestrel_us": 2094.6,
+          "duckdb_us": 259006.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              42155104,
+              -21077640,
+              -0.5000020875289503
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 26832697 AND ts < 71605380",
+          "kestrel_us": 2410.7,
+          "duckdb_us": 214991.1,
+          "bytes_read": 131072,
+          "result": [
+            [
+              44772683,
+              -22384202,
+              -0.49995221416594576
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 12732366 AND ts < 38468197",
+          "kestrel_us": 1777.6,
+          "duckdb_us": 140784.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              25735831,
+              -12868593,
+              -0.5000263251650976
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 12280610 AND ts < 20223994",
+          "kestrel_us": 2003.0,
+          "duckdb_us": 38620.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7943384,
+              -3974788,
+              -0.500389758319628
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 38545891 AND ts < 58543964",
+          "kestrel_us": 1988.4,
+          "duckdb_us": 86736.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              19998073,
+              -10002673,
+              -0.5001818425205269
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 49472024 AND ts < 92649415",
+          "kestrel_us": 2188.1,
+          "duckdb_us": 210470.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              43177391,
+              -21585727,
+              -0.49993124874080513
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 27733913 AND ts < 92075289",
+          "kestrel_us": 1954.4,
+          "duckdb_us": 275783.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              64341376,
+              -32169344,
+              -0.49997911141968737
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 15256424 AND ts < 71219622",
+          "kestrel_us": 2189.3,
+          "duckdb_us": 238262.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              55963198,
+              -27978665,
+              -0.4999475726887516
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 20077298 AND ts < 26379041",
+          "kestrel_us": 1944.0,
+          "duckdb_us": 28325.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6301743,
+              -3157521,
+              -0.5010551842561654
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 27238605 AND ts < 81478966",
+          "kestrel_us": 1987.7,
+          "duckdb_us": 237676.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              54240361,
+              -27123255,
+              -0.5000566828823282
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 19694589 AND ts < 74035176",
+          "kestrel_us": 1926.4,
+          "duckdb_us": 234213.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              54340587,
+              -27173342,
+              -0.5000560998724581
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 18380987 AND ts < 73743510",
+          "kestrel_us": 2160.2,
+          "duckdb_us": 237829.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              55362523,
+              -27675452,
+              -0.49989506439220627
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 10101925 AND ts < 54854170",
+          "kestrel_us": 2265.2,
+          "duckdb_us": 198887.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              44752245,
+              -22375445,
+              -0.49998486109467805
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 29293601 AND ts < 41441534",
+          "kestrel_us": 2303.4,
+          "duckdb_us": 53661.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12147933,
+              -6074093,
+              -0.5000104132941794
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 35061582 AND ts < 61059575",
+          "kestrel_us": 1907.5,
+          "duckdb_us": 113203.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              25997993,
+              -12998202,
+              -0.4999694399486914
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 41393696 AND ts < 88106382",
+          "kestrel_us": 2198.7,
+          "duckdb_us": 201165.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              46712686,
+              -23354793,
+              -0.49996681843557444
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7746617 AND ts < 79727643",
+          "kestrel_us": 2227.3,
+          "duckdb_us": 322147.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              71981026,
+              -35990921,
+              -0.5000056681603844
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 23069210 AND ts < 29933607",
+          "kestrel_us": 2325.8,
+          "duckdb_us": 30751.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6864397,
+              -3431388,
+              -0.49988192699227624
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 15868856 AND ts < 90772124",
+          "kestrel_us": 2258.5,
+          "duckdb_us": 321514.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              74903268,
+              -37452618,
+              -0.5000131369435042
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 56839500 AND ts < 80002010",
+          "kestrel_us": 2202.5,
+          "duckdb_us": 100379.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              23162510,
+              -11585585,
+              -0.5001869400164317
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 24251119 AND ts < 72475122",
+          "kestrel_us": 2095.2,
+          "duckdb_us": 212354.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              48224003,
+              -24112180,
+              -0.500003701476213
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 17341640 AND ts < 55365402",
+          "kestrel_us": 2177.6,
+          "duckdb_us": 165797.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              38023762,
+              -19010523,
+              -0.4999642854907413
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 81925648 AND ts < 95556290",
+          "kestrel_us": 1866.8,
+          "duckdb_us": 65251.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              13630642,
+              -6818251,
+              -0.5002149568596989
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 85420034 AND ts < 93274235",
+          "kestrel_us": 2185.5,
+          "duckdb_us": 35085.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7854201,
+              -3924942,
+              -0.49972517892017276
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 57920410 AND ts < 70006988",
+          "kestrel_us": 1764.9,
+          "duckdb_us": 52874.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12086578,
+              -6048879,
+              -0.5004624964981818
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7463326 AND ts < 21604497",
+          "kestrel_us": 1966.8,
+          "duckdb_us": 71993.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              14141171,
+              -7072603,
+              -0.50014266852441
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4790078 AND ts < 67194775",
+          "kestrel_us": 1745.0,
+          "duckdb_us": 275642.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              62404697,
+              -31201386,
+              -0.49998457648147865
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 66761913 AND ts < 96398313",
+          "kestrel_us": 2608.0,
+          "duckdb_us": 132277.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              29636400,
+              -14817000,
+              -0.4999595092521359
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 23932316 AND ts < 38205634",
+          "kestrel_us": 2040.4,
+          "duckdb_us": 62102.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              14273318,
+              -7136533,
+              -0.4999911723398862
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 76709107 AND ts < 82033851",
+          "kestrel_us": 2072.1,
+          "duckdb_us": 24163.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5324744,
+              -2663852,
+              -0.5002779476346656
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 21331754 AND ts < 67203775",
+          "kestrel_us": 2008.5,
+          "duckdb_us": 201232.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              45872021,
+              -22937872,
+              -0.5000405802918515
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "rows": 100000000,
+      "late": true,
+      "windows_checked": 31,
+      "kestrel_median_us": 358.9,
+      "duckdb_median_us": 186480.9,
+      "kestrel_p95_us": 452.5,
+      "duckdb_p95_us": 424969.9,
+      "median_speedup_ratio": 514.5352669742913,
+      "samples": [
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 36620081 AND ts < 78775185",
+          "kestrel_us": 342.4,
+          "duckdb_us": 296652.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              42155104,
+              -21077640,
+              -0.5000020875289503
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 26832697 AND ts < 71605380",
+          "kestrel_us": 455.1,
+          "duckdb_us": 234165.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              44772683,
+              -22384202,
+              -0.49995221416594576
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 12732366 AND ts < 38468197",
+          "kestrel_us": 324.5,
+          "duckdb_us": 149608.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              25735831,
+              -12868593,
+              -0.5000263251650976
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 12280610 AND ts < 20223994",
+          "kestrel_us": 442.6,
+          "duckdb_us": 38189.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7943384,
+              -3974788,
+              -0.500389758319628
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 38545891 AND ts < 58543964",
+          "kestrel_us": 343.4,
+          "duckdb_us": 92786.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              19998073,
+              -10002673,
+              -0.5001818425205269
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 49472024 AND ts < 92649415",
+          "kestrel_us": 402.0,
+          "duckdb_us": 223176.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              43177391,
+              -21585727,
+              -0.49993124874080513
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 27733913 AND ts < 92075289",
+          "kestrel_us": 371.6,
+          "duckdb_us": 374240.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              64341376,
+              -32169344,
+              -0.49997911141968737
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 15256424 AND ts < 71219622",
+          "kestrel_us": 401.1,
+          "duckdb_us": 331251.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              55963198,
+              -27978665,
+              -0.4999475726887516
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 20077298 AND ts < 26379041",
+          "kestrel_us": 338.3,
+          "duckdb_us": 30041.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6301743,
+              -3157521,
+              -0.5010551842561654
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 27238605 AND ts < 81478966",
+          "kestrel_us": 445.7,
+          "duckdb_us": 259790.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              54240361,
+              -27123255,
+              -0.5000566828823282
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 19694589 AND ts < 74035176",
+          "kestrel_us": 318.4,
+          "duckdb_us": 316330.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              54340587,
+              -27173342,
+              -0.5000560998724581
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 18380987 AND ts < 73743510",
+          "kestrel_us": 394.4,
+          "duckdb_us": 256357.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              55362523,
+              -27675452,
+              -0.49989506439220627
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 10101925 AND ts < 54854170",
+          "kestrel_us": 326.9,
+          "duckdb_us": 275296.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              44752245,
+              -22375445,
+              -0.49998486109467805
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 29293601 AND ts < 41441534",
+          "kestrel_us": 374.7,
+          "duckdb_us": 56793.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12147933,
+              -6074093,
+              -0.5000104132941794
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 35061582 AND ts < 61059575",
+          "kestrel_us": 317.1,
+          "duckdb_us": 127090.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              25997993,
+              -12998202,
+              -0.4999694399486914
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 41393696 AND ts < 88106382",
+          "kestrel_us": 449.0,
+          "duckdb_us": 247972.6,
+          "bytes_read": 131072,
+          "result": [
+            [
+              46712686,
+              -23354793,
+              -0.49996681843557444
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7746617 AND ts < 79727643",
+          "kestrel_us": 335.3,
+          "duckdb_us": 424969.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              71981026,
+              -35990921,
+              -0.5000056681603844
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 23069210 AND ts < 29933607",
+          "kestrel_us": 440.7,
+          "duckdb_us": 32321.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              6864397,
+              -3431388,
+              -0.49988192699227624
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 15868856 AND ts < 90772124",
+          "kestrel_us": 343.7,
+          "duckdb_us": 464701.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              74903268,
+              -37452618,
+              -0.5000131369435042
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 56839500 AND ts < 80002010",
+          "kestrel_us": 432.5,
+          "duckdb_us": 105270.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              23162510,
+              -11585585,
+              -0.5001869400164317
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 24251119 AND ts < 72475122",
+          "kestrel_us": 293.1,
+          "duckdb_us": 264891.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              48224003,
+              -24112180,
+              -0.500003701476213
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 17341640 AND ts < 55365402",
+          "kestrel_us": 452.5,
+          "duckdb_us": 186480.9,
+          "bytes_read": 131072,
+          "result": [
+            [
+              38023762,
+              -19010523,
+              -0.4999642854907413
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 81925648 AND ts < 95556290",
+          "kestrel_us": 333.4,
+          "duckdb_us": 84496.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              13630642,
+              -6818251,
+              -0.5002149568596989
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 85420034 AND ts < 93274235",
+          "kestrel_us": 386.2,
+          "duckdb_us": 37248.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              7854201,
+              -3924942,
+              -0.49972517892017276
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 57920410 AND ts < 70006988",
+          "kestrel_us": 275.2,
+          "duckdb_us": 75771.4,
+          "bytes_read": 131072,
+          "result": [
+            [
+              12086578,
+              -6048879,
+              -0.5004624964981818
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 7463326 AND ts < 21604497",
+          "kestrel_us": 360.6,
+          "duckdb_us": 86413.3,
+          "bytes_read": 131072,
+          "result": [
+            [
+              14141171,
+              -7072603,
+              -0.50014266852441
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 4790078 AND ts < 67194775",
+          "kestrel_us": 269.1,
+          "duckdb_us": 350278.7,
+          "bytes_read": 131072,
+          "result": [
+            [
+              62404697,
+              -31201386,
+              -0.49998457648147865
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 66761913 AND ts < 96398313",
+          "kestrel_us": 358.9,
+          "duckdb_us": 185342.5,
+          "bytes_read": 131072,
+          "result": [
+            [
+              29636400,
+              -14817000,
+              -0.4999595092521359
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 23932316 AND ts < 38205634",
+          "kestrel_us": 331.0,
+          "duckdb_us": 87567.2,
+          "bytes_read": 131072,
+          "result": [
+            [
+              14273318,
+              -7136533,
+              -0.4999911723398862
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 76709107 AND ts < 82033851",
+          "kestrel_us": 430.3,
+          "duckdb_us": 25585.8,
+          "bytes_read": 131072,
+          "result": [
+            [
+              5324744,
+              -2663852,
+              -0.5002779476346656
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 21331754 AND ts < 67203775",
+          "kestrel_us": 346.2,
+          "duckdb_us": 253242.0,
+          "bytes_read": 131072,
+          "result": [
+            [
+              45872021,
+              -22937872,
+              -0.5000405802918515
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

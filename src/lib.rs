@@ -1,5 +1,6 @@
 //! Experimental embedded, append-only SQL engine with automatic exact aggregate indexes.
 //! This release is a research prototype, not a production-certified database.
+pub mod archive;
 mod query;
 pub mod sql;
 mod wal;
@@ -160,7 +161,7 @@ pub struct Database {
     poisoned: bool,
 }
 
-fn valid_identifier(name: &str) -> bool {
+pub(crate) fn valid_identifier(name: &str) -> bool {
     let mut chars = name.bytes();
     !name.is_empty()
         && name.len() <= 63

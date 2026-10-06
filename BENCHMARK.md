@@ -1,4 +1,6 @@
-# Measured results
+# Historical RAM-engine results: version 0.1
+
+Retained as the original version 0.1 report. Current disk-backed measurements are in [SCALE.md](SCALE.md).
 
 Recorded for the prototype on 5 October 2026. These are specialized workload measurements on one live Windows machine, not a database leaderboard or production certification.
 

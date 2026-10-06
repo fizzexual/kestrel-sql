@@ -2,6 +2,8 @@
 
 An experimental embedded SQL database for exact live metrics over append-only events. The working product idea is **automatically indexed, arbitrary time-window totals inside an application**, with durable ingestion and no materialized-view definition per window.
 
+**Version 0.2 adds disk-backed analytics.** The new `Archive` API stores immutable sorted segments with sparse prefix sums, block extrema, checksums, and atomic catalog generations. It supports late batches and keeps raw rows on disk. The original `Database` API below remains a separate, RAM-resident transactional prototype. See [ARCHIVE.md](ARCHIVE.md), [large-scale results](SCALE.md), and the [portfolio case study](PORTFOLIO.md) for the new path.
+
 **Readiness: research prototype.** This repository demonstrates a specialized speed advantage and tests important recovery behavior. Production release still requires the work and acceptance criteria below. There is no verified claim that this is the world's fastest database or that the underlying algorithm is novel.
 
 ## Why this direction
@@ -53,7 +55,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Use `Database::memory()` for an ephemeral database. The schema example requires a fresh directory. Use `begin`, `commit`, and `rollback` to batch durable writes. One Database owns one transaction context; Rust borrowing protects mutation, and application synchronization is needed when sharing it. Concurrent independent sessions and MVCC are future work.
 
-## Implemented SQL and behavior
+## Implemented SQL and behavior: Database API
 
 - CREATE TABLE with 1–64 unique `BIGINT NOT NULL` columns.
 - INSERT INTO ... VALUES with multiple complete rows, and a column batch API.
@@ -66,7 +68,7 @@ Identifiers are unquoted ASCII and case insensitive in SQL. Values are signed 64
 
 Strings, nullable input columns, decimal money, native timestamps, joins, UPDATE, DELETE, uniqueness constraints, parameter binding, foreign keys, and query cancellation remain unimplemented. The source is ordinary Rust with unsafe code forbidden in this crate; dependencies have their own implementations.
 
-## Why the fast path works
+## Why the RAM fast path works
 
 Each column stores its values and exact cumulative sums. For nondecreasing filter columns, binary search finds the two row boundaries of a contiguous range. Subtracting the cumulative sums gives an exact range total; the boundary difference gives its count. AVG uses those two quantities. No row scan or query-result cache is needed.
 
@@ -74,7 +76,7 @@ An eligible range aggregate takes O(log n + a), where `a` is the number of reque
 
 The fast path accepts AND predicates on one nondecreasing column, with `=`, `<`, `<=`, `>`, or `>=`. Contradictory bounds yield an empty range. MIN/MAX and grouped queries use scans. Multiple filter columns and `<>` also use scans. If a late event breaks ordering, filtered queries on that column automatically fall back to a correct scan. Whole-table sums still use prefixes. Rollback restores the prefixes and ordering detection, but recalculating ordering during rollback can scan existing data.
 
-Values and prefixes occupy **24 logical bytes per column per row**, compared with 8 bytes for raw BIGINT data. This excludes allocation slack, transaction buffers, WAL buffers, query state, and process runtime. The measured one-million-row, three-column table uses 72,000,048 logical bytes. This version is entirely RAM-resident, with per-table limits of 10 million rows, 64 tables, and 100,000 materialized result rows/groups. ORDER BY currently materializes within that result budget before LIMIT; it does not implement a bounded top-k sort. There is no global memory governor or disk spilling.
+Values and prefixes occupy **24 logical bytes per column per row**, compared with 8 bytes for raw BIGINT data. This excludes allocation slack, transaction buffers, WAL buffers, query state, and process runtime. The measured one-million-row, three-column table uses 72,000,048 logical bytes. This Database implementation is entirely RAM-resident, with per-table limits of 10 million rows, 64 tables, and 100,000 materialized result rows/groups. ORDER BY currently materializes within that result budget before LIMIT; it does not implement a bounded top-k sort. There is no global memory governor or disk spilling. The separate Archive implementation has different storage and limits; see [ARCHIVE.md](ARCHIVE.md).
 
 ## Durable storage
 
@@ -105,7 +107,7 @@ See [BENCHMARK.md](BENCHMARK.md) for the measured results and limitations, and [
 
 1. **Validate the product need.** Test actual app traces, especially late arrivals, device cardinality, event sizes, and retention. Establish which API latency matters and compare with existing engines plus equivalent maintained indexes/views. Publish costs of maintenance, storage, and restarts alongside query latency.
 2. **Bound storage and recovery.** Implement checkpoints, compaction/retention, snapshot backup/restore, format migration, and a global memory budget. Test interrupted checkpoints, damaged snapshots, disk exhaustion, and directory-entry durability on supported filesystems.
-3. **Preserve speed under realistic ingestion.** Use ordered segments and a late-event index, with exact aggregates across segments. Add selective prefix indexes rather than maintaining every column by default. Benchmark batch sizes, write amplification, ingest stalls, and tail latency.
+3. **Preserve speed under realistic ingestion.** The Archive path now combines exact aggregates across independently sorted segments, including late batches. Compaction, selective index policies, better compression, and faster grouping remain future work. Benchmark additional batch sizes, write amplification, ingest stalls, and tail latency.
 4. **Finish the application contract.** Choose required types and constraints, parameter binding, schema evolution, idempotent ingestion/retry identifiers, cancellation, and session isolation. Add stable error codes and observability. Authentication is necessary if a network service is introduced.
 5. **Qualify correctness and operations.** Add coverage-guided parser/recovery fuzzing, independent SQL differential suites, filesystem fault injection, long mixed-workload stress tests, Linux verification, and real power-loss testing. Demonstrate backup restoration and upgrades with real datasets. Define supported environments and measurable release criteria before deployment.
 
