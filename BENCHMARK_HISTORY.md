@@ -1,6 +1,6 @@
 # Benchmark history: wins, losses and exact evidence
 
-[Latest package: 0.3.7](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.7) | [All release downloads](https://github.com/fizzexual/kestrel-sql/releases) | [Raw reports and samples](benchmarks/) | [Current qualification](verification.json)
+[Latest package: 0.3.8](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.8) | [All release downloads](https://github.com/fizzexual/kestrel-sql/releases) | [Raw reports and samples](benchmarks/) | [Current qualification](verification.json)
 
 The repository is private. Every packaged snapshot has its own Git tag and release download. Older archives are immutable; the current tree keeps earlier reports, raw samples, baselines and rejected experiments. Historical measurements are labelled by the version actually tested. A later release does not turn an old result into a fresh benchmark.
 
@@ -10,7 +10,7 @@ The repository is private. Every packaged snapshot has its own Git tag and relea
 |---|---|
 | Where did Kestrel beat another database? | [Repeated six-engine comparison](PERFORMANCE_031.md), [100M-row wins and losses](SCALE.md) |
 | Where did it lose or drop work? | [Original hard tests](HARD_TESTS.md), [live-service failures](V03_RESULTS.md), [0.3.6 controls](PERFORMANCE_036.md), [0.3.7 write stalls](PERFORMANCE_037.md) |
-| What is faster today? | [Immutable embedded retry reuse](PERFORMANCE_036.md), [filtered scan improvement](PERFORMANCE_032.md), [receipt metadata reduction](PERFORMANCE_033.md) |
+| What is faster today? | [Adaptive GROUP BY and fresh 100M-row comparison](PERFORMANCE_038.md), [Immutable embedded retry reuse](PERFORMANCE_036.md), [filtered scan improvement](PERFORMANCE_032.md), [receipt metadata reduction](PERFORMANCE_033.md) |
 | What can a pipeline rely on locally? | [Source checkpoint contract](SOURCE_INGEST.md), [replay/backfill portfolio](PORTFOLIO.md), [0.3.7 recovery evidence](PERFORMANCE_037.md) |
 | Can this replace a production general-purpose SQL database? | [SQL/API boundaries and release gates](README.md), [executed capability checks](HARD_TESTS.md) |
 | What is the next storage hypothesis? | [I/O primitive measurements](benchmarks/sync-037-io-comparison.json), [rejected parallel-sync audit](benchmarks/sync-037-io-audit.json); these are not database benchmarks |
@@ -30,6 +30,7 @@ The repository is private. Every packaged snapshot has its own Git tag and relea
 | [0.3.5](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.5) | Opt-in confirmed retries; losing always-on trial preserved | [Retry gains and write losses](PERFORMANCE_035.md) | [Audit](benchmarks/retry-035-audit.json), [trial sources](benchmarks/trial-0.3.5-source/), [trial harness](benchmarks/trial-035-harness/) |
 | [0.3.6](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.6) | Immutable prepared input; confirmed retry reuse, zero new rows during timing | [Embedded and ordinary controls](PERFORMANCE_036.md) | [Embedded runs](benchmarks/prepared-036-direct.json), [open-loop controls](benchmarks/prepared-036-write-controls.json), [audit](benchmarks/prepared-036-audit.json) |
 | [0.3.7](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.7) | Output and source resume position in one durable receipt | [Contract and cost measurements](PERFORMANCE_037.md) | [Comparisons](benchmarks/source-037-comparison.json), [faults/kills](benchmarks/source-037-faults.json), [Parquet replay](portfolio/source-pipeline-037-results.json), [audit](benchmarks/source-037-audit.json) |
+| [0.3.8](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.8) | Bounded adaptive integer grouping; 1M/10M/100M and real-data comparisons | [Every before/after and win/loss](PERFORMANCE_038.md) | [Current audit](benchmarks/group-038-audit.json), [initial trial and fixture correction](benchmarks/group-038-cell-trial-audit.json) |
 
 Each report links its exact raw inputs and samples. Gzipped JSONL sample files remain in their named directories under `benchmarks`; they are downloadable from GitHub and included in the corresponding ZIP. Sample counts, losses and percentiles must be assessed together.
 

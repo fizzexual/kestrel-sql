@@ -1,0 +1,9 @@
+First debug check: 7 library tests passed; archive tests 31 passed, 1 failed.
+group_strategy_is_local_to_pinned_snapshot_and_survives_compaction failed
+at tests/archive.rs temp helper open():
+archive lock unavailable: lock acquisition failed because the operation would block
+
+The test reopened while its pinned snapshot still owned the exclusive archive
+lock. Added drop(pinned) after verifying the historical snapshot, before reopen.
+Dense signed-edge, sparse/high-cardinality fallback, result-budget and all
+existing archive tests passed. No timed query comparison ran in this attempt.

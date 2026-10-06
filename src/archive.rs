@@ -27,6 +27,8 @@ const OLD_CAT_MAGIC: &[u8; 8] = b"KSQLCAT2";
 const MAX_CATALOG_CHAIN: usize = 32;
 const MAX_BATCH_IDS: usize = 100_000;
 const MAX_PAGE_CACHE_BYTES: usize = 32 * 1024 * 1024;
+const MAX_DENSE_GROUP_SLOTS: usize = 4096;
+const MAX_DENSE_GROUP_BYTES: usize = 8 * 1024 * 1024;
 
 /// Inclusive histogram buckets end at 0.1, 1, 5, 20, 100, 500 and 1000 ms;
 /// the final bucket contains all longer samples. Diagnostics are process-local.
@@ -1187,6 +1189,20 @@ impl ArchiveSnapshot {
         let resolved = Resolved::new(&self.catalog, q)?;
         let mut states = vec![Cell::default(); resolved.exprs.len()];
         let mut groups: HashMap<i64, Vec<Cell>> = HashMap::new();
+        let mut dense = resolved.group.and_then(|column| {
+            let min = self
+                .segments
+                .iter()
+                .map(|s| s.metadata.indexes[column].min)
+                .min()?;
+            let max = self
+                .segments
+                .iter()
+                .map(|s| s.metadata.indexes[column].max)
+                .max()?;
+            DenseGroups::new(min, max, &resolved.exprs)
+        });
+        let dense_plan = dense.is_some();
         let mut bytes_read = 0;
         let mut scanned = 0;
         let mut pruned = 0;
@@ -1345,18 +1361,22 @@ impl ArchiveSnapshot {
                     }
                     let aggregate_started = PROFILE.then(Instant::now);
                     if let Some(column) = resolved.group {
-                        for &row in &selected {
-                            let key = columns[column][row];
-                            if groups.len() >= crate::query::MAX_RESULT_ROWS
-                                && !groups.contains_key(&key)
-                            {
-                                return Err(Error::new("archive group budget exceeded"));
-                            }
-                            let cells = groups
-                                .entry(key)
-                                .or_insert_with(|| vec![Cell::default(); resolved.exprs.len()]);
-                            for (cell, expr) in cells.iter_mut().zip(&resolved.exprs) {
-                                cell.update(*expr, &columns, row);
+                        if let Some(dense) = &mut dense {
+                            dense.update_selected(column, &columns, &selected)?;
+                        } else {
+                            for &row in &selected {
+                                let key = columns[column][row];
+                                if groups.len() >= crate::query::MAX_RESULT_ROWS
+                                    && !groups.contains_key(&key)
+                                {
+                                    return Err(Error::new("archive group budget exceeded"));
+                                }
+                                let cells = groups
+                                    .entry(key)
+                                    .or_insert_with(|| vec![Cell::default(); resolved.exprs.len()]);
+                                for (cell, expr) in cells.iter_mut().zip(&resolved.exprs) {
+                                    cell.update(*expr, &columns, row);
+                                }
                             }
                         }
                     } else {
@@ -1374,6 +1394,8 @@ impl ArchiveSnapshot {
         }
         let mut rows: Vec<Vec<Value>> = if resolved.limit == Some(0) {
             Vec::new()
+        } else if let Some(dense) = dense {
+            dense.into_rows(&resolved.exprs)
         } else if resolved.group.is_some() {
             groups
                 .into_iter()
@@ -1409,6 +1431,8 @@ impl ArchiveSnapshot {
                 rows,
                 plan: if prefix && !used_scan {
                     "segmented-sparse-prefix".into()
+                } else if dense_plan {
+                    "streamed-dense-group".into()
                 } else {
                     "streamed-column-scan".into()
                 },
@@ -1753,6 +1777,150 @@ impl Resolved {
         })
     }
 }
+/// A query-local direct-address table for bounded integer domains. Segment
+/// extrema select the strategy, never fixture values or a particular column.
+/// Wide/sparse domains keep the hash path and its existing result budget.
+struct DenseGroups {
+    base: i64,
+    counts: Vec<usize>,
+    aggregates: Vec<DenseAggregate>,
+    outputs: Vec<Option<usize>>,
+    slots: Vec<usize>,
+}
+enum DenseAggregate {
+    Sum(usize, Vec<i128>),
+    Min(usize, Vec<i64>),
+    Max(usize, Vec<i64>),
+}
+impl DenseGroups {
+    fn capacity(min: i64, max: i64, expressions: usize) -> Option<usize> {
+        let span = usize::try_from(i128::from(max) - i128::from(min) + 1).ok()?;
+        // Conservative Cell-sized accounting also covers output mappings and
+        // vector headers, even when expressions share a narrower accumulator.
+        let bytes = span
+            .checked_mul(expressions.checked_mul(std::mem::size_of::<Cell>())?)?
+            .checked_add(span.checked_mul(std::mem::size_of::<usize>())?)?
+            .checked_add(expressions.checked_mul(
+                std::mem::size_of::<DenseAggregate>() + std::mem::size_of::<Option<usize>>(),
+            )?)?
+            .checked_add(BLOCK_ROWS * std::mem::size_of::<usize>())?;
+        if span == 0 || span > MAX_DENSE_GROUP_SLOTS || bytes > MAX_DENSE_GROUP_BYTES {
+            return None;
+        }
+        Some(span)
+    }
+    fn new(min: i64, max: i64, expressions: &[AExpr]) -> Option<Self> {
+        let span = Self::capacity(min, max, expressions.len())?;
+        let mut aggregates = Vec::new();
+        let mut outputs = Vec::with_capacity(expressions.len());
+        for &expression in expressions {
+            if matches!(expression, AExpr::Count | AExpr::Group(_)) {
+                outputs.push(None);
+                continue;
+            }
+            let existing = aggregates.iter().position(|aggregate| {
+                matches!((aggregate, expression),
+                    (DenseAggregate::Sum(c, _), AExpr::Sum(column) | AExpr::Avg(column))
+                    | (DenseAggregate::Min(c, _), AExpr::Min(column))
+                    | (DenseAggregate::Max(c, _), AExpr::Max(column)) if *c == column)
+            });
+            let index = existing.unwrap_or_else(|| {
+                let index = aggregates.len();
+                aggregates.push(match expression {
+                    AExpr::Sum(c) | AExpr::Avg(c) => DenseAggregate::Sum(c, vec![0; span]),
+                    AExpr::Min(c) => DenseAggregate::Min(c, vec![i64::MAX; span]),
+                    AExpr::Max(c) => DenseAggregate::Max(c, vec![i64::MIN; span]),
+                    _ => unreachable!(),
+                });
+                index
+            });
+            outputs.push(Some(index));
+        }
+        Some(Self {
+            base: min,
+            counts: vec![0; span],
+            aggregates,
+            outputs,
+            slots: Vec::with_capacity(BLOCK_ROWS),
+        })
+    }
+    fn update_selected(
+        &mut self,
+        column: usize,
+        columns: &[Vec<i64>],
+        selected: &[usize],
+    ) -> Result<()> {
+        self.slots.clear();
+        for &row in selected {
+            // Wrapping subtraction also handles domains adjacent to i64::MIN.
+            // The unsigned bound rejects values outside validated metadata.
+            let slot = columns[column][row].wrapping_sub(self.base) as u64;
+            if slot >= self.counts.len() as u64 {
+                return Err(Error::new("group key outside segment metadata bounds"));
+            }
+            self.slots.push(slot as usize);
+            self.counts[slot as usize] += 1;
+        }
+        // SUM and AVG of the same column share one exact i128 reduction.
+        // Narrow arrays and dispatch outside the row loop keep updates local.
+        for aggregate in &mut self.aggregates {
+            match aggregate {
+                DenseAggregate::Sum(c, sums) => {
+                    let values = &columns[*c];
+                    for (&row, &slot) in selected.iter().zip(&self.slots) {
+                        sums[slot] += i128::from(values[row]);
+                    }
+                }
+                DenseAggregate::Min(c, minima) => {
+                    let values = &columns[*c];
+                    for (&row, &slot) in selected.iter().zip(&self.slots) {
+                        minima[slot] = minima[slot].min(values[row]);
+                    }
+                }
+                DenseAggregate::Max(c, maxima) => {
+                    let values = &columns[*c];
+                    for (&row, &slot) in selected.iter().zip(&self.slots) {
+                        maxima[slot] = maxima[slot].max(values[row]);
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+    fn into_rows(self, expressions: &[AExpr]) -> Vec<Vec<Value>> {
+        self.counts
+            .iter()
+            .enumerate()
+            .filter(|(_, count)| **count != 0)
+            .map(|(slot, &count)| {
+                let key = self.base + slot as i64;
+                expressions
+                    .iter()
+                    .zip(&self.outputs)
+                    .map(|(&expression, output)| {
+                        match (expression, output.map(|index| &self.aggregates[index])) {
+                            (AExpr::Group(_), None) => Value::Int(i128::from(key)),
+                            (AExpr::Count, None) => Value::Int(count as i128),
+                            (AExpr::Sum(_), Some(DenseAggregate::Sum(_, sums))) => {
+                                Value::Int(sums[slot])
+                            }
+                            (AExpr::Avg(_), Some(DenseAggregate::Sum(_, sums))) => {
+                                Value::Float(sums[slot] as f64 / count as f64)
+                            }
+                            (AExpr::Min(_), Some(DenseAggregate::Min(_, minima))) => {
+                                Value::Int(i128::from(minima[slot]))
+                            }
+                            (AExpr::Max(_), Some(DenseAggregate::Max(_, maxima))) => {
+                                Value::Int(i128::from(maxima[slot]))
+                            }
+                            _ => unreachable!("dense aggregate output mapping"),
+                        }
+                    })
+                    .collect()
+            })
+            .collect()
+    }
+}
 #[derive(Clone, Default)]
 struct Cell {
     count: usize,
@@ -1834,5 +2002,34 @@ fn retain_matching(selected: &mut Vec<usize>, values: &[i64], op: Op, value: i64
         Op::Le => selected.retain(|&row| values[row] <= value),
         Op::Gt => selected.retain(|&row| values[row] > value),
         Op::Ge => selected.retain(|&row| values[row] >= value),
+    }
+}
+
+#[cfg(test)]
+mod dense_group_tests {
+    use super::*;
+
+    #[test]
+    fn dense_group_budget_and_signed_span_are_checked_before_allocation() {
+        assert!(DenseGroups::capacity(i64::MIN, i64::MAX, 1).is_none());
+        assert!(DenseGroups::capacity(0, MAX_DENSE_GROUP_SLOTS as i64, 1).is_none());
+        assert!(DenseGroups::capacity(0, 4095, 64).is_none());
+        assert!(DenseGroups::capacity(0, 0, usize::MAX).is_none());
+        assert!(DenseGroups::capacity(7, 5, 1).is_none());
+        assert!(DenseGroups::capacity(i64::MIN, i64::MIN + 4095, 6).is_some());
+        assert!(DenseGroups::capacity(i64::MAX - 7, i64::MAX, 6).is_some());
+    }
+
+    #[test]
+    fn dense_group_rejects_payload_keys_outside_metadata_without_panicking() {
+        for (min, max, key) in [
+            (5, 9, 4),
+            (5, 9, 10),
+            (i64::MIN, i64::MIN + 3, i64::MAX),
+            (i64::MAX - 3, i64::MAX, i64::MIN),
+        ] {
+            let mut groups = DenseGroups::new(min, max, &[AExpr::Count]).unwrap();
+            assert!(groups.update_selected(0, &[vec![key]], &[0]).is_err());
+        }
     }
 }

@@ -1,0 +1,157 @@
+{
+  "version": "0.3.8",
+  "rust_tests": {
+    "debug": 63,
+    "release": 63,
+    "passed": true
+  },
+  "format_check": "passed",
+  "clippy_warnings_as_errors": "passed",
+  "feature_clippy_warnings_as_errors": "passed",
+  "build_run_order": [
+    {
+      "job": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-06T15:56:15.656744+00:00",
+      "completed_at_utc": "2026-10-06T15:56:16.113285+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "debug",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T15:56:16.114285+00:00",
+      "completed_at_utc": "2026-10-06T15:56:33.241893+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T15:56:33.243428+00:00",
+      "completed_at_utc": "2026-10-06T15:57:02.671808+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T15:57:02.672808+00:00",
+      "completed_at_utc": "2026-10-06T15:57:04.277393+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--bins",
+        "--examples",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T15:57:04.278393+00:00",
+      "completed_at_utc": "2026-10-06T15:57:04.579838+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-06T15:57:04.579838+00:00",
+      "completed_at_utc": "2026-10-06T15:57:06.645858+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--example",
+        "publication_fault_probe",
+        "--example",
+        "live_retry_probe",
+        "--example",
+        "source_fault_probe",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-06T15:57:06.645858+00:00",
+      "completed_at_utc": "2026-10-06T15:57:07.756660+00:00",
+      "returncode": 0
+    }
+  ],
+  "cli_sha256": "2dc005250e1a4d4c086af15631b5616e3f652fe8f592ca3037e487036ec2fddd",
+  "bridge_sha256": "513734f984bd01b78eb7ef88e91f78cc422ac69514fe5ebc7be274aab6b085f2",
+  "probe_sha256": "4c03c1f9cadd82f6d6d1997cf96c6356ddc76c0cfdd2b890fc75147ff027ce72",
+  "scan_probe_sha256": "87c3c401298805e1b0ec37c42c6a4922685795f3451ce2a2d28a9d83d8c77d53",
+  "group_probe_sha256": "a5f2b1c6c8fd06b412f8b5540fa42a6282a06448a798cb11bb4608f4897b4532",
+  "publication_probe_sha256": "30013f487ee3e02b0739ab7eb21dae3d02c69c3c39abbe8a6526c0656c75331b",
+  "receipt_seed_sha256": "ceba6f690a4898ef3a8601d3afa1eca553d8d7cbfb9815cfdf6dbcc943e74dcc",
+  "fault_driver_sha256": "19af441c821b2d43617e0c9915a3777055f4b06586fcd26bd5962c33fb3de7aa",
+  "live_retry_driver_sha256": "8610ab0e6f3dad03b62be4d8c2606fda5714e3141f901e5d59de704b1aad635e",
+  "source_fault_driver_sha256": "aaee71f87c8d6d997d20e4a5f3bab4847dc7c7f6d3e3ffe288b11224f491638c",
+  "source_sha256": {
+    "Cargo.lock": "37a8b41585c4e1f8de9234e58b14927e5479885ff7d067751e54393d40007337",
+    "Cargo.toml": "7639c77156865e3a320cf60e141037ae68750764dfa2c555d3b14181ae749eea",
+    "examples/group_probe.rs": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+    "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+    "src/archive.rs": "fd0f596272288806906005d3081da08cefc9db86c3cef945b37cdf3549413914",
+    "src/bin/kestrel-stress.rs": "d1b85ef5c5ef97f2b1a9c47eed202cafeb64affe9d7f37839326117c48420ae4",
+    "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "2ca3a08a7c695af7fcf284fd52a1741c374dfff60a29383ad3313515b10cc734",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "src/wire_json.rs": "42b5322f74ce4adf5fe7314d3362055e4d469dccfa4a1de88ea016ba4bc184c3",
+    "tests/archive.rs": "45e07169d1f041d36fe3897cbb5402b072633923c37096abb09879d44f3c348e",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+  }
+}

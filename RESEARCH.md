@@ -59,3 +59,9 @@ The following experiments are priorities, not delivered features:
 ## What would make the portfolio persuasive
 
 A reviewer should be able to reproduce the workload, see raw samples, inspect a failing case and understand the fix. The strongest demonstration is a replayed Parquet pipeline that handles late data, matches an independent SQL oracle and survives forced process termination without duplicating acknowledged batches. Pair that with transparent performance tradeoffs and a clear architectural explanation; a claim to beat every database would undermine the evidence.
+
+## Adaptive integer grouping in 0.3.8
+
+The measured group loop spent time hashing each selected key, looking up a vector of general aggregate cells and dispatching every expression for every row. The candidate uses a bounded direct-address table for compact integer spans, narrow arrays and shared SUM/AVG reductions. Independent CRC-checked scans still read the current snapshot; no whole-query answer is cached. Wide keys retain hash fallback. Signed edges, filtered holes, snapshot/reopen and memory/result budgets are tested.
+
+This technique has established prior art. DuckDB documents choosing an array indexed by the group key when column statistics show a sufficiently small domain; its perfect-hash threshold controls that choice. See [DuckDB's dimension-table article](https://www.duckdb.org/2026/10/02/dimension-tables) and [aggregation design](https://www.duckdb.org/2022/03/07/aggregate-hashtable). Our value is implementing and qualifying an adaptive path alongside the existing embedded range indexes and source-checkpoint workflow, rather than claiming a new aggregation algorithm. [Current evidence](PERFORMANCE_038.md) retains both competitive wins and losses, misleading fixture evidence and control drift.

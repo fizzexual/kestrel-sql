@@ -4,6 +4,7 @@ use std::io::{self, BufRead, Write};
 use std::path::PathBuf;
 use std::time::Instant;
 mod scale;
+mod wire_json;
 
 fn benchmark(
     mut db: Database,
@@ -252,17 +253,21 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
         if line.trim().is_empty() || line.trim_start().starts_with("--") {
             continue;
         }
-        let result: Result<serde_json::Value, Box<dyn std::error::Error>> =
-            if let Some(store) = &archive {
-                store.query(&line).map(|r| json!(r)).map_err(Into::into)
-            } else {
-                db.execute(&line).map(|r| json!(r)).map_err(Into::into)
-            };
+        let result: Result<String, String> = if let Some(store) = &archive {
+            store
+                .query(&line)
+                .map_err(|e| e.to_string())
+                .and_then(|r| wire_json::success(&r).map_err(|e| e.to_string()))
+        } else {
+            db.execute(&line)
+                .map_err(|e| e.to_string())
+                .and_then(|r| wire_json::success(&r).map_err(|e| e.to_string()))
+        };
         match result {
-            Ok(result) => writeln!(out, "{}", json!({"ok":true, "result":result}))?,
+            Ok(response) => writeln!(out, "{response}")?,
             Err(e) => {
                 failed = true;
-                writeln!(out, "{}", json!({"ok":false,"error":e.to_string()}))?;
+                writeln!(out, "{}", wire_json::failure(&e)?)?;
             }
         }
         out.flush()?;

@@ -1,0 +1,54 @@
+[
+  {
+    "job": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "started_at_utc": "2026-10-06T15:08:20.394975+00:00",
+    "completed_at_utc": "2026-10-06T15:08:20.789372+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "debug",
+    "command": [
+      "cargo",
+      "test",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-06T15:08:20.790371+00:00",
+    "completed_at_utc": "2026-10-06T15:08:30.632956+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "release",
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-06T15:08:30.633955+00:00",
+    "completed_at_utc": "2026-10-06T15:09:53.197460+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-06T15:09:53.198461+00:00",
+    "completed_at_utc": "2026-10-06T15:10:00.840678+00:00",
+    "returncode": 101
+  }
+]

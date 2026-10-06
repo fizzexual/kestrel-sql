@@ -43,6 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--expected-version', default='0.3.7')
     args = parser.parse_args()
     assert not args.output.exists()
     work = ROOT.parent.parent / 'work' / f'source-pipeline-{time.time_ns()}'
@@ -100,7 +101,7 @@ def main():
             assert actual == expected, (sql, actual, expected)
         assert adapter.call(op='verify') == 30000 * 24
         stats = adapter.call(op='stats')
-        assert stats['version'] == '0.3.7' and stats['source']['sources'] == 2 and stats['source']['committed_source_batches'] == 300
+        assert stats['version'] == args.expected_version and stats['source']['sources'] == 2 and stats['source']['committed_source_batches'] == 300
         report.update(exact_sql_cases_against_duckdb=42, full_scrub_passed=True, source_positions_and_data_reopen_together=True,
             replay_and_invalid_intervals_passed=True, stats=stats, limits='archive-local checkpoint atomicity; source positions are caller-supplied row offsets; no Kafka transaction, distributed consumer fencing, empty-output advance or retention contract')
     finally:

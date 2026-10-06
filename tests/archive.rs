@@ -1175,6 +1175,141 @@ fn extreme_sums_survive_disk_metadata_serialization() {
 }
 
 #[test]
+fn dense_groups_handle_signed_edges_holes_filters_and_wide_sums() {
+    for base in [i64::MIN, -17, i64::MAX - 7] {
+        let path = temp("dense-signed");
+        let mut archive = open(&path);
+        let mut reference = Database::memory();
+        reference.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)").unwrap();
+        for batch in 0..2 {
+            let columns = vec![
+                (0..5003).map(|i| (i * 17) % 6007 - batch * 97).collect(),
+                (0..5003)
+                    .map(|i| if i % 3 == 0 { i64::MIN } else { i64::MAX })
+                    .collect(),
+                (0..5003)
+                    .map(|i| base + [0, 3, 7][i as usize % 3])
+                    .collect(),
+            ];
+            reference.append("events", columns.clone()).unwrap();
+            archive.append(columns).unwrap();
+        }
+        for sql in [
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value), SUM(ts) FROM events GROUP BY device ORDER BY device",
+            "SELECT SUM(value) AS s, device AS k, COUNT(*) FROM events WHERE ts >= 37 AND ts < 4311 AND value >= 0 GROUP BY device ORDER BY k DESC LIMIT 2",
+            "SELECT device FROM events GROUP BY device ORDER BY device",
+            "SELECT COUNT(*) AS n FROM events GROUP BY device ORDER BY n",
+            "SELECT device, SUM(value) FROM events WHERE ts < -99999 GROUP BY device ORDER BY device",
+            "SELECT device, SUM(value) FROM events GROUP BY device ORDER BY device LIMIT 0",
+        ] {
+            let result = archive.query(sql).unwrap();
+            assert_eq!(result.result.plan, "streamed-dense-group");
+            assert_eq!(
+                result.result.rows,
+                reference.query(sql).unwrap().rows,
+                "{sql}"
+            );
+        }
+        assert_eq!(archive.verify().unwrap(), 10006 * 24);
+        let expected = archive
+            .query(
+                "SELECT device, COUNT(*), SUM(value) FROM events GROUP BY device ORDER BY device",
+            )
+            .unwrap()
+            .result
+            .rows;
+        drop(archive);
+        assert_eq!(open(&path).query("SELECT device, COUNT(*), SUM(value) FROM events GROUP BY device ORDER BY device").unwrap().result.rows, expected);
+    }
+}
+
+#[test]
+fn wide_and_high_cardinality_groups_keep_hash_fallback() {
+    for keys in [
+        vec![i64::MIN, i64::MAX, 0, -1, i64::MIN, i64::MAX],
+        (0..5003).collect(),
+    ] {
+        let path = temp("group-fallback");
+        let mut archive = open(&path);
+        let mut reference = Database::memory();
+        reference.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)").unwrap();
+        let columns = vec![(0..keys.len() as i64).collect(), vec![9; keys.len()], keys];
+        reference.append("events", columns.clone()).unwrap();
+        archive.append(columns).unwrap();
+        let sql = "SELECT device, COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device";
+        let result = archive.query(sql).unwrap();
+        assert_eq!(result.result.plan, "streamed-column-scan");
+        assert_eq!(result.result.rows, reference.query(sql).unwrap().rows);
+        assert_eq!(
+            archive.verify().unwrap(),
+            archive.stats().unwrap().rows * 24
+        );
+    }
+}
+
+#[test]
+fn group_strategy_is_local_to_pinned_snapshot_and_survives_compaction() {
+    let path = temp("group-snapshot");
+    let mut archive = open(&path);
+    archive
+        .append(vec![vec![3, 1, 2], vec![30, 10, 20], vec![-7, -7, -3]])
+        .unwrap();
+    let pinned = archive.snapshot().unwrap();
+    let sql = "SELECT device, COUNT(*), SUM(value) FROM events GROUP BY device ORDER BY device";
+    let before = pinned.query(sql).unwrap();
+    assert_eq!(before.result.plan, "streamed-dense-group");
+    archive
+        .append(vec![vec![-9, 2], vec![40, 50], vec![i64::MAX, -3]])
+        .unwrap();
+    let after = archive.query(sql).unwrap();
+    assert_eq!(after.result.plan, "streamed-column-scan");
+    assert_eq!(
+        after.result.rows,
+        vec![
+            vec![Value::Int(-7), Value::Int(2), Value::Int(40)],
+            vec![Value::Int(-3), Value::Int(2), Value::Int(70)],
+            vec![Value::Int(i64::MAX.into()), Value::Int(1), Value::Int(40)]
+        ]
+    );
+    archive.compact_small().unwrap();
+    assert_eq!(archive.query(sql).unwrap().result.rows, after.result.rows);
+    assert_eq!(pinned.query(sql).unwrap().result.rows, before.result.rows);
+    assert_eq!(pinned.verify().unwrap(), 72);
+    drop(archive);
+    drop(pinned);
+    assert_eq!(
+        open(&path).query(sql).unwrap().result.rows,
+        after.result.rows
+    );
+}
+
+#[test]
+fn hash_group_fallback_still_enforces_result_budget() {
+    let path = temp("group-budget");
+    let mut archive = open(&path);
+    archive
+        .append(vec![
+            (0..100001).collect(),
+            vec![1; 100001],
+            (0..100001).collect(),
+        ])
+        .unwrap();
+    let error = archive
+        .query("SELECT device, COUNT(*) FROM events GROUP BY device")
+        .unwrap_err();
+    assert!(error.to_string().contains("group budget exceeded"));
+    assert_eq!(
+        archive
+            .query("SELECT COUNT(*) FROM events")
+            .unwrap()
+            .result
+            .rows,
+        int(100001)
+    );
+    assert_eq!(archive.verify().unwrap(), 100001 * 24);
+}
+
+#[test]
 fn orphan_segments_and_pending_catalogs_are_not_published() {
     let path = temp("orphans");
     let mut archive = open(&path);

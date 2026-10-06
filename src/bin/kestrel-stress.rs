@@ -6,6 +6,8 @@ use serde::Deserialize;
 use serde_json::json;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
+#[path = "../wire_json.rs"]
+mod wire_json;
 
 #[derive(Deserialize)]
 #[serde(tag = "op", rename_all = "snake_case", deny_unknown_fields)]
@@ -22,13 +24,15 @@ enum Request {
     Verify,
 }
 
-fn dispatch(store: &LiveArchive, request: Request) -> Result<serde_json::Value, String> {
-    match request {
-        Request::Query { sql } => store
-            .snapshot()
-            .query(&sql)
-            .map(|r| json!(r))
-            .map_err(|e| e.to_string()),
+fn dispatch(store: &LiveArchive, request: Request) -> Result<String, String> {
+    let result = match request {
+        Request::Query { sql } => {
+            return store
+                .snapshot()
+                .query(&sql)
+                .map_err(|e| e.to_string())
+                .and_then(|r| wire_json::success(&r).map_err(|e| e.to_string()));
+        }
         Request::Append { data, id } => {
             if data.is_empty() || data.len() > 10_000 {
                 return Err("test bridge append must contain 1..10000 rows".into());
@@ -63,7 +67,8 @@ fn dispatch(store: &LiveArchive, request: Request) -> Result<serde_json::Value, 
             .verify()
             .map(|n| json!({"verified_bytes":n}))
             .map_err(|e| e.to_string()),
-    }
+    }?;
+    wire_json::success(&result).map_err(|e| e.to_string())
 }
 
 fn client(mut stream: TcpStream, store: LiveArchive) -> std::io::Result<()> {
@@ -86,10 +91,10 @@ fn client(mut stream: TcpStream, store: LiveArchive) -> std::io::Result<()> {
             .map_err(|e| e.to_string())
             .and_then(|r| dispatch(&store, r))
         {
-            Ok(result) => json!({"ok":true,"result":result}),
-            Err(error) => json!({"ok":false,"error":error}),
+            Ok(response) => response,
+            Err(error) => wire_json::failure(&error)?,
         };
-        serde_json::to_writer(&mut stream, &response)?;
+        stream.write_all(response.as_bytes())?;
         stream.write_all(b"\n")?;
         stream.flush()?;
     }

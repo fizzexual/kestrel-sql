@@ -1,5 +1,14 @@
 # Changes
 
+## 0.3.8 experimental adaptive-grouping candidate
+
+- Select query-local direct-address aggregation for bounded integer spans (4,096 slots, conservative 8 MiB limit), with hash fallback for sparse or wider domains and the existing result budget.
+- Share membership/counts and exact i128 SUM/AVG reductions; use narrow MIN/MAX arrays and dispatch outside row loops. Report `streamed-dense-group` for the selected strategy.
+- Preserve signed extrema, holes, filters, empty groups, aliases, limits, pinned snapshots, compaction/reopen and payload checksums. Add six tests; all 63 pass in debug/release and Clippy.
+- Compare 0.3.7, 0.3.8 and DuckDB in 54 rotated cases at 1M/10M/100M rows and real taxi data. Preserve the initial candidate, fixture mistake, every loss, short paired controls and separate profiles. See [PERFORMANCE_038.md](PERFORMANCE_038.md).
+- Fix existing CLI/bridge panics on wide SUM results by serializing typed JSON directly; preserve exact i128 numeric tokens without dependency-feature changes.
+- Recheck current publication cut points, corrupt catalogs, concurrent kills, source retry/crash behavior and the Parquet pipeline. Keep storage/publication/live/source behavior unchanged; claim no new requests/s envelope or production qualification.
+
 ## 0.3.7 experimental source-checkpoint candidate
 
 - Add `SourceArchive` with exclusive archive ownership, source positions and contiguous half-open interval commits. Publish source identity/offsets in a canonical durable receipt ID alongside its exact output, with no checkpoint file or extra sync.

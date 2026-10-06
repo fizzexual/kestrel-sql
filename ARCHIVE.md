@@ -1,8 +1,10 @@
-# Disk-backed analytics in KestrelSQL 0.3
+# Disk-backed analytics in KestrelSQL 0.3.8
 
 The `Archive` path is an append-only SQL analytics store. It writes batches to immutable column segments and answers eligible aggregate queries with sparse indexes. Raw rows stay on disk. The original `Database` API is a separate implementation with transactional, RAM-resident tables; its old 10-million-row and full-prefix limits do not govern Archive.
 
-Version 0.3 adds immutable snapshots, durable identified batches, bounded small-run compaction and a shared decoded-page cache. The concurrent embedded wrapper and replay contract are described in [LIVE_METRICS.md](LIVE_METRICS.md); current evidence is in [V03_RESULTS.md](V03_RESULTS.md).
+Version 0.3 adds immutable snapshots, durable identified batches, bounded small-run compaction and a shared decoded-page cache. The concurrent embedded wrapper and replay contract are described in [LIVE_METRICS.md](LIVE_METRICS.md); original 0.3 evidence is in [V03_RESULTS.md](V03_RESULTS.md) and current read-query evidence is in [PERFORMANCE_038.md](PERFORMANCE_038.md).
+
+Version 0.3.8 adaptively groups compact non-null integer keys using direct-address arrays. Global segment extrema select a span of at most 4,096 slots under a conservative 8 MiB query-local budget; wider/sparse keys use the original hash table and 100,000-result ceiling. Counts/membership and repeated SUM/AVG columns share work. Holes and empty filtered groups do not emit rows. `plan` identifies this path as `streamed-dense-group`. Persistent indexes and publication formats are unchanged.
 
 ## Reproduce
 

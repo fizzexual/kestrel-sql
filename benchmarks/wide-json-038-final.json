@@ -1,0 +1,45 @@
+{
+  "cases": [
+    {
+      "variant": "baseline",
+      "binary_sha256": "6aff2231fdd342132c19ef60a478da4876d7735104ada363c37baaa85549df25",
+      "input_value": 9223372036854775807,
+      "expected_sum": "27670116110564327421",
+      "returncode": 101,
+      "stdout": "",
+      "stderr": "\nthread 'main' (13804) panicked at src\\main.rs:257:44:\ncalled `Result::unwrap()` on an `Err` value: Error(\"number out of range\", line: 0, column: 0)\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n",
+      "exact_wide_json_passed": false
+    },
+    {
+      "variant": "baseline",
+      "binary_sha256": "6aff2231fdd342132c19ef60a478da4876d7735104ada363c37baaa85549df25",
+      "input_value": -9223372036854775808,
+      "expected_sum": "-27670116110564327424",
+      "returncode": 101,
+      "stdout": "",
+      "stderr": "\nthread 'main' (25208) panicked at src\\main.rs:257:44:\ncalled `Result::unwrap()` on an `Err` value: Error(\"number out of range\", line: 0, column: 0)\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n",
+      "exact_wide_json_passed": false
+    },
+    {
+      "variant": "candidate",
+      "binary_sha256": "2dc005250e1a4d4c086af15631b5616e3f652fe8f592ca3037e487036ec2fddd",
+      "input_value": 9223372036854775807,
+      "expected_sum": "27670116110564327421",
+      "returncode": 0,
+      "stdout": "{\"ok\":true,\"result\":{\"columns\":[\"device\",\"count(*)\",\"sum(value)\"],\"rows\":[[7,3,27670116110564327421]],\"plan\":\"streamed-dense-group\",\"rows_scanned\":3,\"bytes_read\":48,\"segments_considered\":1,\"segments_pruned\":0}}\n",
+      "stderr": "",
+      "exact_wide_json_passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary_sha256": "2dc005250e1a4d4c086af15631b5616e3f652fe8f592ca3037e487036ec2fddd",
+      "input_value": -9223372036854775808,
+      "expected_sum": "-27670116110564327424",
+      "returncode": 0,
+      "stdout": "{\"ok\":true,\"result\":{\"columns\":[\"device\",\"count(*)\",\"sum(value)\"],\"rows\":[[7,3,-27670116110564327424]],\"plan\":\"streamed-dense-group\",\"rows_scanned\":3,\"bytes_read\":48,\"segments_considered\":1,\"segments_pruned\":0}}\n",
+      "stderr": "",
+      "exact_wide_json_passed": true
+    }
+  ],
+  "complete": true
+}

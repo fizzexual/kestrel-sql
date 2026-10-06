@@ -1,0 +1,6 @@
+Initial candidate check before changing the root package version in Cargo.lock:
+cargo test --offline --locked
+error: cannot update the lock file because --locked was passed to prevent this
+
+Corrected only the root kestrel-sql version to match Cargo.toml (0.3.8).
+Dependencies remain unchanged. This attempt ran no SQL workload.
