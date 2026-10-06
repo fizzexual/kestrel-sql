@@ -81,3 +81,7 @@ Low-bit-aligned keys defeated the xor-fold index. A full-width multiply spreads 
 ## 0.3.12 reuse-triggered cache
 
 Measured reuse can justify a wider lookup table after small-cache fallback. The first trial paid the allocation cost on tiny queries after their final block; delaying allocation until the next nonempty block avoids unused work. Exact tags, an authoritative randomized map, a key budget, a hit-rate gate and one promotion attempt preserve correctness and bound additional memory. Seed-specific collision, irregular signed-key, growing-cardinality and beyond-i64 reduction checks accompany the final timings. This is established adaptive caching, without a novelty claim. [Evidence and every tradeoff](PERFORMANCE_042.md).
+
+## 0.3.13 dense reduction fusion
+
+A selected-row slot pass followed by another reduction pass imposed measurable aggregation cost on dense GROUP SUM. Combining exact counts and a shared SUM/AVG column removes that second traversal while preserving metadata bounds and signed wide reductions. Final binaries are independently rebuilt and compared at 10M and 100M rows; mixed and sparse paths retain their preceding implementation. This is established loop fusion and specialization, without a novelty claim. [Evidence and tradeoffs](PERFORMANCE_043.md).

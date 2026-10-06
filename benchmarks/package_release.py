@@ -18,10 +18,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE = ROOT.parent.parent
 VERSION = tomllib.loads((ROOT / 'Cargo.toml').read_text(encoding='utf-8'))['package']['version']
-assert VERSION in ['0.3.1', '0.3.2', '0.3.3', '0.3.4', '0.3.5', '0.3.6', '0.3.7', '0.3.8', '0.3.9', '0.3.10', '0.3.11', '0.3.12'], 'Add explicit qualification gates for this release'
+assert VERSION in ['0.3.1', '0.3.2', '0.3.3', '0.3.4', '0.3.5', '0.3.6', '0.3.7', '0.3.8', '0.3.9', '0.3.10', '0.3.11', '0.3.12', '0.3.13'], 'Add explicit qualification gates for this release'
 TAG = VERSION.replace('.', '')
-TESTS = {'0.3.1': 31, '0.3.2': 32, '0.3.3':35, '0.3.4':38, '0.3.5':41, '0.3.6':45, '0.3.7':55, '0.3.8':63, '0.3.9':69, '0.3.10':70, '0.3.11':70, '0.3.12':72}[VERSION]
-BASELINE_VERSION = {'0.3.1':'0.3', '0.3.2':'0.3.1', '0.3.3':'0.3.2', '0.3.4':'0.3.3', '0.3.5':'0.3.4', '0.3.6':'0.3.5', '0.3.7':'0.3.6', '0.3.8':'0.3.7', '0.3.9':'0.3.8', '0.3.10':'0.3.9', '0.3.11':'0.3.10', '0.3.12':'0.3.11'}[VERSION]
+TESTS = {'0.3.1': 31, '0.3.2': 32, '0.3.3':35, '0.3.4':38, '0.3.5':41, '0.3.6':45, '0.3.7':55, '0.3.8':63, '0.3.9':69, '0.3.10':70, '0.3.11':70, '0.3.12':72, '0.3.13':73}[VERSION]
+BASELINE_VERSION = {'0.3.1':'0.3', '0.3.2':'0.3.1', '0.3.3':'0.3.2', '0.3.4':'0.3.3', '0.3.5':'0.3.4', '0.3.6':'0.3.5', '0.3.7':'0.3.6', '0.3.8':'0.3.7', '0.3.9':'0.3.8', '0.3.10':'0.3.9', '0.3.11':'0.3.10', '0.3.12':'0.3.11', '0.3.13':'0.3.12'}[VERSION]
 PACKAGE = ROOT.parent / f'kestrel-sql-{VERSION}.zip'
 
 
@@ -34,6 +34,9 @@ def read(name):
 
 
 def main():
+    if VERSION == '0.3.13':
+        from package_043 import main as package_dense_release
+        return package_dense_release()
     if VERSION == '0.3.12':
         from package_042 import main as package_medium_release
         return package_medium_release()

@@ -1861,6 +1861,22 @@ impl DenseGroups {
         selected: &[usize],
     ) -> Result<()> {
         self.slots.clear();
+        // A single shared SUM/AVG reduction can consume the validated key
+        // directly, avoiding the intermediate slot vector and second row pass.
+        // Counts stay exact for COUNT, AVG and group presence.
+        if let [DenseAggregate::Sum(value_column, sums)] = self.aggregates.as_mut_slice() {
+            let keys = &columns[column];
+            let values = &columns[*value_column];
+            for &row in selected {
+                let slot = keys[row].wrapping_sub(self.base) as u64;
+                if slot >= self.counts.len() as u64 {
+                    return Err(Error::new("group key outside segment metadata bounds"));
+                }
+                self.counts[slot as usize] += 1;
+                sums[slot as usize] += i128::from(values[row]);
+            }
+            return Ok(());
+        }
         for &row in selected {
             // Wrapping subtraction also handles domains adjacent to i64::MIN.
             // The unsigned bound rejects values outside validated metadata.
@@ -2519,6 +2535,62 @@ mod dense_group_tests {
     }
 
     #[test]
+    fn dense_shared_sum_preserves_filtered_counts_signed_extremes_and_wide_outputs() {
+        use std::collections::BTreeMap;
+        for base in [i64::MIN, i64::MAX - 136] {
+            let columns = vec![
+                (0..4097)
+                    .map(|row| base + (row * 17 % 137) as i64)
+                    .collect::<Vec<_>>(),
+                (0..4097)
+                    .map(|row| {
+                        if (row * 17 % 137) % 2 == 0 {
+                            i64::MAX
+                        } else {
+                            i64::MIN
+                        }
+                    })
+                    .collect::<Vec<_>>(),
+            ];
+            let selected = (0..4097).filter(|row| row % 3 != 1).collect::<Vec<_>>();
+            for value_column in [0, 1] {
+                let expressions = [
+                    AExpr::Group(0),
+                    AExpr::Count,
+                    AExpr::Sum(value_column),
+                    AExpr::Avg(value_column),
+                    AExpr::Sum(value_column),
+                ];
+                let mut groups = DenseGroups::new(base, base + 136, &expressions).unwrap();
+                groups.update_selected(0, &columns, &[]).unwrap();
+                let mut expected: BTreeMap<i64, (usize, i128)> = BTreeMap::new();
+                for chunk in selected.chunks(1024) {
+                    groups.update_selected(0, &columns, chunk).unwrap();
+                    for &row in chunk {
+                        let entry = expected.entry(columns[0][row]).or_default();
+                        entry.0 += 1;
+                        entry.1 += i128::from(columns[value_column][row]);
+                    }
+                }
+                let expected_rows = expected
+                    .into_iter()
+                    .map(|(key, (count, sum))| {
+                        vec![
+                            Value::Int(i128::from(key)),
+                            Value::Int(count as i128),
+                            Value::Int(sum),
+                            Value::Float(sum as f64 / count as f64),
+                            Value::Int(sum),
+                        ]
+                    })
+                    .collect::<Vec<_>>();
+                assert!(expected_rows.iter().any(|row| matches!(row[2], Value::Int(sum) if sum > i128::from(i64::MAX) || sum < i128::from(i64::MIN))));
+                assert_eq!(groups.into_rows(&expressions), expected_rows);
+            }
+        }
+    }
+
+    #[test]
     fn dense_group_rejects_payload_keys_outside_metadata_without_panicking() {
         for (min, max, key) in [
             (5, 9, 4),
@@ -2526,8 +2598,17 @@ mod dense_group_tests {
             (i64::MIN, i64::MIN + 3, i64::MAX),
             (i64::MAX - 3, i64::MAX, i64::MIN),
         ] {
-            let mut groups = DenseGroups::new(min, max, &[AExpr::Count]).unwrap();
-            assert!(groups.update_selected(0, &[vec![key]], &[0]).is_err());
+            for expressions in [
+                vec![AExpr::Count],
+                vec![AExpr::Group(0), AExpr::Sum(1), AExpr::Avg(1)],
+            ] {
+                let mut groups = DenseGroups::new(min, max, &expressions).unwrap();
+                assert!(
+                    groups
+                        .update_selected(0, &[vec![key], vec![i64::MAX]], &[0])
+                        .is_err()
+                );
+            }
         }
     }
 }

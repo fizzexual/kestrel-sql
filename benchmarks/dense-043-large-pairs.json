@@ -1,0 +1,2009 @@
+{
+  "started_at_utc": "2026-10-06T20:35:32.674111+00:00",
+  "binary_sha256": {
+    "baseline": "7b7e4e695f06e55b4e6536109bf92305058bb0ff303b8a2329128ed08389b4d7",
+    "candidate": "151ffddcf2e0b9a74c8456a7231e668cf166203babf732cfe334bb93f5f8b40a"
+  },
+  "probe_source_sha256": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+  "harness_sha256": "25a2cae40faf5b46f5caf2514ea18f1b99f6c8bb68fe3b87840e174bfeccf79c",
+  "fixture": {
+    "label": "100000000",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\kestrel",
+    "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\reference.duckdb",
+    "rows": 100000000,
+    "reference_bytes": 320352256,
+    "queries": [
+      [
+        "group_sum",
+        "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "group_full",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "filtered_group",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+      ],
+      [
+        "unordered_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+      ],
+      [
+        "prefix_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 25000000 AND ts < 50000000"
+      ]
+    ]
+  },
+  "methodology": {
+    "turns": 7,
+    "repeats": 5,
+    "warmups": 3,
+    "threads": 1,
+    "same_archive": true,
+    "sequential_open_close": true,
+    "instrumented": false,
+    "timing": "ArchiveSnapshot::query; setup/open/close/assertions/full scrubs excluded",
+    "limits": "warm shared Windows desktop; profiled stage samples excluded from competitive claims; no network or power-loss qualification"
+  },
+  "cases": [
+    {
+      "name": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              724.7972,
+              733.2900999999999,
+              739.8118000000001,
+              732.4085,
+              730.7777
+            ],
+            "median_ms": 732.4085,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              658.6734,
+              666.4463000000001,
+              662.5964,
+              667.6067,
+              649.4072
+            ],
+            "median_ms": 662.5964,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              689.5284,
+              697.2202,
+              664.6779,
+              687.0752,
+              698.2708
+            ],
+            "median_ms": 689.5284,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              734.8594,
+              733.9738,
+              726.7139,
+              726.8006,
+              729.1559
+            ],
+            "median_ms": 729.1559,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              738.0588,
+              732.829,
+              727.4933,
+              730.9359,
+              731.4312
+            ],
+            "median_ms": 731.4312,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              667.8379,
+              659.1557,
+              661.516,
+              653.7849,
+              654.2379999999999
+            ],
+            "median_ms": 659.1557,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              667.7615,
+              655.0014,
+              662.7823000000001,
+              700.5559999999999,
+              685.2293000000001
+            ],
+            "median_ms": 667.7615,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              733.9704,
+              730.8012,
+              735.5514,
+              734.1803,
+              728.7274
+            ],
+            "median_ms": 733.9704,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              728.6475,
+              726.68,
+              738.7131,
+              734.6766,
+              738.6542000000001
+            ],
+            "median_ms": 734.6766,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              670.8701,
+              662.4245,
+              672.5554999999999,
+              666.307,
+              658.3315
+            ],
+            "median_ms": 666.307,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              693.2882000000001,
+              671.0919,
+              686.4812000000001,
+              655.7528,
+              676.8161
+            ],
+            "median_ms": 676.8161,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              746.5859,
+              735.9952,
+              742.0159,
+              735.5064,
+              759.1033
+            ],
+            "median_ms": 742.0159,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              737.9198,
+              740.3013000000001,
+              731.7091999999999,
+              735.5833,
+              743.2583000000001
+            ],
+            "median_ms": 737.9198,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              663.594,
+              668.3077,
+              659.0019,
+              666.2285,
+              666.7155
+            ],
+            "median_ms": 666.2285,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "d91a38fe469d56778254c576b47ea75c266a546a977e6e10e1f2b5c925e32702",
+                "first": [
+                  [
+                    0,
+                    -515608
+                  ],
+                  [
+                    1,
+                    -515168
+                  ],
+                  [
+                    2,
+                    -514728
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -514744
+                  ],
+                  [
+                    95,
+                    -514896
+                  ],
+                  [
+                    96,
+                    -515456
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 733.9704,
+      "candidate_median_ms": 666.307,
+      "paired_candidate_over_baseline_median": 0.9069391892977128
+    },
+    {
+      "name": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              945.288,
+              928.9149,
+              939.981,
+              950.3102,
+              934.7597
+            ],
+            "median_ms": 939.981,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              943.4422,
+              929.6116,
+              930.6377,
+              935.2922,
+              930.8468
+            ],
+            "median_ms": 930.8468,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              997.36,
+              1029.2523,
+              932.0049,
+              931.8242,
+              924.4183
+            ],
+            "median_ms": 932.0049,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              989.3299,
+              998.8280000000001,
+              931.8227,
+              931.8955,
+              941.2393
+            ],
+            "median_ms": 941.2393,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              949.3213999999999,
+              947.9073999999999,
+              937.2038,
+              928.5291,
+              931.8033
+            ],
+            "median_ms": 937.2038,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              926.1728999999999,
+              947.7077,
+              923.4219999999999,
+              923.8552,
+              936.9271
+            ],
+            "median_ms": 926.1728999999999,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              928.9412,
+              936.3023000000001,
+              932.1551999999999,
+              933.3842999999999,
+              926.4206
+            ],
+            "median_ms": 932.1551999999999,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              935.2552,
+              925.8365,
+              933.6396,
+              960.4042000000001,
+              946.3137
+            ],
+            "median_ms": 935.2552,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              950.5489,
+              929.3059999999999,
+              940.3146,
+              946.8343,
+              958.1475
+            ],
+            "median_ms": 946.8343,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              932.6287,
+              936.6428999999999,
+              939.9311,
+              933.8703,
+              929.1962
+            ],
+            "median_ms": 933.8703,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              937.6743,
+              927.3311,
+              932.1650000000001,
+              927.1435,
+              927.7807
+            ],
+            "median_ms": 927.7807,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              927.7967,
+              951.0274,
+              947.9575,
+              936.176,
+              937.5213
+            ],
+            "median_ms": 937.5213,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              941.1889,
+              954.8003,
+              945.6873,
+              935.6778999999999,
+              938.5191000000001
+            ],
+            "median_ms": 941.1889,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          },
+          "candidate": {
+            "version": "0.3.13",
+            "samples_ms": [
+              935.8281000000001,
+              934.2106,
+              932.5986,
+              942.0730000000001,
+              933.9526999999999
+            ],
+            "median_ms": 934.2106,
+            "result": {
+              "bytes_read": 1600000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "302135f18fa5c22aa564c3b5b8e544359d21410bc945d1c358e712fe5fc1f07c",
+                "first": [
+                  [
+                    0,
+                    1030928,
+                    -515608,
+                    -0.5001396799776512,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    1030928,
+                    -515168,
+                    -0.49971288004593917,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    1030928,
+                    -514728,
+                    -0.4992860801142272,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    1030928,
+                    -514744,
+                    -0.49930160011174396,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    1030928,
+                    -514896,
+                    -0.4994490400881536,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    1030928,
+                    -515456,
+                    -0.4999922400012416,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 100000000,
+              "segments_considered": 100,
+              "segments_pruned": 0
+            },
+            "full_scrub_bytes": 2400000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 939.981,
+      "candidate_median_ms": 932.0049,
+      "paired_candidate_over_baseline_median": 0.9901891049385635
+    }
+  ],
+  "complete": true,
+  "completed_at_utc": "2026-10-06T20:39:05.348465+00:00"
+}

@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.13 experimental fused dense SUM candidate
+
+- Fuse key validation, exact row counts and shared i128 SUM/AVG updates in one pass over selected dense-group rows. Retain existing mixed-reduction and sparse paths; no additional query allocation or storage-format change.
+- Preserve released-baseline profiles, development trial source/binary and final 10M/100M pairs, all guards and 60 fresh query shapes with every win/loss.
+- Pass 73 Rust tests in both modes, both Clippy configurations, 3,400 SQL cases against each DuckDB/SQLite, exact dense/sparse wide JSON, confirmed retry/reopen and current publication/source/process-kill/Parquet checks. [All measurements and limits](PERFORMANCE_043.md).
+
 ## 0.3.12 experimental medium sparse-cache candidate
 
 - Promote a 16,384-slot exact-tag cache only after measured key reuse and another nonempty block. Limit it to 8,192 keys, one promotion attempt and a 50% hit-rate gate; retain the authoritative randomized HashMap and exact i128 reductions.

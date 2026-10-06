@@ -1,0 +1,2495 @@
+{
+  "started_at_utc": "2026-10-06T20:04:41.932559+00:00",
+  "binary_sha256": {
+    "baseline": "7b7e4e695f06e55b4e6536109bf92305058bb0ff303b8a2329128ed08389b4d7",
+    "candidate": "7b7e4e695f06e55b4e6536109bf92305058bb0ff303b8a2329128ed08389b4d7"
+  },
+  "probe_source_sha256": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+  "harness_sha256": "25a2cae40faf5b46f5caf2514ea18f1b99f6c8bb68fe3b87840e174bfeccf79c",
+  "fixture": {
+    "label": "10000000",
+    "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\10000000-ordered\\kestrel",
+    "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\10000000-ordered\\reference.duckdb",
+    "rows": 10000000,
+    "reference_bytes": 32256000,
+    "queries": [
+      [
+        "group_sum",
+        "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "group_full",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+      ],
+      [
+        "filtered_group",
+        "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+      ],
+      [
+        "unordered_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+      ],
+      [
+        "prefix_control",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 2500000 AND ts < 5000000"
+      ]
+    ]
+  },
+  "methodology": {
+    "turns": 3,
+    "repeats": 7,
+    "warmups": 3,
+    "threads": 1,
+    "same_archive": true,
+    "sequential_open_close": true,
+    "instrumented": true,
+    "timing": "ArchiveSnapshot::query; setup/open/close/assertions/full scrubs excluded",
+    "limits": "warm shared Windows desktop; profiled stage samples excluded from competitive claims; no network or power-loss qualification"
+  },
+  "cases": [
+    {
+      "name": "group_sum",
+      "sql": "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              85.9646,
+              82.6644,
+              81.7213,
+              84.271,
+              83.1253,
+              78.90769999999999,
+              79.51429999999999
+            ],
+            "median_ms": 82.6644,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 28.469600000000018,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.73760000000005,
+                "selection_ms": 1.962899999999917
+              },
+              {
+                "aggregate_ms": 27.363599999999554,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.584900000000104,
+                "selection_ms": 1.8789999999999294
+              },
+              {
+                "aggregate_ms": 27.18419999999973,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.950500000000254,
+                "selection_ms": 1.853999999999925
+              },
+              {
+                "aggregate_ms": 27.552800000000012,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.030599999999964,
+                "selection_ms": 1.9329999999999241
+              },
+              {
+                "aggregate_ms": 27.376699999999104,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.071500000000086,
+                "selection_ms": 1.9227999999999228
+              },
+              {
+                "aggregate_ms": 26.293400000000773,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.02869999999996,
+                "selection_ms": 1.807399999999933
+              },
+              {
+                "aggregate_ms": 26.119800000000637,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.8244000000001,
+                "selection_ms": 1.8624999999999334
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 52.584900000000104,
+              "selection_ms": 1.8789999999999294,
+              "aggregate_ms": 27.363599999999554
+            }
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              82.6267,
+              84.6211,
+              82.7702,
+              89.4754,
+              83.3,
+              85.91329999999999,
+              81.4854
+            ],
+            "median_ms": 83.3,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 26.94949999999982,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.04430000000015,
+                "selection_ms": 1.9049999999999172
+              },
+              {
+                "aggregate_ms": 28.17679999999937,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.69319999999996,
+                "selection_ms": 1.98769999999991
+              },
+              {
+                "aggregate_ms": 27.60549999999963,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.47510000000001,
+                "selection_ms": 1.9239999999999218
+              },
+              {
+                "aggregate_ms": 30.217900000000128,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 56.37229999999999,
+                "selection_ms": 2.0101999999999087
+              },
+              {
+                "aggregate_ms": 27.52250000000026,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.1221000000001,
+                "selection_ms": 1.8929999999999307
+              },
+              {
+                "aggregate_ms": 28.923500000000043,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.22680000000022,
+                "selection_ms": 1.9205999999999102
+              },
+              {
+                "aggregate_ms": 26.904400000000773,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.01590000000011,
+                "selection_ms": 1.8447999999999276
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 53.1221000000001,
+              "selection_ms": 1.9205999999999102,
+              "aggregate_ms": 27.60549999999963
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              85.7107,
+              90.64070000000001,
+              90.9459,
+              100.2926,
+              96.364,
+              90.2283,
+              81.39150000000001
+            ],
+            "median_ms": 90.64070000000001,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 28.35359999999991,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.55510000000019,
+                "selection_ms": 1.9440999999999211
+              },
+              {
+                "aggregate_ms": 30.073799999999725,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 57.67619999999994,
+                "selection_ms": 2.0465999999999123
+              },
+              {
+                "aggregate_ms": 30.333099999999625,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 57.813599999999994,
+                "selection_ms": 1.9696999999999218
+              },
+              {
+                "aggregate_ms": 34.05729999999989,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 63.06529999999998,
+                "selection_ms": 2.1920999999999067
+              },
+              {
+                "aggregate_ms": 32.62310000000026,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 60.80190000000002,
+                "selection_ms": 2.078399999999918
+              },
+              {
+                "aggregate_ms": 28.08570000000049,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 59.26360000000001,
+                "selection_ms": 1.921499999999924
+              },
+              {
+                "aggregate_ms": 26.694700000000296,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.12420000000015,
+                "selection_ms": 1.8000999999999314
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 57.813599999999994,
+              "selection_ms": 1.9696999999999218,
+              "aggregate_ms": 30.073799999999725
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              82.8439,
+              89.3307,
+              83.4053,
+              81.2938,
+              87.05930000000001,
+              93.4016,
+              83.5533
+            ],
+            "median_ms": 83.5533,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 27.289199999999244,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.86090000000017,
+                "selection_ms": 1.9008999999999265
+              },
+              {
+                "aggregate_ms": 27.799300000000656,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 58.70330000000002,
+                "selection_ms": 1.9390999999999183
+              },
+              {
+                "aggregate_ms": 27.612999999999825,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.059400000000096,
+                "selection_ms": 1.9768999999999133
+              },
+              {
+                "aggregate_ms": 26.837699999999487,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.829699999999995,
+                "selection_ms": 1.9043999999999273
+              },
+              {
+                "aggregate_ms": 28.84309999999931,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 55.55489999999992,
+                "selection_ms": 1.8704999999999228
+              },
+              {
+                "aggregate_ms": 29.78850000000032,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 60.36649999999992,
+                "selection_ms": 2.107099999999908
+              },
+              {
+                "aggregate_ms": 27.50899999999968,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.389700000000076,
+                "selection_ms": 1.9038999999999233
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 53.389700000000076,
+              "selection_ms": 1.9043999999999273,
+              "aggregate_ms": 27.612999999999825
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              83.37790000000001,
+              81.5736,
+              89.6415,
+              80.0017,
+              79.89359999999999,
+              80.104,
+              82.1644
+            ],
+            "median_ms": 81.5736,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 27.237199999999664,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.371799999999986,
+                "selection_ms": 1.963399999999915
+              },
+              {
+                "aggregate_ms": 26.9166000000004,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.9448,
+                "selection_ms": 1.8850999999999223
+              },
+              {
+                "aggregate_ms": 27.62570000000032,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 59.227899999999934,
+                "selection_ms": 1.95229999999992
+              },
+              {
+                "aggregate_ms": 26.199600000000466,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.2145000000001,
+                "selection_ms": 1.8681999999999233
+              },
+              {
+                "aggregate_ms": 26.07290000000091,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.32150000000009,
+                "selection_ms": 1.7726999999999395
+              },
+              {
+                "aggregate_ms": 26.2303999999995,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.27689999999996,
+                "selection_ms": 1.7911999999999393
+              },
+              {
+                "aggregate_ms": 27.187999999999924,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.39660000000001,
+                "selection_ms": 1.8520999999999304
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 51.9448,
+              "selection_ms": 1.8681999999999233,
+              "aggregate_ms": 26.9166000000004
+            },
+            "full_scrub_bytes": 240000000
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              83.8125,
+              79.991,
+              79.79310000000001,
+              77.686,
+              80.1915,
+              79.6639,
+              94.2244
+            ],
+            "median_ms": 79.991,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "c1e479f6ad7ed42139d80a794b054c54cc458c599dfab9253d4ea5adf7edbb9c",
+                "first": [
+                  [
+                    0,
+                    -52258
+                  ],
+                  [
+                    1,
+                    -51618
+                  ],
+                  [
+                    2,
+                    -50626
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    -50624
+                  ],
+                  [
+                    95,
+                    -50761
+                  ],
+                  [
+                    96,
+                    -51121
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 27.164800000000394,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.922400000000096,
+                "selection_ms": 1.9230999999999157
+              },
+              {
+                "aggregate_ms": 26.187900000000468,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.27620000000011,
+                "selection_ms": 1.7804999999999378
+              },
+              {
+                "aggregate_ms": 25.990799999999545,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.260300000000136,
+                "selection_ms": 1.8121999999999316
+              },
+              {
+                "aggregate_ms": 25.36530000000079,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 49.84330000000012,
+                "selection_ms": 1.7667999999999364
+              },
+              {
+                "aggregate_ms": 26.024800000001004,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.61530000000007,
+                "selection_ms": 1.760099999999941
+              },
+              {
+                "aggregate_ms": 25.7463000000007,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.39330000000023,
+                "selection_ms": 1.7031999999999492
+              },
+              {
+                "aggregate_ms": 32.1475,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 59.18560000000009,
+                "selection_ms": 1.9960999999999087
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 51.39330000000023,
+              "selection_ms": 1.7804999999999378,
+              "aggregate_ms": 26.024800000001004
+            },
+            "full_scrub_bytes": 240000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 82.6644,
+      "candidate_median_ms": 83.3,
+      "paired_candidate_over_baseline_median": 1.007688920502659,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 52.584900000000104,
+          "selection_ms": 1.8789999999999294,
+          "aggregate_ms": 27.363599999999554
+        },
+        "candidate": {
+          "page_read_ms": 53.1221000000001,
+          "selection_ms": 1.9205999999999102,
+          "aggregate_ms": 27.60549999999963
+        }
+      }
+    },
+    {
+      "name": "group_full",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              95.1904,
+              97.6626,
+              97.871,
+              95.33189999999999,
+              97.0788,
+              96.4618,
+              98.5529
+            ],
+            "median_ms": 97.0788,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 45.54940000000069,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 47.26510000000001,
+                "selection_ms": 1.6438999999999544
+              },
+              {
+                "aggregate_ms": 46.35380000000081,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.854400000000005,
+                "selection_ms": 1.7061999999999506
+              },
+              {
+                "aggregate_ms": 47.0454000000003,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.31580000000028,
+                "selection_ms": 1.7478999999999452
+              },
+              {
+                "aggregate_ms": 45.55220000000025,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 47.380700000000125,
+                "selection_ms": 1.6868999999999486
+              },
+              {
+                "aggregate_ms": 45.51550000000049,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 49.15870000000006,
+                "selection_ms": 1.6734999999999565
+              },
+              {
+                "aggregate_ms": 45.73150000000013,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.28210000000014,
+                "selection_ms": 1.6888999999999508
+              },
+              {
+                "aggregate_ms": 46.154300000000745,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 49.900900000000064,
+                "selection_ms": 1.7151999999999477
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 48.31580000000028,
+              "selection_ms": 1.6888999999999508,
+              "aggregate_ms": 45.73150000000013
+            }
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              97.7604,
+              97.5582,
+              96.7965,
+              95.3425,
+              101.5707,
+              99.3693,
+              98.6591
+            ],
+            "median_ms": 97.7604,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 46.45560000000023,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.926100000000034,
+                "selection_ms": 1.6922999999999528
+              },
+              {
+                "aggregate_ms": 46.12659999999914,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.97390000000005,
+                "selection_ms": 1.7256999999999425
+              },
+              {
+                "aggregate_ms": 45.97710000000118,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.3768,
+                "selection_ms": 1.7490999999999421
+              },
+              {
+                "aggregate_ms": 45.37790000000046,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 47.55449999999997,
+                "selection_ms": 1.697799999999951
+              },
+              {
+                "aggregate_ms": 47.478799999999524,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.499300000000204,
+                "selection_ms": 1.7823999999999391
+              },
+              {
+                "aggregate_ms": 46.62699999999978,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.27210000000004,
+                "selection_ms": 1.6669999999999514
+              },
+              {
+                "aggregate_ms": 46.5683000000003,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 49.64970000000021,
+                "selection_ms": 1.6892999999999512
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 48.97390000000005,
+              "selection_ms": 1.697799999999951,
+              "aggregate_ms": 46.45560000000023
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              104.864,
+              102.5822,
+              96.418,
+              100.9229,
+              99.91709999999999,
+              101.6318,
+              98.09039999999999
+            ],
+            "median_ms": 100.9229,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 49.65189999999944,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.567800000000034,
+                "selection_ms": 1.8444999999999372
+              },
+              {
+                "aggregate_ms": 46.3245999999996,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.730699999999885,
+                "selection_ms": 1.7836999999999381
+              },
+              {
+                "aggregate_ms": 45.259100000000785,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 48.77830000000005,
+                "selection_ms": 1.7019999999999456
+              },
+              {
+                "aggregate_ms": 47.67110000000022,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.79170000000016,
+                "selection_ms": 1.7539999999999363
+              },
+              {
+                "aggregate_ms": 46.5002000000005,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.88860000000017,
+                "selection_ms": 1.778299999999945
+              },
+              {
+                "aggregate_ms": 47.596099999999474,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.35930000000016,
+                "selection_ms": 1.9009999999999316
+              },
+              {
+                "aggregate_ms": 45.782900000000716,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 49.82830000000021,
+                "selection_ms": 1.7318999999999416
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 50.88860000000017,
+              "selection_ms": 1.778299999999945,
+              "aggregate_ms": 46.5002000000005
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              99.6974,
+              104.1882,
+              106.7418,
+              114.4403,
+              124.125,
+              186.2894,
+              122.9082
+            ],
+            "median_ms": 114.4403,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 46.41840000000073,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 50.726900000000015,
+                "selection_ms": 1.79439999999994
+              },
+              {
+                "aggregate_ms": 47.47540000000057,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.027200000000036,
+                "selection_ms": 1.8188999999999296
+              },
+              {
+                "aggregate_ms": 47.62229999999995,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 56.35669999999984,
+                "selection_ms": 1.9154999999999356
+              },
+              {
+                "aggregate_ms": 51.60240000000018,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 59.79609999999982,
+                "selection_ms": 2.048799999999911
+              },
+              {
+                "aggregate_ms": 56.57369999999991,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 64.46409999999992,
+                "selection_ms": 2.1622999999999246
+              },
+              {
+                "aggregate_ms": 85.97369999999977,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 94.90050000000001,
+                "selection_ms": 3.963899999999982
+              },
+              {
+                "aggregate_ms": 55.105099999999936,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 64.67359999999991,
+                "selection_ms": 2.122799999999932
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 59.79609999999982,
+              "selection_ms": 2.048799999999911,
+              "aggregate_ms": 51.60240000000018
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              105.57719999999999,
+              113.78359999999999,
+              106.359,
+              106.328,
+              107.69539999999999,
+              103.577,
+              101.0408
+            ],
+            "median_ms": 106.328,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 48.54349999999994,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.24870000000008,
+                "selection_ms": 1.8923999999999281
+              },
+              {
+                "aggregate_ms": 52.798999999999886,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 58.045699999999805,
+                "selection_ms": 1.9902999999999198
+              },
+              {
+                "aggregate_ms": 49.66000000000016,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.022100000000044,
+                "selection_ms": 1.882599999999923
+              },
+              {
+                "aggregate_ms": 49.25270000000001,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.37869999999989,
+                "selection_ms": 1.8919999999999284
+              },
+              {
+                "aggregate_ms": 50.1584000000005,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 54.765500000000046,
+                "selection_ms": 1.904199999999925
+              },
+              {
+                "aggregate_ms": 47.76939999999998,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.10740000000013,
+                "selection_ms": 1.888799999999925
+              },
+              {
+                "aggregate_ms": 46.052199999999445,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.44709999999998,
+                "selection_ms": 1.7821999999999367
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 54.24870000000008,
+              "selection_ms": 1.8919999999999284,
+              "aggregate_ms": 49.25270000000001
+            },
+            "full_scrub_bytes": 240000000
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              105.5744,
+              106.1081,
+              105.8239,
+              103.6127,
+              106.87530000000001,
+              120.448,
+              113.93090000000001
+            ],
+            "median_ms": 106.1081,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s",
+                "avg(value)",
+                "min(value)",
+                "max(value)"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "ec43be03ce498095bb6153da01c193842802128a6f5e09c41c0820fd9c37d877",
+                "first": [
+                  [
+                    0,
+                    103093,
+                    -52258,
+                    -0.5069015355067754,
+                    -500,
+                    499
+                  ],
+                  [
+                    1,
+                    103093,
+                    -51618,
+                    -0.5006935485435481,
+                    -500,
+                    499
+                  ],
+                  [
+                    2,
+                    103092,
+                    -50626,
+                    -0.49107593217708456,
+                    -500,
+                    499
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    103093,
+                    -50624,
+                    -0.49105176879128554,
+                    -500,
+                    499
+                  ],
+                  [
+                    95,
+                    103093,
+                    -50761,
+                    -0.4923806660006014,
+                    -500,
+                    499
+                  ],
+                  [
+                    96,
+                    103093,
+                    -51121,
+                    -0.4958726586674168,
+                    -500,
+                    499
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 50.62870000000041,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.34080000000005,
+                "selection_ms": 1.829799999999932
+              },
+              {
+                "aggregate_ms": 50.65779999999974,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.78730000000009,
+                "selection_ms": 1.8732999999999225
+              },
+              {
+                "aggregate_ms": 51.17880000000023,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 51.94790000000001,
+                "selection_ms": 1.8947999999999234
+              },
+              {
+                "aggregate_ms": 48.74429999999899,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 52.20340000000004,
+                "selection_ms": 1.8648999999999336
+              },
+              {
+                "aggregate_ms": 50.60399999999949,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 53.57630000000007,
+                "selection_ms": 1.8765999999999259
+              },
+              {
+                "aggregate_ms": 55.2800999999996,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 62.20439999999994,
+                "selection_ms": 2.0397999999999215
+              },
+              {
+                "aggregate_ms": 53.619599999999515,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 10000000,
+                "page_read_ms": 57.43640000000004,
+                "selection_ms": 1.9917999999999125
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 52.78730000000009,
+              "selection_ms": 1.8765999999999259,
+              "aggregate_ms": 50.65779999999974
+            },
+            "full_scrub_bytes": 240000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 106.328,
+      "candidate_median_ms": 100.9229,
+      "paired_candidate_over_baseline_median": 0.9979318711910314,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 54.24870000000008,
+          "selection_ms": 1.8919999999999284,
+          "aggregate_ms": 49.25270000000001
+        },
+        "candidate": {
+          "page_read_ms": 50.88860000000017,
+          "selection_ms": 1.778299999999945,
+          "aggregate_ms": 46.5002000000005
+        }
+      }
+    },
+    {
+      "name": "filtered_group",
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device",
+      "pairs": [
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              114.4765,
+              86.7826,
+              93.1095,
+              78.1941,
+              74.45490000000001,
+              72.7436,
+              73.9908
+            ],
+            "median_ms": 78.1941,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 21.689600000000315,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 81.39609999999988,
+                "selection_ms": 10.161099999999976
+              },
+              {
+                "aggregate_ms": 16.176900000000206,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 61.76610000000012,
+                "selection_ms": 7.834000000000137
+              },
+              {
+                "aggregate_ms": 17.862700000000373,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 65.72150000000015,
+                "selection_ms": 8.443700000000026
+              },
+              {
+                "aggregate_ms": 14.676000000000196,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 55.636699999999934,
+                "selection_ms": 7.018200000000044
+              },
+              {
+                "aggregate_ms": 14.414099999999916,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 52.42670000000002,
+                "selection_ms": 6.7984999999999784
+              },
+              {
+                "aggregate_ms": 13.872500000000061,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 51.20250000000012,
+                "selection_ms": 6.780700000000045
+              },
+              {
+                "aggregate_ms": 13.71119999999968,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 52.685099999999956,
+                "selection_ms": 6.792500000000007
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 55.636699999999934,
+              "selection_ms": 7.018200000000044,
+              "aggregate_ms": 14.676000000000196
+            }
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              68.6757,
+              68.3633,
+              74.8285,
+              79.434,
+              77.66919999999999,
+              78.04809999999999,
+              71.8432
+            ],
+            "median_ms": 74.8285,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.372400000000388,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.00439999999998,
+                "selection_ms": 6.522600000000152
+              },
+              {
+                "aggregate_ms": 13.17270000000016,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.00710000000011,
+                "selection_ms": 6.448000000000227
+              },
+              {
+                "aggregate_ms": 13.740100000000272,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 53.677899999999944,
+                "selection_ms": 6.591700000000241
+              },
+              {
+                "aggregate_ms": 13.920800000000277,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 57.93290000000015,
+                "selection_ms": 6.76940000000022
+              },
+              {
+                "aggregate_ms": 13.856600000000237,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 56.26839999999995,
+                "selection_ms": 6.651300000000144
+              },
+              {
+                "aggregate_ms": 12.912300000000373,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 57.68849999999991,
+                "selection_ms": 6.556700000000105
+              },
+              {
+                "aggregate_ms": 13.293300000000448,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 51.235600000000034,
+                "selection_ms": 6.545400000000259
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 53.677899999999944,
+              "selection_ms": 6.556700000000105,
+              "aggregate_ms": 13.372400000000388
+            }
+          }
+        },
+        {
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              81.29899999999999,
+              72.3405,
+              67.6811,
+              68.3181,
+              68.4778,
+              69.778,
+              68.5445
+            ],
+            "median_ms": 68.5445,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.621999999999812,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 59.94019999999973,
+                "selection_ms": 6.828699999999996
+              },
+              {
+                "aggregate_ms": 13.613600000000234,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 51.16610000000016,
+                "selection_ms": 6.801300000000167
+              },
+              {
+                "aggregate_ms": 13.044600000000285,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.450900000000125,
+                "selection_ms": 6.4499000000002535
+              },
+              {
+                "aggregate_ms": 13.15290000000018,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.9594000000001,
+                "selection_ms": 6.46310000000023
+              },
+              {
+                "aggregate_ms": 12.92880000000028,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.339900000000014,
+                "selection_ms": 6.514600000000243
+              },
+              {
+                "aggregate_ms": 12.928700000000411,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 49.63540000000012,
+                "selection_ms": 6.4621000000002455
+              },
+              {
+                "aggregate_ms": 13.606300000000497,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.83109999999996,
+                "selection_ms": 6.437200000000233
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 48.339900000000014,
+              "selection_ms": 6.46310000000023,
+              "aggregate_ms": 13.15290000000018
+            }
+          },
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              71.5311,
+              71.4112,
+              68.8788,
+              69.6113,
+              67.2669,
+              68.3247,
+              68.25399999999999
+            ],
+            "median_ms": 68.8788,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.227800000000167,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 50.80800000000006,
+                "selection_ms": 6.586100000000101
+              },
+              {
+                "aggregate_ms": 13.212799999999943,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 50.89399999999986,
+                "selection_ms": 6.540100000000127
+              },
+              {
+                "aggregate_ms": 13.140000000000297,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.341500000000096,
+                "selection_ms": 6.635500000000226
+              },
+              {
+                "aggregate_ms": 13.546500000000183,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.70670000000021,
+                "selection_ms": 6.60400000000023
+              },
+              {
+                "aggregate_ms": 12.810300000000389,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.31949999999991,
+                "selection_ms": 6.476200000000272
+              },
+              {
+                "aggregate_ms": 13.044000000000471,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.941699999999955,
+                "selection_ms": 6.560500000000259
+              },
+              {
+                "aggregate_ms": 12.998200000000361,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.032599999999945,
+                "selection_ms": 6.528700000000234
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 48.341500000000096,
+              "selection_ms": 6.560500000000259,
+              "aggregate_ms": 13.140000000000297
+            }
+          }
+        },
+        {
+          "baseline": {
+            "version": "0.3.12",
+            "samples_ms": [
+              69.37889999999999,
+              67.6962,
+              68.3582,
+              72.37480000000001,
+              76.0616,
+              68.3404,
+              69.0733
+            ],
+            "median_ms": 69.0733,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 13.128800000000272,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 49.061000000000114,
+                "selection_ms": 6.477700000000262
+              },
+              {
+                "aggregate_ms": 12.768500000000346,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.80339999999983,
+                "selection_ms": 6.397700000000238
+              },
+              {
+                "aggregate_ms": 12.718500000000247,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.42980000000007,
+                "selection_ms": 6.484500000000248
+              },
+              {
+                "aggregate_ms": 13.167000000000172,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 51.619700000000144,
+                "selection_ms": 6.778800000000165
+              },
+              {
+                "aggregate_ms": 14.26280000000036,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 53.8440000000002,
+                "selection_ms": 7.120400000000146
+              },
+              {
+                "aggregate_ms": 12.821700000000414,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.34050000000006,
+                "selection_ms": 6.447000000000235
+              },
+              {
+                "aggregate_ms": 12.673500000000422,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 49.22149999999996,
+                "selection_ms": 6.432800000000241
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 49.061000000000114,
+              "selection_ms": 6.477700000000262,
+              "aggregate_ms": 12.821700000000414
+            },
+            "full_scrub_bytes": 240000000
+          },
+          "candidate": {
+            "version": "0.3.12",
+            "samples_ms": [
+              67.8007,
+              68.2836,
+              68.2205,
+              70.2022,
+              68.0993,
+              70.7539,
+              69.9374
+            ],
+            "median_ms": 68.2836,
+            "result": {
+              "bytes_read": 160000000,
+              "columns": [
+                "device",
+                "n",
+                "s"
+              ],
+              "plan": "streamed-dense-group",
+              "rows": {
+                "count": 97,
+                "sha256": "9880a175a63ba5ff7ea47b871494eea8e07b0bc28d94e8e81af44ca1c4011c42",
+                "first": [
+                  [
+                    0,
+                    51546,
+                    12860574
+                  ],
+                  [
+                    1,
+                    51546,
+                    12860748
+                  ],
+                  [
+                    2,
+                    51547,
+                    12861194
+                  ]
+                ],
+                "last": [
+                  [
+                    94,
+                    51548,
+                    12861351
+                  ],
+                  [
+                    95,
+                    51548,
+                    12861229
+                  ],
+                  [
+                    96,
+                    51547,
+                    12861097
+                  ]
+                ]
+              },
+              "rows_scanned": 10000000,
+              "segments_considered": 10,
+              "segments_pruned": 0
+            },
+            "profiles": [
+              {
+                "aggregate_ms": 12.802600000000258,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.81130000000008,
+                "selection_ms": 6.452600000000228
+              },
+              {
+                "aggregate_ms": 12.917700000000242,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.15070000000008,
+                "selection_ms": 6.500200000000199
+              },
+              {
+                "aggregate_ms": 12.914400000000278,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 48.162400000000034,
+                "selection_ms": 6.412600000000238
+              },
+              {
+                "aggregate_ms": 13.602300000000133,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 49.155100000000076,
+                "selection_ms": 6.699000000000215
+              },
+              {
+                "aggregate_ms": 12.901900000000339,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 47.9938999999999,
+                "selection_ms": 6.519700000000237
+              },
+              {
+                "aggregate_ms": 13.142400000000457,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 50.23440000000005,
+                "selection_ms": 6.543400000000237
+              },
+              {
+                "aggregate_ms": 13.321700000000158,
+                "blocks": 2450,
+                "candidate_rows": 10000000,
+                "matched_rows": 5000000,
+                "page_read_ms": 49.13680000000021,
+                "selection_ms": 6.728000000000078
+              }
+            ],
+            "stage_median_ms": {
+              "page_read_ms": 48.162400000000034,
+              "selection_ms": 6.519700000000237,
+              "aggregate_ms": 12.917700000000242
+            },
+            "full_scrub_bytes": 240000000
+          }
+        }
+      ],
+      "all_results_equal": true,
+      "baseline_median_ms": 69.0733,
+      "candidate_median_ms": 68.5445,
+      "paired_candidate_over_baseline_median": 0.9885672177237804,
+      "stage_median_ms": {
+        "baseline": {
+          "page_read_ms": 49.061000000000114,
+          "selection_ms": 6.560500000000259,
+          "aggregate_ms": 13.140000000000297
+        },
+        "candidate": {
+          "page_read_ms": 48.339900000000014,
+          "selection_ms": 6.519700000000237,
+          "aggregate_ms": 13.15290000000018
+        }
+      }
+    }
+  ],
+  "complete": true,
+  "completed_at_utc": "2026-10-06T20:05:02.297068+00:00"
+}
