@@ -1,5 +1,7 @@
 # KestrelSQL
 
+**Current source: 0.3.2 experimental scan candidate.** Three fresh alternating runs reduced the unordered-filter median from 6.49 to 3.69 ms on a 1M-row fixture. Repeated service tests still failed the zero-loss/100 ms target and exposed long file synchronization/publication stalls. Read [PERFORMANCE_032.md](PERFORMANCE_032.md) for all new cases. The previous 0.3.1 package and its evidence remain preserved; its earlier service measurements below describe that release and run.
+
 An experimental embedded SQL database for exact live metrics over append-only events. The working product idea is **automatically indexed, arbitrary time-window totals inside an application**, with durable ingestion and no materialized-view definition per window.
 
 **Version 0.3.1 improves replay and compaction costs and adds publication-stage diagnostics.** `LiveArchive` combines immutable read snapshots, durable group commits, SHA-256 batch receipts, small-segment compaction and a bounded decoded-page cache. Late batches immediately contribute to new read views; exact retries do not add duplicate rows. Try the [Rust and Parquet workflows](LIVE_METRICS.md), inspect [current measured results](PERFORMANCE_031.md), and read the [primary-source design notebook](RESEARCH.md).

@@ -15,12 +15,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
     parser.add_argument('--sql-binary',type=Path,default=ROOT/'bin'/'kestrel.exe')
+    parser.add_argument('--engines',default='kestrel,postgres,mysql,mariadb,sqlite,duckdb')
     parser.add_argument('--servers',type=Path,default=ROOT.parent.parent/'work'/'stress-engines'/'running.json')
     parser.add_argument('--work',type=Path,default=ROOT.parent.parent/'work'/f'capability-{time.time_ns()}')
     parser.add_argument('--output',type=Path,default=ROOT/'benchmarks'/'capability-results.json')
     args = parser.parse_args()
+    names=args.engines.split(',')
+    assert len(set(names))==len(names) and set(names)<=set(['kestrel','postgres','mysql','mariadb','sqlite','duckdb'])
     args.work.mkdir(parents=True)
-    servers = json.loads(args.servers.read_text())
+    servers = json.loads(args.servers.read_text()) if args.servers.exists() else {}
     report = {'profile':'executed SQL/transaction capabilities, not inferred from aggregate speed',
         'binary_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
         'sql_binary_sha256':hashlib.sha256(args.sql_binary.resolve().read_bytes()).hexdigest(),
@@ -29,7 +32,7 @@ def main():
             {'engine':'SQL Server','reason':'No local SQL Server instance; installation/licensing/configuration not undertaken'},
             {'engine':'Oracle','reason':'No local Oracle instance'},
             {'engine':'CockroachDB/TiDB/YugabyteDB/Spanner','reason':'No distributed cluster; local-only test scope'}]}
-    for name in ['kestrel','postgres','mysql','mariadb','sqlite','duckdb']:
+    for name in names:
         engine = Engine(name,args.work/name,1000,args.binary.resolve(),servers)
         connection = engine.connect()
         probes = {}

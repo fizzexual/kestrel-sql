@@ -16,7 +16,7 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](benchmarks/nyc-results.json) |
 | Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](benchmarks/archive-verification.json) |
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
-| Engineering checks | 31 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
+| Engineering checks | 32 Rust tests pass in debug and release; format and Clippy pass | [verification.json](verification.json) |
 | Analytical SQL | Validated 248 category/day rows: dimension join, complete calendar, LAG, and ranking | [gold_analysis.sql](portfolio/gold_analysis.sql), [checks](portfolio/gold-verification.json) |
 | Historical concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
 | Current live ingestion | Snapshots, group commits, identified retries, bounded cache and compaction; repeated comparisons with retained failures | [PERFORMANCE_031.md](PERFORMANCE_031.md) |
@@ -47,6 +47,8 @@ This is precomputation with known prior art. It trades sorting, write-time index
 A real-data zone query exposed a planning weakness: a second predicate initially forced a broad scan even though a time range could bound it. The planner now uses the sorted time predicate to limit streamed reads before applying the other filter. A Rust regression test and independent multi-filter cases check correctness. The current zone query reads 3,440,640 payload bytes; it still loses to DuckDB, so further work needs profiling rather than another unsupported speed claim.
 
 ## Suggested CV bullet
+
+> Profiled and optimized streamed aggregate queries with reusable buffers, row selections and typed reductions; reduced unordered-filter median latency from 6.49 to 3.69 ms in three alternating 1M-row comparisons. Verified results against independent SQL engines and retained mixed-load failures alongside observed publication stalls for further investigation.
 
 > Developed a Rust/Python SQL analytics project with 100M persisted events and a 3.48M-record NYC data pipeline; added source hashes, quality/reconciliation checks, sparse aggregate indexes, late-batch support, and 500 SQL differential cases. Measured 2.095 ms median for indexed random time-window aggregates at 100M rows, versus 165.798 ms in the tested single-thread DuckDB setup.
 

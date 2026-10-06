@@ -34,6 +34,8 @@ Each live or pinned segment retains one file handle for boundary reads at explic
 
 ## Executed pipeline demonstration
 
+For a local diagnosis in 0.3.2, call `let (result, profile) = live.snapshot().query_profiled(sql)?;`. The profile records candidate/matched rows and page read/CRC/decode, selection and aggregation time. It excludes index/planning/result formatting, and instrumentation can perturb timing. Use ordinary `query` for the uninstrumented baseline. Counts and stage timings belong to that one query; they are separate from the shared process-local publication profile. [PERFORMANCE_032.md](PERFORMANCE_032.md) retains the diagnostic and ordinary comparisons.
+
 [live_pipeline_demo.py](benchmarks/live_pipeline_demo.py) generates two Parquet sources, reads them through DuckDB, and feeds source-hash/chunk-ID microbatches through the loopback test adapter. It replays both files, appends late data, reopens, checks results against DuckDB and rejects changed content under an existing ID. The 0.3.1 results are saved in [live-pipeline-031-results.json](portfolio/live-pipeline-031-results.json); [live-pipeline-results.json](portfolio/live-pipeline-results.json) preserves the 0.3 run.
 
 ```powershell

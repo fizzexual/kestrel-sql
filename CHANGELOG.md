@@ -1,5 +1,15 @@
 # Changes
 
+## 0.3.2 experimental scan candidate
+
+- Reuse query-local byte and decoded-column buffers across streamed pages, preserving CRC validation and independent long-scan handles.
+- Apply residual predicates through reusable row selections, choosing the comparison operator outside the row loop. Reuse already established sorted bounds.
+- Evaluate ungrouped COUNT/SUM/AVG/MIN/MAX by selected batches with exact i128 sums and existing empty-input behavior.
+- Add opt-in `ArchiveSnapshot::query_profiled` with query-local scan counts and stage timings; ordinary queries use a specialization without per-block timing work.
+- Add an independent oracle test for extreme integers, partial pages, empty selections, all comparison operators and profile counts. Preserve the original 0.3.1 binaries/source and separate instrumented baseline.
+
+The focused alternating filter comparison improves, but repeated service cases fail the zero-loss/100 ms gate and expose long publication stalls. See [PERFORMANCE_032.md](PERFORMANCE_032.md). The 0.3.1 package remains unchanged; this candidate is not production-qualified.
+
 ## 0.3.1
 
 - Validate exact batch retries against the existing receipt ledger without cloning it. Copy committed receipts only when new rows require publication; keep conflicting retries and whole-group atomicity checks.

@@ -78,6 +78,8 @@ For `r` overlapping runs, a boundary aggregate costs approximately O(r × log(p)
 
 ## Memory and persistence limits
 
+The 0.3.2 scan candidate reuses a query-local byte buffer and decoded column vectors across pages. It maintains a row selection of at most 4,096 positions and applies typed ungrouped aggregate kernels. These buffers are additional active-query memory, rather than entries in the shared 32 MiB boundary cache. Page CRC validation and independent long-scan handles remain in place. See [PERFORMANCE_032.md](PERFORMANCE_032.md) for gains and service failures.
+
 Raw storage is 8 bytes per column per row, plus sparse metadata. Sparse index arrays use roughly 44 bytes per column per page, plus vector and segment overhead. The schema and data shape used in the scale test have three integer columns; wider tables and other distributions need independent qualification.
 
 Internal guards limit batch payloads to 64 MiB, each segment to one million rows, schema width to 64 columns, index-array memory to 128 MiB, metadata envelopes to 64 MiB, and group results to 100,000 entries. These are allocation guards rather than an OS-enforced RSS limit. Caller-owned inputs, temporary serialization, allocator behavior, maliciously damaged metadata, and kernel file caches can add memory. The benchmark measures process peak working set rather than claiming a global machine-memory bound.

@@ -1,0 +1,88 @@
+{
+  "profile": "executed SQL/transaction capabilities, not inferred from aggregate speed",
+  "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+  "sql_binary_sha256": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
+  "engines": [
+    {
+      "engine": "kestrel",
+      "version": "0.3.2",
+      "probes": {
+        "exact_range_aggregate": {
+          "supported": true
+        },
+        "raw_point_lookup": {
+          "supported": false,
+          "error": "archive supports aggregates and the GROUP BY column"
+        },
+        "join": {
+          "supported": false,
+          "error": "unsupported SQL character at byte 8"
+        },
+        "string_and_nullable_schema": {
+          "supported": false,
+          "error": "expected bigint"
+        },
+        "sql_insert": {
+          "supported": false,
+          "error": "archive query requires SELECT"
+        },
+        "transaction_update_delete_rollback": {
+          "supported": false,
+          "error": "archive query requires SELECT"
+        },
+        "independent_archive_process_reader": {
+          "supported": false,
+          "error": "archive lock unavailable: lock acquisition failed because the operation would block",
+          "note": "Benchmark concurrency uses one shared Archive handle behind the test bridge"
+        }
+      }
+    },
+    {
+      "engine": "duckdb",
+      "version": "v1.5.6",
+      "probes": {
+        "exact_range_aggregate": {
+          "supported": true
+        },
+        "raw_point_lookup": {
+          "supported": true
+        },
+        "join": {
+          "supported": true
+        },
+        "string_and_nullable_schema": {
+          "supported": true
+        },
+        "sql_insert": {
+          "supported": true
+        },
+        "transaction_update_delete_rollback": {
+          "supported": true,
+          "rollback_checked": true
+        },
+        "two_native_connections": {
+          "supported": true,
+          "note": "SQLite/DuckDB connections here share the load-generator process; PostgreSQL/MySQL/MariaDB have native server sessions"
+        }
+      }
+    }
+  ],
+  "unexecuted_engines": [
+    {
+      "engine": "ClickHouse",
+      "reason": "No Docker daemon or native supported Linux environment available"
+    },
+    {
+      "engine": "SQL Server",
+      "reason": "No local SQL Server instance; installation/licensing/configuration not undertaken"
+    },
+    {
+      "engine": "Oracle",
+      "reason": "No local Oracle instance"
+    },
+    {
+      "engine": "CockroachDB/TiDB/YugabyteDB/Spanner",
+      "reason": "No distributed cluster; local-only test scope"
+    }
+  ]
+}

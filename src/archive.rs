@@ -770,6 +770,7 @@ impl Archive {
         for segment in &selected {
             let mut reader = Reader {
                 stream_file: None,
+                scratch: Vec::new(),
                 directory: &self.path,
                 segment,
                 bytes: 0,
@@ -862,6 +863,18 @@ pub(crate) fn valid_batch_id(id: &str) -> bool {
             .all(|c| c.is_ascii_alphanumeric() || b"-_.:/".contains(&c))
 }
 
+/// Opt-in timings for streamed scan work. Prefix/index operations are excluded.
+/// Ordinary `query` calls compile without the per-block timing/counter work.
+#[derive(Debug, Default, Clone, Serialize)]
+pub struct ScanProfile {
+    pub blocks: usize,
+    pub candidate_rows: usize,
+    pub matched_rows: usize,
+    pub page_read_ms: f64,
+    pub selection_ms: f64,
+    pub aggregate_ms: f64,
+}
+
 impl ArchiveSnapshot {
     pub fn columns(&self) -> &[String] {
         &self.catalog.columns
@@ -906,6 +919,18 @@ impl ArchiveSnapshot {
         })
     }
     pub fn query(&self, sql: &str) -> Result<ArchiveResult> {
+        self.query_inner::<false>(sql, &mut ScanProfile::default())
+    }
+    pub fn query_profiled(&self, sql: &str) -> Result<(ArchiveResult, ScanProfile)> {
+        let mut profile = ScanProfile::default();
+        let result = self.query_inner::<true>(sql, &mut profile)?;
+        Ok((result, profile))
+    }
+    fn query_inner<const PROFILE: bool>(
+        &self,
+        sql: &str,
+        profile: &mut ScanProfile,
+    ) -> Result<ArchiveResult> {
         let q = match crate::sql::parse(sql)? {
             Statement::Select(q) => q,
             _ => return Err(Error::new("archive query requires SELECT")),
@@ -947,6 +972,7 @@ impl ArchiveSnapshot {
                     || segment.metadata.indexes[resolved.filters[0].0].monotonic);
             let mut reader = Reader {
                 stream_file: None,
+                scratch: Vec::new(),
                 directory: &self.path,
                 segment,
                 bytes: 0,
@@ -1036,38 +1062,61 @@ impl ArchiveSnapshot {
                     }
                 }
                 hi = hi.max(lo);
+                let mut columns = vec![Vec::new(); self.catalog.columns.len()];
+                let mut selected = Vec::with_capacity(BLOCK_ROWS);
                 for block in lo / BLOCK_ROWS..hi.div_ceil(BLOCK_ROWS) {
-                    let mut columns = vec![Vec::new(); self.catalog.columns.len()];
+                    let read_started = PROFILE.then(Instant::now);
                     for &c in &resolved.needed {
-                        columns[c] = reader.block(c, block)?;
+                        reader.read_block_into(c, block, true, &mut columns[c])?;
                     }
                     let start = lo.saturating_sub(block * BLOCK_ROWS);
                     let end = (hi - block * BLOCK_ROWS).min(BLOCK_ROWS);
-                    for row in start..end {
-                        scanned += 1;
-                        if !resolved
-                            .filters
-                            .iter()
-                            .all(|(c, op, v)| op.matches(columns[*c][row], *v))
-                        {
+                    if let Some(started) = read_started {
+                        profile.page_read_ms += started.elapsed().as_secs_f64() * 1000.0;
+                        profile.blocks += 1;
+                        profile.candidate_rows += end - start;
+                    }
+                    let selection_started = PROFILE.then(Instant::now);
+                    selected.clear();
+                    selected.extend(start..end);
+                    for (column, op, value) in &resolved.filters {
+                        // Sorted bounds already enforce these comparisons.
+                        if Some(*column) == bounded && !matches!(op, Op::Ne) {
                             continue;
                         }
-                        let cells = if let Some(c) = resolved.group {
-                            let key = columns[c][row];
+                        retain_matching(&mut selected, &columns[*column], *op, *value);
+                        if selected.is_empty() {
+                            break;
+                        }
+                    }
+                    scanned += end - start;
+                    if let Some(started) = selection_started {
+                        profile.selection_ms += started.elapsed().as_secs_f64() * 1000.0;
+                        profile.matched_rows += selected.len();
+                    }
+                    let aggregate_started = PROFILE.then(Instant::now);
+                    if let Some(column) = resolved.group {
+                        for &row in &selected {
+                            let key = columns[column][row];
                             if groups.len() >= crate::query::MAX_RESULT_ROWS
                                 && !groups.contains_key(&key)
                             {
                                 return Err(Error::new("archive group budget exceeded"));
                             }
-                            groups
+                            let cells = groups
                                 .entry(key)
-                                .or_insert_with(|| vec![Cell::default(); resolved.exprs.len()])
-                        } else {
-                            &mut states
-                        };
-                        for (cell, expr) in cells.iter_mut().zip(&resolved.exprs) {
-                            cell.update(*expr, &columns, row);
+                                .or_insert_with(|| vec![Cell::default(); resolved.exprs.len()]);
+                            for (cell, expr) in cells.iter_mut().zip(&resolved.exprs) {
+                                cell.update(*expr, &columns, row);
+                            }
                         }
+                    } else {
+                        for (cell, expr) in states.iter_mut().zip(&resolved.exprs) {
+                            cell.update_selected(*expr, &columns, &selected);
+                        }
+                    }
+                    if let Some(started) = aggregate_started {
+                        profile.aggregate_ms += started.elapsed().as_secs_f64() * 1000.0;
                     }
                 }
             }
@@ -1134,6 +1183,7 @@ impl ArchiveSnapshot {
         for segment in &self.segments {
             let mut reader = Reader {
                 stream_file: None,
+                scratch: Vec::new(),
                 directory: &self.path,
                 segment,
                 bytes: 0,
@@ -1182,6 +1232,7 @@ impl ArchiveSnapshot {
 
 struct Reader<'a> {
     stream_file: Option<File>,
+    scratch: Vec<u8>,
     directory: &'a Path,
     segment: &'a Segment,
     bytes: u64,
@@ -1218,12 +1269,23 @@ impl Reader<'_> {
         self.read_block(column, block, true)
     }
     fn read_block(&mut self, column: usize, block: usize, streaming: bool) -> Result<Vec<i64>> {
+        let mut values = Vec::new();
+        self.read_block_into(column, block, streaming, &mut values)?;
+        Ok(values)
+    }
+    fn read_block_into(
+        &mut self,
+        column: usize,
+        block: usize,
+        streaming: bool,
+        values: &mut Vec<i64>,
+    ) -> Result<()> {
         let count = (self.segment.metadata.rows - block * BLOCK_ROWS).min(BLOCK_ROWS);
         let offset = self.segment.offset
             + (column as u64 * self.segment.metadata.rows as u64
                 + block as u64 * BLOCK_ROWS as u64)
                 * 8;
-        let mut bytes = vec![0; count * 8];
+        self.scratch.resize(count * 8, 0);
         if streaming {
             // Long scans need independent synchronous handles on Windows to avoid
             // serializing all scan I/O on the retained boundary-read handle.
@@ -1232,18 +1294,22 @@ impl Reader<'_> {
             }
             let file = self.stream_file.as_mut().unwrap();
             file.seek(SeekFrom::Start(offset))?;
-            file.read_exact(&mut bytes)?;
+            file.read_exact(&mut self.scratch)?;
         } else {
-            read_exact_at(&self.segment.file, &mut bytes, offset)?;
+            read_exact_at(&self.segment.file, &mut self.scratch, offset)?;
         }
-        self.bytes += bytes.len() as u64;
-        if crc32fast::hash(&bytes) != self.segment.metadata.indexes[column].crc[block] {
+        self.bytes += self.scratch.len() as u64;
+        if crc32fast::hash(&self.scratch) != self.segment.metadata.indexes[column].crc[block] {
             return Err(Error::new("archive data block checksum mismatch"));
         }
-        Ok(bytes
-            .chunks_exact(8)
-            .map(|x| i64::from_le_bytes(x.try_into().unwrap()))
-            .collect())
+        values.clear();
+        values.reserve(count);
+        values.extend(
+            self.scratch
+                .chunks_exact(8)
+                .map(|x| i64::from_le_bytes(x.try_into().unwrap())),
+        );
+        Ok(())
     }
     fn bound(&mut self, column: usize, value: i64, inclusive: bool) -> Result<usize> {
         let index = &self.segment.metadata.indexes[column];
@@ -1446,6 +1512,32 @@ struct Cell {
     max: Option<i64>,
 }
 impl Cell {
+    fn update_selected(&mut self, expr: AExpr, columns: &[Vec<i64>], selected: &[usize]) {
+        self.count += selected.len();
+        match expr {
+            AExpr::Sum(column) | AExpr::Avg(column) => {
+                let values = &columns[column];
+                self.sum += selected
+                    .iter()
+                    .map(|&row| i128::from(values[row]))
+                    .sum::<i128>();
+            }
+            AExpr::Min(column) => {
+                let values = &columns[column];
+                if let Some(min) = selected.iter().map(|&row| values[row]).min() {
+                    self.min = Some(self.min.map_or(min, |previous| previous.min(min)));
+                }
+            }
+            AExpr::Max(column) => {
+                let values = &columns[column];
+                if let Some(max) = selected.iter().map(|&row| values[row]).max() {
+                    self.max = Some(self.max.map_or(max, |previous| previous.max(max)));
+                }
+            }
+            AExpr::Count => (),
+            AExpr::Group(_) => unreachable!("group expressions use the grouped row kernel"),
+        }
+    }
     fn update(&mut self, e: AExpr, columns: &[Vec<i64>], row: usize) {
         self.count += 1;
         match e {
@@ -1482,5 +1574,16 @@ impl Cell {
             AExpr::Min(_) => self.min.map_or(Value::Null, |v| Value::Int(i128::from(v))),
             AExpr::Max(_) => self.max.map_or(Value::Null, |v| Value::Int(i128::from(v))),
         }
+    }
+}
+
+fn retain_matching(selected: &mut Vec<usize>, values: &[i64], op: Op, value: i64) {
+    match op {
+        Op::Eq => selected.retain(|&row| values[row] == value),
+        Op::Ne => selected.retain(|&row| values[row] != value),
+        Op::Lt => selected.retain(|&row| values[row] < value),
+        Op::Le => selected.retain(|&row| values[row] <= value),
+        Op::Gt => selected.retain(|&row| values[row] > value),
+        Op::Ge => selected.retain(|&row| values[row] >= value),
     }
 }

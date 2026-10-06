@@ -5,6 +5,7 @@ The Kestrel bridge uses LiveArchive snapshots and group commits.
 import argparse
 import decimal
 import gzip
+import hashlib
 import json
 import math
 import os
@@ -363,6 +364,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--engines',default='kestrel,postgres,mysql,mariadb,sqlite,duckdb')
     parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
+    parser.add_argument('--expected-version',help='Reject an unexpected Kestrel bridge version')
     parser.add_argument('--servers',type=Path,default=ROOT.parent.parent/'work'/'stress-engines'/'running.json')
     parser.add_argument('--rows',type=int,default=1_000_000)
     parser.add_argument('--seconds',type=float,default=8)
@@ -395,6 +397,7 @@ def main():
     if args.analytics: configs = [('analytics',64,args.seconds,args.analytics_rps)]
     if args.scan_only: configs = [('scan',64,args.seconds,200)]
     report = {'platform':platform.platform(),'logical_cpu_count':os.cpu_count(),
+        'bridge_sha256':hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
         'seed':20261006,'base_rows':args.rows,'engines_requested':args.engines.split(','),
         'methodology':{'arrivals':'paced open loop; latency measured from scheduled arrival, including client queue and dispatch delay',
             'queue_capacity':256,'max_client_queue_age_seconds':2,'connection_timeout_seconds':8,
@@ -419,6 +422,8 @@ def main():
             engine = None
             try:
                 engine = Engine(name,directory,args.rows,args.binary.resolve(),servers)
+                if name=='kestrel' and args.expected_version:
+                    assert engine.version==args.expected_version,('incorrect bridge build',engine.version)
                 case = run_load(engine,profile,clients,seconds,rate,100)
                 sample_directory = args.output.parent / ('stress-samples' if args.output.stem=='stress-results' else args.output.stem+'-samples')
                 sample_directory.mkdir(exist_ok=True)

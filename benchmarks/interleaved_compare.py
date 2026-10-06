@@ -17,6 +17,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--baseline',type=Path,required=True)
     parser.add_argument('--candidate',type=Path,required=True)
+    parser.add_argument('--baseline-version',default='0.3.0')
+    parser.add_argument('--candidate-version',default='0.3.1')
     parser.add_argument('--variants',default='baseline,candidate,postgres,mysql,mariadb,sqlite,duckdb')
     parser.add_argument('--rounds',type=int,default=3)
     parser.add_argument('--seconds',type=int,default=15)
@@ -31,6 +33,7 @@ def main():
     assert len(set(variants))==len(variants) and set(variants)<=set(['baseline','candidate','postgres','mysql','mariadb','sqlite','duckdb'])
     assert 1<=args.rounds<=5 and 1<=args.seconds<=30 and 1<=args.scan_seconds<=30 and 1000<=args.rows<=10_000_000
     binaries = {'baseline':args.baseline.resolve(),'candidate':args.candidate.resolve()}
+    versions = {'baseline':args.baseline_version,'candidate':args.candidate_version}
     servers = json.loads(args.servers.read_text(encoding='utf-8')) if args.servers.exists() else {}
     report = {'base_rows':args.rows,'seed':20261006,'rounds':args.rounds,
         'methodology':'paced open-loop common harness; 64 clients; 100-row durable appends; order rotates by two positions per round; fresh fixture each case; no compilation/other timed workload overlaps; shared desktop, no affinity; no universal database ranking',
@@ -54,7 +57,7 @@ def main():
                 try:
                     engine = Engine(name,directory,args.rows,binary,servers)
                     if variant in binaries:
-                        assert engine.version == {'baseline':'0.3.0','candidate':'0.3.1'}[variant], ('incorrect bridge build',variant,engine.version)
+                        assert engine.version == versions[variant], ('incorrect bridge build',variant,engine.version)
                     with HostMonitor() as monitor:
                         case = run_load(engine,profile,64,seconds,rate,100)
                     case.update(variant=variant,round=turn,host_telemetry=monitor.arrival_samples(case))

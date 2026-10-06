@@ -26,6 +26,56 @@ fn int(n: i128) -> Vec<Vec<Value>> {
 }
 
 #[test]
+fn selected_scan_kernels_preserve_extremes_partial_pages_and_profile_counts() {
+    let path = temp("selected-kernels");
+    let mut archive = open(&path);
+    let mut oracle = Database::memory();
+    oracle.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)").unwrap();
+    let values = [i64::MIN, -101, -1, 0, 1, 101, i64::MAX];
+    for (lo, hi) in [(0_i64, 4099_i64), (4099, 8197)] {
+        let columns = vec![
+            (lo..hi).collect(),
+            (lo..hi)
+                .map(|i| values[i as usize % values.len()])
+                .collect(),
+            (lo..hi).map(|i| i % 5).collect(),
+        ];
+        oracle.append("events", columns.clone()).unwrap();
+        archive.append(columns).unwrap();
+    }
+    let snapshot = archive.snapshot().unwrap();
+    for sql in [
+        "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events WHERE value >= 0",
+        "SELECT COUNT(*), SUM(value), SUM(device), MIN(ts), MAX(ts) FROM events WHERE ts >= 4093 AND ts < 8193 AND value <> 0 AND device <= 3",
+        "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events WHERE device = 2 AND value < 0",
+        "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events WHERE value > 101 AND value < 9223372036854775807",
+        "SELECT device, COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value) FROM events WHERE value >= -101 GROUP BY device ORDER BY device",
+        "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0 LIMIT 0",
+    ] {
+        let expected = oracle.query(sql).unwrap();
+        let normal = snapshot.query(sql).unwrap();
+        let (profiled, profile) = snapshot.query_profiled(sql).unwrap();
+        assert_eq!(normal.result.rows, expected.rows, "{sql}");
+        assert_eq!(profiled.result.rows, expected.rows, "{sql}");
+        assert!(profile.matched_rows <= profile.candidate_rows);
+        if sql.ends_with("LIMIT 0") {
+            assert_eq!(profile.blocks, 0);
+        } else {
+            assert!(profile.blocks > 0);
+            assert!(profile.candidate_rows > 0);
+        }
+    }
+    let (_, profile) = snapshot
+        .query_profiled("SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0")
+        .unwrap();
+    let expected_matches = (0..8197).filter(|i| values[i % values.len()] >= 0).count();
+    assert_eq!(profile.candidate_rows, 8197);
+    assert_eq!(profile.matched_rows, expected_matches);
+    assert_eq!(profile.blocks, 4);
+    assert_eq!(snapshot.verify().unwrap(), 8197 * 24);
+}
+
+#[test]
 fn full_receipt_budget_preserves_replays_without_new_publications() {
     let path = temp("receipt-capacity");
     let mut archive = open(&path);

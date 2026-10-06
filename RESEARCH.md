@@ -31,6 +31,8 @@ The retained-handle experiment exposed a platform tradeoff: sharing one synchron
 
 ## The improvement sequence
 
+Version 0.3.2 applies reusable row selections and typed ungrouped reductions, informed by the vector-processing readings above, and reuses page buffers. This is a portable scalar implementation; no explicit SIMD claim is made. Opt-in scan timings and uninstrumented alternating comparisons are in [PERFORMANCE_032.md](PERFORMANCE_032.md). The service tests expose long synchronization/publication stalls even when CPU work is small, so query speed and the durable service envelope require separate evidence.
+
 The changes already implemented in 0.3 are immutable committed read views, group publication, durable batch receipts, small-segment compaction, reference-aware reclamation, retained segment handles with positional reads and a 32 MiB retained decoded-page/prefix cache. They address the coarse read/write lock, repeated boundary-page work, file opens and growing small-run counts exposed during testing. See [LIVE_METRICS.md](LIVE_METRICS.md) for the API and its limits, and [V03_RESULTS.md](V03_RESULTS.md) for actual measurements, including regressions.
 
 For example, the implemented cache reuses decoded boundary pages and their exact local prefixes; a time-window query still performs boundary lookup and evaluates the current committed segment set. This preserves visibility of late events and avoids treating a cached whole-query answer as fresh. The corruption test warms that cache, damages a payload byte, and checks that an uncached full scrub reports damage and invalidates the cached pages. The snapshot test holds an old read view across compaction and checks that reclamation leaves its payload files accessible.

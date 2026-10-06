@@ -1,5 +1,6 @@
 """Seeded differential checks across multiple overlapping, independently sorted runs."""
 import argparse
+import hashlib
 import json
 import random
 import sqlite3
@@ -64,7 +65,8 @@ def main():
     finally:
         process.stdin.close(); process.wait(timeout=10); process.stdout.close(); process.stderr.close()
         sqlite.close(); duck.close()
-    report={"seed":20261005,"rows":total,"independently_sorted_overlapping_segments":8,
+    report={"binary_sha256":hashlib.sha256(args.binary.resolve().read_bytes()).hexdigest(),
+        "seed":20261005,"rows":total,"independently_sorted_overlapping_segments":8,
         "queries_checked_against_each_reference":len(checks),"references":["DuckDB "+duckdb.__version__,"SQLite "+sqlite3.sqlite_version],
         "full_payload_and_aggregate_index_verification":"passed after each append",
         "queries":checks}

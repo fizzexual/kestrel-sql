@@ -1,19 +1,20 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "rust_tests": {
-    "debug": 31,
-    "release": 31,
+    "debug": 32,
+    "release": 32,
     "passed": true
   },
   "format_check": "passed",
   "clippy_warnings_as_errors": "passed",
   "tested_platform": "Windows 10",
   "linux_execution": "unverified",
-  "cli_sha256": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
-  "bridge_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
-  "probe_sha256": "2accbf4b54a139343442a315c18bdf2b321041986764510d1499b5b77737ecc3",
+  "cli_sha256": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
+  "bridge_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
+  "probe_sha256": "9d62901b97108810cec89e036bf9b405293287777eadd2f13d12c43ea0ea2f5d",
+  "scan_probe_sha256": "94ea94c4a7a5f7688d7d41ae9446690a5670b846315be31461a1b35d74c9ad1b",
   "source_sha256": {
-    "src/archive.rs": "4c7a30288b9fdd5da5d4983cc23bfc18c924b832c6e694f4e96fd8dce5b2a9ef",
+    "src/archive.rs": "2830291063706244a24dced95041cc8931de91ba878326669e6dd6bb31a90823",
     "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
     "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
     "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
@@ -22,12 +23,13 @@
     "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
     "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
     "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
-    "tests/archive.rs": "f02c96c7dc46a40dd6c86af75f25c782cabbc4495a7c4f82495f9eef0c184200",
+    "tests/archive.rs": "733b3644d26c16499c75837afa18b53fcb14ec4bc4d24fd6eef6fb946762f4fd",
     "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
     "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
     "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
-    "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
-    "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23"
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "Cargo.toml": "6490787ef75d82cb89d71771159f5b35f5b5b9a23dc933dc28603610bf73e501",
+    "Cargo.lock": "7478d79609e20c36a8ec13f41023410b122cf5441f077389babbbb3308c57c5d"
   },
   "local_qualification_date": "2026-10-06",
   "status": "experimental prototype; production qualification remains incomplete",
@@ -77,8 +79,8 @@
     }
   },
   "retained_data_recheck": {
-    "version": "0.3.1",
-    "binary_sha256": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
+    "version": "0.3.2",
+    "binary_sha256": "90d7be2d37ea4d10df67b8af21d26f3368e6ad530fc29309f0855ef233529a9c",
     "retained_fixed_scale_cases": 24,
     "retained_random_window_cases": 124,
     "retained_real_data_cases": 5,
@@ -94,39 +96,13 @@
     "partial_row_import_rejected_before_publication": true
   },
   "current_stress": {
-    "baseline": {
-      "completed_cases": 11,
-      "engines": 1,
-      "offered_operations": 155600,
-      "successful_operations": 129736,
-      "unsuccessful_or_unexecuted": 25864,
-      "raw_executed_samples_checked": 129736,
-      "numpy_reference_windows": 220,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
-    "buffered_trial": {
-      "completed_cases": 11,
-      "engines": 1,
-      "offered_operations": 155600,
-      "successful_operations": 115390,
-      "unsuccessful_or_unexecuted": 40210,
-      "raw_executed_samples_checked": 115390,
-      "numpy_reference_windows": 220,
-      "all_acknowledged_batches_present": true,
-      "batch_atomicity_and_sums": true,
-      "sample_accounting_and_percentiles": true,
-      "no_kestrel_maintenance_errors": true
-    },
     "final": {
       "completed_cases": 11,
       "engines": 1,
       "offered_operations": 155600,
-      "successful_operations": 130233,
-      "unsuccessful_or_unexecuted": 25367,
-      "raw_executed_samples_checked": 130233,
+      "successful_operations": 148295,
+      "unsuccessful_or_unexecuted": 7305,
+      "raw_executed_samples_checked": 148295,
       "numpy_reference_windows": 220,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
@@ -134,59 +110,56 @@
       "no_kestrel_maintenance_errors": true
     },
     "interleaved": {
-      "completed_cases": 42,
-      "engines": 6,
-      "offered_operations": 663600,
-      "successful_operations": 645432,
-      "unsuccessful_or_unexecuted": 18168,
-      "raw_executed_samples_checked": 645499,
-      "numpy_reference_windows": 840,
+      "completed_cases": 18,
+      "engines": 2,
+      "offered_operations": 284400,
+      "successful_operations": 248509,
+      "unsuccessful_or_unexecuted": 35891,
+      "raw_executed_samples_checked": 248509,
+      "numpy_reference_windows": 360,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
     },
     "analytics": {
-      "completed_cases": 9,
-      "engines": 2,
-      "offered_operations": 270000,
-      "successful_operations": 211488,
-      "unsuccessful_or_unexecuted": 58512,
-      "raw_executed_samples_checked": 211488,
-      "numpy_reference_windows": 180,
+      "completed_cases": 6,
+      "engines": 1,
+      "offered_operations": 180000,
+      "successful_operations": 168484,
+      "unsuccessful_or_unexecuted": 11516,
+      "raw_executed_samples_checked": 168484,
+      "numpy_reference_windows": 120,
       "all_acknowledged_batches_present": true,
       "batch_atomicity_and_sums": true,
       "sample_accounting_and_percentiles": true,
       "no_kestrel_maintenance_errors": true
     },
-    "replay_probe": {
-      "cases": 6,
-      "samples_checked": 6000,
-      "one_row_payload": true,
-      "no_new_publication": true
-    },
-    "core_probe": {
+    "core": {
       "cases": 6,
       "sql_cases": 36,
-      "samples_checked": 1116,
+      "timings_checked": 1116,
       "all_results_equal": true
     },
-    "invalid_build_comparison": {
-      "excluded": true,
-      "retained_cases": 6,
-      "reason": "Candidate probe reported 0.3.0, not 0.3.1: Cargo artifact output collision across shared target directories. All timings excluded from performance claims."
+    "profiling": {
+      "cases": 6,
+      "sql_cases": 30,
+      "timings_checked": 330,
+      "full_scrubs_passed": true,
+      "instrumented_baseline_separate_from_original_release": true,
+      "initial_setup_failures_excluded": "cold/warm byte-count invariant fixed before accepted runs; harness flattened-JSON key corrected before accepted comparisons"
     }
   },
   "archive_identified_process_kills": {
     "cycles_passed": 24,
-    "acknowledged_batches": 478,
-    "unacknowledged_committed_batches": 6,
+    "acknowledged_batches": 414,
+    "unacknowledged_committed_batches": 2,
     "all_acknowledged_batches_present": true,
     "published_batches_atomic": true,
     "retry_deduplication_passed": true,
     "full_scrubs_passed": true,
     "fault_model": "forcible OS process kill, live filesystem; no power-loss or replicated failover claim",
-    "report": "benchmarks/perf-031-recovery.json"
+    "report": "benchmarks/perf-032-recovery.json"
   },
   "hard_boundaries": {
     "independent_process_opener_rejected": true,
@@ -207,8 +180,8 @@
     }
   },
   "live_pipeline": {
-    "engine_version": "0.3.1",
-    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+    "engine_version": "0.3.2",
+    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
     "workflow": "two Parquet sources, durable source-hash/chunk IDs, each source replayed",
     "initial_rows": 25000,
     "late_backfill_rows": 5000,
@@ -259,7 +232,7 @@
     },
     "final_stats": {
       "block_rows": 4096,
-      "generation": 171,
+      "generation": 149,
       "ingest": {
         "committed_batches": 0,
         "compaction_total_ms": 0.0,
@@ -268,15 +241,15 @@
         "durable_group_commits": 0,
         "flush_delay_ms": 0,
         "maintenance_errors": 0,
-        "publication_max_ms": 0.0283,
-        "publication_total_ms": 0.0283,
+        "publication_max_ms": 0.0186,
+        "publication_total_ms": 0.0186,
         "queued_payload_bytes": 0
       },
       "logical_data_bytes": 720000,
-      "metadata_bytes": 17740,
-      "page_cache_hits": 828,
-      "page_cache_misses": 76,
-      "physical_bytes": 1275675,
+      "metadata_bytes": 21830,
+      "page_cache_hits": 702,
+      "page_cache_misses": 84,
+      "physical_bytes": 1978562,
       "publication_profile": {
         "attempts": 0,
         "catalog_encode": {
@@ -402,15 +375,15 @@
         }
       },
       "recorded_batch_ids": 300,
-      "retained_page_cache_bytes": 1369344,
+      "retained_page_cache_bytes": 1341696,
       "rows": 30000,
-      "segments": 43
+      "segments": 53
     },
     "limits": "batch idempotency for this archive, not end-to-end exactly-once delivery; BIGINT metrics only"
   },
   "format_compatibility": {
     "legacy_binary_sha256": "488669aba80a893176fa46b7169098aa2d6209f1823bb9d4271f4470df19fb36",
-    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
     "legacy_catalog_read": true,
     "new_catalog_magic": "KSQLCAT3",
     "older_binary_rejects_new_catalog": true,
@@ -419,43 +392,62 @@
     "full_scrub_passed": true
   },
   "baseline_provenance": {
-    "origin": "kestrel-sql-0.3.0.zip; historical library sources preserved, identical new performance probe added",
-    "original_package_sha256": "d7a344258e15821aea0d6b19badc5e7afdeb10853b16dcc58fd6e7ba02b6d6dc",
+    "origin": "kestrel-sql-0.3.1.zip",
+    "original_package_sha256": "256952b903bd61b7993dd2cefde387a9f16a586454627d136897ea2cc7eaf211",
     "core_source_sha256": {
-      "Cargo.lock": "704a9549f45c999a242a32d1049ad3f437cbcee0d7c5490fa588c242092d9413",
-      "Cargo.toml": "939499c5f5c23e40cc46db13075ce701d32663df6b23b6a0e1eb45270c22701a",
-      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
-      "src/archive.rs": "4b5628c888962141919f7f24b7efda038d68acffb4f2638d9cc7717969a33f30",
+      "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
+      "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23",
+      "src/archive.rs": "4c7a30288b9fdd5da5d4983cc23bfc18c924b832c6e694f4e96fd8dce5b2a9ef",
       "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
-      "src/live.rs": "6e0896f6ab4c50724b2d2eab5eafe500d235de3718e379dde10e2a626a4b0b58",
+      "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
       "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
       "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
       "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
       "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
       "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
-      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549"
+      "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549",
+      "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84"
     },
     "baseline_binary_sha256": {
-      "kestrel-stress.exe": "900244ddc0bc0a94d5703e9309dd643e6c293ae96892df9cace354e361f2df6e",
-      "kestrel.exe": "665172cfb9a28164de488df957532fe8219c31d62cce25ea14b7e47c81dd2430",
-      "performance-probe.exe": "6b5cd4df813f3b2552d888cd486e33faeee2aacdc7387ac2f530e643db5f9e0d"
+      "kestrel-stress.exe": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+      "kestrel.exe": "4573e5a0d2cec1fefecf9e5da86804394619c650249ec2dd374e3c2e0b3e359d",
+      "performance-probe.exe": "2accbf4b54a139343442a315c18bdf2b321041986764510d1499b5b77737ecc3"
+    },
+    "profiled_baseline": {
+      "note": "0.3.1 library plus opt-in scan timing instrumentation; ordinary baseline comparisons use the original release CLI/bridge",
+      "binary_sha256": "7d7947fe6473a85be7698645e8063682bf267024e5f3e1dc15f74924525ccd62",
+      "source_sha256": {
+        "Cargo.lock": "6bc88c91c03edeb27fa84ba766d3b1cd5a66913a28c540fc3def85310f553c23",
+        "Cargo.toml": "d921b407e395982072a9b67b8b171ce643a26960268632e70d9961b08c199094",
+        "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+        "src/archive.rs": "cf0c1004fec67e237e4bf580cb2f841b5b84fd6bf6a166ca641e849dc54d7ac3",
+        "src/lib.rs": "a0563ed6391966b086774d78fb04f915ec169093739f0e9bda63e69b34d4eb12",
+        "src/live.rs": "4d0cbba73cae9d373c5d94f76f315d6fb2598d12991e9953de1cae40d2c045dc",
+        "src/main.rs": "6a042f04b067931763b253ecd129d7f349fd3768eed85ae72151cd7dce599b06",
+        "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+        "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+        "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+        "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+        "src/bin/kestrel-stress.rs": "8c43280eebc94891ed43e14aed81310f3ce3ab85437f09d16073a9dd475b6549"
+      }
     }
   },
   "executed_capabilities": {
-    "engines": 6,
-    "report": "benchmarks/capability-031.json",
+    "engines": 2,
+    "report": "benchmarks/capability-032.json",
+    "previous_six_engine_report": "benchmarks/capability-031.json",
     "archive_transactional_parity": false
   },
   "stress_bridge": {
     "test_only": true,
-    "binary_sha256": "d377603f57de9b4b3341b42b834af81764b24af4a4ebb1ddb5760f80d3956c0c",
+    "binary_sha256": "eeebc24398d0aeda67c191da12422758d0d7ba342ca8132313549d207d3edfb8",
     "concurrency": "immutable LiveArchive snapshots; one bounded durable group writer"
   },
   "reference_servers_stopped": true,
   "qualification_limits": [
     "shared desktop and unequal client interfaces; short repeated runs are descriptive",
     "latency percentiles include successes only; all failed/unexecuted offers reported separately",
-    "unordered-filter regression and overload/single-client tail failures remain visible",
+    "all overload loss and slow service cases disclosed; generic scan gains do not qualify durable tails",
     "BIGINT aggregate subset; no raw projection, joins, updates/deletes or SQL transactions in Archive",
     "no native Arrow/Parquet SDK; Parquet demo reads sources through DuckDB",
     "receipt capacity correctness tested at 100000 IDs; full-ledger unique-write endurance unqualified",
@@ -463,5 +455,15 @@
     "backup/retention/orphan cleanup, upgrades and disk exhaustion remain unqualified",
     "physical power loss, Windows directory-entry durability and Linux execution unqualified",
     "no distributed scale, replication or TAOBench/Facebook-scale qualification"
-  ]
+  ],
+  "historical_0_3_1_proof": "verification-v031.json",
+  "current_archive_differential": {
+    "queries_checked_against_each_reference": 500,
+    "references": [
+      "DuckDB 1.5.6",
+      "SQLite 3.49.1"
+    ],
+    "report": "benchmarks/archive-verification-032.json"
+  },
+  "service_qualification": "failed; retain all mixed/overload losses and publication stalls"
 }
