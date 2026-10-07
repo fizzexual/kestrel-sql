@@ -28,3 +28,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Clean core trial 061](CORE_READ_PATH_061.md) reproduces the native parser/range gain without SDK changes, records 60/60 fresh DuckDB analytical median wins and 10/29 failed service guards. All source/reader/publication recovery gates pass. It remains isolated development evidence; supported 0.3.16, historical losses and the primary-production adoption assessment remain unchanged.
 
 [Service calibration 062](SERVICE_CALIBRATION_062.md) records 3/14 failed identical-binary tolerance checks and 2/14 failed primary candidate/A guards. This is a scoped measurement control; it does not erase 061 failures, establish a causal explanation or change the supported release/adoption assessment.
+
+[Current batching controls 063](BATCHING_063.md) record 4/10 failed identity checks and 6/26 failed option criteria. Existing durable options are measured, with no engine edit, default promotion or change to the primary-production adoption assessment.

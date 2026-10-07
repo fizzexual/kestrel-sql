@@ -1,0 +1,49 @@
+"""Independently audit raw requests, four-label controls and recovery coverage."""
+from pathlib import Path
+import datetime
+import gzip
+import hashlib
+import json
+import math
+import statistics
+
+W=Path(__file__).resolve().parent
+ROOT=W.parents[1]/'outputs/kestrel-sql'
+def sha(p):
+    with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def load(p):return json.loads(p.read_text(encoding='utf-8-sig'))
+def quantile(values,p):return sorted(values)[max(0,math.ceil(len(values)*p)-1)] if values else None
+def main():
+    r=load(W/'paired-service.json'); policy=load(W/'policy.json'); recovery=load(W/'recovery.json')
+    assert r['complete'] and len(r['cases'])==32 and not r['failed_cases']
+    assert r['policy_sha256']==sha(W/'policy.json') and r['recovery_sha256']==sha(W/'recovery.json')
+    assert r['binary_sha256']==policy['binary_sha256']==sha(W/'binaries/released-016.exe')==recovery['binary_sha256']
+    for n,d in r['harness_sha256'].items():assert sha(W/n if n=='run.py' else ROOT/'benchmarks'/n)==d,n
+    base=load(W/'baseline.json')
+    for n,d in base['core_source_sha256'].items():assert sha(ROOT/n)==d,n
+    for n,d in base['baseline_binary_sha256'].items():assert sha(ROOT/'bin'/n)==d,n
+    morning=load(ROOT/'benchmarks/overnight-2026-10-07-report-check.json')
+    assert sha(ROOT/morning['report_file'])==morning['report_sha256']
+    assert not load(W/'post-qualification-process-check.json')['active_processes']
+    assert not recovery['failed_cases'] and len(recovery['cycles'])==24
+    assert recovery['policy_sha256']==sha(W/'policy.json')
+    recovery_totals={'attempted_batches':0,'acknowledged_batches':0,'published_batches':0,'unacknowledged_committed_batches':0}
+    for i,c in enumerate(recovery['cycles']):
+        assert c['group_delay_ms']==[0,1,4][i//8] and c['kill_delay_seconds']==policy['recovery']['kill_delays_seconds'][i%8]
+        assert all(c[n] for n in ['acknowledged_data_present','whole_batches_and_sums','original_receipt_generations_preserved','retry_exactly_once_after_second_reopen','full_scrubs_passed'])
+        assert 0<=c['acknowledged_batches']<=c['published_batches']<=c['attempted_batches']<=64
+        assert c['unacknowledged_committed_batches']==c['published_batches']-c['acknowledged_batches']
+        for n in recovery_totals:recovery_totals[n]+=c[n]
+        assert (W/'recovery-fixtures'/f"{c['group_delay_ms']}-{i%8}"/'archive').is_dir()
+    totals={"offered":0,"samples":0,"acknowledged_batches":0,"uncertain_committed_batches":0,"scrubbed_bytes":0,"numpy_windows":0}
+    stages=[]; components=[]
+    configs=policy['comparison']['configs']
+    for index,c in enumerate(r['cases']):
+        turn=index//8; config_index=(index%8)//4; profile,rate,seconds=configs[config_index]
+        variants=list(policy['variants']); shift=(turn+config_index)%4
+        variants=variants[shift:]+variants[:shift]
+        assert (c['round'],c['profile'],c['offered_rps'],c['scheduled_seconds'],c['variant'])==(turn,profile,rate,seconds,variants[index%4])
+        assert c['case_started_utc']>policy['declared_utc'] and c['version']==policy['version']
+        assert c['group_delay_ms']==policy['variants'][c['variant']]
+        assert c['ingest_state_before_load']['group_delay_ns']==c['group_delay_ms']*1_000_000
+        assert c['live_state_before_reopen']['ingest']['group_delay_ns']==c['group_delay_ms']*1_000_000

@@ -1,0 +1,5452 @@
+{
+  "trial": 63,
+  "audited_utc": "2026-10-07T07:45:18.850348+00:00",
+  "report_sha256": "3b84698dc9c3492ffb864da5635e8b5f878dba2c98ce9fc6ddc6cfc33ea002ce",
+  "cases": 32,
+  "totals": {
+    "offered": 600000,
+    "samples": 600000,
+    "acknowledged_batches": 53984,
+    "uncertain_committed_batches": 0,
+    "scrubbed_bytes": 897561600,
+    "numpy_windows": 640
+  },
+  "raw_sample_accounting_hashes_quantiles_recomputed": true,
+  "same_exact_binary_for_all_labels": true,
+  "engine_default_binaries_morning_unchanged": true,
+  "no_new_correctness_failure": true,
+  "summaries": [
+    {
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "variants": {
+        "baseline_a": {
+          "delay_ms": 0,
+          "medians": {
+            "overall": 122.53555,
+            "query": 1.21035,
+            "append": 219.61515,
+            "rps": 500.0,
+            "attempts": 1302.5
+          },
+          "lost": 0,
+          "offered": 30000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1263.5,
+            "durable_group_commits": 1263.5,
+            "committed_batches": 1891.0,
+            "batches_per_durable_group": 1.6476351020532007,
+            "mean_collection_ms": 0.0010756377589916477,
+            "compactions": 39.0,
+            "publication_total_ms": 7509.2546,
+            "compaction_total_ms": 965.27705,
+            "compaction_fraction_of_measured_writer_work": 0.10968817635732508
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 101.9657,
+              "query": 1.1997,
+              "append": 180.5947,
+              "rps": 500.0,
+              "attempts": 908
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 75.3486,
+              "query": 1.221,
+              "append": 153.265,
+              "rps": 500.0,
+              "attempts": 1727
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 143.1054,
+              "query": 1.1868,
+              "append": 284.746,
+              "rps": 500.0,
+              "attempts": 1697
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 165.251,
+              "query": 1.2297,
+              "append": 258.6356,
+              "rps": 499.73333333333335,
+              "attempts": 768
+            }
+          ]
+        },
+        "baseline_b": {
+          "delay_ms": 0,
+          "medians": {
+            "overall": 137.14415,
+            "query": 1.2202,
+            "append": 301.37334999999996,
+            "rps": 499.93333333333334,
+            "attempts": 1310.5
+          },
+          "lost": 0,
+          "offered": 30000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1271.5,
+            "durable_group_commits": 1271.5,
+            "committed_batches": 1891.0,
+            "batches_per_durable_group": 1.6243992292839664,
+            "mean_collection_ms": 0.0010421844347495096,
+            "compactions": 39.0,
+            "publication_total_ms": 7675.11875,
+            "compaction_total_ms": 868.8087,
+            "compaction_fraction_of_measured_writer_work": 0.08978944374747361
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 154.8018,
+              "query": 1.2186,
+              "append": 372.116,
+              "rps": 499.8666666666667,
+              "attempts": 929
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 119.4865,
+              "query": 1.2218,
+              "append": 230.6307,
+              "rps": 500.0,
+              "attempts": 1692
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 102.8017,
+              "query": 1.1943,
+              "append": 182.4106,
+              "rps": 500.0,
+              "attempts": 1718
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 176.7483,
+              "query": 1.2502,
+              "append": 457.7923,
+              "rps": 499.73333333333335,
+              "attempts": 744
+            }
+          ]
+        },
+        "delay1": {
+          "delay_ms": 1,
+          "medians": {
+            "overall": 105.4799,
+            "query": 1.2187999999999999,
+            "append": 254.5876,
+            "rps": 499.9666666666667,
+            "attempts": 935.5
+          },
+          "lost": 0,
+          "offered": 30000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 908.0,
+            "durable_group_commits": 908.0,
+            "committed_batches": 1891.0,
+            "batches_per_durable_group": 2.1141941751637336,
+            "mean_collection_ms": 5.320780789141109,
+            "compactions": 27.5,
+            "publication_total_ms": 5421.3925500000005,
+            "compaction_total_ms": 497.32710000000003,
+            "compaction_fraction_of_measured_writer_work": 0.07591281831620712
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 675.2455,
+              "query": 389.7936,
+              "append": 903.1211,
+              "rps": 499.8,
+              "attempts": 565
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 74.7805,
+              "query": 1.202,
+              "append": 137.7226,
+              "rps": 500.0,
+              "attempts": 1079
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 124.5228,
+              "query": 1.1964,
+              "append": 371.4526,
+              "rps": 500.0,
+              "attempts": 1050
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 86.437,
+              "query": 1.2356,
+              "append": 133.2546,
+              "rps": 499.93333333333334,
+              "attempts": 821
+            }
+          ]
+        },
+        "delay4": {
+          "delay_ms": 4,
+          "medians": {
+            "overall": 121.28280000000001,
+            "query": 1.2178499999999999,
+            "append": 231.9933,
+            "rps": 499.9666666666667,
+            "attempts": 732.5
+          },
+          "lost": 0,
+          "offered": 30000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 711.0,
+            "durable_group_commits": 711.0,
+            "committed_batches": 1891.0,
+            "batches_per_durable_group": 2.7560738122960364,
+            "mean_collection_ms": 8.369382924860993,
+            "compactions": 21.5,
+            "publication_total_ms": 5127.0563999999995,
+            "compaction_total_ms": 653.7230000000001,
+            "compaction_fraction_of_measured_writer_work": 0.09995488807096325
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 92.2914,
+              "query": 1.2422,
+              "append": 141.8163,
+              "rps": 499.6666666666667,
+              "attempts": 595
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 89.7267,
+              "query": 1.1935,
+              "append": 208.5275,
+              "rps": 499.93333333333334,
+              "attempts": 870
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 159.4784,
+              "query": 1.1763,
+              "append": 308.949,
+              "rps": 500.0,
+              "attempts": 882
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 150.2742,
+              "query": 1.2776,
+              "append": 255.4591,
+              "rps": 500.0,
+              "attempts": 523
+            }
+          ]
+        }
+      },
+      "comparisons": {
+        "baseline_b/baseline_a": {
+          "kind": "identity",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                1.5181752295134538,
+                1.5857826157353951,
+                0.7183635278612827,
+                1.069574768080072
+              ],
+              "median": 1.2938749987967628
+            },
+            "query": {
+              "rounds": [
+                1.015753938484621,
+                1.0006552006552005,
+                1.0063195146612738,
+                1.0166707326990323
+              ],
+              "median": 1.0110367265729474
+            },
+            "append": {
+              "rounds": [
+                2.0605034367010773,
+                1.5047838710729782,
+                0.640608120921804,
+                1.770028178642074
+              ],
+              "median": 1.6374060248575262
+            },
+            "rps": {
+              "rounds": [
+                0.9997333333333334,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                1.0231277533039647,
+                0.9797336421540244,
+                1.0123747790218032,
+                0.96875
+              ],
+              "median": 0.9960542105879138
+            }
+          },
+          "calibration_checks": {
+            "overall_ratio": false,
+            "query_ratio": true,
+            "append_ratio": false,
+            "rps_ratio": true,
+            "loss_difference": true
+          }
+        },
+        "delay1/baseline_a": {
+          "kind": "primary",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                6.62228082580711,
+                0.9924603774987193,
+                0.8701474577479257,
+                0.5230649133742005
+              ],
+              "median": 0.9313039176233224
+            },
+            "query": {
+              "rounds": [
+                324.9092273068267,
+                0.9844389844389844,
+                1.0080889787664307,
+                1.0047979181914288
+              ],
+              "median": 1.0064434484789297
+            },
+            "append": {
+              "rounds": [
+                5.000817299732495,
+                0.8985913287443318,
+                1.3045050676743486,
+                0.5152214157679763
+              ],
+              "median": 1.1015481982093402
+            },
+            "rps": {
+              "rounds": [
+                0.9996,
+                1.0,
+                1.0,
+                1.000400213447172
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                0.6222466960352423,
+                0.6247828604516502,
+                0.6187389510901591,
+                1.0690104166666667
+              ],
+              "median": 0.6235147782434463
+            }
+          },
+          "candidate_criteria": {
+            "append_p99_improvement": false,
+            "overall_p99_guard": true,
+            "query_p99_guard": true,
+            "window_rps_guard": true,
+            "loss_increase_guard": true,
+            "publication_attempt_reduction": true
+          }
+        },
+        "delay4/baseline_a": {
+          "kind": "primary",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                0.9051220165212419,
+                1.190821063695941,
+                1.1144121745231137,
+                0.9093693835438212
+              ],
+              "median": 1.0118907790334675
+            },
+            "query": {
+              "rounds": [
+                1.0354255230474285,
+                0.9774774774774774,
+                0.9911526794742163,
+                1.0389525900626169
+              ],
+              "median": 1.0132891012608223
+            },
+            "append": {
+              "rounds": [
+                0.7852738757006713,
+                1.360568296740939,
+                1.0849985601202476,
+                0.9877182414176547
+              ],
+              "median": 1.0363584007689512
+            },
+            "rps": {
+              "rounds": [
+                0.9993333333333334,
+                0.9998666666666667,
+                1.0,
+                1.0005336179295623
+              ],
+              "median": 0.9999333333333333
+            },
+            "attempts": {
+              "rounds": [
+                0.6552863436123348,
+                0.5037637521713955,
+                0.5197407189157337,
+                0.6809895833333334
+              ],
+              "median": 0.5875135312640343
+            }
+          },
+          "candidate_criteria": {
+            "append_p99_improvement": false,
+            "overall_p99_guard": true,
+            "query_p99_guard": true,
+            "window_rps_guard": true,
+            "loss_increase_guard": true,
+            "publication_attempt_reduction": true
+          }
+        },
+        "delay1/baseline_b": {
+          "kind": "diagnostic",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                4.362000312657863,
+                0.6258489452783369,
+                1.2112912529656612,
+                0.4890400643174503
+              ],
+              "median": 0.918570099121999
+            },
+            "query": {
+              "rounds": [
+                319.8700147710488,
+                0.9837944017024063,
+                1.0017583521728208,
+                0.9883218685010399
+              ],
+              "median": 0.9950401103369304
+            },
+            "append": {
+              "rounds": [
+                2.4269880897354588,
+                0.5971564063240496,
+                2.03635424695714,
+                0.2910809115837029
+              ],
+              "median": 1.3167553266405947
+            },
+            "rps": {
+              "rounds": [
+                0.9998666311016271,
+                1.0,
+                1.0,
+                1.000400213447172
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                0.6081808396124866,
+                0.6377068557919622,
+                0.6111757857974389,
+                1.103494623655914
+              ],
+              "median": 0.6244413207947006
+            }
+          },
+          "diagnostic_only_no_comparator_selection": true
+        },
+        "delay4/baseline_b": {
+          "kind": "diagnostic",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                0.5961907419681167,
+                0.7509358797855824,
+                1.5513206493666933,
+                0.8502158153713502
+              ],
+              "median": 0.8005758475784663
+            },
+            "query": {
+              "rounds": [
+                1.0193664861316265,
+                0.9768374529382878,
+                0.9849284099472494,
+                1.0219164933610623
+              ],
+              "median": 1.002147448039438
+            },
+            "append": {
+              "rounds": [
+                0.3811077728450269,
+                0.904161935076293,
+                1.693700914310901,
+                0.5580240209370058
+              ],
+              "median": 0.7310929780066494
+            },
+            "rps": {
+              "rounds": [
+                0.9995998933048813,
+                0.9998666666666667,
+                1.0,
+                1.0005336179295623
+              ],
+              "median": 0.9999333333333333
+            },
+            "attempts": {
+              "rounds": [
+                0.6404736275565124,
+                0.5141843971631206,
+                0.5133876600698487,
+                0.7029569892473119
+              ],
+              "median": 0.5773290123598165
+            }
+          },
+          "diagnostic_only_no_comparator_selection": true
+        }
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variants": {
+        "baseline_a": {
+          "delay_ms": 0,
+          "medians": {
+            "overall": 3.5688,
+            "query": 1.2864,
+            "append": 83.8408,
+            "rps": 500.0,
+            "attempts": 1503.0
+          },
+          "lost": 0,
+          "offered": 120000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1458.0,
+            "durable_group_commits": 1458.0,
+            "committed_batches": 1483.0,
+            "batches_per_durable_group": 1.0171472548915377,
+            "mean_collection_ms": 0.0011345293743602108,
+            "compactions": 45.0,
+            "publication_total_ms": 5108.2338,
+            "compaction_total_ms": 273.37805000000003,
+            "compaction_fraction_of_measured_writer_work": 0.046980550723000516
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 4.6027,
+              "query": 1.5004,
+              "append": 188.5209,
+              "rps": 500.0,
+              "attempts": 1456
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 3.5814,
+              "query": 1.2883,
+              "append": 59.9003,
+              "rps": 500.0,
+              "attempts": 1504
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 3.5527,
+              "query": 1.2824,
+              "append": 71.3197,
+              "rps": 500.0,
+              "attempts": 1513
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 3.5562,
+              "query": 1.2845,
+              "append": 96.3619,
+              "rps": 500.0,
+              "attempts": 1502
+            }
+          ]
+        },
+        "baseline_b": {
+          "delay_ms": 0,
+          "medians": {
+            "overall": 12.277800000000001,
+            "query": 1.28275,
+            "append": 85.10695000000001,
+            "rps": 500.0,
+            "attempts": 1481.5
+          },
+          "lost": 0,
+          "offered": 120000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1436.5,
+            "durable_group_commits": 1436.5,
+            "committed_batches": 1483.0,
+            "batches_per_durable_group": 1.0328990494919699,
+            "mean_collection_ms": 0.0010149733378715681,
+            "compactions": 45.0,
+            "publication_total_ms": 7475.78895,
+            "compaction_total_ms": 876.2054499999999,
+            "compaction_fraction_of_measured_writer_work": 0.09913648986894992
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 28.7389,
+              "query": 1.2819,
+              "append": 115.4805,
+              "rps": 499.96666666666664,
+              "attempts": 1391
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 3.6233,
+              "query": 1.2836,
+              "append": 51.6168,
+              "rps": 500.0,
+              "attempts": 1515
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 20.9323,
+              "query": 1.2839,
+              "append": 119.7583,
+              "rps": 500.0,
+              "attempts": 1448
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 3.5967,
+              "query": 1.2761,
+              "append": 54.7334,
+              "rps": 500.0,
+              "attempts": 1515
+            }
+          ]
+        },
+        "delay1": {
+          "delay_ms": 1,
+          "medians": {
+            "overall": 25.9436,
+            "query": 1.2828,
+            "append": 91.3923,
+            "rps": 499.9916666666667,
+            "attempts": 1236.0
+          },
+          "lost": 0,
+          "offered": 120000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1199.0,
+            "durable_group_commits": 1199.0,
+            "committed_batches": 1483.0,
+            "batches_per_durable_group": 1.2385319695054209,
+            "mean_collection_ms": 7.995119668224259,
+            "compactions": 37.0,
+            "publication_total_ms": 8632.8156,
+            "compaction_total_ms": 858.84955,
+            "compaction_fraction_of_measured_writer_work": 0.06415486599975834
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 39.7942,
+              "query": 1.2835,
+              "append": 1120.1949,
+              "rps": 500.0,
+              "attempts": 1143
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 16.6276,
+              "query": 1.2062,
+              "append": 61.6601,
+              "rps": 499.98333333333335,
+              "attempts": 1281
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 35.2596,
+              "query": 1.2874,
+              "append": 121.1245,
+              "rps": 499.98333333333335,
+              "attempts": 1191
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 16.0153,
+              "query": 1.2821,
+              "append": 50.3102,
+              "rps": 500.0,
+              "attempts": 1291
+            }
+          ]
+        },
+        "delay4": {
+          "delay_ms": 4,
+          "medians": {
+            "overall": 19.01065,
+            "query": 1.29575,
+            "append": 84.97964999999999,
+            "rps": 500.0,
+            "attempts": 1204.0
+          },
+          "lost": 0,
+          "offered": 120000,
+          "collection_diagnostics_medians": {
+            "collected_groups": 1168.0,
+            "durable_group_commits": 1168.0,
+            "committed_batches": 1483.0,
+            "batches_per_durable_group": 1.269725287130513,
+            "mean_collection_ms": 10.834636793602982,
+            "compactions": 36.0,
+            "publication_total_ms": 4652.3108,
+            "compaction_total_ms": 175.1889,
+            "compaction_fraction_of_measured_writer_work": 0.036905041152797996
+          },
+          "all_rounds": [
+            {
+              "round": 0,
+              "lost": 0,
+              "overall": 18.2869,
+              "query": 1.3013,
+              "append": 81.2597,
+              "rps": 500.0,
+              "attempts": 1212
+            },
+            {
+              "round": 1,
+              "lost": 0,
+              "overall": 19.2519,
+              "query": 1.2994,
+              "append": 88.6996,
+              "rps": 500.0,
+              "attempts": 1198
+            },
+            {
+              "round": 2,
+              "lost": 0,
+              "overall": 19.0415,
+              "query": 1.1838,
+              "append": 94.7344,
+              "rps": 500.0,
+              "attempts": 1198
+            },
+            {
+              "round": 3,
+              "lost": 0,
+              "overall": 18.9798,
+              "query": 1.2921,
+              "append": 62.7471,
+              "rps": 500.0,
+              "attempts": 1210
+            }
+          ]
+        }
+      },
+      "comparisons": {
+        "baseline_b/baseline_a": {
+          "kind": "identity",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                6.2439220457557525,
+                1.0116993354554085,
+                5.891941340389,
+                1.0113885608233506
+              ],
+              "median": 3.451820337922204
+            },
+            "query": {
+              "rounds": [
+                0.8543721674220208,
+                0.9963517814173718,
+                1.0011696818465379,
+                0.9934604904632153
+              ],
+              "median": 0.9949061359402935
+            },
+            "append": {
+              "rounds": [
+                0.6125607293408848,
+                0.8617118779037833,
+                1.67917559944868,
+                0.5679983478947592
+              ],
+              "median": 0.7371363036223341
+            },
+            "rps": {
+              "rounds": [
+                0.9999333333333332,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                0.9553571428571429,
+                1.007313829787234,
+                0.9570389953734303,
+                1.0086551264980026
+              ],
+              "median": 0.9821764125803321
+            }
+          },
+          "calibration_checks": {
+            "overall_ratio": false,
+            "query_ratio": true,
+            "append_ratio": false,
+            "rps_ratio": true,
+            "loss_difference": true
+          }
+        },
+        "delay1/baseline_a": {
+          "kind": "primary",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                8.645838312294957,
+                4.642765399005976,
+                9.924733301432711,
+                4.503486868005174
+              ],
+              "median": 6.6443018556504665
+            },
+            "query": {
+              "rounds": [
+                0.8554385497200747,
+                0.9362726073119615,
+                1.0038989394884592,
+                0.9981315687037758
+              ],
+              "median": 0.9672020880078687
+            },
+            "append": {
+              "rounds": [
+                5.942019691185433,
+                1.029378817802248,
+                1.6983315970201782,
+                0.5220963887179476
+              ],
+              "median": 1.3638552074112131
+            },
+            "rps": {
+              "rounds": [
+                1.0,
+                0.9999666666666667,
+                0.9999666666666667,
+                1.0
+              ],
+              "median": 0.9999833333333333
+            },
+            "attempts": {
+              "rounds": [
+                0.7850274725274725,
+                0.8517287234042553,
+                0.7871777924653007,
+                0.859520639147803
+              ],
+              "median": 0.819453257934778
+            }
+          },
+          "candidate_criteria": {
+            "append_p99_improvement": false,
+            "overall_p99_guard": false,
+            "query_p99_guard": true,
+            "window_rps_guard": true,
+            "loss_increase_guard": true,
+            "publication_attempt_reduction": true,
+            "every_soak_zero_loss": true
+          }
+        },
+        "delay4/baseline_a": {
+          "kind": "primary",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                3.9730810176635454,
+                5.375523538281119,
+                5.359726405269232,
+                5.337101400371183
+              ],
+              "median": 5.348413902820207
+            },
+            "query": {
+              "rounds": [
+                0.8673020527859238,
+                1.0086160055887605,
+                0.9231129132875857,
+                1.0059166991047102
+              ],
+              "median": 0.9645148061961479
+            },
+            "append": {
+              "rounds": [
+                0.4310381501467476,
+                1.4807872414662364,
+                1.3283062043166194,
+                0.6511608841253649
+              ],
+              "median": 0.9897335442209921
+            },
+            "rps": {
+              "rounds": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                0.8324175824175825,
+                0.7965425531914894,
+                0.7918043621943159,
+                0.8055925432756325
+              ],
+              "median": 0.801067548233561
+            }
+          },
+          "candidate_criteria": {
+            "append_p99_improvement": false,
+            "overall_p99_guard": false,
+            "query_p99_guard": true,
+            "window_rps_guard": true,
+            "loss_increase_guard": true,
+            "publication_attempt_reduction": true,
+            "every_soak_zero_loss": true
+          }
+        },
+        "delay1/baseline_b": {
+          "kind": "diagnostic",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                1.3846806941114655,
+                4.5890762564513015,
+                1.6844589462218675,
+                4.452776155920706
+              ],
+              "median": 3.0686175510712865
+            },
+            "query": {
+              "rounds": [
+                1.0012481472813792,
+                0.9397008413836085,
+                1.0027260690084898,
+                1.004701825875715
+              ],
+              "median": 1.0019871081449345
+            },
+            "append": {
+              "rounds": [
+                9.700294854975514,
+                1.1945742471443406,
+                1.0114079775681517,
+                0.9191864565329396
+              ],
+              "median": 1.1029911123562461
+            },
+            "rps": {
+              "rounds": [
+                1.0000666711114075,
+                0.9999666666666667,
+                0.9999666666666667,
+                1.0
+              ],
+              "median": 0.9999833333333333
+            },
+            "attempts": {
+              "rounds": [
+                0.8217109992810927,
+                0.8455445544554455,
+                0.8225138121546961,
+                0.8521452145214522
+              ],
+              "median": 0.8340291833050708
+            }
+          },
+          "diagnostic_only_no_comparator_selection": true
+        },
+        "delay4/baseline_b": {
+          "kind": "diagnostic",
+          "paired_ratios": {
+            "overall": {
+              "rounds": [
+                0.6363117586268089,
+                5.313360748488947,
+                0.9096707003052698,
+                5.277003920260239
+              ],
+              "median": 3.0933373102827546
+            },
+            "query": {
+              "rounds": [
+                1.0151337857867226,
+                1.0123091305702712,
+                0.9220344263571929,
+                1.0125382023352403
+              ],
+              "median": 1.0124236664527557
+            },
+            "append": {
+              "rounds": [
+                0.7036659868982208,
+                1.7184250089118274,
+                0.791046633093489,
+                1.1464133417620685
+              ],
+              "median": 0.9687299874277788
+            },
+            "rps": {
+              "rounds": [
+                1.0000666711114075,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "median": 1.0
+            },
+            "attempts": {
+              "rounds": [
+                0.8713156002875629,
+                0.7907590759075908,
+                0.8273480662983426,
+                0.7986798679867987
+              ],
+              "median": 0.8130139671425707
+            }
+          },
+          "diagnostic_only_no_comparator_selection": true
+        }
+      }
+    }
+  ],
+  "identity_checks": [
+    {
+      "profile": "write",
+      "criterion": "overall_ratio",
+      "passed": false
+    },
+    {
+      "profile": "write",
+      "criterion": "query_ratio",
+      "passed": true
+    },
+    {
+      "profile": "write",
+      "criterion": "append_ratio",
+      "passed": false
+    },
+    {
+      "profile": "write",
+      "criterion": "rps_ratio",
+      "passed": true
+    },
+    {
+      "profile": "write",
+      "criterion": "loss_difference",
+      "passed": true
+    },
+    {
+      "profile": "mixed",
+      "criterion": "overall_ratio",
+      "passed": false
+    },
+    {
+      "profile": "mixed",
+      "criterion": "query_ratio",
+      "passed": true
+    },
+    {
+      "profile": "mixed",
+      "criterion": "append_ratio",
+      "passed": false
+    },
+    {
+      "profile": "mixed",
+      "criterion": "rps_ratio",
+      "passed": true
+    },
+    {
+      "profile": "mixed",
+      "criterion": "loss_difference",
+      "passed": true
+    }
+  ],
+  "identity_checks_failed": 4,
+  "candidate_criteria": [
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "append_p99_improvement",
+      "passed": false
+    },
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "overall_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "query_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "window_rps_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "loss_increase_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "write",
+      "criterion": "publication_attempt_reduction",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "append_p99_improvement",
+      "passed": false
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "overall_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "query_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "window_rps_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "loss_increase_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "write",
+      "criterion": "publication_attempt_reduction",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "append_p99_improvement",
+      "passed": false
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "overall_p99_guard",
+      "passed": false
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "query_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "window_rps_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "loss_increase_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "publication_attempt_reduction",
+      "passed": true
+    },
+    {
+      "variant": "delay1",
+      "profile": "mixed",
+      "criterion": "every_soak_zero_loss",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "append_p99_improvement",
+      "passed": false
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "overall_p99_guard",
+      "passed": false
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "query_p99_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "window_rps_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "loss_increase_guard",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "publication_attempt_reduction",
+      "passed": true
+    },
+    {
+      "variant": "delay4",
+      "profile": "mixed",
+      "criterion": "every_soak_zero_loss",
+      "passed": true
+    }
+  ],
+  "candidate_criteria_failed": 6,
+  "decisions": {
+    "delay1": {
+      "own_criteria_passed": false,
+      "all_identity_controls_passed": false,
+      "demonstrated_scoped_improvement": false,
+      "supported_promotion": false
+    },
+    "delay4": {
+      "own_criteria_passed": false,
+      "all_identity_controls_passed": false,
+      "demonstrated_scoped_improvement": false,
+      "supported_promotion": false
+    }
+  },
+  "publication_stage_deltas": [
+    {
+      "round": 0,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 908,
+          "total_ms": 58.605300000000085,
+          "histogram": [
+            875,
+            16,
+            17,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 908,
+          "total_ms": 6.241999999999997,
+          "histogram": [
+            908,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 908,
+          "total_ms": 328.6115000000006,
+          "histogram": [
+            0,
+            908,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 908,
+          "total_ms": 364.6192999999999,
+          "histogram": [
+            0,
+            906,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 908,
+          "total_ms": 5828.785299999998,
+          "histogram": [
+            0,
+            734,
+            11,
+            16,
+            145,
+            2,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 908,
+          "total_ms": 290.90350000000024,
+          "histogram": [
+            0,
+            907,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 908,
+          "total_ms": 4482.6868,
+          "histogram": [
+            0,
+            760,
+            8,
+            10,
+            129,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 908,
+      "compactions": 27
+    },
+    {
+      "round": 0,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 929,
+          "total_ms": 58.57860000000004,
+          "histogram": [
+            895,
+            17,
+            17,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 929,
+          "total_ms": 6.166099999999995,
+          "histogram": [
+            929,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 929,
+          "total_ms": 356.9369999999998,
+          "histogram": [
+            0,
+            928,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 929,
+          "total_ms": 600.4948999999998,
+          "histogram": [
+            0,
+            925,
+            0,
+            1,
+            2,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 929,
+          "total_ms": 5248.786399999998,
+          "histogram": [
+            0,
+            763,
+            21,
+            14,
+            129,
+            2,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 929,
+          "total_ms": 311.3022999999999,
+          "histogram": [
+            0,
+            927,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 929,
+          "total_ms": 4918.447499999999,
+          "histogram": [
+            0,
+            755,
+            13,
+            13,
+            148,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 929,
+      "compactions": 27
+    },
+    {
+      "round": 0,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 565,
+          "total_ms": 47.495399999999975,
+          "histogram": [
+            536,
+            17,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 565,
+          "total_ms": 3.834,
+          "histogram": [
+            565,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 565,
+          "total_ms": 210.51999999999998,
+          "histogram": [
+            0,
+            565,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 565,
+          "total_ms": 633.2634000000002,
+          "histogram": [
+            0,
+            555,
+            2,
+            2,
+            5,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 565,
+          "total_ms": 4720.2747999999965,
+          "histogram": [
+            0,
+            413,
+            36,
+            19,
+            95,
+            1,
+            1,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 565,
+          "total_ms": 190.9904999999999,
+          "histogram": [
+            0,
+            563,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 565,
+          "total_ms": 4324.058800000005,
+          "histogram": [
+            0,
+            442,
+            11,
+            7,
+            104,
+            0,
+            1,
+            0
+          ]
+        }
+      },
+      "attempts": 565,
+      "compactions": 16
+    },
+    {
+      "round": 0,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 595,
+          "total_ms": 47.393599999999935,
+          "histogram": [
+            569,
+            14,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 595,
+          "total_ms": 4.0528999999999975,
+          "histogram": [
+            595,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 595,
+          "total_ms": 216.95140000000015,
+          "histogram": [
+            0,
+            595,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 595,
+          "total_ms": 248.33180000000027,
+          "histogram": [
+            0,
+            594,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 595,
+          "total_ms": 3530.984599999999,
+          "histogram": [
+            0,
+            465,
+            30,
+            14,
+            83,
+            3,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 595,
+          "total_ms": 239.0388000000001,
+          "histogram": [
+            0,
+            592,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 595,
+          "total_ms": 3571.9638000000027,
+          "histogram": [
+            0,
+            463,
+            10,
+            6,
+            115,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 595,
+      "compactions": 17
+    },
+    {
+      "round": 0,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1391,
+          "total_ms": 75.26359999999998,
+          "histogram": [
+            1348,
+            19,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1391,
+          "total_ms": 9.38629999999998,
+          "histogram": [
+            1391,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1391,
+          "total_ms": 506.2243999999989,
+          "histogram": [
+            0,
+            1390,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1391,
+          "total_ms": 760.1948000000009,
+          "histogram": [
+            0,
+            1381,
+            1,
+            4,
+            5,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1391,
+          "total_ms": 7252.4967000000215,
+          "histogram": [
+            0,
+            1087,
+            77,
+            45,
+            181,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1391,
+          "total_ms": 439.56779999999986,
+          "histogram": [
+            0,
+            1388,
+            1,
+            0,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1391,
+          "total_ms": 7369.842000000014,
+          "histogram": [
+            0,
+            1107,
+            26,
+            19,
+            239,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1391,
+      "compactions": 42
+    },
+    {
+      "round": 0,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1143,
+          "total_ms": 84.73490000000014,
+          "histogram": [
+            1102,
+            20,
+            21,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1143,
+          "total_ms": 8.1857,
+          "histogram": [
+            1143,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1143,
+          "total_ms": 419.0817999999993,
+          "histogram": [
+            0,
+            1141,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1143,
+          "total_ms": 1748.9639999999997,
+          "histogram": [
+            0,
+            1136,
+            2,
+            3,
+            1,
+            0,
+            0,
+            1
+          ]
+        },
+        "segment_sync": {
+          "count": 1143,
+          "total_ms": 8710.241600000008,
+          "histogram": [
+            0,
+            821,
+            103,
+            41,
+            174,
+            3,
+            0,
+            1
+          ]
+        },
+        "catalog_write": {
+          "count": 1143,
+          "total_ms": 330.18780000000027,
+          "histogram": [
+            0,
+            1143,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1143,
+          "total_ms": 6617.9792999999945,
+          "histogram": [
+            0,
+            893,
+            29,
+            17,
+            201,
+            3,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1143,
+      "compactions": 34
+    },
+    {
+      "round": 0,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1212,
+          "total_ms": 89.02180000000007,
+          "histogram": [
+            1176,
+            14,
+            22,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1212,
+          "total_ms": 8.469700000000007,
+          "histogram": [
+            1212,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1212,
+          "total_ms": 426.7182999999998,
+          "histogram": [
+            0,
+            1212,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1212,
+          "total_ms": 532.8925999999996,
+          "histogram": [
+            0,
+            1210,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1212,
+          "total_ms": 1780.3707999999988,
+          "histogram": [
+            0,
+            1000,
+            180,
+            20,
+            12,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1212,
+          "total_ms": 339.75280000000026,
+          "histogram": [
+            0,
+            1212,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1212,
+          "total_ms": 1162.7977,
+          "histogram": [
+            0,
+            1142,
+            45,
+            20,
+            5,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1212,
+      "compactions": 36
+    },
+    {
+      "round": 0,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1456,
+          "total_ms": 96.2990000000001,
+          "histogram": [
+            1410,
+            22,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1456,
+          "total_ms": 10.839000000000004,
+          "histogram": [
+            1456,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1456,
+          "total_ms": 612.3881000000008,
+          "histogram": [
+            0,
+            1450,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1456,
+          "total_ms": 573.3290999999992,
+          "histogram": [
+            0,
+            1450,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1456,
+          "total_ms": 3486.8805999999995,
+          "histogram": [
+            0,
+            1175,
+            232,
+            24,
+            21,
+            4,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1456,
+          "total_ms": 487.4454000000003,
+          "histogram": [
+            0,
+            1452,
+            3,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1456,
+          "total_ms": 1696.7862999999988,
+          "histogram": [
+            0,
+            1341,
+            93,
+            13,
+            7,
+            2,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1456,
+      "compactions": 44
+    },
+    {
+      "round": 1,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1692,
+          "total_ms": 91.05560000000008,
+          "histogram": [
+            1634,
+            32,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1692,
+          "total_ms": 10.305700000000009,
+          "histogram": [
+            1692,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1692,
+          "total_ms": 591.8931999999994,
+          "histogram": [
+            0,
+            1691,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1692,
+          "total_ms": 524.9687000000006,
+          "histogram": [
+            0,
+            1691,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1692,
+          "total_ms": 2187.8266000000026,
+          "histogram": [
+            0,
+            1551,
+            105,
+            24,
+            11,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1692,
+          "total_ms": 447.2435000000006,
+          "histogram": [
+            0,
+            1691,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1692,
+          "total_ms": 1534.5666999999976,
+          "histogram": [
+            0,
+            1642,
+            20,
+            23,
+            7,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1692,
+      "compactions": 51
+    },
+    {
+      "round": 1,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1079,
+          "total_ms": 70.6566999999998,
+          "histogram": [
+            1045,
+            16,
+            18,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1079,
+          "total_ms": 6.841099999999998,
+          "histogram": [
+            1079,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1079,
+          "total_ms": 373.9124999999997,
+          "histogram": [
+            0,
+            1079,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1079,
+          "total_ms": 389.5676999999993,
+          "histogram": [
+            0,
+            1078,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1079,
+          "total_ms": 1402.8552000000032,
+          "histogram": [
+            0,
+            981,
+            76,
+            13,
+            9,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1079,
+          "total_ms": 290.85249999999996,
+          "histogram": [
+            0,
+            1078,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1079,
+          "total_ms": 1122.8447000000015,
+          "histogram": [
+            0,
+            1040,
+            19,
+            14,
+            6,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1079,
+      "compactions": 32
+    },
+    {
+      "round": 1,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 870,
+          "total_ms": 62.99610000000002,
+          "histogram": [
+            837,
+            17,
+            16,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 870,
+          "total_ms": 5.758099999999997,
+          "histogram": [
+            870,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 870,
+          "total_ms": 305.90460000000047,
+          "histogram": [
+            0,
+            870,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 870,
+          "total_ms": 331.67069999999967,
+          "histogram": [
+            0,
+            869,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 870,
+          "total_ms": 1349.3017000000002,
+          "histogram": [
+            0,
+            760,
+            70,
+            32,
+            8,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 870,
+          "total_ms": 235.66450000000023,
+          "histogram": [
+            0,
+            870,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 870,
+          "total_ms": 1326.9600000000005,
+          "histogram": [
+            0,
+            809,
+            19,
+            37,
+            4,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 870,
+      "compactions": 26
+    },
+    {
+      "round": 1,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1727,
+          "total_ms": 91.22130000000013,
+          "histogram": [
+            1670,
+            29,
+            28,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1727,
+          "total_ms": 10.821200000000003,
+          "histogram": [
+            1727,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1727,
+          "total_ms": 596.8924000000002,
+          "histogram": [
+            0,
+            1726,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1727,
+          "total_ms": 535.5028000000002,
+          "histogram": [
+            0,
+            1725,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1727,
+          "total_ms": 2048.737400000001,
+          "histogram": [
+            0,
+            1569,
+            118,
+            30,
+            9,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1727,
+          "total_ms": 453.50270000000023,
+          "histogram": [
+            0,
+            1727,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1727,
+          "total_ms": 1558.066600000001,
+          "histogram": [
+            0,
+            1668,
+            23,
+            29,
+            7,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1727,
+      "compactions": 52
+    },
+    {
+      "round": 1,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1281,
+          "total_ms": 94.19929999999987,
+          "histogram": [
+            1241,
+            18,
+            22,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1281,
+          "total_ms": 8.980500000000015,
+          "histogram": [
+            1281,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1281,
+          "total_ms": 462.20700000000016,
+          "histogram": [
+            0,
+            1281,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1281,
+          "total_ms": 573.2126999999996,
+          "histogram": [
+            0,
+            1279,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1281,
+          "total_ms": 1991.9945000000014,
+          "histogram": [
+            0,
+            1057,
+            189,
+            21,
+            14,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1281,
+          "total_ms": 370.40770000000055,
+          "histogram": [
+            0,
+            1281,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1281,
+          "total_ms": 1243.9693999999984,
+          "histogram": [
+            0,
+            1203,
+            52,
+            22,
+            4,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1281,
+      "compactions": 38
+    },
+    {
+      "round": 1,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1198,
+          "total_ms": 85.99400000000011,
+          "histogram": [
+            1161,
+            17,
+            20,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1198,
+          "total_ms": 8.116099999999987,
+          "histogram": [
+            1198,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1198,
+          "total_ms": 562.7115000000003,
+          "histogram": [
+            0,
+            1192,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1198,
+          "total_ms": 526.5772999999999,
+          "histogram": [
+            0,
+            1194,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1198,
+          "total_ms": 2132.776999999998,
+          "histogram": [
+            0,
+            972,
+            176,
+            37,
+            12,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1198,
+          "total_ms": 335.1794999999997,
+          "histogram": [
+            0,
+            1198,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1198,
+          "total_ms": 1371.3457000000017,
+          "histogram": [
+            0,
+            1111,
+            40,
+            43,
+            4,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1198,
+      "compactions": 36
+    },
+    {
+      "round": 1,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1504,
+          "total_ms": 81.88849999999995,
+          "histogram": [
+            1459,
+            20,
+            25,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1504,
+          "total_ms": 9.422199999999984,
+          "histogram": [
+            1504,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1504,
+          "total_ms": 532.4438999999998,
+          "histogram": [
+            0,
+            1504,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1504,
+          "total_ms": 510.63740000000007,
+          "histogram": [
+            0,
+            1503,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1504,
+          "total_ms": 2106.406199999996,
+          "histogram": [
+            0,
+            1297,
+            158,
+            40,
+            8,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1504,
+          "total_ms": 408.64639999999963,
+          "histogram": [
+            0,
+            1504,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1504,
+          "total_ms": 1593.8356999999994,
+          "histogram": [
+            0,
+            1409,
+            49,
+            41,
+            5,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1504,
+      "compactions": 45
+    },
+    {
+      "round": 1,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1515,
+          "total_ms": 80.88189999999994,
+          "histogram": [
+            1469,
+            20,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1515,
+          "total_ms": 9.970299999999998,
+          "histogram": [
+            1515,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1515,
+          "total_ms": 531.4967999999994,
+          "histogram": [
+            0,
+            1515,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1515,
+          "total_ms": 506.74230000000006,
+          "histogram": [
+            0,
+            1515,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1515,
+          "total_ms": 2060.569,
+          "histogram": [
+            0,
+            1304,
+            170,
+            31,
+            10,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1515,
+          "total_ms": 407.8365999999996,
+          "histogram": [
+            0,
+            1514,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1515,
+          "total_ms": 1394.5936,
+          "histogram": [
+            0,
+            1436,
+            45,
+            29,
+            4,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1515,
+      "compactions": 46
+    },
+    {
+      "round": 2,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1050,
+          "total_ms": 71.56829999999997,
+          "histogram": [
+            1012,
+            19,
+            19,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1050,
+          "total_ms": 7.314899999999991,
+          "histogram": [
+            1050,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1050,
+          "total_ms": 369.9530000000001,
+          "histogram": [
+            0,
+            1050,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1050,
+          "total_ms": 381.23990000000003,
+          "histogram": [
+            0,
+            1049,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1050,
+          "total_ms": 1805.9613,
+          "histogram": [
+            0,
+            912,
+            87,
+            44,
+            6,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1050,
+          "total_ms": 287.55320000000023,
+          "histogram": [
+            0,
+            1050,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1050,
+          "total_ms": 1371.2400999999998,
+          "histogram": [
+            0,
+            989,
+            12,
+            42,
+            6,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1050,
+      "compactions": 31
+    },
+    {
+      "round": 2,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 882,
+          "total_ms": 63.59550000000003,
+          "histogram": [
+            852,
+            12,
+            18,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 882,
+          "total_ms": 5.952799999999992,
+          "histogram": [
+            882,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 882,
+          "total_ms": 310.74770000000024,
+          "histogram": [
+            0,
+            881,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 882,
+          "total_ms": 693.3203999999992,
+          "histogram": [
+            0,
+            879,
+            0,
+            1,
+            0,
+            2,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 882,
+          "total_ms": 993.9848000000003,
+          "histogram": [
+            0,
+            794,
+            82,
+            1,
+            4,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 882,
+          "total_ms": 243.3380999999997,
+          "histogram": [
+            0,
+            881,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 882,
+          "total_ms": 869.3635000000008,
+          "histogram": [
+            0,
+            858,
+            17,
+            2,
+            4,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 882,
+      "compactions": 26
+    },
+    {
+      "round": 2,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1697,
+          "total_ms": 90.63470000000002,
+          "histogram": [
+            1641,
+            29,
+            27,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1697,
+          "total_ms": 10.335099999999985,
+          "histogram": [
+            1697,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1697,
+          "total_ms": 584.2469999999996,
+          "histogram": [
+            0,
+            1696,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1697,
+          "total_ms": 507.1577,
+          "histogram": [
+            0,
+            1696,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1697,
+          "total_ms": 2045.7905999999973,
+          "histogram": [
+            0,
+            1558,
+            107,
+            21,
+            10,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1697,
+          "total_ms": 444.7490000000004,
+          "histogram": [
+            0,
+            1697,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1697,
+          "total_ms": 1581.7854999999981,
+          "histogram": [
+            0,
+            1652,
+            17,
+            20,
+            7,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1697,
+      "compactions": 51
+    },
+    {
+      "round": 2,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 1718,
+          "total_ms": 92.38930000000013,
+          "histogram": [
+            1656,
+            32,
+            30,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1718,
+          "total_ms": 10.385399999999981,
+          "histogram": [
+            1718,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1718,
+          "total_ms": 601.1888,
+          "histogram": [
+            0,
+            1716,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1718,
+          "total_ms": 587.1689000000001,
+          "histogram": [
+            0,
+            1712,
+            3,
+            1,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1718,
+          "total_ms": 1950.6366000000016,
+          "histogram": [
+            0,
+            1586,
+            99,
+            19,
+            14,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1718,
+          "total_ms": 458.3179000000001,
+          "histogram": [
+            0,
+            1717,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1718,
+          "total_ms": 1571.682299999997,
+          "histogram": [
+            0,
+            1664,
+            24,
+            23,
+            7,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1718,
+      "compactions": 52
+    },
+    {
+      "round": 2,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1198,
+          "total_ms": 93.34939999999983,
+          "histogram": [
+            1157,
+            18,
+            23,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1198,
+          "total_ms": 8.420799999999987,
+          "histogram": [
+            1198,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1198,
+          "total_ms": 430.21630000000044,
+          "histogram": [
+            0,
+            1198,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1198,
+          "total_ms": 538.3828999999995,
+          "histogram": [
+            0,
+            1192,
+            4,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1198,
+          "total_ms": 2180.7355000000002,
+          "histogram": [
+            0,
+            977,
+            168,
+            40,
+            12,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1198,
+          "total_ms": 351.3298999999997,
+          "histogram": [
+            0,
+            1197,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1198,
+          "total_ms": 1567.3955999999982,
+          "histogram": [
+            0,
+            1126,
+            25,
+            39,
+            7,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1198,
+      "compactions": 36
+    },
+    {
+      "round": 2,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1513,
+          "total_ms": 80.3660999999999,
+          "histogram": [
+            1467,
+            20,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1513,
+          "total_ms": 9.973499999999994,
+          "histogram": [
+            1513,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1513,
+          "total_ms": 538.0279,
+          "histogram": [
+            0,
+            1511,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1513,
+          "total_ms": 516.5658,
+          "histogram": [
+            0,
+            1512,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1513,
+          "total_ms": 2004.4267999999988,
+          "histogram": [
+            0,
+            1336,
+            147,
+            18,
+            11,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1513,
+          "total_ms": 429.53830000000016,
+          "histogram": [
+            0,
+            1509,
+            3,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1513,
+          "total_ms": 1268.8559000000002,
+          "histogram": [
+            0,
+            1453,
+            37,
+            18,
+            5,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1513,
+      "compactions": 46
+    },
+    {
+      "round": 2,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1448,
+          "total_ms": 78.90079999999998,
+          "histogram": [
+            1403,
+            19,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1448,
+          "total_ms": 9.969000000000033,
+          "histogram": [
+            1448,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1448,
+          "total_ms": 523.7451999999997,
+          "histogram": [
+            0,
+            1447,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1448,
+          "total_ms": 484.3532,
+          "histogram": [
+            0,
+            1448,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1448,
+          "total_ms": 5516.6658,
+          "histogram": [
+            0,
+            1166,
+            152,
+            35,
+            90,
+            5,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1448,
+          "total_ms": 429.3449999999997,
+          "histogram": [
+            0,
+            1447,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1448,
+          "total_ms": 4359.3956000000035,
+          "histogram": [
+            0,
+            1269,
+            46,
+            16,
+            116,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1448,
+      "compactions": 44
+    },
+    {
+      "round": 2,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1191,
+          "total_ms": 87.40620000000001,
+          "histogram": [
+            1148,
+            21,
+            22,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1191,
+          "total_ms": 8.218199999999984,
+          "histogram": [
+            1191,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1191,
+          "total_ms": 455.0201999999998,
+          "histogram": [
+            0,
+            1189,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1191,
+          "total_ms": 756.4221999999991,
+          "histogram": [
+            0,
+            1182,
+            2,
+            2,
+            4,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1191,
+          "total_ms": 6328.330499999991,
+          "histogram": [
+            0,
+            902,
+            108,
+            27,
+            150,
+            4,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1191,
+          "total_ms": 466.67819999999983,
+          "histogram": [
+            0,
+            1188,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1191,
+          "total_ms": 6307.040900000002,
+          "histogram": [
+            0,
+            941,
+            24,
+            15,
+            210,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1191,
+      "compactions": 36
+    },
+    {
+      "round": 3,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 523,
+          "total_ms": 45.582700000000045,
+          "histogram": [
+            481,
+            30,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 523,
+          "total_ms": 3.7088999999999976,
+          "histogram": [
+            523,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 523,
+          "total_ms": 191.0594000000001,
+          "histogram": [
+            0,
+            523,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 523,
+          "total_ms": 316.07679999999993,
+          "histogram": [
+            0,
+            519,
+            1,
+            0,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 523,
+          "total_ms": 4010.8153000000048,
+          "histogram": [
+            0,
+            418,
+            22,
+            9,
+            68,
+            6,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 523,
+          "total_ms": 150.8066,
+          "histogram": [
+            0,
+            522,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 523,
+          "total_ms": 4140.8272,
+          "histogram": [
+            0,
+            402,
+            11,
+            6,
+            103,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 523,
+      "compactions": 15
+    },
+    {
+      "round": 3,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 768,
+          "total_ms": 51.268899999999945,
+          "histogram": [
+            733,
+            21,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 768,
+          "total_ms": 5.123299999999992,
+          "histogram": [
+            768,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 768,
+          "total_ms": 274.3636000000001,
+          "histogram": [
+            0,
+            767,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 768,
+          "total_ms": 410.6057000000001,
+          "histogram": [
+            0,
+            763,
+            2,
+            0,
+            2,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 768,
+          "total_ms": 5732.188500000002,
+          "histogram": [
+            0,
+            634,
+            17,
+            4,
+            107,
+            6,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 768,
+          "total_ms": 273.4738000000003,
+          "histogram": [
+            0,
+            767,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 768,
+          "total_ms": 5293.9625000000015,
+          "histogram": [
+            0,
+            623,
+            13,
+            1,
+            130,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 768,
+      "compactions": 22
+    },
+    {
+      "round": 3,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 744,
+          "total_ms": 50.53179999999995,
+          "histogram": [
+            707,
+            23,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 744,
+          "total_ms": 4.934299999999993,
+          "histogram": [
+            744,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 744,
+          "total_ms": 271.14240000000007,
+          "histogram": [
+            0,
+            744,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 744,
+          "total_ms": 714.9242000000005,
+          "histogram": [
+            0,
+            740,
+            0,
+            0,
+            3,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 744,
+          "total_ms": 5312.223999999995,
+          "histogram": [
+            0,
+            612,
+            12,
+            18,
+            96,
+            6,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 744,
+          "total_ms": 510.7883999999998,
+          "histogram": [
+            0,
+            741,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 744,
+          "total_ms": 5411.090300000003,
+          "histogram": [
+            0,
+            599,
+            7,
+            12,
+            126,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 744,
+      "compactions": 22
+    },
+    {
+      "round": 3,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "stages": {
+        "prepare": {
+          "count": 821,
+          "total_ms": 58.99349999999998,
+          "histogram": [
+            791,
+            15,
+            15,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 821,
+          "total_ms": 5.472800000000009,
+          "histogram": [
+            821,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 821,
+          "total_ms": 327.2035999999997,
+          "histogram": [
+            0,
+            820,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 821,
+          "total_ms": 330.7027,
+          "histogram": [
+            0,
+            819,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 821,
+          "total_ms": 3222.1376000000027,
+          "histogram": [
+            0,
+            692,
+            54,
+            24,
+            47,
+            4,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 821,
+          "total_ms": 225.43919999999986,
+          "histogram": [
+            0,
+            821,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 821,
+          "total_ms": 3266.9488000000006,
+          "histogram": [
+            0,
+            718,
+            14,
+            22,
+            67,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 821,
+      "compactions": 24
+    },
+    {
+      "round": 3,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1502,
+          "total_ms": 79.74259999999998,
+          "histogram": [
+            1456,
+            19,
+            27,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1502,
+          "total_ms": 9.059399999999995,
+          "histogram": [
+            1502,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1502,
+          "total_ms": 550.0349000000004,
+          "histogram": [
+            0,
+            1501,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1502,
+          "total_ms": 509.9093999999994,
+          "histogram": [
+            0,
+            1500,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1502,
+          "total_ms": 2235.0217999999995,
+          "histogram": [
+            0,
+            1306,
+            159,
+            23,
+            14,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1502,
+          "total_ms": 404.0581999999994,
+          "histogram": [
+            0,
+            1502,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1502,
+          "total_ms": 1472.874799999999,
+          "histogram": [
+            0,
+            1434,
+            42,
+            19,
+            6,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1502,
+      "compactions": 45
+    },
+    {
+      "round": 3,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1515,
+          "total_ms": 80.60530000000003,
+          "histogram": [
+            1469,
+            22,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1515,
+          "total_ms": 9.334800000000008,
+          "histogram": [
+            1515,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1515,
+          "total_ms": 539.8983000000007,
+          "histogram": [
+            0,
+            1515,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1515,
+          "total_ms": 518.2062999999999,
+          "histogram": [
+            0,
+            1513,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1515,
+          "total_ms": 2159.25539999999,
+          "histogram": [
+            0,
+            1295,
+            190,
+            16,
+            13,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1515,
+          "total_ms": 419.1036999999991,
+          "histogram": [
+            0,
+            1514,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1515,
+          "total_ms": 1263.3452999999972,
+          "histogram": [
+            0,
+            1431,
+            63,
+            16,
+            5,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1515,
+      "compactions": 46
+    },
+    {
+      "round": 3,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1291,
+          "total_ms": 90.22689999999986,
+          "histogram": [
+            1251,
+            19,
+            21,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1291,
+          "total_ms": 8.965899999999992,
+          "histogram": [
+            1291,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1291,
+          "total_ms": 457.4765999999994,
+          "histogram": [
+            0,
+            1290,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1291,
+          "total_ms": 564.0944000000001,
+          "histogram": [
+            0,
+            1287,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1291,
+          "total_ms": 1678.6951000000008,
+          "histogram": [
+            0,
+            1091,
+            169,
+            21,
+            10,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1291,
+          "total_ms": 361.59629999999953,
+          "histogram": [
+            0,
+            1291,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1291,
+          "total_ms": 1039.336200000002,
+          "histogram": [
+            0,
+            1234,
+            34,
+            21,
+            2,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1291,
+      "compactions": 39
+    },
+    {
+      "round": 3,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1210,
+          "total_ms": 87.23099999999988,
+          "histogram": [
+            1174,
+            14,
+            22,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1210,
+          "total_ms": 8.432699999999983,
+          "histogram": [
+            1210,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1210,
+          "total_ms": 425.7960999999999,
+          "histogram": [
+            0,
+            1210,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1210,
+          "total_ms": 526.4408999999996,
+          "histogram": [
+            0,
+            1208,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1210,
+          "total_ms": 1990.8982000000021,
+          "histogram": [
+            0,
+            968,
+            200,
+            25,
+            17,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1210,
+          "total_ms": 345.17950000000025,
+          "histogram": [
+            0,
+            1208,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1210,
+          "total_ms": 1109.4410000000005,
+          "histogram": [
+            0,
+            1148,
+            31,
+            28,
+            3,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1210,
+      "compactions": 36
+    }
+  ],
+  "client_latency_decomposition": [
+    {
+      "round": 0,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0417,
+          "worker_start_to_response_p99_ms": 0.3214
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0556000000000019,
+          "worker_start_to_response_p99_ms": 180.3263
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0457999999999998,
+          "worker_start_to_response_p99_ms": 0.2866
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0577,
+          "worker_start_to_response_p99_ms": 371.9926
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 385.4066,
+          "worker_start_to_response_p99_ms": 5.3168
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 375.9113,
+          "worker_start_to_response_p99_ms": 902.7759
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0674000000000001,
+          "worker_start_to_response_p99_ms": 0.3003
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.068999999999999,
+          "worker_start_to_response_p99_ms": 141.3688
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1228,
+          "worker_start_to_response_p99_ms": 0.2673
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1553000000000004,
+          "worker_start_to_response_p99_ms": 115.3401
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.117,
+          "worker_start_to_response_p99_ms": 0.2672
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1029999999999998,
+          "worker_start_to_response_p99_ms": 1119.5924
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1449,
+          "worker_start_to_response_p99_ms": 0.2653
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1568000000000005,
+          "worker_start_to_response_p99_ms": 80.7159
+        }
+      }
+    },
+    {
+      "round": 0,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.205,
+          "worker_start_to_response_p99_ms": 0.356
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.2697000000000003,
+          "worker_start_to_response_p99_ms": 187.8818
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0448,
+          "worker_start_to_response_p99_ms": 0.3074
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0363000000000002,
+          "worker_start_to_response_p99_ms": 230.1844
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0283,
+          "worker_start_to_response_p99_ms": 0.2935
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0268999999999977,
+          "worker_start_to_response_p99_ms": 137.1738
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0304,
+          "worker_start_to_response_p99_ms": 0.2929
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.036,
+          "worker_start_to_response_p99_ms": 208.1232
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0386000000000002,
+          "worker_start_to_response_p99_ms": 0.3063
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0377999999999998,
+          "worker_start_to_response_p99_ms": 152.3479
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.0472,
+          "worker_start_to_response_p99_ms": 0.2769
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.0219,
+          "worker_start_to_response_p99_ms": 61.3951
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1378000000000001,
+          "worker_start_to_response_p99_ms": 0.2647
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1343,
+          "worker_start_to_response_p99_ms": 88.2806
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1323999999999999,
+          "worker_start_to_response_p99_ms": 0.2607
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1105000000000018,
+          "worker_start_to_response_p99_ms": 59.2899
+        }
+      }
+    },
+    {
+      "round": 1,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.125,
+          "worker_start_to_response_p99_ms": 0.2621
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1359999999999997,
+          "worker_start_to_response_p99_ms": 51.4461
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0208000000000002,
+          "worker_start_to_response_p99_ms": 0.311
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0512999999999995,
+          "worker_start_to_response_p99_ms": 370.9516
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0122,
+          "worker_start_to_response_p99_ms": 0.2989
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0537,
+          "worker_start_to_response_p99_ms": 308.5956
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0148,
+          "worker_start_to_response_p99_ms": 0.2947
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0272000000000001,
+          "worker_start_to_response_p99_ms": 284.3745
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0218,
+          "worker_start_to_response_p99_ms": 0.3053
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0335999999999999,
+          "worker_start_to_response_p99_ms": 181.9309
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.0289,
+          "worker_start_to_response_p99_ms": 0.2628
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.0366999999999997,
+          "worker_start_to_response_p99_ms": 94.5691
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1254,
+          "worker_start_to_response_p99_ms": 0.2655
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1195999999999997,
+          "worker_start_to_response_p99_ms": 71.1041
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1233,
+          "worker_start_to_response_p99_ms": 0.2619
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1233000000000004,
+          "worker_start_to_response_p99_ms": 119.274
+        }
+      }
+    },
+    {
+      "round": 2,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1300000000000001,
+          "worker_start_to_response_p99_ms": 0.2635
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.122799999999998,
+          "worker_start_to_response_p99_ms": 120.7102
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "delay4",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0954,
+          "worker_start_to_response_p99_ms": 0.3251
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0927000000000007,
+          "worker_start_to_response_p99_ms": 255.0123
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "baseline_a",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0659,
+          "worker_start_to_response_p99_ms": 0.2998
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0366,
+          "worker_start_to_response_p99_ms": 258.1819
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "baseline_b",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0712,
+          "worker_start_to_response_p99_ms": 0.3052
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.058600000000002,
+          "worker_start_to_response_p99_ms": 457.2389
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "delay1",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 15,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 5609,
+          "scheduled_to_worker_start_p99_ms": 1.0798,
+          "worker_start_to_response_p99_ms": 0.2897
+        },
+        "append": {
+          "successful": 1891,
+          "scheduled_to_worker_start_p99_ms": 1.0282000000000018,
+          "worker_start_to_response_p99_ms": 132.7742
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "baseline_a",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1281,
+          "worker_start_to_response_p99_ms": 0.2624
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1130999999999998,
+          "worker_start_to_response_p99_ms": 95.9605
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "baseline_b",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1179999999999999,
+          "worker_start_to_response_p99_ms": 0.2629
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1286,
+          "worker_start_to_response_p99_ms": 54.4773
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "delay1",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1168,
+          "worker_start_to_response_p99_ms": 0.2641
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1051000000000002,
+          "worker_start_to_response_p99_ms": 49.8077
+        }
+      }
+    },
+    {
+      "round": 3,
+      "variant": "delay4",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "posthoc_diagnostic_only": true,
+      "operations": {
+        "query": {
+          "successful": 28517,
+          "scheduled_to_worker_start_p99_ms": 1.1358,
+          "worker_start_to_response_p99_ms": 0.2615
+        },
+        "append": {
+          "successful": 1483,
+          "scheduled_to_worker_start_p99_ms": 1.1414000000000009,
+          "worker_start_to_response_p99_ms": 62.5597
+        }
+      }
+    }
+  ],
+  "recovery_cycles": 24,
+  "recovery_totals": {
+    "attempted_batches": 820,
+    "acknowledged_batches": 532,
+    "published_batches": 532,
+    "unacknowledged_committed_batches": 0
+  },
+  "all_soaks_all_four_labels_zero_loss": true,
+  "engine_changed": false,
+  "supported_promotion": false,
+  "limits": [
+    "No retroactive change to 034 policy results or 061/062 failures.",
+    "Four paired rounds on a shared Windows desktop are descriptive, not a causal p99 decomposition or statistical proof.",
+    "Primary A comparator and all failed checks/outliers retained; diagnostic B cannot replace it.",
+    "ACK/cold recovery and process kills are not physical power-loss, production or capacity qualification."
+  ]
+}
