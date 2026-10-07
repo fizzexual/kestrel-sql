@@ -1,0 +1,98 @@
+{
+  "declared_utc": "2026-10-07T03:47:52.852668+00:00",
+  "model_only": true,
+  "new_sql_engine": false,
+  "default_engine_changed": false,
+  "motivation": "055 measured sync78.63%, rename10.80%, bundlewrite9.36% of writer+compaction; catalog encode0.0625%. Test file lifecycle hypothesis before engine architecture changes.",
+  "models": "Equal CRC-protected frames. generation=create_new/write/flush/sync_all/rename with retained handles; journal=retained bootstrap file/write/flush/sync_all. One complete file sync for every measured commit in both modes.",
+  "payload_sizes": "2400 bytes=100 rows x3xi64;153600 bytes=64 such batches; raw byte-volume models, not actual SQL rows or catalog/index wire bytes",
+  "timed": "Only file open/write/flush/sync/rename stages inside native profiler; equal frame generation/encoding/CRC allocation excluded; journal bootstrap creation+sync separately outside timers",
+  "excluded_semantics": "No SQL, receipt IDs/source positions, checkpoint, truncation/recovery, migration, compaction, bounded WAL growth, pinned readers or concurrent service. Model cannot qualify an Archive WAL or forecast database throughput.",
+  "method": "12 fresh serial cases; three alternating pairs per payload size; rotate size order; all failures/tails/raw output/fixtures preserved",
+  "storage_model": "Live Windows filesystem; no physical power-loss or administrative flush/flags changes; shared-host variation remains",
+  "control": "No compile/tests/audits/packaging/Git compression while native timers run; only one task-owned profiler",
+  "predeclared_hypothesis_checks": {
+    "paired_total_ratio_at_each_size_at_most": 0.85,
+    "paired_p99_ratio_at_each_size_at_most": 0.95,
+    "paired_p50_guard_at_each_size_at_most": 1.05
+  },
+  "decision": "Even passing every primitive check only motivates an archive-specific design and full subsequent qualification. It never promotes SQL code or overwrites failed055.",
+  "free_space_guard_bytes": 500000000,
+  "case_timeout_seconds": 300,
+  "binary_sha256": "59775fae02c973b0fefdef3dfccd9fdcdf9326b239ffada1d417aa3aab968038",
+  "source_sha256": "cc9dcfceda4c9641c7a6628f07d5bc7dbfae18ed4f81e7ed54192a5d6ee4e8d3",
+  "cases": [
+    {
+      "round": 0,
+      "mode": "generation",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 0,
+      "mode": "journal",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 0,
+      "mode": "generation",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    },
+    {
+      "round": 0,
+      "mode": "journal",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    },
+    {
+      "round": 1,
+      "mode": "journal",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    },
+    {
+      "round": 1,
+      "mode": "generation",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    },
+    {
+      "round": 1,
+      "mode": "journal",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 1,
+      "mode": "generation",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 2,
+      "mode": "generation",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 2,
+      "mode": "journal",
+      "payload_bytes": 2400,
+      "repetitions": 256
+    },
+    {
+      "round": 2,
+      "mode": "generation",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    },
+    {
+      "round": 2,
+      "mode": "journal",
+      "payload_bytes": 153600,
+      "repetitions": 256
+    }
+  ]
+}
