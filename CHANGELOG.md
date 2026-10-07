@@ -1,5 +1,12 @@
 # Changes
 
+## 0.3.16 post-release service qualification (2026-10-07)
+
+- Added 52 fresh million-row service cases, 1,327,600 offered operations and independently audited raw accounting/read/write percentiles. The current six-engine comparison has 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins; all slower results and dropped/failed requests remain visible.
+- Preserved the failed 60-second soak, all 27 existing-policy experiments, original harness snapshots, 0.3.16 source/binaries/qualification, and validated old-debug-cache cleanup records. Reconciliation checked 66,569 acknowledged batches and 171 uncertain committed batches.
+- Engine source, binaries, default policy and release packages remain unchanged. Documented a research-backed publication-format hypothesis with explicit recovery, compatibility and reclamation gates; no candidate format is implemented. See [SERVICE_047.md](SERVICE_047.md).
+
+
 ## 0.3.16 experimental packed medium key-cache candidate
 
 - Store exact signed keys and checked u32 group indexes plus one in 16-byte entries, reducing the promoted table from 384 to 256 KiB on this 64-bit build. Preserve cache promotion/demotion/budgets, HashMap authority, counts, exact i128 reductions, reader ownership and durable formats/source/writer policy.

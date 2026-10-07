@@ -1,5 +1,8 @@
 # Disk-backed analytics in KestrelSQL 0.3.8
 
+**Fresh post-release service qualification:** [SERVICE_047.md](SERVICE_047.md) retains 52 million-row cases and 1,327,600 offered operations on unchanged 0.3.16. In three current six-engine rounds, Kestrel had 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins. Its failed 60-second soak and inconsistent batching trials remain visible; these results establish no engine upgrade or production service guarantee.
+
+
 The `Archive` path is an append-only SQL analytics store. It writes batches to immutable column segments and answers eligible aggregate queries with sparse indexes. Raw rows stay on disk. The original `Database` API is a separate implementation with transactional, RAM-resident tables; its old 10-million-row and full-prefix limits do not govern Archive.
 
 Version 0.3 adds immutable snapshots, durable identified batches, bounded small-run compaction and a shared decoded-page cache. The concurrent embedded wrapper and replay contract are described in [LIVE_METRICS.md](LIVE_METRICS.md); original 0.3 evidence is in [V03_RESULTS.md](V03_RESULTS.md) and current read-query evidence is in [PERFORMANCE_038.md](PERFORMANCE_038.md).

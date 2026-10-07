@@ -9,11 +9,14 @@ The repository is private. Every packaged snapshot has its own Git tag and relea
 | Question | Evidence |
 |---|---|
 | Where did Kestrel beat another database? | [Repeated six-engine comparison](PERFORMANCE_031.md), [100M-row wins and losses](SCALE.md) |
-| Where did it lose or drop work? | [Original hard tests](HARD_TESTS.md), [live-service failures](V03_RESULTS.md), [0.3.6 controls](PERFORMANCE_036.md), [0.3.7 write stalls](PERFORMANCE_037.md) |
+| What is the fresh 0.3.16 service result? | [52-case qualification, read/write tails and six-engine wins/losses](SERVICE_047.md), [all raw evidence](benchmarks/service-047-audit.json) |
+| Where did it lose or drop work? | [Original hard tests](HARD_TESTS.md), [current 0.3.16 service failures](SERVICE_047.md), [earlier live-service failures](V03_RESULTS.md), [0.3.6 controls](PERFORMANCE_036.md), [0.3.7 write stalls](PERFORMANCE_037.md) |
 | What is faster today? | [Packed medium cache and current matrix](PERFORMANCE_046.md), [previous bounded reader reuse](PERFORMANCE_045.md), [previous adaptive sparse SUM controls](PERFORMANCE_044.md), [previous dense SUM controls](PERFORMANCE_043.md), [previous medium-cache controls](PERFORMANCE_042.md), [previous seeded-cache controls](PERFORMANCE_041.md), [previous scan controls](PERFORMANCE_040.md), [previous sparse grouping](PERFORMANCE_039.md), [previous 100M-row comparison](PERFORMANCE_038.md), [Immutable embedded retry reuse](PERFORMANCE_036.md), [filtered scan improvement](PERFORMANCE_032.md), [receipt metadata reduction](PERFORMANCE_033.md) |
 | What can a pipeline rely on locally? | [Source checkpoint contract](SOURCE_INGEST.md), [replay/backfill portfolio](PORTFOLIO.md), [0.3.7 recovery evidence](PERFORMANCE_037.md) |
 | Can this replace a production general-purpose SQL database? | [SQL/API boundaries and release gates](README.md), [executed capability checks](HARD_TESTS.md) |
 | What is the next storage hypothesis? | [I/O primitive measurements](benchmarks/sync-037-io-comparison.json), [rejected parallel-sync audit](benchmarks/sync-037-io-audit.json); these are not database benchmarks |
+
+The [047 qualification](SERVICE_047.md) was added after the 0.3.16 package was released. It uses identical source/binaries and creates no new software release; historical ZIPs and assets remain unchanged.
 
 ## Release-by-release evidence
 

@@ -1,5 +1,8 @@
 # KestrelSQL: data-engineering portfolio case study
 
+**Fresh post-release service qualification:** [SERVICE_047.md](SERVICE_047.md) retains 52 million-row cases and 1,327,600 offered operations on unchanged 0.3.16. In three current six-engine rounds, Kestrel had 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins. Its failed 60-second soak and inconsistent batching trials remain visible; these results establish no engine upgrade or production service guarantee.
+
+
 The [0.3.16 packed medium-cache case study](PERFORMANCE_046.md) reduces tagged lookup memory by one-third, uses criteria declared before timing, preserves compile/footprint failures and retains every slower control. Independent zero/signed-key collision oracles and current durable retry/crash evidence support the bounded change.
 
 The [0.3.15 bounded reader reuse case study](PERFORMANCE_045.md) profiles fragmented query overhead, preserves an offset-only experiment with inconclusive scan gains, and selects exclusive file reuse under an explicit idle-handle budget. It verifies eight-client exact results, beyond-i64 sums, corruption after warming, fresh scrubs, snapshot retirement and durable retries. All 60 current shapes, losses and slower controls remain visible; this is local experimental evidence.
@@ -47,7 +50,7 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Actual Archive crashes | 32 concurrent process kills across 0/2/8/20 ms policies; whole batches, original receipt generations and no lost acknowledged batches | [group-035-recovery.json](benchmarks/group-035-recovery.json) |
 | Research decisions | Primary papers and official docs connect architecture decisions to explicit future experiment gates | [RESEARCH.md](RESEARCH.md) |
 
-The 0.2 hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. Version 0.3 addresses writer exclusion, repeated boundary decoding and small-run growth. Version 0.3.1 adds stage profiling, faster exact retries, buffered durable writes and cheaper compaction input reads. [Current results](PERFORMANCE_031.md) disclose repeated comparisons, intermediate regressions and remaining failures; [0.3 results](V03_RESULTS.md) preserve the earlier evidence. Durable-write tail latency remains a release gate. Archive also lacks raw point retrieval, joins and transactional updates. Explain those boundaries and retain failed runs when presenting the project.
+The 0.2 hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. Version 0.3 addresses writer exclusion, repeated boundary decoding and small-run growth. Version 0.3.1 adds stage profiling, faster exact retries, buffered durable writes and cheaper compaction input reads. [Historical 0.3.1 results](PERFORMANCE_031.md) disclose repeated comparisons, intermediate regressions and remaining failures; [0.3 results](V03_RESULTS.md) preserve the earlier evidence. [Fresh 0.3.16 service qualification](SERVICE_047.md) separates read/write percentiles and retains a failed minute-long soak. Durable-write tail latency remains a production qualification gate. Archive also lacks raw point retrieval, joins and transactional updates. Explain those boundaries and retain failed runs when presenting the project.
 
 ## Data model and pipeline
 

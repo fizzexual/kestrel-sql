@@ -97,3 +97,7 @@ Repeated file opens matter when queries visit many small segments. An offset-onl
 ## 0.3.16 packed medium cache
 
 An exact key plus checked slot-plus-one needs less space than an Option tuple on the local 64-bit layout. Zero marks an empty slot independently of the signed key, and the authoritative randomized HashMap still handles collisions. Predeclared paired criteria, explicit memory tests, an independent zero/signed/collision oracle and full qualification support this change. Both initial build failures and every slower guard remain visible. This is established representation tuning without a novelty claim. [Evidence and limits](PERFORMANCE_046.md).
+
+## Current publication bottleneck, checked 2026-10-07
+
+The [fresh 0.3.16 service report](SERVICE_047.md) separates request/read/append latency and exposes sync stalls, temporal variability and failed coalescing trials. [The next publication proposal](PUBLICATION_EXPERIMENT.md) defines a separately versioned immutable-generation experiment and its recovery, old-writer rejection and reference-lifetime gates. It is not implemented, selected or released. Primary SQLite WAL/atomic-commit, PostgreSQL synchronized/asynchronous-commit and Windows flush documentation was read for that proposal; none establishes a Kestrel speed or power-loss guarantee.
