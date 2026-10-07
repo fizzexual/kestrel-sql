@@ -1,0 +1,35 @@
+def package():
+    unchanged();counts=store_counts();proof=load(ROOT/'benchmarks/compression-071-preservation.json')
+    for n,d in proof['payload_sha256'].items():assert sha(DEST/n)==d,n
+    groups={k:{} for k in ['core','raw-a','raw-b','zstd']}
+    groups['core'].update({p.relative_to(ROOT).as_posix():p for p in DEST.rglob('*') if p.is_file()})
+    for n in [REPORT,'MODEL_ORDER_AUDIT_071.md','benchmarks/compression-071-preservation.json']:groups['core'][n]=ROOT/n
+    for n,d in load(W/'bundle-fixture-inventory.json').items():
+        p=W/n;assert p.stat().st_size==d['bytes'] and sha(p)==d['sha256']
+        key='core' if n.startswith('inputs/') else 'raw-a' if '-baseline_a/' in n else 'raw-b' if '-baseline_b/' in n else 'zstd' if '-compressed/' in n else None
+        assert key is not None,n;groups[key]['benchmarks/compression-071/'+n]=p
+    names=[n for group in groups.values() for n in group];assert len(names)==len(set(names))
+    assert all(sum(n.endswith('.model') for n in groups[key])==216 for key in ['raw-a','raw-b','zstd'])
+    artifacts=[]
+    for label,files in groups.items():
+        assert shutil.disk_usage(W).free>=3_000_000_000,'packaging disk guard; preserve partial archive if stopped'
+        archive=ROOT.parent/f'kestrel-sql-development-071-{label}-evidence.zip';assert not archive.exists()
+        hashes={n:sha(p) for n,p in files.items()}
+        with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
+            for n,p in files.items():z.write(p,'kestrel-sql/'+n)
+            z.writestr(f'kestrel-sql/COMPRESSION_071_{label.upper().replace("-","_")}_MANIFEST.sha256',''.join(d+'  '+n+'\n' for n,d in sorted(hashes.items())))
+            z.writestr(f'kestrel-sql/DEVELOPMENT_071_{label.upper().replace("-","_")}.md','Development byte model only, rejected. Extract all four bundles to the same destination for complete evidence. Read COMPRESSION_071.md and MODEL_ORDER_AUDIT_071.md. No engine format/integration or supported release qualification.\n')
+        assert archive.stat().st_size<2_000_000_000,'conservative per-asset limit'
+        with zipfile.ZipFile(archive) as z:
+            assert z.testzip() is None
+            for n,d in hashes.items():
+                with z.open('kestrel-sql/'+n) as f:assert hashlib.file_digest(f,'sha256').hexdigest()==d,n
+        archive.with_suffix('.zip.sha256').write_text(sha(archive)+'  '+archive.name+'\n',encoding='utf-8')
+        artifacts.append({'part':label,'artifact':archive.name,'bytes':archive.stat().st_size,'sha256':sha(archive),
+            'zip_entries':len(hashes)+2,'payload_files':len(hashes),'all_crc_and_payload_hashes_verified':True})
+        print(json.dumps({'part_complete':label,'bytes':archive.stat().st_size,'payload_files':len(hashes)}),flush=True)
+    result={'artifacts':artifacts,'zip_entries':sum(a['zip_entries'] for a in artifacts),'payload_files':len(names),
+        'fresh_fixture_files':proof['fresh_fixture_files'],**counts,'all_crc_and_payload_hashes_verified':True,
+        'all_full_fixtures_in_disjoint_parts':True,'packaged_utc':now(),'new_engine_release':False}
+    save(ROOT/'benchmarks/compression-071-bundle-check.json',result);print(json.dumps(result))
+

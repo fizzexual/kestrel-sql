@@ -42,3 +42,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Checkpoint compression model 069](COMPRESSION_069.md) reduces bytes but fails paid-publication latency. All 36 cases and 432 frames remain preserved. Rejected model; no SQL, service, production or supported-release qualification.
 
 [Zstandard checkpoint byte model 070](COMPRESSION_070.md) reduces stored bytes by about 70% but fails charged-publication goals and guards. All 36 cases and 432 frames remain preserved. Model rejected; supported 0.3.16 unchanged. No new SQL or service qualification.
+
+[Balanced fast-Zstandard model 071](COMPRESSION_071.md) fails both speed goals and five guards; four calibration checks fail. All 54 cases/648 frames remain preserved. The [069/070 order correction](MODEL_ORDER_AUDIT_071.md) documents their fixed per-size variant order, without rewriting their raw results. No engine integration or supported promotion.
