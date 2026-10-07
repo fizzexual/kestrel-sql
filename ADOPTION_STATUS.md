@@ -34,3 +34,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Compaction development064](COMPACTION_064.md) passes full correctness and fourteen wider-merge fault cuts, but fails5/6 native speed goals,1/12 candidate guards and5/18 calibration checks. No service advance or supported promotion; primary-production adoption assessment remains unchanged.
 
 [Encoder profiles 065/066](ENCODER_PROFILES_065_066.md) measure output-buffer models on released source, with one retained original calibration failure and a separate passing replication. They justify an engine experiment, not an engine upgrade or a change to the primary-production adoption assessment.
+
+[Bounded writer buffer 067](BUFFER_067.md) completes full correctness/recovery and a six-round native cohort. All 32 validated group-kill stores and cross-binary format checks are retained. Read the measured guard/calibration decision; no primary-production adoption or supported-release change.

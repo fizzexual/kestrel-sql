@@ -1,0 +1,313 @@
+--- released/Cargo.lock
++++ dev67/Cargo.lock
+@@ -73,7 +73,7 @@
+ 
+ [[package]]
+ name = "kestrel-sql"
+-version = "0.3.16"
++version = "0.3.17-dev.67"
+ dependencies = [
+  "crc32fast",
+  "serde",
+--- released/Cargo.toml
++++ dev67/Cargo.toml
+@@ -1,6 +1,6 @@
+ [package]
+ name = "kestrel-sql"
+-version = "0.3.16"
++version = "0.3.17-dev.67"
+ edition = "2024"
+ rust-version = "1.89"
+ description = "Experimental embedded SQL engine for exact live range aggregates"
+--- released/src/archive.rs
++++ dev67/src/archive.rs
+@@ -17,6 +17,7 @@
+ pub const BLOCK_ROWS: usize = 4096;
+ pub const MAX_SEGMENT_ROWS: usize = 1_000_000;
+ const MAX_METADATA_BYTES: usize = 64 * 1024 * 1024;
++const MAX_RETAINED_CATALOG_BYTES: usize = 16 * 1024 * 1024;
+ const MAX_SEGMENTS: usize = 10_000;
+ const MAX_BATCH_BYTES: usize = 64 * 1024 * 1024;
+ const MAX_INDEX_MEMORY: usize = 128 * 1024 * 1024;
+@@ -427,6 +428,25 @@
+     pub publication_profile: PublicationProfile,
+ }
+ 
++// Writer-local scratch storage; immutable reader snapshots never own this buffer.
++#[derive(Default)]
++struct CatalogBuffer {
++    bytes: Vec<u8>,
++}
++impl CatalogBuffer {
++    fn encode<T: Serialize>(&mut self, value: &T) -> Result<&[u8]> {
++        self.bytes.clear();
++        serde_json::to_writer(&mut self.bytes, value).map_err(|e| Error::new(e.to_string()))?;
++        Ok(&self.bytes)
++    }
++    fn release(&mut self) {
++        self.bytes.clear();
++        if self.bytes.capacity() > MAX_RETAINED_CATALOG_BYTES {
++            self.bytes = Vec::new();
++        }
++    }
++}
++
+ pub struct Archive {
+     path: PathBuf,
+     _lock: Arc<File>,
+@@ -437,6 +457,7 @@
+     next_generation: u64,
+     generation: u64,
+     poisoned: bool,
++    catalog_buffer: CatalogBuffer,
+     cache: Arc<PageCache>,
+     profile: Arc<Mutex<PublicationProfile>>,
+ }
+@@ -730,6 +751,7 @@
+             next_generation: next,
+             generation: latest.unwrap_or(0),
+             poisoned: false,
++            catalog_buffer: CatalogBuffer::default(),
+             cache,
+             profile: Arc::new(Mutex::new(PublicationProfile::default())),
+         })
+@@ -994,7 +1016,7 @@
+             #[cfg(feature = "fault-injection")]
+             publication_cut_point("segment_synced")?;
+             let bytes = measured(&mut times[3], || {
+-                serde_json::to_vec(&CatalogOutput {
++                self.catalog_buffer.encode(&CatalogOutput {
+                     generation,
+                     receipt_base,
+                     table: &self.catalog.table,
+@@ -1005,14 +1027,13 @@
+                         added: &new_records,
+                     },
+                 })
+-                .map_err(|e| Error::new(e.to_string()))
+             })?;
+             catalog_bytes = bytes.len() as u64 + 16;
+             let pending = self.path.join(format!("catalog-{generation:020}.pending"));
+             let file = measured(&mut times[4], || {
+                 let mut file = File::create_new(&pending)?;
+                 let mut output = BufWriter::with_capacity(64 * 1024, &mut file);
+-                write_envelope(&mut output, CAT_MAGIC, &bytes)?;
++                write_envelope(&mut output, CAT_MAGIC, bytes)?;
+                 #[cfg(feature = "fault-injection")]
+                 publication_cut_point("catalog_partial")?;
+                 output.flush()?;
+@@ -1038,6 +1059,8 @@
+             publication_cut_point("catalog_published")?;
+             Ok(segment_file)
+         })();
++        // Also clear partial output after errors; oversized allocations are dropped.
++        self.catalog_buffer.release();
+         {
+             let mut profile = self.profile.lock().unwrap_or_else(|e| e.into_inner());
+             profile.attempts += 1;
+@@ -3034,3 +3057,205 @@
+         }
+     }
+ }
++
++#[cfg(test)]
++mod catalog_buffer_tests {
++    use super::*;
++
++    fn temporary(name: &str) -> PathBuf {
++        let root = std::env::var_os("KESTREL_TEST_ROOT")
++            .map(PathBuf::from)
++            .unwrap_or_else(std::env::temp_dir);
++        root.join(format!("buffer-067-{name}-{}", std::process::id()))
++    }
++
++    #[test]
++    fn reused_catalog_matches_legacy_bytes_for_growth_delta_and_escaping() {
++        let mut buffer = CatalogBuffer::default();
++        let columns = vec!["quote\"slash\\control\n\t雪".to_owned()];
++        let mut committed = BTreeMap::new();
++        let mut added = BTreeMap::new();
++        // Deliberately put the added key before the committed keys in sort order.
++        // The released serializer writes committed then added, not a merged sort.
++        added.insert(
++            "a".to_owned(),
++            BatchRecord {
++                digest: [255; 32],
++                rows: usize::MAX,
++                generation: u64::MAX,
++            },
++        );
++        for count in [0, 1000, 3, 2000, 0] {
++            committed.clear();
++            for i in 0..count {
++                committed.insert(
++                    format!("z:{i:04}"),
++                    BatchRecord {
++                        digest: [i as u8; 32],
++                        rows: i,
++                        generation: i as u64,
++                    },
++                );
++            }
++            for checkpoint in [true, false] {
++                let catalog = CatalogOutput {
++                    generation: u64::MAX,
++                    receipt_base: (!checkpoint).then_some(u64::MAX - 1),
++                    table: "escape\"\\\r雪",
++                    columns: &columns,
++                    segments: &["segment-00000000000000000001.ks2".to_owned()],
++                    batches: CombinedBatches {
++                        committed: checkpoint.then_some(&committed),
++                        added: &added,
++                    },
++                };
++                assert_eq!(
++                    buffer.encode(&catalog).unwrap(),
++                    serde_json::to_vec(&catalog).unwrap()
++                );
++                buffer.release();
++                assert!(buffer.bytes.is_empty());
++                assert!(buffer.bytes.capacity() <= MAX_RETAINED_CATALOG_BYTES);
++            }
++        }
++    }
++
++    #[test]
++    fn catalog_buffer_drops_oversized_capacity_and_recovers_after_encode_error() {
++        #[derive(Serialize)]
++        struct Text<'a> {
++            text: &'a str,
++        }
++        struct Fails;
++        impl Serialize for Fails {
++            fn serialize<S: Serializer>(
++                &self,
++                serializer: S,
++            ) -> std::result::Result<S::Ok, S::Error> {
++                let mut map = serializer.serialize_map(Some(2))?;
++                map.serialize_entry("partial", "written before error")?;
++                Err(serde::ser::Error::custom("deliberate serializer failure"))
++            }
++        }
++        let mut buffer = CatalogBuffer::default();
++        buffer.encode(&Text { text: "small" }).unwrap();
++        let small_capacity = buffer.bytes.capacity();
++        buffer.release();
++        assert_eq!(buffer.bytes.capacity(), small_capacity);
++        assert!(buffer.encode(&Fails).is_err());
++        buffer.release();
++        assert!(buffer.bytes.is_empty());
++        let text = "x".repeat(MAX_RETAINED_CATALOG_BYTES + 1);
++        assert!(buffer.encode(&Text { text: &text }).unwrap().len() > MAX_RETAINED_CATALOG_BYTES);
++        buffer.release();
++        assert_eq!(buffer.bytes.capacity(), 0);
++        let value = Text {
++            text: "after oversized/error",
++        };
++        assert_eq!(
++            buffer.encode(&value).unwrap(),
++            serde_json::to_vec(&value).unwrap()
++        );
++        buffer.release();
++    }
++
++    #[test]
++    fn writer_buffer_survives_checkpoint_delta_compaction_without_snapshot_copy() {
++        let path = temporary("sequence");
++        let mut archive = Archive::open(&path, "events", &["ts", "value"]).unwrap();
++        assert_eq!(archive.catalog_buffer.bytes.capacity(), 0);
++        archive
++            .append_once("batch:0", vec![vec![0], vec![0]])
++            .unwrap();
++        let pinned = archive.snapshot().unwrap();
++        let mut receipts = Vec::new();
++        for i in 1..=70 {
++            receipts.push(
++                archive
++                    .append_once(&format!("batch:{i}"), vec![vec![i], vec![i * 2]])
++                    .unwrap(),
++            );
++            assert!(archive.catalog_buffer.bytes.is_empty());
++            assert!(archive.catalog_buffer.bytes.capacity() <= MAX_RETAINED_CATALOG_BYTES);
++        }
++        assert!(
++            archive
++                .stats()
++                .unwrap()
++                .publication_profile
++                .catalog_checkpoints
++                >= 3
++        );
++        assert_eq!(archive.compact_small().unwrap(), 31);
++        archive.reclaim().unwrap();
++        assert_eq!(pinned.verify().unwrap(), 16);
++        assert_eq!(
++            pinned
++                .query("SELECT SUM(value) FROM events")
++                .unwrap()
++                .result
++                .rows,
++            vec![vec![Value::Int(0)]]
++        );
++        assert_eq!(archive.verify().unwrap(), 71 * 16);
++        drop(pinned);
++        drop(archive);
++        let mut archive = Archive::open(&path, "events", &["ts", "value"]).unwrap();
++        assert_eq!(archive.catalog_buffer.bytes.capacity(), 0);
++        for i in [1, 35, 70] {
++            let receipt = archive
++                .append_once(&format!("batch:{i}"), vec![vec![i], vec![i * 2]])
++                .unwrap();
++            assert!(receipt.duplicate);
++            assert_eq!(receipt.generation, receipts[i as usize - 1].generation);
++        }
++        assert_eq!(
++            archive.catalog_buffer.bytes.capacity(),
++            0,
++            "retries do not encode or allocate"
++        );
++        assert_eq!(archive.verify().unwrap(), 71 * 16);
++    }
++
++    #[test]
++    fn failed_publication_clears_buffer_and_cold_reopen_retains_retry_identity() {
++        let path = temporary("failure");
++        let mut archive = Archive::open(&path, "events", &["ts", "value"]).unwrap();
++        let original = archive
++            .append_once("first", vec![vec![1], vec![2]])
++            .unwrap();
++        // Fail after encoding by occupying the next catalog pending name.
++        let pending = path.join(format!("catalog-{:020}.pending", archive.next_generation));
++        std::fs::write(&pending, b"occupied").unwrap();
++        assert!(
++            archive
++                .append_once("second", vec![vec![3], vec![4]])
++                .unwrap_err()
++                .to_string()
++                .contains("outcome unknown")
++        );
++        assert!(archive.poisoned);
++        assert!(archive.catalog_buffer.bytes.is_empty());
++        assert!(archive.catalog_buffer.bytes.capacity() <= MAX_RETAINED_CATALOG_BYTES);
++        assert!(
++            archive
++                .append_once("third", vec![vec![5], vec![6]])
++                .is_err()
++        );
++        drop(archive);
++        let mut archive = Archive::open(&path, "events", &["ts", "value"]).unwrap();
++        assert_eq!(archive.catalog_buffer.bytes.capacity(), 0);
++        let retried = archive
++            .append_once("first", vec![vec![1], vec![2]])
++            .unwrap();
++        assert!(retried.duplicate);
++        assert_eq!(retried.generation, original.generation);
++        assert!(
++            !archive
++                .append_once("second", vec![vec![3], vec![4]])
++                .unwrap()
++                .duplicate
++        );
++        assert_eq!(archive.verify().unwrap(), 32);
++    }
++}
