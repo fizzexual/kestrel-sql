@@ -44,3 +44,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Zstandard checkpoint byte model 070](COMPRESSION_070.md) reduces stored bytes by about 70% but fails charged-publication goals and guards. All 36 cases and 432 frames remain preserved. Model rejected; supported 0.3.16 unchanged. No new SQL or service qualification.
 
 [Balanced fast-Zstandard model 071](COMPRESSION_071.md) fails both speed goals and five guards; four calibration checks fail. All 54 cases/648 frames remain preserved. The [069/070 order correction](MODEL_ORDER_AUDIT_071.md) documents their fixed per-size variant order, without rewriting their raw results. No engine integration or supported promotion.
+
+[Receipt-page correctness model 072](RECEIPT_PAGES_072.md) passes metadata retry/source/recovery checks, including seven controlled kills. It is a separate incompatible prototype with no timed cohort, SQL/service qualification, full old-format migration, engine locking/pinned-reader/reclaim behavior or supported promotion. Byte accounting exposes larger deltas and migration overhead. Supported0.3.16 remains unchanged.
