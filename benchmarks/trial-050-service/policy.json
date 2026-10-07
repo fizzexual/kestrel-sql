@@ -1,0 +1,71 @@
+{
+  "status": "isolated development trial, never promoted automatically",
+  "baseline": "frozen released 0.3.16",
+  "created_utc": "2026-10-07T01:17:08.585723+00:00",
+  "before_any_timing": true,
+  "correctness_gates": [
+    "debug and release tests, fmt and strict clippy; ordinary and fault builds",
+    "CAT2/3/4 reads and mixed legacy data; frozen 0.3.16 must reject new format",
+    "bounded reclamation preserves active data, receipt dependencies, pinned readers and original receipts",
+    "each CAT5 frame boundary, sync, rename, reopen and in-memory publication: injected I/O errors and process exits; whole groups and exact retries after reopen",
+    "source position/output atomicity and concurrent forced kills",
+    "4000 SQL differential queries per DuckDB and SQLite, full scrubs and wide-reader checks",
+    "CAT5 cross-candidate compatibility: 048/049 open 050 after retained-handle publication, and 050 continues 048/049 data with original receipt generations",
+    "Three focused regression cases fail on unchanged 049 source before the fix; pass after generation uniqueness validation",
+    "Exact preserved 049 failing fixture must reject in 050 before reading any cached data; source fixtures and original bytes remain untouched"
+  ],
+  "comparison": {
+    "paired_rounds": 3,
+    "rotation": "baseline/trial order alternates per configuration and round",
+    "base_rows": 1000000,
+    "clients": 64,
+    "batch_rows": 100,
+    "group_delay_ms": 0,
+    "profiles": [
+      [
+        "mixed",
+        2000,
+        8
+      ],
+      [
+        "mixed",
+        10000,
+        8
+      ],
+      [
+        "write",
+        500,
+        8
+      ],
+      [
+        "mixed",
+        500,
+        60
+      ]
+    ],
+    "storage_durability": "flush complete buffered generation, sync_all before rename and ACK, Unix directory sync unchanged; process-crash tests do not establish Windows power-loss durability",
+    "controls": "matched read-only and scan profiles plus existing group/scan probe guards; no builds, correctness tests or packaging during timed work"
+  },
+  "performance_gate": {
+    "median_paired_append_p99_ratio_max": 0.9,
+    "write_heavy_improvement_rounds_min": 2,
+    "all_60s_soaks_zero_loss": true,
+    "no_new_correctness_failures": true,
+    "read_guard_ratio_max": 1.05,
+    "all_rounds_and_failed_runs_preserved": true
+  },
+  "additional_release_gates": [
+    "complete existing 60-shape three-round analytical matrix and all release checks",
+    "supported binary and format version migration documentation",
+    "review unresolved recovery and retention limits; do not ship when sustained service gates fail"
+  ],
+  "limits": [
+    "shared Windows machine and existing JSON bridge; no all-database or distributed qualification",
+    "old supported core/binaries remain untouched",
+    "new-format reader is an explicit upgrade on next successful append in this isolated trial",
+    "deleting the only/latest published catalog cannot always be distinguished from empty/older state in either design; referenced older payload removal is tested fail-closed; new bundle merges catalog/data failure domains"
+  ],
+  "trial": "050 unique physical generations; isolated hardening successor, not promoted",
+  "motivation": "Reject checksum-valid mixed restores that give distinct physical files the same generation/cache identity",
+  "prior_trial": "049 immutable and unpromoted: write gains, failed read guard, reproduced semantic cache alias"
+}
