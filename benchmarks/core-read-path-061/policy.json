@@ -1,0 +1,464 @@
+{
+  "trial": 61,
+  "declared_utc": "2026-10-07T05:56:03.178074+00:00",
+  "before_timing": true,
+  "baseline": "0.3.16",
+  "candidate": "0.3.17-dev.61",
+  "based_on_released_core": true,
+  "sdk_058_060_changes_included": false,
+  "core_change": "borrowed SQL keyword match only; package version separate",
+  "default_core_unchanged": true,
+  "rust_tests_each_mode_expected": 77,
+  "analytical_matrix": {
+    "fixtures": [
+      {
+        "scope": "typed",
+        "label": "dense97",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\dense97\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\dense97\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "typed",
+        "label": "sparse19",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\sparse19\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\sparse19\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "typed",
+        "label": "cardinality5003",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\cardinality5003\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-038-small-1791300015782231300\\cardinality5003\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "nyc",
+        "label": "nyc",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\nyc\\run-1791268516649891600\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\nyc\\run-1791268516649891600\\pipeline.duckdb",
+        "rows": 3475077,
+        "queries": [
+          [
+            "month",
+            "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1735707600 AND ts < 1738386000"
+          ],
+          [
+            "day",
+            "SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 1736917200 AND ts < 1737003600"
+          ],
+          [
+            "hour",
+            "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE ts >= 1736949600 AND ts < 1736953200"
+          ],
+          [
+            "zone",
+            "SELECT COUNT(*) AS n, SUM(value) AS total FROM events WHERE device = 237 AND ts >= 1736917200 AND ts < 1737003600"
+          ],
+          [
+            "all_zones",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS total FROM events GROUP BY device ORDER BY device"
+          ]
+        ]
+      },
+      {
+        "scope": "large",
+        "label": "10000000",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\10000000-ordered\\kestrel",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\10000000-ordered\\reference.duckdb",
+        "rows": 10000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 2500000 AND ts < 5000000"
+          ]
+        ]
+      },
+      {
+        "scope": "large",
+        "label": "100000000",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\kestrel",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\scale-1791221605946248600\\100000000-ordered\\reference.duckdb",
+        "rows": 100000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 25000000 AND ts < 50000000"
+          ]
+        ]
+      },
+      {
+        "scope": "extended",
+        "label": "wide5003",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\wide5003\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\wide5003\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "extended",
+        "label": "collision19",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\collision19\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\collision19\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "extended",
+        "label": "cardinality70001",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\cardinality70001\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-039-extended-1791305239285903500\\cardinality70001\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "patterns",
+        "label": "fibonacci19",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-patterns-1791328411734361400\\fibonacci19\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-patterns-1791328411734361400\\fibonacci19\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "patterns",
+        "label": "power19",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-patterns-1791328411734361400\\power19\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-patterns-1791328411734361400\\power19\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      },
+      {
+        "scope": "irregular",
+        "label": "irregular5003",
+        "archive": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-irregular-1791328430889749200\\irregular5003\\archive",
+        "reference": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\group-046-irregular-1791328430889749200\\irregular5003\\reference.duckdb",
+        "rows": 1000000,
+        "queries": [
+          [
+            "group_sum",
+            "SELECT device, SUM(value) AS s FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "group_full",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value), MIN(value), MAX(value) FROM events GROUP BY device ORDER BY device"
+          ],
+          [
+            "filtered_group",
+            "SELECT device, COUNT(*) AS n, SUM(value) AS s FROM events WHERE value >= 0 GROUP BY device ORDER BY device"
+          ],
+          [
+            "unordered_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE value >= 0"
+          ],
+          [
+            "prefix_control",
+            "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 250000 AND ts < 500000"
+          ]
+        ]
+      }
+    ],
+    "rounds": 3,
+    "repeats": 11,
+    "warmups": 3,
+    "threads": 1,
+    "order": [
+      [
+        "baseline",
+        "candidate",
+        "duckdb"
+      ],
+      [
+        "candidate",
+        "duckdb",
+        "baseline"
+      ],
+      [
+        "duckdb",
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "native_guard_each_shape_median_ratio_max": 1.05,
+    "competitive_wins_recorded_without_universal_claim": true,
+    "reuse_immutable_inputs": true,
+    "timer": "Rust full snapshot.query; DuckDB Python execute/fetchall; JSON/assertions/setup/CRC outside timer"
+  },
+  "primary_range_goal": {
+    "rows": 1000000,
+    "pairs": 21,
+    "repeats": 101,
+    "paired_ratio_max": 0.95,
+    "fixture": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-060\\fixture",
+    "queries": [
+      {
+        "name": "hotspot_100",
+        "lo": 905037,
+        "hi": 905137,
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 905037 AND ts < 905137",
+        "expected_rows": [
+          [
+            100,
+            4050
+          ]
+        ]
+      },
+      {
+        "name": "hotspot_1000",
+        "lo": 906001,
+        "hi": 907001,
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 906001 AND ts < 907001",
+        "expected_rows": [
+          [
+            1000,
+            -500
+          ]
+        ]
+      },
+      {
+        "name": "uniform_100",
+        "lo": 180641,
+        "hi": 180741,
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 180641 AND ts < 180741",
+        "expected_rows": [
+          [
+            100,
+            -1150
+          ]
+        ]
+      },
+      {
+        "name": "uniform_1000",
+        "lo": 420040,
+        "hi": 421040,
+        "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 420040 AND ts < 421040",
+        "expected_rows": [
+          [
+            1000,
+            -500
+          ]
+        ]
+      }
+    ]
+  },
+  "qualification": [
+    "77 debug/release tests and strict default/fault Clippy",
+    "4000 combined varied SQL cases per reference",
+    "publication cuts/corruptions",
+    "32 concurrent forced kills and exact retries",
+    "source offsets/faults/kills",
+    "Parquet pipeline and exact wide JSON",
+    "104 concurrent reader/corruption oracles"
+  ],
+  "limits": [
+    "single shared Windows computer",
+    "no compilation/audit/package/Git during timed loads",
+    "task-owned processes only and stopped after each case",
+    "no supported promotion before required checks",
+    "no Facebook-scale, universal superiority or production readiness qualification",
+    "059/060 SDK failures remain separate and preserved",
+    "morning report already issued; English only"
+  ]
+}

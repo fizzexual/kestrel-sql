@@ -1,0 +1,94 @@
+{
+  "trial": 61,
+  "declared_utc": "2026-10-07T06:18:31.807431+00:00",
+  "before_service_timing": true,
+  "status": "clean borrowed-keyword parser port; full released-core service regression controls; no automatic promotion",
+  "baseline": "0.3.16",
+  "candidate": "0.3.17-dev.61",
+  "numpy_version": "2.5.3",
+  "binary_sha256": {
+    "baseline": "081ed43e56d45f1c57ed10e0bebe80ad59487aa92b3215b13bbde06d74e76024",
+    "candidate": "b9f14feff962217ca8d4792a76b78bba5bebe9a7539eef18541b7338d6ebf8fc"
+  },
+  "harness_sha256": {
+    "stress_compare.py": "4cb206233a7dfb572bb6ad43bb37e6009b47be1a6e2447e5ae9f6fb1380a8b79",
+    "host_telemetry.py": "4f864f69fc59bb6d05b58346b06eae4faa6af4d0cd0612cf2f6de60f22f4fd27"
+  },
+  "comparison": {
+    "rounds": 3,
+    "base_rows": 1000000,
+    "clients": 64,
+    "batch_rows": 100,
+    "group_delay_ms": 0,
+    "queue_capacity": 256,
+    "worker_expiry_seconds": 2,
+    "configs": [
+      [
+        "mixed",
+        2000,
+        8
+      ],
+      [
+        "mixed",
+        10000,
+        8
+      ],
+      [
+        "write",
+        500,
+        8
+      ],
+      [
+        "mixed",
+        500,
+        60
+      ],
+      [
+        "read",
+        2000,
+        8
+      ],
+      [
+        "scan",
+        100,
+        8
+      ]
+    ],
+    "write_fractions": {
+      "mixed": 0.05,
+      "write": 0.25,
+      "read": 0,
+      "scan": 0.1
+    },
+    "order": "alternate variant order by round and configuration; serial fresh stores",
+    "disk_preflight_min_free_bytes": 800000000
+  },
+  "regression_guards": {
+    "each_profile_successful_p99_paired_ratio_max": 1.1,
+    "each_write_profile_append_p99_paired_ratio_max": 1.1,
+    "each_read_profile_query_p99_paired_ratio_max": 1.1,
+    "each_profile_successful_window_rps_paired_ratio_min": 0.9,
+    "each_profile_total_loss_increase_max_offered_fraction": 0.01
+  },
+  "production_goal_separate": {
+    "all_candidate_60s_soaks_zero_loss_required": true,
+    "missing_acknowledged_or_partial_batch_allowed": false
+  },
+  "timing": "scheduled arrival to successful response, including queueing; failures, expiry, drops and drain retained separately",
+  "outside_timer": [
+    "seed",
+    "20 independent NumPy windows per case",
+    "cold reopen and exact retry",
+    "full CRC",
+    "raw gzip",
+    "builds/audits/Git/packaging/cache cleanup"
+  ],
+  "limits": [
+    "shared Windows computer; JSON bridge; 64 client threads",
+    "finite offered schedules, not sustainable maximum capacity",
+    "no competitors freshly measured in this service phase",
+    "059 SDK service failures remain separate; SDK changes not included",
+    "no physical power-loss, distributed-scale or production qualification",
+    "stop task-owned children after every case; preserve all failed/slower cases"
+  ]
+}

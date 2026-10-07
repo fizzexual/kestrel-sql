@@ -1,0 +1,728 @@
+{
+  "totals": {
+    "offered": 880800,
+    "samples": 842862,
+    "acknowledged_batches": 42887,
+    "uncertain_committed_batches": 0,
+    "scrubbed_bytes": 966928800,
+    "numpy_windows": 720
+  },
+  "summaries": [
+    {
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 39.8242,
+            "query": 1.0446,
+            "append": 158.3421
+          },
+          "lost": 210,
+          "offered": 48000,
+          "rps_median": 1999.75,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 4.0164,
+              "append_p99_ms": 158.3421,
+              "query_p99_ms": 1.0369,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            },
+            {
+              "round": 1,
+              "p99_ms": 39.8242,
+              "append_p99_ms": 146.3758,
+              "query_p99_ms": 1.0446,
+              "lost": 0,
+              "successful_window_rps": 1999.75
+            },
+            {
+              "round": 2,
+              "p99_ms": 198.0899,
+              "append_p99_ms": 704.406,
+              "query_p99_ms": 168.9814,
+              "lost": 210,
+              "successful_window_rps": 1973.75
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 3.9555,
+            "query": 1.0519,
+            "append": 183.5164
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 2000.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 3.9555,
+              "append_p99_ms": 183.5164,
+              "query_p99_ms": 1.0426,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 5.4345,
+              "append_p99_ms": 206.8836,
+              "query_p99_ms": 1.0811,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 3.8464,
+              "append_p99_ms": 146.196,
+              "query_p99_ms": 1.0519,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            0.9848371676127875,
+            0.1364622515957634,
+            0.019417446321089566
+          ],
+          "median": 0.1364622515957634
+        },
+        "query": {
+          "rounds": [
+            1.005497154981194,
+            1.0349416044418915,
+            0.006224945467370965
+          ],
+          "median": 1.005497154981194
+        },
+        "append": {
+          "rounds": [
+            1.1589867761006076,
+            1.4133729755874946,
+            0.20754508053594092
+          ],
+          "median": 1.1589867761006076
+        },
+        "rps": {
+          "rounds": [
+            1.000062503906494,
+            1.0001250156269534,
+            1.0132362254591514
+          ],
+          "median": 1.0001250156269534
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": false,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 102.9547,
+            "query": 80.7231,
+            "append": 228.6621
+          },
+          "lost": 11779,
+          "offered": 240000,
+          "rps_median": 9405.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 102.9547,
+              "append_p99_ms": 295.0104,
+              "query_p99_ms": 80.7231,
+              "lost": 4652,
+              "successful_window_rps": 9378.125
+            },
+            {
+              "round": 1,
+              "p99_ms": 120.2712,
+              "append_p99_ms": 216.0206,
+              "query_p99_ms": 83.1188,
+              "lost": 4438,
+              "successful_window_rps": 9405.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 93.4689,
+              "append_p99_ms": 228.6621,
+              "query_p99_ms": 67.937,
+              "lost": 2689,
+              "successful_window_rps": 9655.5
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 167.2313,
+            "query": 143.1401,
+            "append": 408.2054
+          },
+          "lost": 25949,
+          "offered": 240000,
+          "rps_median": 8650.625,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 167.2313,
+              "append_p99_ms": 882.9322,
+              "query_p99_ms": 152.8734,
+              "lost": 11647,
+              "successful_window_rps": 8535.375
+            },
+            {
+              "round": 1,
+              "p99_ms": 171.7127,
+              "append_p99_ms": 408.2054,
+              "query_p99_ms": 143.1401,
+              "lost": 10757,
+              "successful_window_rps": 8650.625
+            },
+            {
+              "round": 2,
+              "p99_ms": 63.9201,
+              "append_p99_ms": 231.2339,
+              "query_p99_ms": 55.0602,
+              "lost": 3545,
+              "successful_window_rps": 9549.625
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.6243192394324883,
+            1.4277125363345509,
+            0.6838649005177122
+          ],
+          "median": 1.4277125363345509
+        },
+        "query": {
+          "rounds": [
+            1.893799916009172,
+            1.722114611856764,
+            0.810459690595699
+          ],
+          "median": 1.722114611856764
+        },
+        "append": {
+          "rounds": [
+            2.99288499659673,
+            1.8896595972791483,
+            1.0112471633908724
+          ],
+          "median": 1.8896595972791483
+        },
+        "rps": {
+          "rounds": [
+            0.9101366211262912,
+            0.9197900053163212,
+            0.9890347470353684
+          ],
+          "median": 0.9197900053163212
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": false,
+        "append_p99": false,
+        "query_p99": false
+      }
+    },
+    {
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 129.4486,
+            "query": 1.2318,
+            "append": 236.588
+          },
+          "lost": 0,
+          "offered": 12000,
+          "rps_median": 499.375,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 57.0276,
+              "append_p99_ms": 195.1204,
+              "query_p99_ms": 1.1949,
+              "lost": 0,
+              "successful_window_rps": 499.875
+            },
+            {
+              "round": 1,
+              "p99_ms": 129.4486,
+              "append_p99_ms": 236.588,
+              "query_p99_ms": 1.2318,
+              "lost": 0,
+              "successful_window_rps": 496.125
+            },
+            {
+              "round": 2,
+              "p99_ms": 232.6245,
+              "append_p99_ms": 390.394,
+              "query_p99_ms": 1.2481,
+              "lost": 0,
+              "successful_window_rps": 499.375
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 171.2638,
+            "query": 1.2185,
+            "append": 307.4767
+          },
+          "lost": 0,
+          "offered": 12000,
+          "rps_median": 499.25,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 171.2638,
+              "append_p99_ms": 307.4767,
+              "query_p99_ms": 1.2185,
+              "lost": 0,
+              "successful_window_rps": 498.875
+            },
+            {
+              "round": 1,
+              "p99_ms": 287.5629,
+              "append_p99_ms": 479.4841,
+              "query_p99_ms": 55.2363,
+              "lost": 0,
+              "successful_window_rps": 499.25
+            },
+            {
+              "round": 2,
+              "p99_ms": 108.8943,
+              "append_p99_ms": 291.3589,
+              "query_p99_ms": 1.2041,
+              "lost": 0,
+              "successful_window_rps": 499.875
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            3.0031739017598498,
+            2.2214446506180834,
+            0.4681119142652644
+          ],
+          "median": 2.2214446506180834
+        },
+        "query": {
+          "rounds": [
+            1.0197506067453341,
+            44.84193862640039,
+            0.9647464145501161
+          ],
+          "median": 1.0197506067453341
+        },
+        "append": {
+          "rounds": [
+            1.575830615353392,
+            2.026662806228549,
+            0.7463201278708177
+          ],
+          "median": 1.575830615353392
+        },
+        "rps": {
+          "rounds": [
+            0.9979994998749687,
+            1.0062988158226254,
+            1.0010012515644555
+          ],
+          "median": 1.0010012515644555
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": false,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 3.5563,
+            "query": 1.202,
+            "append": 93.6457
+          },
+          "lost": 0,
+          "offered": 90000,
+          "rps_median": 500.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 3.5177,
+              "append_p99_ms": 93.6457,
+              "query_p99_ms": 1.202,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 39.8089,
+              "append_p99_ms": 109.7942,
+              "query_p99_ms": 1.1915,
+              "lost": 0,
+              "successful_window_rps": 499.95
+            },
+            {
+              "round": 2,
+              "p99_ms": 3.5563,
+              "append_p99_ms": 40.4266,
+              "query_p99_ms": 1.2194,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 3.507,
+            "query": 1.1982,
+            "append": 108.2905
+          },
+          "lost": 0,
+          "offered": 90000,
+          "rps_median": 500.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 3.507,
+              "append_p99_ms": 108.2905,
+              "query_p99_ms": 1.1957,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 39.6179,
+              "append_p99_ms": 177.6004,
+              "query_p99_ms": 1.2056,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 3.4979,
+              "append_p99_ms": 74.9836,
+              "query_p99_ms": 1.1982,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            0.9969582397589334,
+            0.9952020779272976,
+            0.9835784382644884
+          ],
+          "median": 0.9952020779272976
+        },
+        "query": {
+          "rounds": [
+            0.9947587354409319,
+            1.0118338229122954,
+            0.9826144005248482
+          ],
+          "median": 0.9947587354409319
+        },
+        "append": {
+          "rounds": [
+            1.1563851837297388,
+            1.6175754274815974,
+            1.854808467692064
+          ],
+          "median": 1.6175754274815974
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            1.000100010001,
+            1.0
+          ],
+          "median": 1.0
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": false,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 1.0333,
+            "query": 1.0333,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 2000.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 1.0333,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0333,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 1.0511,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0511,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 1.0303,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0303,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 1.0594,
+            "query": 1.0594,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 1999.875,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 1.0594,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0594,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 1.0285,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0285,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            },
+            {
+              "round": 2,
+              "p99_ms": 1.8652,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.8652,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.0252588793186874,
+            0.9784987156312435,
+            1.8103465010191206
+          ],
+          "median": 1.0252588793186874
+        },
+        "query": {
+          "rounds": [
+            1.0252588793186874,
+            0.9784987156312435,
+            1.8103465010191206
+          ],
+          "median": 1.0252588793186874
+        },
+        "append": {
+          "rounds": [],
+          "median": null
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            0.9999375,
+            0.9999375
+          ],
+          "median": 0.9999375
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 13.894,
+            "query": 13.7427,
+            "append": 44.217
+          },
+          "lost": 0,
+          "offered": 2400,
+          "rps_median": 100.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 9.4429,
+              "append_p99_ms": 4.4711,
+              "query_p99_ms": 9.4506,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 13.894,
+              "append_p99_ms": 44.217,
+              "query_p99_ms": 13.7427,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 28.3139,
+              "append_p99_ms": 85.4868,
+              "query_p99_ms": 18.4645,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            }
+          ]
+        },
+        "candidate": {
+          "p99": {
+            "overall": 14.3173,
+            "query": 17.4678,
+            "append": 36.1999
+          },
+          "lost": 0,
+          "offered": 2400,
+          "rps_median": 100.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 14.3173,
+              "append_p99_ms": 4.802,
+              "query_p99_ms": 17.4678,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 9.7679,
+              "append_p99_ms": 36.1999,
+              "query_p99_ms": 9.601,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 40.8671,
+              "append_p99_ms": 211.3578,
+              "query_p99_ms": 28.4241,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.516197354626227,
+            0.7030300849287462,
+            1.4433582092187935
+          ],
+          "median": 1.4433582092187935
+        },
+        "query": {
+          "rounds": [
+            1.8483270903434703,
+            0.6986254520581837,
+            1.5393918058978038
+          ],
+          "median": 1.5393918058978038
+        },
+        "append": {
+          "rounds": [
+            1.0740086332222496,
+            0.8186873826808694,
+            2.4724027569168574
+          ],
+          "median": 1.0740086332222496
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "median": 1.0
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": true,
+        "query_p99": false
+      }
+    }
+  ],
+  "failed_guards": 10
+}

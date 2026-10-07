@@ -1,0 +1,8 @@
+{
+  "phase": "post-build cache command sequencing",
+  "cache_reclamation_completed": true,
+  "service_timers_started_in_initial_command": false,
+  "reason": "The PowerShell LASTEXITCODE variable was null after a script containing cmdlets; null -ne 0 caused an early successful shell exit.",
+  "correction": "Launch prepare_service.py and paired_service.py separately; test LASTEXITCODE only after native Python execution.",
+  "no_timed_case_restarted": true
+}

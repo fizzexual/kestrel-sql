@@ -1,0 +1,108 @@
+[
+  {
+    "job": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "started_at_utc": "2026-10-07T05:57:37.488661+00:00",
+    "completed_at_utc": "2026-10-07T05:57:37.993589+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "debug",
+    "command": [
+      "cargo",
+      "test",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T05:57:37.993589+00:00",
+    "completed_at_utc": "2026-10-07T05:59:05.513349+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "release",
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T05:59:05.513349+00:00",
+    "completed_at_utc": "2026-10-07T05:59:51.570183+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T05:59:51.570183+00:00",
+    "completed_at_utc": "2026-10-07T05:59:55.867174+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "build",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--bins",
+      "--examples",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T05:59:55.867174+00:00",
+    "completed_at_utc": "2026-10-07T05:59:56.043668+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "fault-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T05:59:56.043668+00:00",
+    "completed_at_utc": "2026-10-07T06:00:03.345069+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "fault-build",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--example",
+      "publication_fault_probe",
+      "--example",
+      "live_retry_probe",
+      "--example",
+      "source_fault_probe",
+      "--features",
+      "fault-injection",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T06:00:03.346071+00:00",
+    "completed_at_utc": "2026-10-07T06:00:25.548451+00:00",
+    "returncode": 0
+  }
+]
