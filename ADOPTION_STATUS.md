@@ -52,3 +52,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Hybrid receipt model 074](HYBRID_RECEIPTS_074.md) passes its untimed native/independent-history/error/owned-kill/corruption qualification. No latency/throughput cohort has run, so it is not adopted or integrated. Previous failed 073 guards and all earlier results remain visible. Supported 0.3.16 stays unchanged.
 
 [Hybrid cycle model 075](HYBRID_CYCLES_075.md) completes 54 balanced fresh metadata cases and passes full logical histories, but nine guards and ten A/A calibrations fail. Publication p50 and recovery regress; the candidate is rejected and not integrated. Four large-history goals pass within this cohort. All previous failures/results and supported 0.3.16 remain unchanged.
+
+[Validated anchor reuse 076](ANCHOR_REUSE_076.md) passes changed-reader correctness/retry/error/owned-kill/corruption qualification, preserving publication bytes. Anchor-terminated body loads/parses are reduced structurally; no fresh latency cohort has run. Not integrated or adopted. Previous 075 performance failures, all older evidence and supported 0.3.16 remain unchanged.
