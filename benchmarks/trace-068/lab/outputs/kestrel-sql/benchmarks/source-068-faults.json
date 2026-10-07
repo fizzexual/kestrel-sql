@@ -1,0 +1,258 @@
+{
+  "driver_sha256": "7520443821d60db4292b9ead707d99ebbb233fb04088c51b5f41ede8f095cddc",
+  "adapter_sha256": "e81d0c2699ad597baacf03166afa9ca16be84a71100ca2cc3a0c4a4617798bd9",
+  "fault_model": "seven exact process exits plus seven injected disk-full publication errors; default non-instrumented source adapter recovery; eight forced process terminations at differing pipeline progress; live filesystem, not physical power loss",
+  "cases": [
+    {
+      "mode": "exit",
+      "point": "segment_partial",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "segment_written",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "segment_synced",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "catalog_partial",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "catalog_written",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "catalog_synced",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "exit",
+      "point": "catalog_published",
+      "fault_proof": {
+        "exact_exit_code": 86
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "segment_partial",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "segment_written",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "segment_synced",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "catalog_partial",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "catalog_written",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "catalog_synced",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    },
+    {
+      "mode": "io_error",
+      "point": "catalog_published",
+      "fault_proof": {
+        "passed": true,
+        "pinned_readable": true,
+        "poisoned_position_and_retries_rejected": true
+      },
+      "output_and_position_atomic": true,
+      "original_generations_preserved": true,
+      "second_reopen_retry_and_scrubs": true
+    }
+  ],
+  "kill_cycles": [
+    {
+      "kill_delay_seconds": 0.0005,
+      "attempted_intervals": 1,
+      "acknowledged_intervals": 0,
+      "published_intervals": 0,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.002,
+      "attempted_intervals": 1,
+      "acknowledged_intervals": 0,
+      "published_intervals": 0,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.008,
+      "attempted_intervals": 2,
+      "acknowledged_intervals": 1,
+      "published_intervals": 1,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.012,
+      "attempted_intervals": 2,
+      "acknowledged_intervals": 1,
+      "published_intervals": 1,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.03,
+      "attempted_intervals": 2,
+      "acknowledged_intervals": 1,
+      "published_intervals": 1,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.08,
+      "attempted_intervals": 7,
+      "acknowledged_intervals": 6,
+      "published_intervals": 6,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.2,
+      "attempted_intervals": 1,
+      "acknowledged_intervals": 0,
+      "published_intervals": 0,
+      "worker_stop_errors": [
+        "AssertionError(('adapter stopped', None))"
+      ],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    },
+    {
+      "kill_delay_seconds": 0.5,
+      "attempted_intervals": 32,
+      "acknowledged_intervals": 32,
+      "published_intervals": 32,
+      "worker_stop_errors": [],
+      "data_and_position_match": true,
+      "all_acknowledged_generations_preserved": true,
+      "resume_replay_second_reopen_scrub": true
+    }
+  ],
+  "failed_cases": []
+}

@@ -1,0 +1,733 @@
+{
+  "audited_utc": "2026-10-07T10:34:07.662038+00:00",
+  "complete": true,
+  "passed": true,
+  "cases": [
+    {
+      "label": "00-r0-0",
+      "spec": {
+        "round": 0,
+        "seed_receipts": 0,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 4643.4127,
+        "p50_ms": 29.50585,
+        "p99_ms": 169.18479800000014,
+        "max_ms": 180.6474,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 3.8554,
+          "segment_write": 67.4881,
+          "segment_sync": 2355.8487999999998,
+          "catalog_encode": 1.2791,
+          "catalog_write": 241.6659,
+          "catalog_sync": 1801.7384,
+          "catalog_rename": 48.1817
+        },
+        "sync_fraction_of_outer": 0.8953731810226561,
+        "encode_fraction_of_outer": 0.0002754654997605533,
+        "residual_fraction_of_outer": 0.02656565504074195,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 245.73020000000002,
+        "p50_ms": 72.6927,
+        "p99_ms": 111.493448,
+        "max_ms": 112.2853,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.3881000000000001,
+          "segment_write": 1.2321,
+          "segment_sync": 121.02799999999999,
+          "catalog_encode": 0.1481,
+          "catalog_write": 1.0959,
+          "catalog_sync": 118.60430000000001,
+          "catalog_rename": 1.4719
+        },
+        "sync_fraction_of_outer": 0.9751845723480466,
+        "encode_fraction_of_outer": 0.0006026935232218099,
+        "residual_fraction_of_outer": 0.003100148048550899,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 62.919799999999995,
+      "reclaim_max_ms": 36.6029,
+      "reopen_ms": 2.7018,
+      "crc_bytes_twice": 614400,
+      "trace_option_bytes": 144
+    },
+    {
+      "label": "01-r0-50000",
+      "spec": {
+        "round": 0,
+        "seed_receipts": 50000,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 7345.9678,
+        "p50_ms": 2.54595,
+        "p99_ms": 956.2964370000003,
+        "max_ms": 1278.2685000000001,
+        "slow_over_500ms": 4,
+        "stage_total_ms": {
+          "prepare": 3.6984,
+          "segment_write": 91.94930000000001,
+          "segment_sync": 1215.0495,
+          "catalog_encode": 63.2077,
+          "catalog_write": 188.5067,
+          "catalog_sync": 5637.6452,
+          "catalog_rename": 106.5109
+        },
+        "sync_fraction_of_outer": 0.9328511758518734,
+        "encode_fraction_of_outer": 0.008604407441045413,
+        "residual_fraction_of_outer": 0.0053635002320593815,
+        "largest_measured_stage_counts_slow": {
+          "catalog_sync": 4
+        },
+        "strict_majority_stage_counts_slow": {
+          "catalog_sync": 4
+        }
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 94.1436,
+        "p50_ms": 32.1096,
+        "p99_ms": 33.012866,
+        "max_ms": 33.0313,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.2619,
+          "segment_write": 1.1794,
+          "segment_sync": 29.033899999999996,
+          "catalog_encode": 0.015300000000000001,
+          "catalog_write": 0.905,
+          "catalog_sync": 60.4357,
+          "catalog_rename": 1.0751
+        },
+        "sync_fraction_of_outer": 0.950352440314583,
+        "encode_fraction_of_outer": 0.00016251768574815495,
+        "residual_fraction_of_outer": 0.0025206174397411924,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 39.8403,
+      "reclaim_max_ms": 16.0456,
+      "reopen_ms": 58.61,
+      "crc_bytes_twice": 3014400,
+      "trace_option_bytes": 144
+    },
+    {
+      "label": "02-r0-99000",
+      "spec": {
+        "round": 0,
+        "seed_receipts": 99000,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 8700.2983,
+        "p50_ms": 2.38935,
+        "p99_ms": 1868.3260140000004,
+        "max_ms": 1935.4281,
+        "slow_over_500ms": 4,
+        "stage_total_ms": {
+          "prepare": 3.4891,
+          "segment_write": 73.6108,
+          "segment_sync": 536.5872,
+          "catalog_encode": 120.6438,
+          "catalog_write": 82.6558,
+          "catalog_sync": 7823.9821,
+          "catalog_rename": 47.4285
+        },
+        "sync_fraction_of_outer": 0.9609520285068848,
+        "encode_fraction_of_outer": 0.013866627998260703,
+        "residual_fraction_of_outer": 0.001367884133352053,
+        "largest_measured_stage_counts_slow": {
+          "catalog_sync": 4
+        },
+        "strict_majority_stage_counts_slow": {
+          "catalog_sync": 4
+        }
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 35.926,
+        "p50_ms": 3.0145,
+        "p99_ms": 29.411485999999996,
+        "max_ms": 29.9502,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.2005,
+          "segment_write": 1.2147999999999999,
+          "segment_sync": 2.5313,
+          "catalog_encode": 0.014499999999999999,
+          "catalog_write": 0.9708,
+          "catalog_sync": 28.563599999999997,
+          "catalog_rename": 1.2112
+        },
+        "sync_fraction_of_outer": 0.8655263597394642,
+        "encode_fraction_of_outer": 0.00040360741524244275,
+        "residual_fraction_of_outer": 0.006104214218115127,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 43.0497,
+      "reclaim_max_ms": 17.901699999999998,
+      "reopen_ms": 120.4958,
+      "crc_bytes_twice": 5366400,
+      "trace_option_bytes": 144
+    },
+    {
+      "label": "03-r1-50000",
+      "spec": {
+        "round": 1,
+        "seed_receipts": 50000,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 4715.6784,
+        "p50_ms": 2.42725,
+        "p99_ms": 574.5611510000014,
+        "max_ms": 1906.1965,
+        "slow_over_500ms": 2,
+        "stage_total_ms": {
+          "prepare": 3.711,
+          "segment_write": 607.5597,
+          "segment_sync": 942.0514000000001,
+          "catalog_encode": 64.0483,
+          "catalog_write": 1932.3257999999998,
+          "catalog_sync": 1007.5778,
+          "catalog_rename": 54.946
+        },
+        "sync_fraction_of_outer": 0.41343557270572145,
+        "encode_fraction_of_outer": 0.013581990663315802,
+        "residual_fraction_of_outer": 0.021939239961741144,
+        "largest_measured_stage_counts_slow": {
+          "catalog_write": 1,
+          "segment_write": 1
+        },
+        "strict_majority_stage_counts_slow": {
+          "catalog_write": 1,
+          "segment_write": 1
+        }
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 9.8113,
+        "p50_ms": 3.166,
+        "p99_ms": 3.562606,
+        "max_ms": 3.5707,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.3726,
+          "segment_write": 1.1408,
+          "segment_sync": 2.6649,
+          "catalog_encode": 0.015,
+          "catalog_write": 0.8731,
+          "catalog_sync": 2.1214,
+          "catalog_rename": 1.3491
+        },
+        "sync_fraction_of_outer": 0.4878354550365395,
+        "encode_fraction_of_outer": 0.0015288493879506283,
+        "residual_fraction_of_outer": 0.027967751470243496,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 43.549899999999994,
+      "reclaim_max_ms": 18.241799999999998,
+      "reopen_ms": 68.6774,
+      "crc_bytes_twice": 3014400,
+      "trace_option_bytes": 144
+    },
+    {
+      "label": "04-r1-99000",
+      "spec": {
+        "round": 1,
+        "seed_receipts": 99000,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 612.7161,
+        "p50_ms": 2.1096,
+        "p99_ms": 87.46209100000009,
+        "max_ms": 106.78269999999999,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 3.0815,
+          "segment_write": 34.7527,
+          "segment_sync": 78.5401,
+          "catalog_encode": 121.4712,
+          "catalog_write": 59.3504,
+          "catalog_sync": 259.1741,
+          "catalog_rename": 45.1009
+        },
+        "sync_fraction_of_outer": 0.5511756586778118,
+        "encode_fraction_of_outer": 0.19825038055960992,
+        "residual_fraction_of_outer": 0.018353034953708502,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 8.959900000000001,
+        "p50_ms": 3.0244,
+        "p99_ms": 3.0505660000000003,
+        "max_ms": 3.0511000000000004,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.2734999999999999,
+          "segment_write": 1.1755,
+          "segment_sync": 2.533,
+          "catalog_encode": 0.0144,
+          "catalog_write": 0.8707,
+          "catalog_sync": 1.8840999999999999,
+          "catalog_rename": 1.0361
+        },
+        "sync_fraction_of_outer": 0.49298541278362473,
+        "encode_fraction_of_outer": 0.0016071607942052923,
+        "residual_fraction_of_outer": 0.01926360785276632,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 43.6837,
+      "reclaim_max_ms": 16.3735,
+      "reopen_ms": 126.28030000000001,
+      "crc_bytes_twice": 5366400,
+      "trace_option_bytes": 144
+    },
+    {
+      "label": "05-r1-0",
+      "spec": {
+        "round": 1,
+        "seed_receipts": 0,
+        "repetitions": 128,
+        "batch_rows": 100
+      },
+      "append": {
+        "count": 128,
+        "outer_total_ms": 261.9015,
+        "p50_ms": 1.9452,
+        "p99_ms": 3.021185,
+        "max_ms": 3.1782999999999997,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 3.1243,
+          "segment_write": 34.6691,
+          "segment_sync": 74.2536,
+          "catalog_encode": 0.9418,
+          "catalog_write": 34.6216,
+          "catalog_sync": 66.0458,
+          "catalog_rename": 41.6746
+        },
+        "sync_fraction_of_outer": 0.5356952900231575,
+        "encode_fraction_of_outer": 0.0035960084230139957,
+        "residual_fraction_of_outer": 0.025088439737840324,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "compact": {
+        "count": 3,
+        "outer_total_ms": 9.1832,
+        "p50_ms": 2.9962999999999997,
+        "p99_ms": 3.489926,
+        "max_ms": 3.5,
+        "slow_over_500ms": 0,
+        "stage_total_ms": {
+          "prepare": 1.4133,
+          "segment_write": 1.1122999999999998,
+          "segment_sync": 2.9313,
+          "catalog_encode": 0.10270000000000001,
+          "catalog_write": 0.7923,
+          "catalog_sync": 1.635,
+          "catalog_rename": 0.9693
+        },
+        "sync_fraction_of_outer": 0.4972449690739612,
+        "encode_fraction_of_outer": 0.011183465458663649,
+        "residual_fraction_of_outer": 0.024719052182245876,
+        "largest_measured_stage_counts_slow": {},
+        "strict_majority_stage_counts_slow": {}
+      },
+      "reclaim_calls": 3,
+      "reclaim_total_ms": 37.8464,
+      "reclaim_max_ms": 16.092,
+      "reopen_ms": 2.6279,
+      "crc_bytes_twice": 614400,
+      "trace_option_bytes": 144
+    }
+  ],
+  "by_history": [
+    {
+      "seed_receipts": 0,
+      "rounds": 2,
+      "append_p50_round_ms": [
+        29.50585,
+        1.9452
+      ],
+      "append_p99_round_ms": [
+        169.18479800000014,
+        3.021185
+      ],
+      "append_max_round_ms": [
+        180.6474,
+        3.1782999999999997
+      ],
+      "slow_append_count": 0,
+      "slow_compact_count": 0,
+      "summary_is_descriptive_not_speedup": true
+    },
+    {
+      "seed_receipts": 50000,
+      "rounds": 2,
+      "append_p50_round_ms": [
+        2.54595,
+        2.42725
+      ],
+      "append_p99_round_ms": [
+        956.2964370000003,
+        574.5611510000014
+      ],
+      "append_max_round_ms": [
+        1278.2685000000001,
+        1906.1965
+      ],
+      "slow_append_count": 6,
+      "slow_compact_count": 0,
+      "summary_is_descriptive_not_speedup": true
+    },
+    {
+      "seed_receipts": 99000,
+      "rounds": 2,
+      "append_p50_round_ms": [
+        2.38935,
+        2.1096
+      ],
+      "append_p99_round_ms": [
+        1868.3260140000004,
+        87.46209100000009
+      ],
+      "append_max_round_ms": [
+        1935.4281,
+        106.78269999999999
+      ],
+      "slow_append_count": 4,
+      "slow_compact_count": 0,
+      "summary_is_descriptive_not_speedup": true
+    }
+  ],
+  "all_append": {
+    "count": 768,
+    "outer_total_ms": 26279.9748,
+    "p50_ms": 2.3273,
+    "p99_ms": 907.2627740000001,
+    "max_ms": 1935.4281,
+    "slow_over_500ms": 10,
+    "stage_total_ms": {
+      "prepare": 20.9597,
+      "segment_write": 910.0297,
+      "segment_sync": 5202.3306,
+      "catalog_encode": 371.5919,
+      "catalog_write": 2539.1261999999997,
+      "catalog_sync": 16596.1634,
+      "catalog_rename": 343.8426
+    },
+    "sync_fraction_of_outer": 0.8294716477429804,
+    "encode_fraction_of_outer": 0.014139735780872971,
+    "residual_fraction_of_outer": 0.011260691924255465,
+    "largest_measured_stage_counts_slow": {
+      "catalog_sync": 8,
+      "catalog_write": 1,
+      "segment_write": 1
+    },
+    "strict_majority_stage_counts_slow": {
+      "catalog_sync": 8,
+      "catalog_write": 1,
+      "segment_write": 1
+    }
+  },
+  "all_compact": {
+    "count": 18,
+    "outer_total_ms": 403.7542,
+    "p50_ms": 3.333,
+    "p99_ms": 105.55455799999993,
+    "max_ms": 112.2853,
+    "slow_over_500ms": 0,
+    "stage_total_ms": {
+      "prepare": 7.9099,
+      "segment_write": 7.0549,
+      "segment_sync": 160.7224,
+      "catalog_encode": 0.31,
+      "catalog_write": 5.5078,
+      "catalog_sync": 213.2441,
+      "catalog_rename": 7.1127
+    },
+    "sync_fraction_of_outer": 0.9262231823223138,
+    "encode_fraction_of_outer": 0.0007677938706272281,
+    "residual_fraction_of_outer": 0.004687010067016044,
+    "largest_measured_stage_counts_slow": {},
+    "strict_majority_stage_counts_slow": {}
+  },
+  "slow_events_over_500ms": [
+    {
+      "label": "01-r0-50000",
+      "seed_receipts": 50000,
+      "round": 0,
+      "operation": "append",
+      "batch": 31,
+      "generation": 33,
+      "checkpoint": true,
+      "outer_ms": 1278.2685000000001,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 1174.4273,
+      "largest_stage_fraction_of_outer": 0.9187641720029868,
+      "stage_ms": {
+        "prepare": 0.0252,
+        "segment_write": 0.26439999999999997,
+        "segment_sync": 29.319399999999998,
+        "catalog_encode": 15.2133,
+        "catalog_write": 57.0721,
+        "catalog_sync": 1174.4273,
+        "catalog_rename": 1.0611
+      },
+      "unmeasured_residual_ms": 0.8857000000000426
+    },
+    {
+      "label": "01-r0-50000",
+      "seed_receipts": 50000,
+      "round": 0,
+      "operation": "append",
+      "batch": 63,
+      "generation": 65,
+      "checkpoint": true,
+      "outer_ms": 906.4385000000001,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 885.9597,
+      "largest_stage_fraction_of_outer": 0.9774074027085123,
+      "stage_ms": {
+        "prepare": 0.0218,
+        "segment_write": 0.2329,
+        "segment_sync": 0.3941,
+        "catalog_encode": 15.265,
+        "catalog_write": 3.3047,
+        "catalog_sync": 885.9597,
+        "catalog_rename": 0.6082000000000001
+      },
+      "unmeasured_residual_ms": 0.6521000000001322
+    },
+    {
+      "label": "01-r0-50000",
+      "seed_receipts": 50000,
+      "round": 0,
+      "operation": "append",
+      "batch": 94,
+      "generation": 97,
+      "checkpoint": true,
+      "outer_ms": 908.9363000000001,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 888.276,
+      "largest_stage_fraction_of_outer": 0.977269804275613,
+      "stage_ms": {
+        "prepare": 0.0292,
+        "segment_write": 0.27399999999999997,
+        "segment_sync": 0.544,
+        "catalog_encode": 15.5248,
+        "catalog_write": 3.1981,
+        "catalog_sync": 888.276,
+        "catalog_rename": 0.4099
+      },
+      "unmeasured_residual_ms": 0.680300000000102
+    },
+    {
+      "label": "01-r0-50000",
+      "seed_receipts": 50000,
+      "round": 0,
+      "operation": "append",
+      "batch": 125,
+      "generation": 129,
+      "checkpoint": true,
+      "outer_ms": 973.8132,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 952.2996,
+      "largest_stage_fraction_of_outer": 0.9779078780201378,
+      "stage_ms": {
+        "prepare": 0.0236,
+        "segment_write": 0.2241,
+        "segment_sync": 0.57,
+        "catalog_encode": 16.2625,
+        "catalog_write": 3.1830000000000003,
+        "catalog_sync": 952.2996,
+        "catalog_rename": 0.5347000000000001
+      },
+      "unmeasured_residual_ms": 0.7156999999999698
+    },
+    {
+      "label": "02-r0-99000",
+      "seed_receipts": 99000,
+      "round": 0,
+      "operation": "append",
+      "batch": 31,
+      "generation": 33,
+      "checkpoint": true,
+      "outer_ms": 1894.6434000000002,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 1830.5880000000002,
+      "largest_stage_fraction_of_outer": 0.9661913160017341,
+      "stage_ms": {
+        "prepare": 0.0244,
+        "segment_write": 0.2496,
+        "segment_sync": 0.8024,
+        "catalog_encode": 30.3,
+        "catalog_write": 30.352899999999998,
+        "catalog_sync": 1830.5880000000002,
+        "catalog_rename": 1.1331
+      },
+      "unmeasured_residual_ms": 1.1929999999999836
+    },
+    {
+      "label": "02-r0-99000",
+      "seed_receipts": 99000,
+      "round": 0,
+      "operation": "append",
+      "batch": 63,
+      "generation": 65,
+      "checkpoint": true,
+      "outer_ms": 1935.4281,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 1896.9459,
+      "largest_stage_fraction_of_outer": 0.9801169570701179,
+      "stage_ms": {
+        "prepare": 0.0266,
+        "segment_write": 0.2857,
+        "segment_sync": 0.8642,
+        "catalog_encode": 29.9631,
+        "catalog_write": 5.6688,
+        "catalog_sync": 1896.9459,
+        "catalog_rename": 0.4881
+      },
+      "unmeasured_residual_ms": 1.1857000000002245
+    },
+    {
+      "label": "02-r0-99000",
+      "seed_receipts": 99000,
+      "round": 0,
+      "operation": "append",
+      "batch": 94,
+      "generation": 97,
+      "checkpoint": true,
+      "outer_ms": 1778.4963,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 1740.754,
+      "largest_stage_fraction_of_outer": 0.9787785333036677,
+      "stage_ms": {
+        "prepare": 0.0255,
+        "segment_write": 0.2672,
+        "segment_sync": 0.5315,
+        "catalog_encode": 29.6546,
+        "catalog_write": 5.6452,
+        "catalog_sync": 1740.754,
+        "catalog_rename": 0.4478
+      },
+      "unmeasured_residual_ms": 1.1705000000001746
+    },
+    {
+      "label": "02-r0-99000",
+      "seed_receipts": 99000,
+      "round": 0,
+      "operation": "append",
+      "batch": 125,
+      "generation": 129,
+      "checkpoint": true,
+      "outer_ms": 1797.1716,
+      "largest_measured_stage": "catalog_sync",
+      "largest_stage_ms": 1758.8709000000001,
+      "largest_stage_fraction_of_outer": 0.9786883456204183,
+      "stage_ms": {
+        "prepare": 0.0416,
+        "segment_write": 0.3998,
+        "segment_sync": 0.6,
+        "catalog_encode": 29.939400000000003,
+        "catalog_write": 5.7597000000000005,
+        "catalog_sync": 1758.8709000000001,
+        "catalog_rename": 0.4083
+      },
+      "unmeasured_residual_ms": 1.1518999999998414
+    },
+    {
+      "label": "03-r1-50000",
+      "seed_receipts": 50000,
+      "round": 1,
+      "operation": "append",
+      "batch": 27,
+      "generation": 29,
+      "checkpoint": false,
+      "outer_ms": 1906.1965,
+      "largest_measured_stage": "catalog_write",
+      "largest_stage_ms": 1758.8892999999998,
+      "largest_stage_fraction_of_outer": 0.9227219229497063,
+      "stage_ms": {
+        "prepare": 0.0253,
+        "segment_write": 0.2652,
+        "segment_sync": 27.7824,
+        "catalog_encode": 0.0070999999999999995,
+        "catalog_write": 1758.8892999999998,
+        "catalog_sync": 60.6101,
+        "catalog_rename": 0.5015
+      },
+      "unmeasured_residual_ms": 58.115600000000086
+    },
+    {
+      "label": "03-r1-50000",
+      "seed_receipts": 50000,
+      "round": 1,
+      "operation": "append",
+      "batch": 28,
+      "generation": 30,
+      "checkpoint": false,
+      "outer_ms": 667.5434,
+      "largest_measured_stage": "segment_write",
+      "largest_stage_ms": 485.4155,
+      "largest_stage_fraction_of_outer": 0.7271669527404511,
+      "stage_ms": {
+        "prepare": 0.0467,
+        "segment_write": 485.4155,
+        "segment_sync": 126.887,
+        "catalog_encode": 0.0099,
+        "catalog_write": 0.4908,
+        "catalog_sync": 53.2403,
+        "catalog_rename": 0.8815999999999999
+      },
+      "unmeasured_residual_ms": 0.5715999999999894
+    }
+  ],
+  "reclaim_slow_over_500ms": 0,
+  "total_new_rows": 76800,
+  "publications_observed": 786,
+  "durable_retries": 18,
+  "crc_scrubbed_bytes": 17990400,
+  "per_event_stage_profile_counts_totals_maxima_histograms_conserved": true,
+  "all_six_final_store_files_checked_two_rounds_byte_identical": true,
+  "file_instances": 236,
+  "full_file_bytes": 58153438,
+  "inventory_sha256": "409b42d2a7c4e82b13de0811235342e38282da1e754ebbc640d5203c17e51e0a",
+  "native_067_is_prior_work_not_comparison": true,
+  "feature_overhead_unmeasured": true,
+  "no_speedup_competitor_production_or_physical_cause_claim": true,
+  "diagnostic_policy_sha256": "9eacc6c09ed5f7ca1f62b6fff7511d09835c4e66f87e57adc3f0a78e6b033204",
+  "results_sha256": "a9be5ee0a8949df58263429c53bc470c77f76e5a77e155d9ff0497e9b4d21543"
+}

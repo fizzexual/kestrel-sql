@@ -1,0 +1,185 @@
+[
+  {
+    "job": "fmt",
+    "mode": "default",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "started_at_utc": "2026-10-07T10:22:51.624921+00:00",
+    "completed_at_utc": "2026-10-07T10:22:51.940052+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "default-clippy",
+    "mode": "default",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T10:22:51.941049+00:00",
+    "completed_at_utc": "2026-10-07T10:22:59.168545+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "default-build",
+    "mode": "default",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--bins",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T10:22:59.169540+00:00",
+    "completed_at_utc": "2026-10-07T10:23:21.463538+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "debug",
+    "mode": "trace",
+    "command": [
+      "cargo",
+      "test",
+      "--features",
+      "publication-trace",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T10:23:21.464532+00:00",
+    "completed_at_utc": "2026-10-07T10:23:41.320193+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "release",
+    "mode": "trace",
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--features",
+      "publication-trace",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T10:23:41.320193+00:00",
+    "completed_at_utc": "2026-10-07T10:24:41.973600+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "trace-clippy",
+    "mode": "trace",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--features",
+      "publication-trace",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T10:24:41.974572+00:00",
+    "completed_at_utc": "2026-10-07T10:24:46.130963+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "trace-build",
+    "mode": "trace",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--bins",
+      "--examples",
+      "--features",
+      "publication-trace",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T10:24:46.130963+00:00",
+    "completed_at_utc": "2026-10-07T10:24:46.306941+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "fault-only-clippy",
+    "mode": "fault-only",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T10:24:46.307939+00:00",
+    "completed_at_utc": "2026-10-07T10:24:57.005870+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "trace-fault-clippy",
+    "mode": "fault",
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--features",
+      "publication-trace,fault-injection",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "started_at_utc": "2026-10-07T10:24:57.006384+00:00",
+    "completed_at_utc": "2026-10-07T10:25:08.955122+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "trace-fault-build",
+    "mode": "fault",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--example",
+      "publication_fault_probe",
+      "--example",
+      "live_retry_probe",
+      "--example",
+      "source_fault_probe",
+      "--features",
+      "publication-trace,fault-injection",
+      "--offline",
+      "--locked"
+    ],
+    "started_at_utc": "2026-10-07T10:25:08.956060+00:00",
+    "completed_at_utc": "2026-10-07T10:25:37.432745+00:00",
+    "returncode": 0
+  },
+  {
+    "job": "source-adapter",
+    "mode": "trace",
+    "command": [
+      "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-068\\lab\\outputs\\kestrel-sql\\benchmarks\\build_source_adapter_068.py"
+    ],
+    "started_at_utc": "2026-10-07T10:25:37.433290+00:00",
+    "completed_at_utc": "2026-10-07T10:25:47.684485+00:00",
+    "returncode": 0
+  }
+]

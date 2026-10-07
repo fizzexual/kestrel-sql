@@ -36,3 +36,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Encoder profiles 065/066](ENCODER_PROFILES_065_066.md) measure output-buffer models on released source, with one retained original calibration failure and a separate passing replication. They justify an engine experiment, not an engine upgrade or a change to the primary-production adoption assessment.
 
 [Bounded writer buffer 067](BUFFER_067.md) completes full correctness/recovery and a six-round native cohort. All 32 validated group-kill stores and cross-binary format checks are retained. Read the measured guard/calibration decision; no primary-production adoption or supported-release change.
+
+[Opt-in publication diagnostics 068](TRACE_068.md) preserves individual stage events, full correctness/recovery and exact released/default/traced store bytes. It remains development-only, with no measured overhead or service improvement and no primary-production adoption change.
