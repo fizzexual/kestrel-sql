@@ -32,3 +32,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Current batching controls 063](BATCHING_063.md) record 4/10 failed identity checks and 6/26 failed option criteria. Existing durable options are measured, with no engine edit, default promotion or change to the primary-production adoption assessment.
 
 [Compaction development064](COMPACTION_064.md) passes full correctness and fourteen wider-merge fault cuts, but fails5/6 native speed goals,1/12 candidate guards and5/18 calibration checks. No service advance or supported promotion; primary-production adoption assessment remains unchanged.
+
+[Encoder profiles 065/066](ENCODER_PROFILES_065_066.md) measure output-buffer models on released source, with one retained original calibration failure and a separate passing replication. They justify an engine experiment, not an engine upgrade or a change to the primary-production adoption assessment.

@@ -1,0 +1,977 @@
+{
+  "trial": 66,
+  "declared_utc": "2026-10-07T08:50:37.386824+00:00",
+  "before_build_and_timing": false,
+  "engine_change": false,
+  "purpose": "Isolate output-buffer growth in exact released borrowed catalog serializer; hypothetical allocation models, not database performance",
+  "variants": [
+    "baseline_a",
+    "baseline_b",
+    "reserve_exact",
+    "reuse"
+  ],
+  "cases": [
+    {
+      "round": 0,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 0,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 1,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 2,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 3,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 4,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 5,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 6,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 7,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 8,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 9,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 10,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 0,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 0,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 0,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 0,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 50000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 50000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 50000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 50000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 99000,
+      "variant": "baseline_b",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 99000,
+      "variant": "reserve_exact",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 99000,
+      "variant": "reuse",
+      "repetitions": 33
+    },
+    {
+      "round": 11,
+      "starting_receipts": 99000,
+      "variant": "baseline_a",
+      "repetitions": 33
+    }
+  ],
+  "same_exact_probe_path_and_sha_for_all_labels": true,
+  "baseline_a_b_same_exact_mode": true,
+  "inputs": [
+    {
+      "starting_receipts": 0,
+      "source_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-064\\native-fixtures\\00-r0-0-baseline_a\\catalog-00000000000000000257.ks2",
+      "source_fixture_key": "native-fixtures/00-r0-0-baseline_a/catalog-00000000000000000257.ks2",
+      "source_envelope_sha256": "d8e710b8e994598900ab0b69deb5ba7c94e6a1ebc87aac57a670bdcf82963bc3",
+      "body_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-066\\inputs\\0-checkpoint.json",
+      "body_relative": "inputs/0-checkpoint.json",
+      "body_sha256": "6955f7d42eace360448b41c2ac5b0cef527473dfb6370c0f5559c7616785e626",
+      "bytes": 42419,
+      "envelope_relative": "inputs/0-checkpoint.ks2",
+      "envelope_sha256": "d8e710b8e994598900ab0b69deb5ba7c94e6a1ebc87aac57a670bdcf82963bc3",
+      "generation": 257,
+      "receipts": 250,
+      "last_id": "new:99",
+      "receipt_base": null,
+      "envelope_crc_passed": true,
+      "all_duplicate_keys_rejected": true
+    },
+    {
+      "starting_receipts": 50000,
+      "source_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-064\\native-fixtures\\05-r0-50000-baseline_a\\catalog-00000000000000000257.ks2",
+      "source_fixture_key": "native-fixtures/05-r0-50000-baseline_a/catalog-00000000000000000257.ks2",
+      "source_envelope_sha256": "a73b8ff09ecbe13fbdca88c0311d160298d725226e4cf1bcb630fdccb11a08bf",
+      "body_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-066\\inputs\\50000-checkpoint.json",
+      "body_relative": "inputs/50000-checkpoint.json",
+      "body_sha256": "422a9b19f2c139b134527ba4eb314eda64474732f82dabdf853bbab0120f05a5",
+      "bytes": 8243311,
+      "envelope_relative": "inputs/50000-checkpoint.ks2",
+      "envelope_sha256": "a73b8ff09ecbe13fbdca88c0311d160298d725226e4cf1bcb630fdccb11a08bf",
+      "generation": 257,
+      "receipts": 50250,
+      "last_id": "new:249",
+      "receipt_base": null,
+      "envelope_crc_passed": true,
+      "all_duplicate_keys_rejected": true
+    },
+    {
+      "starting_receipts": 99000,
+      "source_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-064\\native-fixtures\\07-r0-99000-baseline_a\\catalog-00000000000000000257.ks2",
+      "source_fixture_key": "native-fixtures/07-r0-99000-baseline_a/catalog-00000000000000000257.ks2",
+      "source_envelope_sha256": "0c3e5855080934df5600275a2ac0b0e95d9783afd6ae1b42d3cf005b84ce09eb",
+      "body_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-066\\inputs\\99000-checkpoint.json",
+      "body_relative": "inputs/99000-checkpoint.json",
+      "body_sha256": "39b4b6bbc09977712bd2837dc5be62f0807b9dc22902d955bd2f860cbeb263b2",
+      "bytes": 16291871,
+      "envelope_relative": "inputs/99000-checkpoint.ks2",
+      "envelope_sha256": "0c3e5855080934df5600275a2ac0b0e95d9783afd6ae1b42d3cf005b84ce09eb",
+      "generation": 257,
+      "receipts": 99250,
+      "last_id": "new:249",
+      "receipt_base": null,
+      "envelope_crc_passed": true,
+      "all_duplicate_keys_rejected": true
+    }
+  ],
+  "rounds": 12,
+  "repetitions": 33,
+  "warmups": 0,
+  "input_loading_deserialization_oracles_and_output_drop_outside_timer": true,
+  "allocation_model": "Baseline: released to_vec starts128; reserve_exact: cold Vec sized from known input bytes; reuse: empty Vec at case start, first allocation timed, capacity retained thereafter",
+  "oracle_size_limit": "Exact future output length is known only for this fixed-input model; not a proposed deployable reservation predictor",
+  "aggregation": "Median of four within-round ratios per input; A primary, B identity, models/B diagnostic only",
+  "goals_large_histories": {
+    "total_ratio_max": 0.9,
+    "p50_ratio_max": 0.9
+  },
+  "guards_all_histories": {
+    "p99_ratio_max": 1.1,
+    "first_encode_ratio_max": 1.1,
+    "peak_working_set_ratio_max": 1.1
+  },
+  "small_history_p50_guard_max": 1.05,
+  "identity_ratio_interval": [
+    0.9,
+    1.1
+  ],
+  "identity_metrics": [
+    "total_ms",
+    "p50_ms",
+    "p99_ms",
+    "first_encode_ms",
+    "peak_working_set_bytes"
+  ],
+  "decision": "Only models passing all own goals/guards plus every identity check justify an engine buffer experiment; no engine promotion, service sweep or SQL speed claim from this profile",
+  "retain": "All raw iterations, first encodes, errors, capacity traces, inputs and binary; no best-run selection or silently restarted cases",
+  "process_policy": "One task-owned probe; all compilation, audits, packaging and cleanup outside timers",
+  "timeout_seconds_per_case": 120,
+  "minimum_free_bytes_before_case": 300000000,
+  "profiled_engine_version": "0.3.16",
+  "before_timing": true,
+  "reason": "Independent144-case replication after065 cold-first identity ratio1.100009 exceeds1.10; triple paired rounds, all thresholds unchanged, original failure retained",
+  "original_failed_cohort_audit_sha256": "bb9de1a3eef4eededa2efb37d9bb4048c0b9bf2d17e3e5f671682f728155e144",
+  "original_failed_cohort_never_replaced": true,
+  "binary_and_smoke_inherited_without_rebuilding_or_rerunning": true,
+  "original_binary_path": "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-065\\bin\\encoder-probe.exe"
+}
