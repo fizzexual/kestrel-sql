@@ -1,0 +1,26 @@
+{
+  "declared_utc": "2026-10-07T02:17:23.659502+00:00",
+  "trial": "052 exact pending bundle length before full write and sync_all",
+  "hypothesis": "Reduce incremental file extension cost in checksum-protected large receipt checkpoints; set_len does not guarantee physical preallocation",
+  "measured_basis": "051 tails align with ~8/16 MB receipt checkpoints; sync dominated slow runs",
+  "source_changes": [
+    "src/archive.rs"
+  ],
+  "base": "frozen development 050, not released engine",
+  "format_changed": false,
+  "acknowledgment_or_sync_rule_changed": false,
+  "default_engine_changed": false,
+  "promotion": false,
+  "qualification": "85 existing release tests, formatting/strict Clippy, 72 process-exit/injected-I/O cuts and22corruptions before fresh native timing; paired fixture byte-equivalence after timing",
+  "performance": "18 fresh serial native cases using byte-identical publication driver: 0/50000/99000 seed receipts,256 appends,3 alternating pairs each; compare full timing and tail counts, not just percentile movement",
+  "predeclared_advance_gates": {
+    "paired_append_total_ratio_at_99000_at_most": 0.9,
+    "paired_p99_ratio_at_99000_at_most": 0.9,
+    "paired_p50_guard_at_all_sizes_at_most": 1.05,
+    "max_tail_guard_at_all_sizes_at_most": 1.1
+  },
+  "follow_up": "Only consider full service/release qualification if every native gate passes; otherwise preserve and reject the experiment",
+  "source_reference": "https://doc.rust-lang.org/std/fs/struct.File.html#method.set_len",
+  "fault_hook": "bundle_sized added only to feature-enabled fault driver",
+  "timing_policy": "No CPU-heavy job concurrently with timed database workloads; fresh fixtures and all failures retained"
+}
