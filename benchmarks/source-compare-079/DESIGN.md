@@ -1,0 +1,9 @@
+# Fresh source-state comparison079
+
+Two identical qualified076 controls versus qualified078, unchanged bench075 hybrid64. Original generation129 inputs, actual126/50126/99126 receipts,64 real edits with56 ordinary and8 source publications for two sources, two complete checkpoint cycles and12 fresh opens per case. Six balanced permutations,54 cases. No source edits, rebuild or reused timed sample.
+
+Before the first timer, declare large-history charged publication-total and source p99 goals of0.80, requiring corresponding A/A ratios within0.90..1.10. Guard ordinary p50/p99/max, all-publication p50/p99/max, small-store total/source tail, migration, process peaks, exact metadata bytes, all-open tail and every recovery termination path. The additional source map is charged in full process peaks, but this workload has only two keys and does not establish maximum4096-key memory performance.
+
+The canonical full-file decoder remains byte-identical. Only truthful candidate flags and additional descriptive/gated metrics change the benchmark auditor. Independently decode all67 files for three canonical sizes and SHA-check every replica; all edits, generations, positions, retries, sync counts, input anchors, stages and balanced order must agree. Candidate and control wire bytes must match. Qualification078's native tests/process cuts/corruption checks are prerequisites, not rerun or counted as new079 tests.
+
+One task-owned native child at a time. No compilation, tests, audits, packaging or Git during timed workloads. A3GB guard precedes each unstarted case,600-second owned-child timeout kills and waits, and all observed evidence survives. Report every policy failure, no trimming or rerun. Warm same-process opens, opaque unchanged segment references and native metadata calls do not support real SQL throughput, competitor superiority, production readiness or supported adoption. Keep075 and077 failures visible and morning report frozen.
