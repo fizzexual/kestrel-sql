@@ -1,0 +1,5 @@
+Initial atomic object preparation stopped before creating any policy, request record, blob/tree/commit or branch mutation.
+The read-only privacy preflight called gh api repos/fizzexual/kestrel-sql/ with a trailing slash and received HTTP404.
+prepare_atomic_api.py line14 -> gh_get('') line11 -> subprocess.CalledProcessError, exit1.
+The original exact helper is retained as prepare-atomic-before-root-url-fix.py.
+Only the root GET URL construction was corrected to omit a trailing slash when its relative path is empty. Object API paths and all candidate/source/qualification/fixture data remain unchanged. No workload rerun occurred.
