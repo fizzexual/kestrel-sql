@@ -1,0 +1,83 @@
+{
+  "trial": 62,
+  "declared_utc": "2026-10-07T06:48:05.782437+00:00",
+  "before_timing": true,
+  "status": "identical released-binary A/A calibration plus unchanged clean-core 061; no engine edit",
+  "versions": {
+    "baseline_a": "0.3.16",
+    "baseline_b": "0.3.16",
+    "candidate": "0.3.17-dev.61"
+  },
+  "binary_sha256": {
+    "baseline_a": "081ed43e56d45f1c57ed10e0bebe80ad59487aa92b3215b13bbde06d74e76024",
+    "baseline_b": "081ed43e56d45f1c57ed10e0bebe80ad59487aa92b3215b13bbde06d74e76024",
+    "candidate": "b9f14feff962217ca8d4792a76b78bba5bebe9a7539eef18541b7338d6ebf8fc"
+  },
+  "same_exact_executable_path_for_both_baseline_labels": true,
+  "numpy_version": "2.5.3",
+  "comparison": {
+    "rounds": 3,
+    "base_rows": 1000000,
+    "clients": 64,
+    "batch_rows": 100,
+    "group_delay_ms": 0,
+    "queue_capacity": 256,
+    "worker_expiry_seconds": 2,
+    "configs": [
+      [
+        "read",
+        2000,
+        8
+      ],
+      [
+        "write",
+        500,
+        8
+      ],
+      [
+        "mixed",
+        500,
+        60
+      ]
+    ],
+    "write_fractions": {
+      "read": 0,
+      "write": 0.25,
+      "mixed": 0.05
+    },
+    "order": "Latin-square rotation of baseline_a, baseline_b, candidate by (round + config index) modulo 3",
+    "disk_preflight_min_free_bytes": 800000000
+  },
+  "identity_calibration": {
+    "comparator": "baseline_b / baseline_a",
+    "each_successful_p99_ratio_min": 0.9,
+    "each_successful_p99_ratio_max": 1.1,
+    "window_rps_ratio_min": 0.9,
+    "window_rps_ratio_max": 1.1,
+    "absolute_loss_difference_max_offered_fraction": 0.01,
+    "overall_query_and_append_p99_recorded_separately": true
+  },
+  "candidate_regression_guards": {
+    "primary_comparator": "candidate / baseline_a",
+    "successful_p99_ratio_max": 1.1,
+    "window_rps_ratio_min": 0.9,
+    "loss_increase_max_offered_fraction": 0.01,
+    "candidate_over_baseline_b_always_reported_as_diagnostic_only": true
+  },
+  "outside_timer": [
+    "seed",
+    "cold reopen/exact retry",
+    "20 NumPy windows and full CRC per case",
+    "raw compression",
+    "compilation/audit/packaging/Git/cleanup"
+  ],
+  "limits": [
+    "27 fresh serial cases; no restart or replacement of any 061 timings",
+    "shared near-full Windows desktop; free bytes and whole-host telemetry retained per case",
+    "three pairs per profile are a calibration, not statistical proof of equivalence or a causal model",
+    "A/A failure does not erase original 061 service failures or permit supported promotion",
+    "finite offered rates, not maximum sustainable capacity; task-owned processes stopped per case",
+    "no new compiler job, SDK change, full competitive matrix or supported release",
+    "no physical power-loss or production qualification; English only; morning already issued"
+  ]
+}

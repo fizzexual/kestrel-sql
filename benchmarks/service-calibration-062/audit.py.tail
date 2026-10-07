@@ -1,0 +1,95 @@
+    summaries = []
+    identity_gates = []
+    candidate_gates = []
+    for profile, rate, seconds in configs:
+        selected = [c for c in r['cases'] if (c['profile'], c['offered_rps'], c['scheduled_seconds']) == (profile, rate, seconds)]
+        variants = {v: sorted((c for c in selected if c['variant'] == v), key=lambda c: c['round'])
+                    for v in ('baseline_a', 'baseline_b', 'candidate')}
+        assert all(len(cs) == 3 for cs in variants.values())
+        def metric(c, name):
+            if name == 'overall':
+                return c['latency_ms']['p99']
+            if name == 'rps':
+                return c['successful_rps_in_arrival_window']
+            return c['operation_latency_ms'][name]['p99']
+        row = {'profile': profile, 'rate': rate, 'seconds': seconds, 'variants': {}, 'comparisons': {}}
+        for v, cs in variants.items():
+            row['variants'][v] = {'p99_ms': {n: statistics.median(metric(c, n) for c in cs)
+                                                     if metric(cs[0], n) is not None else None
+                                                for n in ('overall', 'query', 'append')},
+                                 'lost': sum(c['unsuccessful_or_unexecuted'] for c in cs),
+                                 'offered': sum(c['offered_operations'] for c in cs),
+                                 'rps_median': statistics.median(metric(c, 'rps') for c in cs),
+                                 'all_rounds': [{'round': c['round'], 'p99_ms': c['latency_ms']['p99'],
+                                                 'append_p99_ms': c['operation_latency_ms']['append']['p99'],
+                                                 'query_p99_ms': c['operation_latency_ms']['query']['p99'],
+                                                 'lost': c['unsuccessful_or_unexecuted'],
+                                                 'successful_window_rps': metric(c, 'rps')} for c in cs]}
+        for label, numerator, denominator in [('identity_b_over_a', 'baseline_b', 'baseline_a'),
+                                               ('primary_candidate_over_a', 'candidate', 'baseline_a'),
+                                               ('diagnostic_candidate_over_b', 'candidate', 'baseline_b')]:
+            data = {'paired_ratios': {}}
+            crossing = []
+            for d, n in zip(variants[denominator], variants[numerator]):
+                if bool(d.get('resumed_after_preflight_only')) != bool(n.get('resumed_after_preflight_only')):
+                    crossing.append(d['round'])
+            data['rounds_spanning_maintenance_pause'] = crossing
+            if label == 'primary_candidate_over_a':
+                assert not crossing
+            for name in ('overall', 'query', 'append', 'rps'):
+                ratios = [metric(n, name) / metric(d, name)
+                          for d, n in zip(variants[denominator], variants[numerator])
+                          if metric(d, name) not in (None, 0)]
+                data['paired_ratios'][name] = {'rounds': ratios, 'median': statistics.median(ratios) if ratios else None}
+            difference = row['variants'][numerator]['lost'] - row['variants'][denominator]['lost']
+            allowed_loss = row['variants'][denominator]['offered'] * .01
+            if label == 'identity_b_over_a':
+                checks = {'overall_p99': .90 <= data['paired_ratios']['overall']['median'] <= 1.10,
+                          'query_p99': .90 <= data['paired_ratios']['query']['median'] <= 1.10,
+                          'window_rps': .90 <= data['paired_ratios']['rps']['median'] <= 1.10,
+                          'loss_difference': abs(difference) <= allowed_loss}
+                if profile != 'read':
+                    checks['append_p99'] = .90 <= data['paired_ratios']['append']['median'] <= 1.10
+                identity_gates.extend({'profile': profile, 'criterion': n, 'passed': v} for n, v in checks.items())
+                data['calibration_checks'] = checks
+            elif label == 'primary_candidate_over_a':
+                checks = {'overall_p99': data['paired_ratios']['overall']['median'] <= 1.10,
+                          'query_p99': data['paired_ratios']['query']['median'] <= 1.10,
+                          'window_rps': data['paired_ratios']['rps']['median'] >= .90,
+                          'loss_increase': difference <= allowed_loss}
+                if profile != 'read':
+                    checks['append_p99'] = data['paired_ratios']['append']['median'] <= 1.10
+                candidate_gates.extend({'profile': profile, 'criterion': n, 'passed': v} for n, v in checks.items())
+                data['regression_guards'] = checks
+            else:
+                data['diagnostic_only_no_posthoc_comparator_selection'] = True
+            row['comparisons'][label] = data
+        summaries.append(row)
+    assert totals['offered'] == 450000 and totals['numpy_windows'] == 540
+    audit = {'trial': 62, 'audited_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+             'report_sha256': sha(W / 'paired-service.json'), 'cases': 27, 'totals': totals,
+             'same_exact_executable_for_both_baseline_labels': True,
+             'raw_sample_accounting_hashes_and_quantiles_recomputed': True,
+             'default_core_supported_binaries_original_061_and_morning_unchanged': True,
+             'no_new_correctness_failure': True, 'summaries': summaries,
+             'publication_stage_deltas': stages, 'client_latency_decomposition': components,
+             'identity_calibration_checks': identity_gates,
+             'identity_checks_failed': sum(not g['passed'] for g in identity_gates),
+             'primary_candidate_guards': candidate_gates,
+             'primary_candidate_guards_failed': sum(not g['passed'] for g in candidate_gates),
+             'all_soaks_all_three_labels_zero_loss': all(c['unsuccessful_or_unexecuted'] == 0 for c in r['cases'] if c['scheduled_seconds'] == 60),
+             'original_061_service_failures_preserved': 10,
+             'initial_timed_cases_unchanged': 8, 'preflight_only_unstarted_cases_completed': 19,
+             'initial_preflight_failure_preserved': True,
+             'comparisons_spanning_maintenance': r['resumption']['comparisons_spanning_maintenance'],
+             'no_primary_candidate_pair_spans_maintenance': True,
+             'engine_changed': False, 'supported_promotion': False,
+             'limits': ['Posthoc stage/dispatch quantiles do not decompose p99 or establish a cause.',
+                        'Three pairs per profile; A/A tolerance failures are measurement calibration evidence, not statistical proof.',
+                        'Candidate/B diagnostics cannot replace the predeclared candidate/A comparator.',
+                        'No original 061 failure is erased; this scoped calibration cannot establish production readiness.']}
+    (W / 'audit.json').write_text(json.dumps(audit, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'cases': 27, 'totals': totals, 'identity_checks_failed': audit['identity_checks_failed'],
+                      'primary_candidate_guards_failed': audit['primary_candidate_guards_failed']}, indent=2))
+if __name__ == '__main__':
+    main()
