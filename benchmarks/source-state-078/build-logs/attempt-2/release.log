@@ -1,0 +1,66 @@
+
+running 57 tests
+test hybrid_tests::invalid_source_schema_and_reserved_id_do_no_io ... ok
+test control_tests::bounded_delta_generations_and_duplicate_receipts ... ok
+test control_tests::latest_corrupt_catalog_fails_closed ... ok
+test hybrid_tests::orphan_generations_are_skipped_and_overflow_fails_closed ... ok
+test hybrid_tests::unknown_missing_duplicate_fields_and_delta_budget ... ok
+test integration075_tests::benchmark_rejects_bad_modes_and_counts_before_import ... ok
+test hybrid_tests::latest_corrupt_or_unknown_head_does_not_fall_back ... ok
+test hybrid_tests::delta_error_cuts_poison_recover_and_retry ... ok
+test hybrid_tests::import_error_cuts_have_no_head_or_complete_anchor ... ok
+test hybrid_tests::import_retains_exact_history_in_one_synced_file ... ok
+test recovery076_tests::cached_anchor_schema_source_and_receipt_semantics_still_validated ... ok
+test control_tests::source_old_retry_collision_and_gap ... ok
+test hybrid_tests::missing_anchor_parent_and_page_fail_closed ... ok
+test recovery076_tests::unknown_missing_and_duplicate_anchor_json_still_rejected ... ok
+test hybrid_tests::valid_crc_delta_semantic_corruption_is_rejected ... ok
+test source_state078_tests::gaps_overlaps_schema_and_collision_preserve_unreserved_state ... ok
+test source_state078_tests::malformed_reserved_ids_match_reference_and_reject_without_io ... ok
+test source_state078_tests::source_count_budget_allows_existing_but_rejects_4097th ... ok
+test hybrid_tests::empty_metadata_checkpoint_preserves_anchor_without_pages ... ok
+test source_state078_tests::u64_interval_boundaries_are_exact_and_never_wrap ... ok
+test hybrid_tests::superseded_deltas_not_needed_by_complete_checkpoint ... ok
+test control_tests::two_complete_cycles_preserve_original_receipts ... ok
+test tests::duplicate_legacy_ids_and_required_base ... ok
+test tests::envelope_exact_length_crc_bounds ... ok
+test hybrid_tests::retry_collision_and_row_order_do_no_io ... ok
+test hybrid_tests::source_history_spans_anchor_delta_and_checkpoint ... ok
+test tests::bounded_deserializers_and_unknown_fields ... ok
+test tests::exact_retry_and_collision_do_no_io ... ok
+test tests::latest_corrupt_root_does_not_fall_back ... ok
+test recovery076_tests::acknowledged_source_retries_keep_original_generations_on_both_paths ... ok
+test tests::missing_or_corrupt_page_fails_closed ... ok
+test tests::metadata_publication_reuses_all_pages ... ok
+test tests::reserved_history_and_generation_rejected ... ok
+test tests::names_and_batch_schema_bounded ... ok
+test source_state078_tests::differential_new_receipts_match_full_ledger_validator ... ok
+test tests::source_resume_old_retry_gap_overlap ... ok
+test tests::unicode_filenames_cannot_panic_numeric_parser ... ok
+test tests::rollover_reuses_sealed_prefix ... ok
+test tests::submitted_row_order_is_part_of_digest ... ok
+test tests::valid_crc_cannot_hide_page_identity_duplicate_or_pointer_change ... ok
+test tests::empty_full_and_partial_import ... ok
+test source_state078_tests::internal_publish_validates_reserved_source_and_empty_cycles_keep_projection ... ok
+test recovery076_tests::pending_generations_preserve_exact_acknowledged_retry_and_skip ... ok
+test tests::root_semantic_corruption_with_valid_crc_rejected ... ok
+test hybrid_tests::combined_budget_keeps_original_receipts_without_eviction ... ok
+test tests::error_cuts_poison_and_recover_old_or_new ... ok
+test source_state078_tests::two_cycles_interleaved_source_direct_commit_reopen_and_exact_retry ... ok
+test integration075_tests::common_dispatch_syncs_and_recovery_chain_counts ... ok
+test hybrid_tests::ordinary_one_sync_checkpoint_all_history_and_two_cycles ... ok
+test integration075_tests::common_workload_exact_cross_mode_source_and_retry_history ... ok
+test hybrid_tests::valid_crc_checkpoint_binding_and_counts_are_rejected ... ok
+test recovery076_tests::parent_crc_and_checkpoint_anchor_binding_remain_fail_closed ... ok
+test recovery076_tests::each_reachable_head_body_read_once_and_anchor_parsed_once ... ok
+test hybrid_tests::checkpoint_error_cuts_recover_pending_history_exactly ... ok
+test source_state078_tests::every_source_error_cut_keeps_projection_until_successful_reopen_retry ... ok
+test tests::receipt_budget_no_eviction ... ok
+test hybrid_tests::sealed_page_rollover_reuses_prefix_after_reopen ... ok
+
+test result: ok. 57 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.11s
+
+warn: could not canonicalize path C:\Users\Frizer
+   Compiling kestrel-receipt-page-model v0.1.0 (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-078\model)
+    Finished `release` profile [optimized] target(s) in 19.60s
+     Running unittests src\main.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-078\build-cache\release\deps\kestrel_receipt_page_model-926c7ccca6e04254.exe)
