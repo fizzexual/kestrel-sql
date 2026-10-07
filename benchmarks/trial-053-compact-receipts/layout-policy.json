@@ -1,0 +1,11 @@
+{
+  "declared_utc": "2026-10-07T02:39:53.073375+00:00",
+  "purpose": "Measure receipt checkpoint byte footprint before implementing a new isolated format",
+  "read_only": true,
+  "engine_benchmark": false,
+  "new_engine_format": "Proposed CAT6 receipt tuple [lowercase SHA-256 hex, rows, original generation]",
+  "compatibility_plan": "Reader accepts existing CAT2/3/4/5; new writers emit CAT6; old writers reject CAT6 before data access; no downgrade promise",
+  "unchanged": "SHA-256 domain, identifier map, original generation, receipt rows, file sync_all, pending/rename publication, segment frame and payload CRCs",
+  "limits": "Same 100000-ID map and 32-catalog chain; duplicates, bad digest length/characters, wrong tuple shape and invalid generations must fail closed",
+  "retention": "No frozen fixture or rejected 052 source is modified; derive next candidate only from frozen 050"
+}

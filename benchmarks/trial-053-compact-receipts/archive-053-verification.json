@@ -1,0 +1,2514 @@
+{
+  "binary_sha256": "197232a3a49b6c9cac9002cb47fab56e21dbd463e75374abb2bee36cf3241377",
+  "seed": 20261005,
+  "rows": 40024,
+  "independently_sorted_overlapping_segments": 8,
+  "queries_checked_against_each_reference": 500,
+  "references": [
+    "DuckDB 1.5.6",
+    "SQLite 3.49.1"
+  ],
+  "full_payload_and_aggregate_index_verification": "passed after each append",
+  "queries": [
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -609 AND ts < 26792 AND value >= 9059",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11181",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23812 AND ts < 19861 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6395 AND ts < 18969",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24931 AND ts < 1414 AND value >= -14351",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 24813",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 31038 AND ts < 8612 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10562 AND ts < 14768",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7979 AND ts < 32135 AND value > -2960",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 12836",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 14236 AND ts < 5055 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7611 AND ts < 18759",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 23255 AND ts < 32354 AND value > -10626",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6503",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 26160 AND ts < 16894 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1457 AND ts < 17668",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32755 AND ts < 23774 AND value > 4253",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7170",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 2258 AND ts < 4366 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8321 AND ts < 24120",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22797 AND ts < 30528 AND value <= 5863",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 26996",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20011 AND ts < 3118 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20921 AND ts < 16266",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 614 AND ts < 32496 AND value > 5036",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 27782",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 11095 AND ts < 26915 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8943 AND ts < 15922",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27582 AND ts < 29788 AND value = -5976",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 23025",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 25458 AND ts < -189 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12817 AND ts < 7535",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3388 AND ts < -35 AND value <> 9028",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 14126",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20613 AND ts < 28982 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12572 AND ts < 25088",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28163 AND ts < 24593 AND value = 11297",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 2393",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 12694 AND ts < 12607 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18322 AND ts < 4796",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 751 AND ts < 13420 AND value >= 14990",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 7113",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 1198 AND ts < -3504 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 13501 AND ts < 26218",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12637 AND ts < 5552 AND value <> -8941",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 32078",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 13129 AND ts < 16340 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 1193 AND ts < 20285",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 1685 AND ts < 8094 AND value <= -1542",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < -1912",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -3564 AND ts < 10616 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10590 AND ts < 1001",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6140 AND ts < 4022 AND value <> 13628",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> -3764",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 29608 AND ts < 25991 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3657 AND ts < 23368",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 61 AND ts < 24312 AND value = -1385",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 27962",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10913 AND ts < 10672 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22645 AND ts < 17141",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 17719 AND ts < 14890 AND value >= 8560",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 3819",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23259 AND ts < 1986 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29399 AND ts < -3109",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5832 AND ts < 7242 AND value >= -344",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 29130",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 32871 AND ts < 23297 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 23737 AND ts < 14416",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 13373 AND ts < 3877 AND value = -7636",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> -268",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20884 AND ts < 13719 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6329 AND ts < 2608",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10591 AND ts < 16082 AND value < -4923",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3710",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 14020 AND ts < 4774 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5673 AND ts < 24351",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16842 AND ts < -2452 AND value > -10233",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > -2580",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -149 AND ts < 1226 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18176 AND ts < 10103",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28756 AND ts < 11435 AND value > -11025",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 6374",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -663 AND ts < 11697 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29159 AND ts < -1347",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -2988 AND ts < 3398 AND value = -13648",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 1086",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 7358 AND ts < -3760 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29477 AND ts < 1813",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 13306 AND ts < -1400 AND value <= -2660",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= -12",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 14977 AND ts < 26772 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10337 AND ts < 10513",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32748 AND ts < 15916 AND value >= -11694",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 356",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10799 AND ts < 30805 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11207 AND ts < 10001",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 4933 AND ts < 4893 AND value = 9869",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 27317",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 19725 AND ts < 15066 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18945 AND ts < 29325",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16564 AND ts < 10490 AND value <= 4874",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 9355",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 1257 AND ts < 13428 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -442 AND ts < 20606",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7862 AND ts < 4374 AND value <= -12507",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 528",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 28510 AND ts < 26077 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20562 AND ts < 151",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2432 AND ts < 23111 AND value <= 7315",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 25122",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 2893 AND ts < 22893 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11989 AND ts < 14439",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 9553 AND ts < 6603 AND value >= 2149",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 5202",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 27894 AND ts < 25032 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1659 AND ts < 4003",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27048 AND ts < 13407 AND value = -8880",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 32864",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10290 AND ts < 28097 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12032 AND ts < 16916",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2242 AND ts < 20752 AND value < 8602",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= -1744",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 30868 AND ts < 18183 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1912 AND ts < 8831",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16092 AND ts < -3243 AND value < 7215",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 28405",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 28540 AND ts < 1592 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8916 AND ts < 32047",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24097 AND ts < 5069 AND value < 7998",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 9902",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 26335 AND ts < 21246 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7764 AND ts < 8755",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3865 AND ts < 17584 AND value = -10533",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2590",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 7501 AND ts < 13020 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19558 AND ts < 15878",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 30670 AND ts < 16360 AND value <= -397",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 13403",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 8198 AND ts < 29172 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7800 AND ts < 26073",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22823 AND ts < 8568 AND value <= -531",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29251",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -3238 AND ts < 16563 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -794 AND ts < 10706",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3787 AND ts < 31788 AND value = -2081",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 4668",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 7664 AND ts < 23163 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10681 AND ts < 3027",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24526 AND ts < 2212 AND value <= -5076",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 5848",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 1241 AND ts < 20100 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29157 AND ts < 10549",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28056 AND ts < 7377 AND value <> -5104",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 450",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23924 AND ts < 15248 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6068 AND ts < 335",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6421 AND ts < 18275 AND value <= -10733",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32130",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20446 AND ts < 19951 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12611 AND ts < -425",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18340 AND ts < 13630 AND value <= 2733",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 25036",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 21098 AND ts < 21021 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16277 AND ts < 18812",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 9022 AND ts < 14597 AND value <> -12114",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 4628",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 6529 AND ts < 24320 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18797 AND ts < 29609",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14392 AND ts < 6462 AND value >= -11500",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 2883",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 22898 AND ts < 18856 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18397 AND ts < 31091",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22208 AND ts < 9443 AND value <> 2220",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 31019",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -2963 AND ts < 1616 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -538 AND ts < 31140",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31438 AND ts < 13185 AND value <> 3361",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 25162",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 3918 AND ts < 23331 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6098 AND ts < 20718",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 4786 AND ts < 6667 AND value > -1324",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 27532",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 32211 AND ts < 3355 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -204 AND ts < 20807",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2646 AND ts < 21046 AND value >= 4968",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16010",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20559 AND ts < 31176 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19982 AND ts < 2962",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 25784 AND ts < 14048 AND value <= 1702",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 26856",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 32129 AND ts < 13370 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8193 AND ts < 25934",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29681 AND ts < 30840 AND value >= -13903",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 31844",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10801 AND ts < 21547 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20207 AND ts < 2016",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18563 AND ts < 25247 AND value = 11990",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 26715",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23457 AND ts < 23435 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 4468 AND ts < 4872",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12786 AND ts < -3352 AND value <> -9915",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 21885",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 3607 AND ts < -3098 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 13149 AND ts < 21391",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16418 AND ts < 12139 AND value > 3897",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= -2954",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 13296 AND ts < 24850 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29870 AND ts < -356",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31176 AND ts < 24075 AND value < -1847",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 13585",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 31891 AND ts < 11691 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3599 AND ts < 24935",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -2188 AND ts < 11767 AND value >= 4963",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 17653",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 24253 AND ts < 28855 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10805 AND ts < -1552",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27259 AND ts < 30454 AND value > 2680",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 25648",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -325 AND ts < 26710 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19350 AND ts < 1470",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6791 AND ts < 10318 AND value >= -6294",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 1565",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 27068 AND ts < 13300 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29120 AND ts < 30815",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3332 AND ts < 10179 AND value > 12033",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28573",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -1065 AND ts < 13513 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7443 AND ts < 7883",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5374 AND ts < 1333 AND value > -3562",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 11963",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 20425 AND ts < 22201 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 15749 AND ts < 12825",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 15680 AND ts < 17023 AND value = -2677",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 4191",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 16825 AND ts < 4495 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19470 AND ts < 24716",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11269 AND ts < 19354 AND value < -10479",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 30733",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 42 AND ts < 11249 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5257 AND ts < 4926",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18142 AND ts < 7814 AND value >= 7160",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 6450",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -1396 AND ts < 4443 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31099 AND ts < 22078",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5941 AND ts < 6324 AND value = 4520",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11908",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23197 AND ts < 8039 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -2212 AND ts < -890",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 1907 AND ts < 7790 AND value <> -2541",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 26582",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 19405 AND ts < 13586 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3825 AND ts < 9346",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18358 AND ts < 16557 AND value <> 14143",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27352",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 13751 AND ts < 12768 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1093 AND ts < -2445",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 23819 AND ts < 23500 AND value < 1558",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 22311",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 14272 AND ts < 20673 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24790 AND ts < 29261",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31137 AND ts < 3757 AND value = -10354",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 31659",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 15818 AND ts < 2111 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24851 AND ts < 6636",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2943 AND ts < 14887 AND value <> -6660",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 580",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 18239 AND ts < -1200 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32250 AND ts < 4422",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3343 AND ts < 19630 AND value <= 206",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 26415",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -830 AND ts < 32072 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5391 AND ts < 24047",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5619 AND ts < 5746 AND value = 9663",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 25654",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 31427 AND ts < -2741 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 118 AND ts < 145",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31833 AND ts < 21694 AND value <> -13434",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 29970",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 2657 AND ts < 13881 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3724 AND ts < 25676",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31107 AND ts < 25006 AND value <> -3774",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 11955",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 6903 AND ts < 11742 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 15174 AND ts < -302",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 21082 AND ts < 9815 AND value > -8865",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 25205",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 3438 AND ts < 8101 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 824 AND ts < 6614",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16894 AND ts < 32954 AND value > -10675",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 23076",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 4951 AND ts < 9217 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6670 AND ts < 20925",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8452 AND ts < 31476 AND value >= -3248",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 10799",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 2774 AND ts < 18687 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8459 AND ts < 19966",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 29334 AND ts < -2105 AND value < -11537",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = -3933",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 5807 AND ts < 6049 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6910 AND ts < 1019",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8209 AND ts < 2607 AND value <= 11088",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 10153",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10816 AND ts < 71 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16860 AND ts < 8181",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11420 AND ts < 14022 AND value = 827",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 18153",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23475 AND ts < 32442 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2778 AND ts < 8357",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7779 AND ts < 10663 AND value >= -5606",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18243",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 10757 AND ts < -1954 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14427 AND ts < 7890",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 23574 AND ts < 20235 AND value > 14793",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = -1105",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 4806 AND ts < 27637 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24127 AND ts < 24610",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31814 AND ts < 5724 AND value >= -13632",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 25179",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17802 AND ts < 29729 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19725 AND ts < 25280",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6892 AND ts < 12882 AND value <> -12176",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 2365",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17324 AND ts < 1603 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 13230 AND ts < 4728",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6162 AND ts < 7755 AND value <= 1511",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 22672",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 11756 AND ts < 23979 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12112 AND ts < 26753",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11841 AND ts < 16598 AND value < 14078",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 31722",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 8988 AND ts < 18940 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 15830 AND ts < 3093",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 5535 AND ts < 3781 AND value > -1323",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 21705",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 19167 AND ts < 13213 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19267 AND ts < 18523",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3112 AND ts < 2854 AND value >= -6328",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 24974",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 4213 AND ts < 12491 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 30209 AND ts < 10205",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32554 AND ts < 14621 AND value <> 3918",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = -1546",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 32051 AND ts < 9274 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24216 AND ts < 1436",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8424 AND ts < 3311 AND value < 11262",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 26456",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17848 AND ts < 25852 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 9616 AND ts < 6661",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8977 AND ts < 12488 AND value < 11876",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < -2767",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 26036 AND ts < 21327 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8817 AND ts < 31694",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -3091 AND ts < 12437 AND value >= -12265",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 30216",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 273 AND ts < 6994 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31696 AND ts < 12193",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18544 AND ts < 18532 AND value < -7770",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 32787",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 32991 AND ts < -976 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14629 AND ts < 5533",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 7665 AND ts < 11192 AND value < 2022",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 24418",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23564 AND ts < 3133 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6037 AND ts < 8769",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28800 AND ts < 32577 AND value > -10634",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < -2719",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 9676 AND ts < 16444 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 23690 AND ts < 23371",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20938 AND ts < 9403 AND value <= -6573",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 16635",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 15202 AND ts < 30967 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16342 AND ts < -1714",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22070 AND ts < -702 AND value > 1398",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 29398",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 7523 AND ts < 7720 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10326 AND ts < 8921",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14034 AND ts < -3218 AND value <= -11751",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1628",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 15984 AND ts < 22932 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31283 AND ts < 26621",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 9069 AND ts < 18827 AND value = 11841",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= -2789",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 6507 AND ts < 30748 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20171 AND ts < -3444",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6455 AND ts < 3380 AND value <> -9098",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 29786",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 2590 AND ts < 24236 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 3997 AND ts < 11802",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19381 AND ts < 19966 AND value <> 7419",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 24427",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 29050 AND ts < 20044 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22828 AND ts < 4740",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11415 AND ts < 29935 AND value <= -8644",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 20952",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 12246 AND ts < 12117 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22682 AND ts < 14698",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19941 AND ts < 15593 AND value <= -6921",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= -124",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 3354 AND ts < -2225 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14470 AND ts < 22536",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12001 AND ts < 14608 AND value >= -9296",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 18528",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 8314 AND ts < 30300 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 8181 AND ts < 9416",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 696 AND ts < 21756 AND value >= 10037",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 18325",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17071 AND ts < 23595 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16070 AND ts < 8182",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1200 AND ts < 19614 AND value = 7594",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 7893",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -1652 AND ts < -1299 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19125 AND ts < 1616",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28675 AND ts < -1922 AND value < -1348",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 26127",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 11873 AND ts < 30798 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24 AND ts < 4629",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 14887 AND ts < 5247 AND value = 12710",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 21973",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 3030 AND ts < 19003 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 26578 AND ts < 4333",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 28838 AND ts < 32901 AND value > -634",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 1305",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 28748 AND ts < 19999 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 20166 AND ts < 11606",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27200 AND ts < 26465 AND value <= 3470",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = -843",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 24582 AND ts < 2682 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 25689 AND ts < -900",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27907 AND ts < 27037 AND value <> -13661",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 24637",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 22881 AND ts < -3838 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12365 AND ts < 20295",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27406 AND ts < 22149 AND value <= 6012",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 11620",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23197 AND ts < 6570 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22760 AND ts < 2086",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32015 AND ts < 1134 AND value = 1926",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 29693",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23628 AND ts < -2573 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -253 AND ts < 16891",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 709 AND ts < -2833 AND value <= -5694",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = -1828",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 22985 AND ts < 24303 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 21787 AND ts < 31791",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 21163 AND ts < 26745 AND value <> 496",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 25300",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 16223 AND ts < 32801 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 18493 AND ts < 27465",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 19617 AND ts < 16527 AND value < 11431",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 23067",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 9603 AND ts < 26587 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24309 AND ts < 20359",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -2306 AND ts < 10528 AND value < -4532",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts = 27881",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 7681 AND ts < -1281 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 278 AND ts < 4276",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12295 AND ts < 12559 AND value <= 11658",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <= 30505",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 12813 AND ts < -3780 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 30182 AND ts < 23528",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 16762 AND ts < 18849 AND value > 6131",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 20866",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17096 AND ts < 21829 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 25988 AND ts < 8459",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 26031 AND ts < 16968 AND value <= 3063",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 32566",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 17034 AND ts < 32994 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -886 AND ts < 30938",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11889 AND ts < 20259 AND value > 11963",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 12879",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 16442 AND ts < -1422 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 27878 AND ts < 820",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 9870 AND ts < 27790 AND value >= -182",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 31562",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 1084 AND ts < 28499 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -2106 AND ts < 24157",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 2015 AND ts < 17876 AND value <> 4634",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 31193",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= -891 AND ts < 23014 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 25907 AND ts < 934",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11850 AND ts < 17253 AND value >= -8454",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 20555",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 23282 AND ts < 11479 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 11249 AND ts < 32850",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= -1785 AND ts < 3094 AND value > 8215",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts < 22443",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 9027 AND ts < 6973 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24555 AND ts < 6002",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 22251 AND ts < 14607 AND value <= 9501",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 6509",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 19272 AND ts < 6434 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 12194 AND ts < 14677",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 24586 AND ts < 16525 AND value = -11482",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts > 17625",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 691 AND ts < 8501 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6263 AND ts < -2553",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 10424 AND ts < 3497 AND value = -638",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts <> 29257",
+      "plan": "streamed-column-scan",
+      "passed": true
+    },
+    {
+      "sql": "SELECT device, COUNT(*) AS n, SUM(value) AS s, AVG(value) AS a, MIN(value), MAX(value) FROM events WHERE ts >= 8231 AND ts < 24996 GROUP BY device ORDER BY device",
+      "plan": "streamed-dense-group",
+      "passed": true
+    },
+    {
+      "sql": "SELECT COUNT(*), SUM(value), AVG(value), MIN(value), MAX(value), SUM(ts) FROM events WHERE ts >= 6346 AND ts < 22473",
+      "plan": "segmented-sparse-prefix",
+      "passed": true
+    }
+  ]
+}
