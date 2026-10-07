@@ -1,0 +1,69 @@
+{
+  "status": "isolated development trial, never promoted automatically",
+  "baseline": "frozen released 0.3.16",
+  "created_utc": "2026-10-07T03:12:16.294302+00:00",
+  "before_any_timing": true,
+  "correctness_gates": [
+    "88 debug and 88 release tests on unchanged CAT6 053; strict fmt/Clippy ordinary/fault",
+    "All fourteen 053 external gates already independently audited: 4000 SQL/ref, 104 reader oracles, 64 cuts/22 corruptions/16 source faults/8 source kills/32 concurrent kills",
+    "CAT2/3/4 migration and one-way CAT5 to CAT6 from frozen048/049/050 preserve frames, original generations and source positions; old engines reject CAT6 without modifications; downgrade unsupported",
+    "Restored physical generation aliases reject before data access; valid distinct-generation mixed legacy upgrade and known ordered SHA256 digest pass",
+    "Native054 seven new pairs plus all ten original/new large-ledger pairs pass separately predeclared follow-up criteria; original failed 053 guard remains visible"
+  ],
+  "comparison": {
+    "paired_rounds": 3,
+    "rotation": "baseline/trial order alternates per configuration and round",
+    "base_rows": 1000000,
+    "clients": 64,
+    "batch_rows": 100,
+    "group_delay_ms": 0,
+    "profiles": [
+      [
+        "mixed",
+        2000,
+        8
+      ],
+      [
+        "mixed",
+        10000,
+        8
+      ],
+      [
+        "write",
+        500,
+        8
+      ],
+      [
+        "mixed",
+        500,
+        60
+      ]
+    ],
+    "storage_durability": "Same full buffered CAT6 generation CRC framing, file sync_all before rename and ACK, retained handle, unchanged Unix directory sync. Process crashes do not establish Windows physical power-loss durability.",
+    "controls": "matched read-only and scan profiles plus existing group/scan probe guards; no builds, correctness tests or packaging during timed work"
+  },
+  "performance_gate": {
+    "median_paired_append_p99_ratio_max": 0.9,
+    "write_heavy_improvement_rounds_min": 2,
+    "all_60s_soaks_zero_loss": true,
+    "no_new_correctness_failures": true,
+    "read_guard_ratio_max": 1.05,
+    "all_rounds_and_failed_runs_preserved": true
+  },
+  "additional_release_gates": [
+    "Fresh complete analytical matrix and all supported release checks",
+    "Versioned CAT6 migration documentation and supported upgrade qualification; no downgrade promise",
+    "Do not ship when sustained service gates fail; no Facebook/distributed/physical-power-loss qualification"
+  ],
+  "limits": [
+    "shared Windows machine and existing JSON bridge; no all-database or distributed qualification",
+    "old supported core/binaries remain untouched",
+    "new-format reader is an explicit upgrade on next successful append in this isolated trial",
+    "deleting the only/latest published catalog cannot always be distinguished from empty/older state in either design; referenced older payload removal is tested fail-closed; new bundle merges catalog/data failure domains"
+  ],
+  "trial": "055 fresh CAT6 service qualification of unchanged frozen 053",
+  "motivation": "Checkpoint metadata 47.665% smaller; extended native 054 gates pass with original failed 053 series retained. Test live throughput/tails and zero-loss service guards before any promotion.",
+  "prior_trial": "053 native three-pair guard failed; 054 additional seven-pair and all ten combined criteria pass but every large-ledger p50 pair remains slower; no engine edit after freeze",
+  "native_followup_sha256": "de2a6a5aaf645aaa813fca82607079db90c47a15446b35125e61b6ac7b2c32d2",
+  "debug_qualification_sha256": "9462b9fc1f401e6486864ee5f190deec7dfe7dae6043c927051bffcf6c2c3fae"
+}

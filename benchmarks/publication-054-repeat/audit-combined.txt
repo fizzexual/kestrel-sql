@@ -1,0 +1,99 @@
+{
+  "audited_utc": "2026-10-07T03:08:20.406474+00:00",
+  "new_engine_code": false,
+  "original_053_failed_qualification_retained": true,
+  "original_advance_audit_sha256": "85e75826412707abae1b7d49fbba2e223fe8c75c2286161b728ad90ddc8dfd7e",
+  "fresh_seven_pair_gates": {
+    "large_ledger_total": true,
+    "large_ledger_p99": true,
+    "large_ledger_p50_guard": true,
+    "large_ledger_maximum_guard": true,
+    "large_ledger_reopen_guard": true
+  },
+  "combined_ten_large_pair_and_original_small_guards": {
+    "large_ledger_total": true,
+    "large_ledger_p99": true,
+    "all_size_p50_guards": true,
+    "all_size_maximum_guards": true,
+    "all_size_reopen_guards": true
+  },
+  "eligible_for_separate_service_qualification": true,
+  "large_pair_order_balanced": {
+    "base_050": 5,
+    "compact_053": 5
+  },
+  "combined_median_values": [
+    {
+      "seed_receipts": 0,
+      "pairs": 3,
+      "variants": {
+        "base_050": {
+          "append_total_ms": 408.6796,
+          "p50_ms": 1.2304,
+          "p99_ms": 5.47450999999994,
+          "max_ms": 28.558699999999998,
+          "reopen_ms": 2.4574000000000003
+        },
+        "compact_053": {
+          "append_total_ms": 317.5682,
+          "p50_ms": 1.1957,
+          "p99_ms": 1.9108049999999985,
+          "max_ms": 2.212,
+          "reopen_ms": 2.1503
+        }
+      }
+    },
+    {
+      "seed_receipts": 50000,
+      "pairs": 3,
+      "variants": {
+        "base_050": {
+          "append_total_ms": 795.8976,
+          "p50_ms": 1.5209000000000001,
+          "p99_ms": 47.27404499999999,
+          "max_ms": 97.2063,
+          "reopen_ms": 138.3514
+        },
+        "compact_053": {
+          "append_total_ms": 607.0474,
+          "p50_ms": 1.41265,
+          "p99_ms": 22.59800999999999,
+          "max_ms": 54.9849,
+          "reopen_ms": 84.00710000000001
+        }
+      }
+    },
+    {
+      "seed_receipts": 99000,
+      "pairs": 10,
+      "variants": {
+        "base_050": {
+          "append_total_ms": 1371.3344499999998,
+          "p50_ms": 1.2072,
+          "p99_ms": 109.68038999999996,
+          "max_ms": 234.86649999999997,
+          "reopen_ms": 223.29115000000002
+        },
+        "compact_053": {
+          "append_total_ms": 782.2764500000001,
+          "p50_ms": 1.241875,
+          "p99_ms": 38.71123249999999,
+          "max_ms": 96.39895000000001,
+          "reopen_ms": 158.16255
+        }
+      }
+    }
+  ],
+  "fresh_append_samples": 3584,
+  "fresh_rows_timed": 358400,
+  "fresh_cold_duplicate_retries": 42,
+  "fresh_scrubbed_bytes": 84403200,
+  "all_original_plus_fresh_append_samples": 8192,
+  "all_original_plus_fresh_rows_timed": 819200,
+  "all_original_plus_fresh_cold_retries": 96,
+  "all_original_plus_fresh_scrubbed_bytes": 149433600,
+  "trial_promoted": false,
+  "default_engine_changed": false,
+  "competitor_benchmark": false,
+  "interpretation": "Native-only repeat on identical frozen engines. All ten large-ledger p50 pairs remain slower; the aggregate guard is not proof of a p50 improvement. Original failed qualification and new stalls remain visible. No causal attribution to device/OS or production service claim."
+}
