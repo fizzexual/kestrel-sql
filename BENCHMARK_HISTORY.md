@@ -1,5 +1,7 @@
 # Benchmark history: wins, losses and exact evidence
 
+**Unreleased storage trial 048:** [paired service results, failed gates and full recovery evidence](TRIAL_048.md) test a single synchronized generation file. Supported 0.3.16 remains unchanged; all baseline, slower and failed trial evidence is preserved.
+
 [Latest package: 0.3.16](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.16) | [All release downloads](https://github.com/fizzexual/kestrel-sql/releases) | [Raw reports and samples](benchmarks/) | [Current qualification](verification.json)
 
 The repository is private. Every packaged snapshot has its own Git tag and release download. Older archives are immutable; the current tree keeps earlier reports, raw samples, baselines and rejected experiments. Historical measurements are labelled by the version actually tested. A later release does not turn an old result into a fresh benchmark.

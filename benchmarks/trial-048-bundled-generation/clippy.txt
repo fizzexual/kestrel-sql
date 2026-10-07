@@ -1,0 +1,39 @@
+warn: could not canonicalize path C:\Users\Frizer
+    Checking typenum v1.20.1
+    Checking cfg-if v1.0.4
+    Checking memchr v2.8.3
+    Checking itoa v1.0.18
+    Checking cpufeatures v0.2.17
+    Checking serde_core v1.0.229
+    Checking zmij v1.0.23
+    Checking crc32fast v1.5.2
+    Checking generic-array v0.14.7
+    Checking block-buffer v0.10.4
+    Checking crypto-common v0.1.7
+    Checking digest v0.10.7
+    Checking sha2 v0.10.9
+    Checking serde_json v1.0.151
+    Checking serde v1.0.229
+    Checking kestrel-sql v0.3.16 (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-048\candidate)
+error: this `if` has identical blocks
+    --> tests\archive.rs:1641:43
+     |
+1641 |           let name = if damage == "catalog" {
+     |  ___________________________________________^
+1642 | |             "catalog-00000000000000000001.ks2"
+1643 | |         } else {
+     | |_________^
+     |
+note: same as this
+    --> tests\archive.rs:1643:16
+     |
+1643 |           } else {
+     |  ________________^
+1644 | |             "catalog-00000000000000000001.ks2"
+1645 | |         };
+     | |_________^
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#if_same_then_else
+     = note: `-D clippy::if-same-then-else` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::if_same_then_else)]`
+
+error: could not compile `kestrel-sql` (test "archive") due to 1 previous error

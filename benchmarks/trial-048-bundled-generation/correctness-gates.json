@@ -1,0 +1,200 @@
+{
+  "trial": "isolated CAT5, version string inherited from base, never released",
+  "started_utc": "2026-10-07T00:31:39.833605+00:00",
+  "steps": [
+    {
+      "name": "compatibility",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\compatibility.py"
+      ],
+      "started_utc": "2026-10-07T00:31:39.833605+00:00",
+      "completed_utc": "2026-10-07T00:31:40.444407+00:00",
+      "returncode": 0,
+      "log_sha256": "7883dce3500cf9b01e07c2984067d19b6814b2d2b4c9e94adcfb5480637ffc88"
+    },
+    {
+      "name": "publication-cuts",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\publication_faults.py",
+        "--binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel-stress.exe",
+        "--sql-binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel.exe",
+        "--fault-driver",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\publication_fault_probe.exe",
+        "--output",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\publication-048-faults.json",
+        "--expected-version",
+        "0.3.16"
+      ],
+      "started_utc": "2026-10-07T00:31:40.449406+00:00",
+      "completed_utc": "2026-10-07T00:31:40.565829+00:00",
+      "returncode": 1,
+      "log_sha256": "281ad131b1a5c552931f027f94e3f7caae4e543b5d1b12172136ce98f23e2ceb"
+    },
+    {
+      "name": "publication-cuts",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\publication_faults.py",
+        "--binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel-stress.exe",
+        "--sql-binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel.exe",
+        "--fault-driver",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\publication_fault_probe.exe",
+        "--output",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\publication-048-faults.json",
+        "--expected-version",
+        "0.3.16"
+      ],
+      "started_utc": "2026-10-07T00:32:03.058902+00:00",
+      "completed_utc": "2026-10-07T00:32:09.900009+00:00",
+      "returncode": 0,
+      "log_sha256": "0edcdedea485ff86cf07fdc316940543867ba3bca38e8d1c070624ad01037ace"
+    },
+    {
+      "name": "source-cuts-kills",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\source_faults.py",
+        "--driver",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\source_fault_probe.exe",
+        "--adapter",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\source-pipeline.exe",
+        "--output",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\source-048-faults.json"
+      ],
+      "started_utc": "2026-10-07T00:32:09.906010+00:00",
+      "completed_utc": "2026-10-07T00:32:12.725329+00:00",
+      "returncode": 0,
+      "log_sha256": "1da0a2e32ac6b908e49527f1171b8d4b749b522f2566c253b044675394739897"
+    },
+    {
+      "name": "concurrent-kills",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\outputs\\kestrel-sql\\benchmarks\\group_commit_recovery.py",
+        "--binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel-stress.exe",
+        "--output",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\group-048-recovery.json",
+        "--expected-version",
+        "0.3.16",
+        "--retry-index"
+      ],
+      "started_utc": "2026-10-07T00:32:12.732329+00:00",
+      "completed_utc": "2026-10-07T00:32:25.914586+00:00",
+      "returncode": 0,
+      "log_sha256": "d35b8638baf72c5495fcea9ebed11b8fb8d3d9fd97128657c21f514bb62f0295"
+    },
+    {
+      "name": "general-sql",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\outputs\\kestrel-sql\\benchmarks\\archive_verify.py",
+        "--binary",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\bin\\kestrel.exe",
+        "--output",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\archive-048-verification.json",
+        "--queries",
+        "500"
+      ],
+      "started_utc": "2026-10-07T00:32:25.919623+00:00",
+      "completed_utc": "2026-10-07T00:32:40.897794+00:00",
+      "returncode": 0,
+      "log_sha256": "d514b15dda9e22f5b1a2525a5a126f79416a73ff2c1ef3d0bac3e42b087e1427"
+    },
+    {
+      "name": "group",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\group_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:32:40.902796+00:00",
+      "completed_utc": "2026-10-07T00:32:45.762520+00:00",
+      "returncode": 0,
+      "log_sha256": "c6b830ba37de58d8638c552841d4ccdadf1702c52e260d246fc964441b6aa97e"
+    },
+    {
+      "name": "cache",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\cache_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:32:45.767520+00:00",
+      "completed_utc": "2026-10-07T00:32:52.054881+00:00",
+      "returncode": 0,
+      "log_sha256": "1cf5f9eb8d160b6b3efc93322c995251f17e9295b4a13ac9ae4d2ef471d624be"
+    },
+    {
+      "name": "medium",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\medium_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:32:52.059917+00:00",
+      "completed_utc": "2026-10-07T00:33:01.668972+00:00",
+      "returncode": 0,
+      "log_sha256": "9429178596c181491cbd90c80656385947240763e25c1e562a60f7a70079a1d6"
+    },
+    {
+      "name": "dense",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\dense_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:33:01.674973+00:00",
+      "completed_utc": "2026-10-07T00:33:07.770774+00:00",
+      "returncode": 0,
+      "log_sha256": "d1409ad8f92b848ed4fc232beaa2a216dd9725ba4e7a3f29b7d239207d86f6bc"
+    },
+    {
+      "name": "sparse",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\sparse_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:33:07.775774+00:00",
+      "completed_utc": "2026-10-07T00:33:17.391106+00:00",
+      "returncode": 0,
+      "log_sha256": "9429178596c181491cbd90c80656385947240763e25c1e562a60f7a70079a1d6"
+    },
+    {
+      "name": "scan",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\scan_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:33:17.393075+00:00",
+      "completed_utc": "2026-10-07T00:33:48.071727+00:00",
+      "returncode": 0,
+      "log_sha256": "f6eb8dc4a8b270ba88ea5e4e83004bd11e456f8e9a9609cabb8dcb164b2b8739"
+    },
+    {
+      "name": "reader",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\reader_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:33:48.077399+00:00",
+      "completed_utc": "2026-10-07T00:33:48.461953+00:00",
+      "returncode": 1,
+      "log_sha256": "22cef1f5ac3275fc6e6a5bdc6cdff6c57ab455a582a70a48493e22e7d069f10f"
+    },
+    {
+      "name": "reader",
+      "command": [
+        "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Frizer\\Documents\\Codex\\2026-10-05\\letys\\work\\perf-048\\harness\\reader_verify.py"
+      ],
+      "started_utc": "2026-10-07T00:34:35.705101+00:00",
+      "completed_utc": "2026-10-07T00:34:36.176757+00:00",
+      "returncode": 0,
+      "log_sha256": "085a0b0df44713b2ff4be5764e33e8709cf03abe783476f7d046915a6a26639e"
+    }
+  ],
+  "complete": true
+}
