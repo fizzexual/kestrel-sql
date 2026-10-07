@@ -1,5 +1,7 @@
 # KestrelSQL
 
+**Latest hybrid qualification:** [074 passes metadata correctness/error/kill checks](HYBRID_RECEIPTS_074.md). Forty debug/release tests, 15 injected errors, 15 owned process kills and 21 independent corruption cases pass. Import/ordinary deltas sync one file; speed is not measured. Supported 0.3.16 stays unchanged; [073 performance failures remain visible](RECEIPT_CYCLES_073.md).
+
 **Latest receipt-cycle benchmark:** [073 passes large metadata goals but fails adoption](RECEIPT_CYCLES_073.md). All 54 cases/3,456 publications/648 recoveries pass logical-history checks. At 50K matched publication time falls 10.8%, but p50/migration/small-store regressions and 11 guards/six A-A failures reject the candidate. Retained evidence bytes shrink; current reachable page metadata is about 10% larger. Supported 0.3.16 stays unchanged.
 
 **Latest structural model:** [072 preserves full retry/source history across actual edits and interrupted writes](RECEIPT_PAGES_072.md). 18 debug/release tests, 73 full-history oracle checks, seven error cuts, seven process kills and 12 malformed-file cases pass. Large checkpoint bytes fall, normal delta bytes and migration grow; no new speed benchmark or engine promotion. [071 timings and ordering correction remain visible](COMPRESSION_071.md).

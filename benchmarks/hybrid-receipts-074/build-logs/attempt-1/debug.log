@@ -1,0 +1,70 @@
+
+running 40 tests
+test hybrid_tests::invalid_source_schema_and_reserved_id_do_no_io ... ok
+test hybrid_tests::orphan_generations_are_skipped_and_overflow_fails_closed ... ok
+test control_tests::bounded_delta_generations_and_duplicate_receipts ... ok
+test hybrid_tests::unknown_missing_duplicate_fields_and_delta_budget ... ok
+test tests::duplicate_legacy_ids_and_required_base ... ok
+test control_tests::latest_corrupt_catalog_fails_closed ... ok
+test tests::envelope_exact_length_crc_bounds ... ok
+test hybrid_tests::latest_corrupt_or_unknown_head_does_not_fall_back ... ok
+test tests::bounded_deserializers_and_unknown_fields ... ok
+test hybrid_tests::import_error_cuts_have_no_head_or_complete_anchor ... ok
+test tests::latest_corrupt_root_does_not_fall_back ... ok
+test tests::exact_retry_and_collision_do_no_io ... ok
+test tests::missing_or_corrupt_page_fails_closed ... ok
+test tests::metadata_publication_reuses_all_pages ... ok
+test tests::reserved_history_and_generation_rejected ... ok
+test tests::names_and_batch_schema_bounded ... ok
+test hybrid_tests::delta_error_cuts_poison_recover_and_retry ... ok
+test hybrid_tests::import_retains_exact_history_in_one_synced_file ... ok
+test tests::submitted_row_order_is_part_of_digest ... ok
+test tests::unicode_filenames_cannot_panic_numeric_parser ... ok
+test tests::rollover_reuses_sealed_prefix ... ok
+test hybrid_tests::combined_budget_keeps_original_receipts_without_eviction ... ok
+test tests::source_resume_old_retry_gap_overlap ... ok
+test tests::empty_full_and_partial_import ... ok
+test tests::valid_crc_cannot_hide_page_identity_duplicate_or_pointer_change ... ok
+test hybrid_tests::valid_crc_delta_semantic_corruption_is_rejected ... ok
+test control_tests::source_old_retry_collision_and_gap ... ok
+test tests::root_semantic_corruption_with_valid_crc_rejected ... ok
+test hybrid_tests::missing_anchor_parent_and_page_fail_closed ... ok
+test tests::error_cuts_poison_and_recover_old_or_new ... ok
+test control_tests::two_complete_cycles_preserve_original_receipts ... ok
+test hybrid_tests::superseded_deltas_not_needed_by_complete_checkpoint ... ok
+test hybrid_tests::empty_metadata_checkpoint_preserves_anchor_without_pages ... ok
+test hybrid_tests::source_history_spans_anchor_delta_and_checkpoint ... ok
+test hybrid_tests::retry_collision_and_row_order_do_no_io ... ok
+test hybrid_tests::ordinary_one_sync_checkpoint_all_history_and_two_cycles ... ok
+test hybrid_tests::valid_crc_checkpoint_binding_and_counts_are_rejected ... ok
+test hybrid_tests::checkpoint_error_cuts_recover_pending_history_exactly ... ok
+test hybrid_tests::sealed_page_rollover_reuses_prefix_after_reopen ... ok
+test tests::receipt_budget_no_eviction ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.74s
+
+warn: could not canonicalize path C:\Users\Frizer
+   Compiling version_check v0.9.5
+   Compiling proc-macro2 v1.0.107
+   Compiling typenum v1.20.1
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling crc32fast v1.5.0
+   Compiling cfg-if v1.0.4
+   Compiling serde v1.0.229
+   Compiling cpufeatures v0.2.17
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling generic-array v0.14.7
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling syn v3.0.5
+   Compiling sha2 v0.10.9
+   Compiling serde_derive v1.0.229
+   Compiling kestrel-receipt-page-model v0.1.0 (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-074\model)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.09s
+     Running unittests src\main.rs (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-074\build-cache\debug\deps\kestrel_receipt_page_model-f4c2cf508d243ecf.exe)

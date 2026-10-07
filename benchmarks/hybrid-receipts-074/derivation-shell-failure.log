@@ -1,0 +1,12 @@
+First source-equivalence diagnostic, after successful native qualification build:
+An inline python -c string containing include!("hybrid.rs") was misquoted by
+PowerShell. The interpreter stopped before any source/proof file mutation.
+
+  File "<string>", line 1
+    ... include='include!(\
+SyntaxError: unterminated string literal (detected at line 1)
+Source equivalence check failed
+
+Corrected by saving the exact diagnostic as verify_derivation.py and executing
+that file. No source, executable, native test, qualification case or timer was
+changed or repeated because of this diagnostic failure.
