@@ -1,0 +1,160 @@
+{
+  "version": "0.3.17-dev.64",
+  "rust_tests": {
+    "debug": 78,
+    "release": 78,
+    "passed": true
+  },
+  "format_check": "passed",
+  "clippy_warnings_as_errors": "passed",
+  "feature_clippy_warnings_as_errors": "passed",
+  "build_run_order": [
+    {
+      "job": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-07T08:01:19.991513+00:00",
+      "completed_at_utc": "2026-10-07T08:01:20.278752+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "debug",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-07T08:01:20.278752+00:00",
+      "completed_at_utc": "2026-10-07T08:01:43.950074+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-07T08:01:43.950074+00:00",
+      "completed_at_utc": "2026-10-07T08:02:33.548185+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-07T08:02:33.548185+00:00",
+      "completed_at_utc": "2026-10-07T08:02:38.220112+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--bins",
+        "--examples",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-07T08:02:38.221112+00:00",
+      "completed_at_utc": "2026-10-07T08:02:38.406913+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-07T08:02:38.407911+00:00",
+      "completed_at_utc": "2026-10-07T08:02:45.778818+00:00",
+      "returncode": 0
+    },
+    {
+      "job": "fault-build",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--example",
+        "publication_fault_probe",
+        "--example",
+        "live_retry_probe",
+        "--example",
+        "source_fault_probe",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-07T08:02:45.779844+00:00",
+      "completed_at_utc": "2026-10-07T08:03:08.195812+00:00",
+      "returncode": 0
+    }
+  ],
+  "cli_sha256": "3f78dcf768eb9151763187a4fbaaa59647c1824cf31f916321d2d1e86019e138",
+  "bridge_sha256": "9eb5637d75ece8a36e7be1ba7158950e134247f60aba37f95febe024d814dcc7",
+  "probe_sha256": "38b831546379a9149a0dffac1374363f21fc561aa2229512e902abbbf62a4174",
+  "scan_probe_sha256": "7185fcafc995a5a5eccbc43e0882a7fddba038ca234b931aaacd154f5791d6bf",
+  "group_probe_sha256": "42e0fed7d70d1725d1bd622929e1cbe65cac5e33bc9e65142e6895cc8ecb100d",
+  "publication_probe_sha256": "dd245a98cecfa87097f35f5d93bd13064e7dfc8e7e0ba0b4ceb663ba84e04982",
+  "receipt_seed_sha256": "24d4067e12192246c6d110f8d8b0c3d440c790fe166d3e323b3be9d122b2805c",
+  "fanin_seed_sha256": "5584db8d4dec42a8e11e78dc4971fa8f6ebbff293c17aff18028e558a925501e",
+  "fault_driver_sha256": "e8acd5d9ab08ef4ce0fa9d979f6fe0e8c2d63885d0c661c889c6353896dd2efb",
+  "live_retry_driver_sha256": "5b48209b7e2724e6a49585b164a3780c5974bc11dfa26a83e340989c4fb5f6de",
+  "source_fault_driver_sha256": "2fc89d94543b73271ca684264ee88ed1c050e64b61eed7992511cb36fc2b2b2b",
+  "source_sha256": {
+    "Cargo.lock": "5b0f806a5bf6b01e0bd5f849c28eb005611ebdd72620a83bf1c9d079892187cf",
+    "Cargo.toml": "927d0c5ce0e7f937b1e76f0ee3386a756580e7547e15fe25dadc9eddd22750d1",
+    "examples/fanin_seed_probe.rs": "5dc73916e48b03ac79562520b076c4ad03685335e6e8e5150c2f21925bbb007e",
+    "examples/group_probe.rs": "a7914ba86b30c84c5f1261fe9432bb92be6fbbc806e4386c1110cbea4cb6b82f",
+    "examples/live_ingest.rs": "f2004ec270261434cb7f18fa193b6d1176c11538b5dc3460342cae90b9a8ba32",
+    "examples/live_retry_probe.rs": "4423111a29e007bdb06d2f30f14174d112358f71355f8d3e8f259f37aee4521b",
+    "examples/performance_probe.rs": "5f40b112f17e662d40262ee03c8b8e8fd4c998723c9b1975d8e19d11fdfbab84",
+    "examples/publication_fault_probe.rs": "7b8cb96fd5db6649a91c985d2253adc583a1a2c02ccf3621f15f76801d345a30",
+    "examples/publication_probe.rs": "82985f818820761e8abb667a9594ffa83ce0c63cafea5aa38aabcf1379db271b",
+    "examples/receipt_seed.rs": "a969ff42f935e4451f7fb1ee7f188ac1d92a2620d36cfb508281eb739994309a",
+    "examples/scan_profile.rs": "6b2aedce162462ef99088b65edd26a2cf72425abad888d40dd45485f856758d1",
+    "examples/source_fault_probe.rs": "9dff9dd708f2ba9e34ce24b9d61bc27a2afd8f9de6ea03aa972faa8b696b92dd",
+    "examples/source_ingest.rs": "00c7738a283717e0205f77d66a7d3523da2fc53c1af4fe24588295d4e20699f3",
+    "src/archive.rs": "9311708acf767ffc83cef03d61882d400549356142d544e078642be2ffb104a4",
+    "src/bin/kestrel-stress.rs": "d1b85ef5c5ef97f2b1a9c47eed202cafeb64affe9d7f37839326117c48420ae4",
+    "src/lib.rs": "71f6115a6aa03988b0d9b31f61014adc760994febdebbfe00204a134538095b5",
+    "src/live.rs": "322f633b0c366d9b241ec1bdc2a27c30b9c82b4c582404d6801add3b83472f7d",
+    "src/main.rs": "2ca3a08a7c695af7fcf284fd52a1741c374dfff60a29383ad3313515b10cc734",
+    "src/query.rs": "acafed19fb0e8a1ba9b65b8f4bb47f2ebbfedf8d0db6feaf35f642dd8e62e36d",
+    "src/scale.rs": "82115e58eba20a4ffe7c30925f5140e0e27d9a2b35a03ddc97a285a09df001c0",
+    "src/source.rs": "a5f13dcc3013c5fda38b39c054b7f75a4b6c55541a8ee68e2eb17224606b4f43",
+    "src/sql.rs": "9ac76b0fd0773092e517b2e96ba36125021b55bc86b84de88ba7e6637d6c6ab8",
+    "src/wal.rs": "4cbeaa522b13ff04958a0794027101b9551b052696ecfc1f38a0bcf6a15175c1",
+    "src/wire_json.rs": "42b5322f74ce4adf5fe7314d3362055e4d469dccfa4a1de88ea016ba4bc184c3",
+    "tests/archive.rs": "935683a50f74515d658a687d711d48527f7fc40e8d702921999e55fe119032cd",
+    "tests/compaction_fanin.rs": "e04141582e0c378677d605491f99afd1ef264cd0d64e4973a2933b52364a68e9",
+    "tests/engine.rs": "ab6a928d71357491583dceafa7417e1697e246abc7cc8a12167bf88493177e5c",
+    "tests/source.rs": "439163b8747c8202e0e5eb14a12b61a07d75678b9550fffda4d6e139e1e0af8a"
+  }
+}

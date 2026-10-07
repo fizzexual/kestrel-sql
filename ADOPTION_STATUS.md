@@ -30,3 +30,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Service calibration 062](SERVICE_CALIBRATION_062.md) records 3/14 failed identical-binary tolerance checks and 2/14 failed primary candidate/A guards. This is a scoped measurement control; it does not erase 061 failures, establish a causal explanation or change the supported release/adoption assessment.
 
 [Current batching controls 063](BATCHING_063.md) record 4/10 failed identity checks and 6/26 failed option criteria. Existing durable options are measured, with no engine edit, default promotion or change to the primary-production adoption assessment.
+
+[Compaction development064](COMPACTION_064.md) passes full correctness and fourteen wider-merge fault cuts, but fails5/6 native speed goals,1/12 candidate guards and5/18 calibration checks. No service advance or supported promotion; primary-production adoption assessment remains unchanged.
