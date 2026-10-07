@@ -1,0 +1,4274 @@
+{
+  "status": "unreleased CAT5 development trial; supported engine unchanged",
+  "report_sha256": "b52d49704aa3726f2101d79b82ea2f84634ac7b62269403b6a868c195a579556",
+  "audited_utc": "2026-10-07T01:12:59.990479+00:00",
+  "cases": 36,
+  "totals": {
+    "offered": 880800,
+    "samples": 868833,
+    "acknowledged_batches": 44173,
+    "uncertain_committed_batches": 0,
+    "scrubbed_bytes": 970015200,
+    "numpy_windows": 720
+  },
+  "raw_quantiles_accounting_uniqueness_and_hashes_recomputed": true,
+  "current_default_core_matches_released_0_3_16": true,
+  "summaries": [
+    {
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 3.6178,
+            "query": 1.01,
+            "append": 78.7518
+          },
+          "lost": 0,
+          "offered": 48000,
+          "throughput_median": 2000.0,
+          "per_round": [
+            {
+              "mixed": 3.6178,
+              "query": 1.01,
+              "append": 65.6381,
+              "lost": 0
+            },
+            {
+              "mixed": 32.1337,
+              "query": 0.9921,
+              "append": 108.0793,
+              "lost": 0
+            },
+            {
+              "mixed": 3.5312,
+              "query": 1.0187,
+              "append": 78.7518,
+              "lost": 0
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 2.5811,
+            "query": 1.0503,
+            "append": 71.5595
+          },
+          "lost": 0,
+          "offered": 48000,
+          "throughput_median": 2000.0,
+          "per_round": [
+            {
+              "mixed": 2.5811,
+              "query": 1.2727,
+              "append": 71.5595,
+              "lost": 0
+            },
+            {
+              "mixed": 28.5989,
+              "query": 1.0319,
+              "append": 83.0273,
+              "lost": 0
+            },
+            {
+              "mixed": 2.4394,
+              "query": 1.0503,
+              "append": 51.8937,
+              "lost": 0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            0.7134446348609653,
+            0.8899971058421533,
+            0.6908133212505664
+          ],
+          "median": 0.7134446348609653,
+          "trial_faster_rounds": 3
+        },
+        "query": {
+          "rounds": [
+            1.26009900990099,
+            1.040116923697208,
+            1.031019927358398
+          ],
+          "median": 1.040116923697208,
+          "trial_faster_rounds": 0
+        },
+        "append": {
+          "rounds": [
+            1.0902128489398688,
+            0.7682072330224196,
+            0.6589525572748813
+          ],
+          "median": 0.7682072330224196,
+          "trial_faster_rounds": 2
+        }
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 70.6796,
+            "query": 44.2708,
+            "append": 240.6588
+          },
+          "lost": 7211,
+          "offered": 240000,
+          "throughput_median": 9684.875,
+          "per_round": [
+            {
+              "mixed": 70.6796,
+              "query": 44.2708,
+              "append": 368.4725,
+              "lost": 3564
+            },
+            {
+              "mixed": 65.2079,
+              "query": 44.9301,
+              "append": 159.0637,
+              "lost": 1184
+            },
+            {
+              "mixed": 70.7754,
+              "query": 33.7221,
+              "append": 240.6588,
+              "lost": 2463
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 34.7814,
+            "query": 32.6526,
+            "append": 123.1775
+          },
+          "lost": 3920,
+          "offered": 240000,
+          "throughput_median": 9967.375,
+          "per_round": [
+            {
+              "mixed": 16.6445,
+              "query": 12.2765,
+              "append": 113.5797,
+              "lost": 0
+            },
+            {
+              "mixed": 95.6013,
+              "query": 61.6272,
+              "append": 300.1412,
+              "lost": 3769
+            },
+            {
+              "mixed": 34.7814,
+              "query": 32.6526,
+              "append": 123.1775,
+              "lost": 151
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            0.2354922778283975,
+            1.4660999664151124,
+            0.4914334641697538
+          ],
+          "median": 0.4914334641697538,
+          "trial_faster_rounds": 2
+        },
+        "query": {
+          "rounds": [
+            0.2773046793823468,
+            1.371623922492939,
+            0.9682848932895639
+          ],
+          "median": 0.9682848932895639,
+          "trial_faster_rounds": 2
+        },
+        "append": {
+          "rounds": [
+            0.30824471297043876,
+            1.8869245465810238,
+            0.5118345973635703
+          ],
+          "median": 0.5118345973635703,
+          "trial_faster_rounds": 2
+        }
+      }
+    },
+    {
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 66.7407,
+            "query": 1.2159,
+            "append": 180.6373
+          },
+          "lost": 0,
+          "offered": 12000,
+          "throughput_median": 499.875,
+          "per_round": [
+            {
+              "mixed": 66.7407,
+              "query": 1.1958,
+              "append": 203.148,
+              "lost": 0
+            },
+            {
+              "mixed": 117.4285,
+              "query": 1.2422,
+              "append": 180.6373,
+              "lost": 0
+            },
+            {
+              "mixed": 64.6597,
+              "query": 1.2159,
+              "append": 119.9382,
+              "lost": 0
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 40.2713,
+            "query": 1.2284,
+            "append": 106.1283
+          },
+          "lost": 0,
+          "offered": 12000,
+          "throughput_median": 499.875,
+          "per_round": [
+            {
+              "mixed": 40.2713,
+              "query": 1.2036,
+              "append": 106.1283,
+              "lost": 0
+            },
+            {
+              "mixed": 71.0984,
+              "query": 1.2538,
+              "append": 118.3342,
+              "lost": 0
+            },
+            {
+              "mixed": 17.4514,
+              "query": 1.2284,
+              "append": 62.0825,
+              "lost": 0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            0.6033994249386055,
+            0.605461195536007,
+            0.2698960867433656
+          ],
+          "median": 0.6033994249386055,
+          "trial_faster_rounds": 3
+        },
+        "query": {
+          "rounds": [
+            1.0065228299046665,
+            1.0093382708098535,
+            1.0102804506949585
+          ],
+          "median": 1.0093382708098535,
+          "trial_faster_rounds": 0
+        },
+        "append": {
+          "rounds": [
+            0.522418630751964,
+            0.655092829664748,
+            0.5176207413484611
+          ],
+          "median": 0.522418630751964,
+          "trial_faster_rounds": 3
+        }
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 38.7316,
+            "query": 1.2031,
+            "append": 375.7501
+          },
+          "lost": 836,
+          "offered": 90000,
+          "throughput_median": 499.96666666666664,
+          "per_round": [
+            {
+              "mixed": 38.7316,
+              "query": 1.1919,
+              "append": 375.7501,
+              "lost": 0
+            },
+            {
+              "mixed": 37.9452,
+              "query": 1.2031,
+              "append": 92.176,
+              "lost": 0
+            },
+            {
+              "mixed": 1113.1282,
+              "query": 10.6657,
+              "append": 3992.5775,
+              "lost": 836
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 2.8635,
+            "query": 1.1994,
+            "append": 63.0879
+          },
+          "lost": 0,
+          "offered": 90000,
+          "throughput_median": 500.0,
+          "per_round": [
+            {
+              "mixed": 2.8635,
+              "query": 1.1994,
+              "append": 62.0814,
+              "lost": 0
+            },
+            {
+              "mixed": 34.7579,
+              "query": 1.2412,
+              "append": 233.1589,
+              "lost": 0
+            },
+            {
+              "mixed": 2.782,
+              "query": 1.195,
+              "append": 63.0879,
+              "lost": 0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            0.07393187991200983,
+            0.9160025510472998,
+            0.0024992628881381315
+          ],
+          "median": 0.07393187991200983,
+          "trial_faster_rounds": 3
+        },
+        "query": {
+          "rounds": [
+            1.0062924742008559,
+            1.0316681905078546,
+            0.11204140375221505
+          ],
+          "median": 1.0062924742008559,
+          "trial_faster_rounds": 1
+        },
+        "append": {
+          "rounds": [
+            0.16521991610913744,
+            2.5294968321471965,
+            0.015801296280410337
+          ],
+          "median": 0.16521991610913744,
+          "trial_faster_rounds": 2
+        }
+      }
+    },
+    {
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 0.9944,
+            "query": 0.9944,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "throughput_median": 1999.875,
+          "per_round": [
+            {
+              "mixed": 1.0099,
+              "query": 1.0099,
+              "append": null,
+              "lost": 0
+            },
+            {
+              "mixed": 0.9199,
+              "query": 0.9199,
+              "append": null,
+              "lost": 0
+            },
+            {
+              "mixed": 0.9944,
+              "query": 0.9944,
+              "append": null,
+              "lost": 0
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 1.0266,
+            "query": 1.0266,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "throughput_median": 2000.0,
+          "per_round": [
+            {
+              "mixed": 1.0266,
+              "query": 1.0266,
+              "append": null,
+              "lost": 0
+            },
+            {
+              "mixed": 0.997,
+              "query": 0.997,
+              "append": null,
+              "lost": 0
+            },
+            {
+              "mixed": 1.4503,
+              "query": 1.4503,
+              "append": null,
+              "lost": 0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            1.0165362907218536,
+            1.0838134579845635,
+            1.458467417538214
+          ],
+          "median": 1.0838134579845635,
+          "trial_faster_rounds": 0
+        },
+        "query": {
+          "rounds": [
+            1.0165362907218536,
+            1.0838134579845635,
+            1.458467417538214
+          ],
+          "median": 1.0838134579845635,
+          "trial_faster_rounds": 0
+        },
+        "append": {
+          "rounds": [],
+          "median": null,
+          "trial_faster_rounds": 0
+        }
+      }
+    },
+    {
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "mixed": 31.2471,
+            "query": 14.9085,
+            "append": 62.4429
+          },
+          "lost": 0,
+          "offered": 2400,
+          "throughput_median": 100.0,
+          "per_round": [
+            {
+              "mixed": 32.0137,
+              "query": 14.9085,
+              "append": 62.4429,
+              "lost": 0
+            },
+            {
+              "mixed": 13.4762,
+              "query": 13.6536,
+              "append": 4.7283,
+              "lost": 0
+            },
+            {
+              "mixed": 31.2471,
+              "query": 25.871,
+              "append": 244.9914,
+              "lost": 0
+            }
+          ]
+        },
+        "bundle_trial": {
+          "p99": {
+            "mixed": 18.0986,
+            "query": 8.8392,
+            "append": 36.273
+          },
+          "lost": 0,
+          "offered": 2400,
+          "throughput_median": 100.0,
+          "per_round": [
+            {
+              "mixed": 31.1528,
+              "query": 8.8392,
+              "append": 36.273,
+              "lost": 0
+            },
+            {
+              "mixed": 8.6845,
+              "query": 8.7259,
+              "append": 4.3084,
+              "lost": 0
+            },
+            {
+              "mixed": 18.0986,
+              "query": 16.966,
+              "append": 139.7454,
+              "lost": 0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "mixed": {
+          "rounds": [
+            0.9731083879713998,
+            0.64443240676155,
+            0.5792089505906148
+          ],
+          "median": 0.64443240676155,
+          "trial_faster_rounds": 3
+        },
+        "query": {
+          "rounds": [
+            0.5928966696850789,
+            0.6390915216499676,
+            0.6557921997603495
+          ],
+          "median": 0.6390915216499676,
+          "trial_faster_rounds": 3
+        },
+        "append": {
+          "rounds": [
+            0.5808987090605978,
+            0.9111942981621302,
+            0.570409410289504
+          ],
+          "median": 0.5808987090605978,
+          "trial_faster_rounds": 3
+        }
+      }
+    }
+  ],
+  "publication_stage_deltas": [
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 761,
+          "total_ms": 40.495099999999994,
+          "histogram": [
+            739,
+            9,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 761,
+          "total_ms": 4.031299999999999,
+          "histogram": [
+            761,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 761,
+          "total_ms": 272.2715000000003,
+          "histogram": [
+            0,
+            761,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 761,
+          "total_ms": 249.61299999999972,
+          "histogram": [
+            0,
+            761,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 761,
+          "total_ms": 714.4760000000009,
+          "histogram": [
+            0,
+            701,
+            50,
+            7,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 761,
+          "total_ms": 208.6419999999998,
+          "histogram": [
+            0,
+            761,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 761,
+          "total_ms": 494.2573000000002,
+          "histogram": [
+            0,
+            740,
+            13,
+            7,
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 761,
+      "compactions": 22
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 792,
+          "total_ms": 44.882500000000014,
+          "histogram": [
+            768,
+            11,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 792,
+          "total_ms": 4.022100000000001,
+          "histogram": [
+            791,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 792,
+          "total_ms": 306.66779999999994,
+          "histogram": [
+            0,
+            789,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 792,
+          "total_ms": 280.41220000000004,
+          "histogram": [
+            0,
+            790,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 792,
+          "total_ms": 951.618300000001,
+          "histogram": [
+            0,
+            704,
+            72,
+            12,
+            4,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 792,
+      "compactions": 23
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 2579,
+          "total_ms": 198.80970000000022,
+          "histogram": [
+            2487,
+            31,
+            61,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 2579,
+          "total_ms": 11.281799999999983,
+          "histogram": [
+            2579,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 2579,
+          "total_ms": 1186.6031999999982,
+          "histogram": [
+            0,
+            2576,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 2579,
+          "total_ms": 976.9526000000008,
+          "histogram": [
+            0,
+            2570,
+            9,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 2579,
+          "total_ms": 2720.8340999999973,
+          "histogram": [
+            0,
+            2382,
+            157,
+            28,
+            12,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 2579,
+      "compactions": 79
+    },
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 1771,
+          "total_ms": 138.16029999999992,
+          "histogram": [
+            1685,
+            46,
+            40,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1771,
+          "total_ms": 11.558599999999977,
+          "histogram": [
+            1771,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1771,
+          "total_ms": 786.4797999999989,
+          "histogram": [
+            0,
+            1769,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1771,
+          "total_ms": 644.5074000000011,
+          "histogram": [
+            0,
+            1765,
+            5,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1771,
+          "total_ms": 2403.919999999998,
+          "histogram": [
+            0,
+            1613,
+            110,
+            39,
+            7,
+            2,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1771,
+          "total_ms": 624.5455999999995,
+          "histogram": [
+            0,
+            1768,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1771,
+          "total_ms": 1719.5590999999986,
+          "histogram": [
+            0,
+            1700,
+            24,
+            36,
+            11,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1771,
+      "compactions": 54
+    },
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 939,
+          "total_ms": 49.43270000000007,
+          "histogram": [
+            909,
+            14,
+            16,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 939,
+          "total_ms": 5.9536000000000024,
+          "histogram": [
+            939,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 939,
+          "total_ms": 332.4299000000001,
+          "histogram": [
+            0,
+            939,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 939,
+          "total_ms": 284.29199999999975,
+          "histogram": [
+            0,
+            939,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 939,
+          "total_ms": 1056.8698000000004,
+          "histogram": [
+            0,
+            838,
+            81,
+            15,
+            5,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 939,
+          "total_ms": 251.27030000000033,
+          "histogram": [
+            0,
+            939,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 939,
+          "total_ms": 896.7789000000002,
+          "histogram": [
+            0,
+            907,
+            11,
+            17,
+            4,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 939,
+      "compactions": 28
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 982,
+          "total_ms": 52.0025,
+          "histogram": [
+            951,
+            14,
+            17,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 982,
+          "total_ms": 3.9311000000000016,
+          "histogram": [
+            982,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 982,
+          "total_ms": 342.03169999999983,
+          "histogram": [
+            0,
+            978,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 982,
+          "total_ms": 302.4821999999996,
+          "histogram": [
+            0,
+            982,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 982,
+          "total_ms": 1236.4794,
+          "histogram": [
+            0,
+            880,
+            81,
+            15,
+            6,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 982,
+      "compactions": 29
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1511,
+          "total_ms": 84.7997999999998,
+          "histogram": [
+            1465,
+            19,
+            27,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1511,
+          "total_ms": 5.995399999999992,
+          "histogram": [
+            1511,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1511,
+          "total_ms": 558.0083999999998,
+          "histogram": [
+            0,
+            1510,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 1511,
+          "total_ms": 1135.9585999999993,
+          "histogram": [
+            0,
+            1505,
+            3,
+            0,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 1511,
+          "total_ms": 2297.5055999999954,
+          "histogram": [
+            0,
+            997,
+            475,
+            22,
+            17,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1511,
+      "compactions": 46
+    },
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1292,
+          "total_ms": 73.05660000000009,
+          "histogram": [
+            1250,
+            21,
+            21,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1292,
+          "total_ms": 8.883500000000009,
+          "histogram": [
+            1292,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1292,
+          "total_ms": 480.85319999999973,
+          "histogram": [
+            0,
+            1286,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1292,
+          "total_ms": 894.4567000000001,
+          "histogram": [
+            0,
+            1283,
+            3,
+            1,
+            4,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1292,
+          "total_ms": 8985.576500000006,
+          "histogram": [
+            0,
+            729,
+            404,
+            14,
+            134,
+            11,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1292,
+          "total_ms": 436.2494000000002,
+          "histogram": [
+            0,
+            1286,
+            5,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1292,
+          "total_ms": 8016.445999999994,
+          "histogram": [
+            0,
+            750,
+            380,
+            15,
+            143,
+            4,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1292,
+      "compactions": 39
+    },
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 0,
+      "variant": "bundle_trial",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 2.1163000000000096,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.2575,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 29.824700000000007,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 84,
+          "total_ms": 90.50960000000003,
+          "histogram": [
+            0,
+            82,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 84,
+          "total_ms": 453.86219999999867,
+          "histogram": [
+            0,
+            63,
+            8,
+            0,
+            13,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    },
+    {
+      "round": 0,
+      "variant": "baseline",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 2.0977999999999852,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.4344999999999999,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 30.392300000000002,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 84,
+          "total_ms": 69.31559999999998,
+          "histogram": [
+            0,
+            82,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 84,
+          "total_ms": 254.34810000000152,
+          "histogram": [
+            0,
+            65,
+            11,
+            2,
+            6,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 84,
+          "total_ms": 23.881500000000006,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 84,
+          "total_ms": 554.2416,
+          "histogram": [
+            0,
+            58,
+            8,
+            0,
+            18,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 547,
+          "total_ms": 34.3956,
+          "histogram": [
+            527,
+            9,
+            11,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 547,
+          "total_ms": 1.8261999999999967,
+          "histogram": [
+            547,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 547,
+          "total_ms": 227.14129999999994,
+          "histogram": [
+            0,
+            545,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 547,
+          "total_ms": 180.2494999999999,
+          "histogram": [
+            0,
+            547,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 547,
+          "total_ms": 3747.233000000003,
+          "histogram": [
+            0,
+            412,
+            22,
+            13,
+            100,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 547,
+      "compactions": 16
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 447,
+          "total_ms": 26.0244,
+          "histogram": [
+            434,
+            5,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 447,
+          "total_ms": 2.5294999999999996,
+          "histogram": [
+            447,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 447,
+          "total_ms": 161.42719999999986,
+          "histogram": [
+            0,
+            447,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 447,
+          "total_ms": 176.31499999999994,
+          "histogram": [
+            0,
+            445,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 447,
+          "total_ms": 2324.231899999998,
+          "histogram": [
+            0,
+            373,
+            11,
+            7,
+            55,
+            1,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 447,
+          "total_ms": 124.34329999999999,
+          "histogram": [
+            0,
+            447,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 447,
+          "total_ms": 2407.545500000002,
+          "histogram": [
+            0,
+            361,
+            8,
+            3,
+            75,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 447,
+      "compactions": 12
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 540,
+          "total_ms": 64.60719999999992,
+          "histogram": [
+            425,
+            101,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 540,
+          "total_ms": 3.1846999999999994,
+          "histogram": [
+            540,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 540,
+          "total_ms": 238.76159999999985,
+          "histogram": [
+            0,
+            539,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 540,
+          "total_ms": 181.07170000000013,
+          "histogram": [
+            0,
+            536,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 540,
+          "total_ms": 4020.1437000000033,
+          "histogram": [
+            0,
+            430,
+            13,
+            2,
+            91,
+            4,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 540,
+          "total_ms": 223.29810000000006,
+          "histogram": [
+            0,
+            539,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 540,
+          "total_ms": 2828.7119999999986,
+          "histogram": [
+            0,
+            448,
+            2,
+            3,
+            87,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 540,
+      "compactions": 15
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 596,
+          "total_ms": 65.22390000000007,
+          "histogram": [
+            473,
+            108,
+            15,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 596,
+          "total_ms": 2.3839999999999995,
+          "histogram": [
+            596,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 596,
+          "total_ms": 278.0948,
+          "histogram": [
+            0,
+            593,
+            2,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 596,
+          "total_ms": 700.3588000000001,
+          "histogram": [
+            0,
+            581,
+            8,
+            1,
+            4,
+            2,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 596,
+          "total_ms": 6421.3429999999935,
+          "histogram": [
+            0,
+            438,
+            23,
+            2,
+            126,
+            7,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 596,
+      "compactions": 17
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 567,
+          "total_ms": 34.41719999999996,
+          "histogram": [
+            550,
+            7,
+            10,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 567,
+          "total_ms": 2.4740000000000024,
+          "histogram": [
+            567,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 567,
+          "total_ms": 237.5586000000003,
+          "histogram": [
+            0,
+            566,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 567,
+          "total_ms": 249.0812000000003,
+          "histogram": [
+            0,
+            565,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 567,
+          "total_ms": 4445.686700000002,
+          "histogram": [
+            0,
+            418,
+            38,
+            4,
+            104,
+            3,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 567,
+      "compactions": 16
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 457,
+          "total_ms": 27.883900000000008,
+          "histogram": [
+            440,
+            9,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 457,
+          "total_ms": 2.9794999999999994,
+          "histogram": [
+            457,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 457,
+          "total_ms": 159.88790000000006,
+          "histogram": [
+            0,
+            457,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 457,
+          "total_ms": 268.40910000000025,
+          "histogram": [
+            0,
+            454,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 457,
+          "total_ms": 2824.927999999995,
+          "histogram": [
+            0,
+            378,
+            14,
+            0,
+            62,
+            3,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 457,
+          "total_ms": 127.17180000000002,
+          "histogram": [
+            0,
+            457,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 457,
+          "total_ms": 2910.134999999998,
+          "histogram": [
+            0,
+            369,
+            11,
+            1,
+            75,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 457,
+      "compactions": 13
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1350,
+          "total_ms": 77.18079999999983,
+          "histogram": [
+            1308,
+            17,
+            25,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1350,
+          "total_ms": 9.437499999999995,
+          "histogram": [
+            1349,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1350,
+          "total_ms": 495.1503999999998,
+          "histogram": [
+            0,
+            1350,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1350,
+          "total_ms": 493.2203000000005,
+          "histogram": [
+            0,
+            1348,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1350,
+          "total_ms": 9795.027099999994,
+          "histogram": [
+            0,
+            1040,
+            85,
+            22,
+            192,
+            11,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1350,
+          "total_ms": 453.9889999999998,
+          "histogram": [
+            0,
+            1348,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1350,
+          "total_ms": 8682.6003,
+          "histogram": [
+            0,
+            1072,
+            45,
+            16,
+            217,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1350,
+      "compactions": 41
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1372,
+          "total_ms": 74.63540000000017,
+          "histogram": [
+            1329,
+            21,
+            22,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1372,
+          "total_ms": 5.241099999999995,
+          "histogram": [
+            1372,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1372,
+          "total_ms": 638.5589999999995,
+          "histogram": [
+            0,
+            1365,
+            3,
+            0,
+            4,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 1372,
+          "total_ms": 853.186500000001,
+          "histogram": [
+            0,
+            1361,
+            1,
+            3,
+            6,
+            1,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 1372,
+          "total_ms": 14359.012800000026,
+          "histogram": [
+            0,
+            896,
+            135,
+            38,
+            286,
+            17,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1372,
+      "compactions": 41
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 1,
+      "variant": "baseline",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 1.9813999999999936,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.43910000000000016,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 29.486100000000004,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 84,
+          "total_ms": 30.892199999999974,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 84,
+          "total_ms": 69.47820000000004,
+          "histogram": [
+            0,
+            70,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 84,
+          "total_ms": 23.202400000000004,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 84,
+          "total_ms": 64.7166,
+          "histogram": [
+            0,
+            70,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    },
+    {
+      "round": 1,
+      "variant": "bundle_trial",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 2.0830000000000126,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.25799999999999995,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 28.890799999999995,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 84,
+          "total_ms": 30.410199999999996,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 84,
+          "total_ms": 74.1729,
+          "histogram": [
+            0,
+            64,
+            20,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 777,
+          "total_ms": 40.713699999999875,
+          "histogram": [
+            754,
+            11,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 777,
+          "total_ms": 4.094599999999997,
+          "histogram": [
+            777,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 777,
+          "total_ms": 268.62230000000005,
+          "histogram": [
+            0,
+            777,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 777,
+          "total_ms": 242.5186999999998,
+          "histogram": [
+            0,
+            777,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 777,
+          "total_ms": 732.7413999999991,
+          "histogram": [
+            0,
+            708,
+            57,
+            8,
+            4,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 777,
+          "total_ms": 207.02199999999974,
+          "histogram": [
+            0,
+            777,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 777,
+          "total_ms": 539.5939000000001,
+          "histogram": [
+            0,
+            764,
+            3,
+            9,
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 777,
+      "compactions": 23
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 792,
+          "total_ms": 41.65059999999998,
+          "histogram": [
+            769,
+            10,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 792,
+          "total_ms": 2.543499999999997,
+          "histogram": [
+            792,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 792,
+          "total_ms": 281.16769999999946,
+          "histogram": [
+            0,
+            792,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 792,
+          "total_ms": 260.79580000000016,
+          "histogram": [
+            0,
+            792,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 792,
+          "total_ms": 806.9019999999995,
+          "histogram": [
+            0,
+            716,
+            63,
+            9,
+            4,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 792,
+      "compactions": 23
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 2510,
+          "total_ms": 199.14709999999985,
+          "histogram": [
+            2415,
+            36,
+            59,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 2510,
+          "total_ms": 11.237999999999966,
+          "histogram": [
+            2510,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 2510,
+          "total_ms": 1202.213400000001,
+          "histogram": [
+            0,
+            2508,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 2510,
+          "total_ms": 1065.2208999999987,
+          "histogram": [
+            0,
+            2501,
+            7,
+            1,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 2510,
+          "total_ms": 2760.4219999999996,
+          "histogram": [
+            0,
+            2305,
+            162,
+            29,
+            14,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 2510,
+      "compactions": 77
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 1908,
+          "total_ms": 153.0615999999996,
+          "histogram": [
+            1820,
+            44,
+            44,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1908,
+          "total_ms": 14.006299999999996,
+          "histogram": [
+            1908,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1908,
+          "total_ms": 883.0623000000007,
+          "histogram": [
+            0,
+            1905,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1908,
+          "total_ms": 704.5149,
+          "histogram": [
+            0,
+            1901,
+            7,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1908,
+          "total_ms": 2056.2697000000007,
+          "histogram": [
+            0,
+            1752,
+            136,
+            10,
+            10,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 1908,
+          "total_ms": 669.5673000000005,
+          "histogram": [
+            0,
+            1908,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1908,
+          "total_ms": 1628.5930000000021,
+          "histogram": [
+            0,
+            1851,
+            36,
+            11,
+            10,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1908,
+      "compactions": 58
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 959,
+          "total_ms": 46.28990000000003,
+          "histogram": [
+            930,
+            17,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 959,
+          "total_ms": 5.98349999999999,
+          "histogram": [
+            958,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 959,
+          "total_ms": 329.7784000000001,
+          "histogram": [
+            0,
+            959,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 959,
+          "total_ms": 290.9926999999997,
+          "histogram": [
+            0,
+            957,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 959,
+          "total_ms": 857.6208000000001,
+          "histogram": [
+            0,
+            887,
+            64,
+            4,
+            4,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 959,
+          "total_ms": 245.9448999999994,
+          "histogram": [
+            0,
+            958,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 959,
+          "total_ms": 763.7587999999996,
+          "histogram": [
+            0,
+            939,
+            11,
+            3,
+            6,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 959,
+      "compactions": 28
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 1007,
+          "total_ms": 54.61300000000009,
+          "histogram": [
+            977,
+            16,
+            14,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1007,
+          "total_ms": 4.1629,
+          "histogram": [
+            1007,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1007,
+          "total_ms": 439.52560000000034,
+          "histogram": [
+            0,
+            1006,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 1007,
+          "total_ms": 323.13640000000026,
+          "histogram": [
+            0,
+            1007,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 1007,
+          "total_ms": 921.4947999999996,
+          "histogram": [
+            0,
+            923,
+            70,
+            12,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1007,
+      "compactions": 30
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1516,
+          "total_ms": 87.5687,
+          "histogram": [
+            1470,
+            18,
+            28,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1516,
+          "total_ms": 5.906699999999998,
+          "histogram": [
+            1516,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1516,
+          "total_ms": 558.8162999999996,
+          "histogram": [
+            0,
+            1515,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 1516,
+          "total_ms": 634.1989000000002,
+          "histogram": [
+            0,
+            1509,
+            3,
+            2,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 1516,
+          "total_ms": 3146.5781000000056,
+          "histogram": [
+            0,
+            1083,
+            360,
+            46,
+            25,
+            2,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 1516,
+      "compactions": 46
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "stages": {
+        "prepare": {
+          "count": 1149,
+          "total_ms": 82.86759999999994,
+          "histogram": [
+            1107,
+            18,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 1149,
+          "total_ms": 11.308599999999991,
+          "histogram": [
+            1148,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 1149,
+          "total_ms": 780.3477000000007,
+          "histogram": [
+            0,
+            1125,
+            18,
+            5,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 1149,
+          "total_ms": 1202.4398999999992,
+          "histogram": [
+            0,
+            1117,
+            26,
+            5,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 1149,
+          "total_ms": 12651.342300000006,
+          "histogram": [
+            0,
+            901,
+            134,
+            36,
+            59,
+            15,
+            1,
+            3
+          ]
+        },
+        "catalog_write": {
+          "count": 1149,
+          "total_ms": 602.4950000000001,
+          "histogram": [
+            0,
+            1129,
+            12,
+            6,
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 1149,
+          "total_ms": 7096.002399999998,
+          "histogram": [
+            0,
+            1011,
+            41,
+            27,
+            60,
+            7,
+            3,
+            0
+          ]
+        }
+      },
+      "attempts": 1149,
+      "compactions": 34
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 0,
+      "compactions": 0
+    },
+    {
+      "round": 2,
+      "variant": "bundle_trial",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 3.2091000000000207,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.3974000000000002,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 44.64089999999999,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_write": {
+          "count": 84,
+          "total_ms": 58.517700000000005,
+          "histogram": [
+            0,
+            82,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "bundle_sync": {
+          "count": 84,
+          "total_ms": 405.04239999999993,
+          "histogram": [
+            0,
+            37,
+            39,
+            5,
+            2,
+            1,
+            0,
+            0
+          ]
+        },
+        "bundle_reopen": {
+          "count": 0,
+          "total_ms": 0.0,
+          "histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "stages": {
+        "prepare": {
+          "count": 84,
+          "total_ms": 3.2868000000000137,
+          "histogram": [
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_encode": {
+          "count": 84,
+          "total_ms": 0.8104000000000001,
+          "histogram": [
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_rename": {
+          "count": 84,
+          "total_ms": 46.01060000000001,
+          "histogram": [
+            0,
+            84,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "segment_write": {
+          "count": 84,
+          "total_ms": 320.2460000000001,
+          "histogram": [
+            0,
+            81,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "segment_sync": {
+          "count": 84,
+          "total_ms": 285.02350000000035,
+          "histogram": [
+            0,
+            47,
+            33,
+            1,
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_write": {
+          "count": 84,
+          "total_ms": 38.88890000000001,
+          "histogram": [
+            0,
+            83,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "catalog_sync": {
+          "count": 84,
+          "total_ms": 108.46180000000004,
+          "histogram": [
+            0,
+            72,
+            9,
+            2,
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "attempts": 84,
+      "compactions": 1
+    }
+  ],
+  "predeclared_performance_gates": {
+    "all_append_profiles_below_0_90": true,
+    "write_p99_below_0_90": true,
+    "write_improves_at_least_two_rounds": true,
+    "trial_all_soaks_zero_loss": true,
+    "read_guards_below_1_05": false
+  },
+  "performance_gates_passed": false,
+  "release_gates_completed": false,
+  "trial_promoted": false
+}

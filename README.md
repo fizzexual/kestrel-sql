@@ -1,5 +1,7 @@
 # KestrelSQL
 
+**Unreleased trial 049:** [retained-handle service measurements and recovery evidence](TRIAL_049.md). Supported 0.3.16 remains unchanged; all rounds, failures and raw data are preserved.
+
 **Unreleased storage trial 048:** [paired service results, failed gates and full recovery evidence](TRIAL_048.md) test a single synchronized generation file. Supported 0.3.16 remains unchanged; all baseline, slower and failed trial evidence is preserved.
 
 [Benchmark history: wins, losses and raw evidence](BENCHMARK_HISTORY.md) · [Download every preserved release](https://github.com/fizzexual/kestrel-sql/releases) · [Latest 0.3.16 package](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.16)

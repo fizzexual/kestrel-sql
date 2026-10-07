@@ -1,0 +1,6 @@
+{
+  "status": "hypothesis only, not run; no current source change",
+  "written_utc": "2026-10-07T01:02:15.695379+00:00",
+  "risk": "CAT5 accepts both catalog-G and segment-G physical references; current validation checks unique filenames but cache keys use generation alone. A checksum-valid mixed restore could alias two files with the same generation. Verify only after all timed workloads stop. If reproduced, keep 048/049 unpromoted and enforce unique generations before loading any data; preserve the failing fixture and add a regression test.",
+  "probe": "harness/check_generation_alias.py"
+}
