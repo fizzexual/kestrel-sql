@@ -1,0 +1,728 @@
+{
+  "totals": {
+    "offered": 880800,
+    "samples": 811571,
+    "acknowledged_batches": 41242,
+    "uncertain_committed_batches": 0,
+    "scrubbed_bytes": 962980800,
+    "numpy_windows": 720
+  },
+  "summaries": [
+    {
+      "profile": "mixed",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 6.6018,
+            "query": 1.1551,
+            "append": 97.4127
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 1999.875,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 6.6018,
+              "append_p99_ms": 97.2352,
+              "query_p99_ms": 2.0098,
+              "lost": 0,
+              "successful_window_rps": 1999.75
+            },
+            {
+              "round": 1,
+              "p99_ms": 38.286,
+              "append_p99_ms": 255.4952,
+              "query_p99_ms": 1.0558,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            },
+            {
+              "round": 2,
+              "p99_ms": 5.2349,
+              "append_p99_ms": 97.4127,
+              "query_p99_ms": 1.1551,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 10.5769,
+            "query": 1.2768,
+            "append": 131.447
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 1999.875,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 10.5769,
+              "append_p99_ms": 64.7041,
+              "query_p99_ms": 6.6394,
+              "lost": 0,
+              "successful_window_rps": 1999.75
+            },
+            {
+              "round": 1,
+              "p99_ms": 42.1255,
+              "append_p99_ms": 131.447,
+              "query_p99_ms": 1.0511,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            },
+            {
+              "round": 2,
+              "p99_ms": 5.1304,
+              "append_p99_ms": 140.1633,
+              "query_p99_ms": 1.2768,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.602123663243358,
+            1.1002846993679152,
+            0.980037823072074
+          ],
+          "median": 1.1002846993679152
+        },
+        "query": {
+          "rounds": [
+            3.3035127873420245,
+            0.9955483993180525,
+            1.1053588433901826
+          ],
+          "median": 1.1053588433901826
+        },
+        "append": {
+          "rounds": [
+            0.6654390591061672,
+            0.5144793326841365,
+            1.4388606413742766
+          ],
+          "median": 0.6654390591061672
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            1.0,
+            0.9999375
+          ],
+          "median": 1.0
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": true,
+        "query_p99": false
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 10000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 101.5268,
+            "query": 96.4031,
+            "append": 210.4182
+          },
+          "lost": 29528,
+          "offered": 240000,
+          "rps_median": 8849.875,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 93.2081,
+              "append_p99_ms": 210.4182,
+              "query_p99_ms": 59.5049,
+              "lost": 15017,
+              "successful_window_rps": 8080.25
+            },
+            {
+              "round": 1,
+              "p99_ms": 134.6216,
+              "append_p99_ms": 245.281,
+              "query_p99_ms": 127.4062,
+              "lost": 5629,
+              "successful_window_rps": 9283.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 101.5268,
+              "append_p99_ms": 207.057,
+              "query_p99_ms": 96.4031,
+              "lost": 8882,
+              "successful_window_rps": 8849.875
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 146.3788,
+            "query": 73.7797,
+            "append": 399.4757
+          },
+          "lost": 39701,
+          "offered": 240000,
+          "rps_median": 8202.125,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 146.3788,
+              "append_p99_ms": 399.4757,
+              "query_p99_ms": 63.6631,
+              "lost": 16533,
+              "successful_window_rps": 7922.25
+            },
+            {
+              "round": 1,
+              "p99_ms": 154.4519,
+              "append_p99_ms": 832.343,
+              "query_p99_ms": 127.1953,
+              "lost": 14057,
+              "successful_window_rps": 8202.125
+            },
+            {
+              "round": 2,
+              "p99_ms": 86.0228,
+              "append_p99_ms": 193.8818,
+              "query_p99_ms": 73.7797,
+              "lost": 9111,
+              "successful_window_rps": 8821.25
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.5704514950953834,
+            1.1473039987639428,
+            0.8472915525752807
+          ],
+          "median": 1.1473039987639428
+        },
+        "query": {
+          "rounds": [
+            1.069879959465523,
+            0.9983446645453675,
+            0.7653249739894258
+          ],
+          "median": 0.9983446645453675
+        },
+        "append": {
+          "rounds": [
+            1.8984845417364087,
+            3.3934263151242856,
+            0.9363692123424951
+          ],
+          "median": 1.8984845417364087
+        },
+        "rps": {
+          "rounds": [
+            0.9804461495622041,
+            0.8835640417968329,
+            0.996765491038009
+          ],
+          "median": 0.9804461495622041
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": false,
+        "append_p99": false,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 124.5264,
+            "query": 1.787,
+            "append": 180.6935
+          },
+          "lost": 0,
+          "offered": 12000,
+          "rps_median": 499.75,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 90.242,
+              "append_p99_ms": 180.6935,
+              "query_p99_ms": 5.9075,
+              "lost": 0,
+              "successful_window_rps": 499.75
+            },
+            {
+              "round": 1,
+              "p99_ms": 469.5379,
+              "append_p99_ms": 642.4797,
+              "query_p99_ms": 1.787,
+              "lost": 0,
+              "successful_window_rps": 493.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 124.5264,
+              "append_p99_ms": 180.6276,
+              "query_p99_ms": 1.3296,
+              "lost": 0,
+              "successful_window_rps": 499.75
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 98.7197,
+            "query": 1.604,
+            "append": 168.6814
+          },
+          "lost": 0,
+          "offered": 12000,
+          "rps_median": 499.75,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 98.7197,
+              "append_p99_ms": 173.2189,
+              "query_p99_ms": 1.604,
+              "lost": 0,
+              "successful_window_rps": 498.5
+            },
+            {
+              "round": 1,
+              "p99_ms": 107.3785,
+              "append_p99_ms": 168.6814,
+              "query_p99_ms": 2.9653,
+              "lost": 0,
+              "successful_window_rps": 499.75
+            },
+            {
+              "round": 2,
+              "p99_ms": 95.2639,
+              "append_p99_ms": 151.7591,
+              "query_p99_ms": 1.2959,
+              "lost": 0,
+              "successful_window_rps": 499.875
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.093944061523459,
+            0.22868973942252588,
+            0.765009668632515
+          ],
+          "median": 0.765009668632515
+        },
+        "query": {
+          "rounds": [
+            0.27151925518408804,
+            1.6593732512590935,
+            0.9746540312876054
+          ],
+          "median": 0.9746540312876054
+        },
+        "append": {
+          "rounds": [
+            0.9586338191467871,
+            0.2625474392420492,
+            0.8401766950344244
+          ],
+          "median": 0.8401766950344244
+        },
+        "rps": {
+          "rounds": [
+            0.9974987493746873,
+            1.0136916835699796,
+            1.0002501250625313
+          ],
+          "median": 1.0002501250625313
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": true,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 34.1161,
+            "query": 1.2426,
+            "append": 115.065
+          },
+          "lost": 0,
+          "offered": 90000,
+          "rps_median": 499.98333333333335,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 36.7447,
+              "append_p99_ms": 186.0369,
+              "query_p99_ms": 3.4322,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 3.9103,
+              "append_p99_ms": 68.2448,
+              "query_p99_ms": 1.2426,
+              "lost": 0,
+              "successful_window_rps": 499.96666666666664
+            },
+            {
+              "round": 2,
+              "p99_ms": 34.1161,
+              "append_p99_ms": 115.065,
+              "query_p99_ms": 1.2133,
+              "lost": 0,
+              "successful_window_rps": 499.98333333333335
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 34.6677,
+            "query": 1.3641,
+            "append": 188.4361
+          },
+          "lost": 0,
+          "offered": 90000,
+          "rps_median": 500.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 36.9087,
+              "append_p99_ms": 188.4361,
+              "query_p99_ms": 5.1658,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 4.7522,
+              "append_p99_ms": 121.3722,
+              "query_p99_ms": 1.3641,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 34.6677,
+              "append_p99_ms": 190.6991,
+              "query_p99_ms": 1.2076,
+              "lost": 0,
+              "successful_window_rps": 500.0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.004463228710535,
+            1.2153031736695394,
+            1.01616831935655
+          ],
+          "median": 1.01616831935655
+        },
+        "query": {
+          "rounds": [
+            1.5050987704679215,
+            1.0977788507967168,
+            0.9953020687381521
+          ],
+          "median": 1.0977788507967168
+        },
+        "append": {
+          "rounds": [
+            1.012896366258522,
+            1.778482756195344,
+            1.657316299482901
+          ],
+          "median": 1.657316299482901
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            1.0000666711114075,
+            1.0000333344444814
+          ],
+          "median": 1.0000333344444814
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": false,
+        "query_p99": true
+      }
+    },
+    {
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 1.0825,
+            "query": 1.0825,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 2000.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 1.529,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.529,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 1.0448,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0448,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 1.0825,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.0825,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 1.2256,
+            "query": 1.2256,
+            "append": null
+          },
+          "lost": 0,
+          "offered": 48000,
+          "rps_median": 2000.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 1.929,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.929,
+              "lost": 0,
+              "successful_window_rps": 1999.875
+            },
+            {
+              "round": 1,
+              "p99_ms": 1.045,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.045,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 1.2256,
+              "append_p99_ms": null,
+              "query_p99_ms": 1.2256,
+              "lost": 0,
+              "successful_window_rps": 2000.0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            1.26160889470242,
+            1.0001914241960184,
+            1.1321939953810625
+          ],
+          "median": 1.1321939953810625
+        },
+        "query": {
+          "rounds": [
+            1.26160889470242,
+            1.0001914241960184,
+            1.1321939953810625
+          ],
+          "median": 1.1321939953810625
+        },
+        "append": {
+          "rounds": [],
+          "median": null
+        },
+        "rps": {
+          "rounds": [
+            0.9999375,
+            1.0,
+            1.000062503906494
+          ],
+          "median": 1.0
+        }
+      },
+      "guards": {
+        "overall_p99": false,
+        "window_rps": true,
+        "loss_increase": true,
+        "query_p99": false
+      }
+    },
+    {
+      "profile": "scan",
+      "rate": 100,
+      "seconds": 8,
+      "variants": {
+        "baseline": {
+          "p99": {
+            "overall": 36.4203,
+            "query": 13.9606,
+            "append": 67.5327
+          },
+          "lost": 0,
+          "offered": 2400,
+          "rps_median": 100.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 38.8232,
+              "append_p99_ms": 41.8999,
+              "query_p99_ms": 13.9606,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 15.3631,
+              "append_p99_ms": 67.5327,
+              "query_p99_ms": 15.2492,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 36.4203,
+              "append_p99_ms": 128.465,
+              "query_p99_ms": 12.8782,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            }
+          ]
+        },
+        "sdk_trial": {
+          "p99": {
+            "overall": 33.2808,
+            "query": 17.1557,
+            "append": 37.9724
+          },
+          "lost": 0,
+          "offered": 2400,
+          "rps_median": 100.0,
+          "per_round": [
+            {
+              "round": 0,
+              "p99_ms": 33.2808,
+              "append_p99_ms": 35.5739,
+              "query_p99_ms": 18.013,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 1,
+              "p99_ms": 10.2396,
+              "append_p99_ms": 62.7936,
+              "query_p99_ms": 9.7422,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            },
+            {
+              "round": 2,
+              "p99_ms": 34.0273,
+              "append_p99_ms": 37.9724,
+              "query_p99_ms": 17.1557,
+              "lost": 0,
+              "successful_window_rps": 100.0
+            }
+          ]
+        }
+      },
+      "paired_ratios": {
+        "overall": {
+          "rounds": [
+            0.8572400008242494,
+            0.6665061087931472,
+            0.9342948849954558
+          ],
+          "median": 0.8572400008242494
+        },
+        "query": {
+          "rounds": [
+            1.2902740569889548,
+            0.6388663011830129,
+            1.3321504558090416
+          ],
+          "median": 1.2902740569889548
+        },
+        "append": {
+          "rounds": [
+            0.8490211193821465,
+            0.9298251069481894,
+            0.29558556805355546
+          ],
+          "median": 0.8490211193821465
+        },
+        "rps": {
+          "rounds": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "median": 1.0
+        }
+      },
+      "guards": {
+        "overall_p99": true,
+        "window_rps": true,
+        "loss_increase": true,
+        "append_p99": true,
+        "query_p99": false
+      }
+    }
+  ],
+  "failed_guards": 9
+}
