@@ -1,0 +1,78 @@
+{
+  "trial": 70,
+  "declared_utc": "2026-10-07T11:16:55.492903+00:00",
+  "before_any_model_timers": true,
+  "model_only": true,
+  "new_sql_engine": false,
+  "default_engine_changed": false,
+  "codec": "offline cached zstd-safe exactly7.2.4, zstd-sys locked2.0.16+zstd.1.5.7, native level1, one-shot contexts charged",
+  "motivation": "069 zlib saved bytes but regressed charged latency; 070 independently tests lower codec cost using exact real inputs and all unchanged gates",
+  "compatibility": "Released reader chain budget32 is unchanged. This model is not a Kestrel disk format; no engine dependency or format edit.",
+  "method": {
+    "rounds": 4,
+    "variants": [
+      "baseline_a",
+      "baseline_b",
+      "compressed"
+    ],
+    "cases": 36,
+    "repetitions": 12,
+    "sizes": [
+      0,
+      50000,
+      99000
+    ],
+    "same_frozen_executable_for_all_modes": true,
+    "A_and_B_same_raw_mode_same_path": true,
+    "rotate_variant_order_and_size_order": true,
+    "all_commits_one_sync_all_and_rename": true,
+    "all_files_retained": true,
+    "no_case_retry_or_threshold_change": true
+  },
+  "timing": "Outer publication includes frame encoding, compression for candidate, both CRCs, allocation/copies, open/write/flush, sync_all, close, rename and frame release. Canonical input read and final byte checks excluded.",
+  "decode": "Fresh file open+read+bounded decode+CRC measured after publication cohort within each child; same process, OS cache not cold. Exact byte comparison outside decode timer. Not Archive cold reopen.",
+  "scope_excluded": [
+    "SQL",
+    "serde serialization",
+    "growing receipts",
+    "source offsets",
+    "migration",
+    "Archive recovery or crash/power-loss",
+    "query readers",
+    "compaction",
+    "service concurrency"
+  ],
+  "checks": {
+    "large_stored_byte_ratio_max": 0.65,
+    "large_charged_publication_total_ratio_max": 0.9,
+    "small_total_guard_max": 1.1,
+    "p50_guard_max": 1.05,
+    "p99_guard_max": 1.1,
+    "max_guard_max": 1.1,
+    "peak_working_set_and_commit_guard_max": 1.35,
+    "fresh_read_decode_p99_absolute_max_ms": 200,
+    "identity_interval": [
+      0.9,
+      1.1
+    ],
+    "identity_metrics": [
+      "total_ms",
+      "p50_ms",
+      "p99_ms",
+      "max_ms",
+      "encode_total_ms",
+      "fresh_read_decode_p99_ms",
+      "peak_working_set_bytes",
+      "peak_commit_bytes"
+    ]
+  },
+  "aggregation": "Median of four matched per-round ratios; twelve samples per case, Type7 quantiles, all tails retained. Model gates never qualify the SQL engine.",
+  "advance": "Only all goals/guards/A-A checks passing motivates a separately designed engine candidate; never a supported release or speed claim.",
+  "decode_bounds": "64MiB encoded/decoded payload; CRC header/stored/decoded; standard Zstandard magic; exactly one frame; known frame content size equals bounded outer length before output allocation; one-shot destination exactly raw_len",
+  "minimum_free_bytes": 3000000000,
+  "timeout_per_case_seconds": 600,
+  "process_policy": "This computer only, one task-owned child at a time; no compile/test/audit/package/Git during timed publications",
+  "language": "English",
+  "morning_report_frozen_not_reissued": true,
+  "independent_previous_policy_sha256": "106ed89fbef4faac25276fc421f0e3a6b2e5ed5d0ebb6ab08200b1f67b4bd587"
+}

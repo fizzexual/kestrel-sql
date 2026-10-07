@@ -1,0 +1,84 @@
+{
+  "complete": true,
+  "tests": {
+    "debug": 12,
+    "release": 12
+  },
+  "format_and_strict_clippy_passed": true,
+  "commands": [
+    {
+      "job": "fmt",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T11:18:46.957581+00:00",
+      "ended_utc": "2026-10-07T11:18:47.074428+00:00"
+    },
+    {
+      "job": "debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T11:18:47.074428+00:00",
+      "ended_utc": "2026-10-07T11:18:48.137870+00:00"
+    },
+    {
+      "job": "release",
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T11:18:48.138869+00:00",
+      "ended_utc": "2026-10-07T11:19:01.269575+00:00"
+    },
+    {
+      "job": "clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T11:19:01.269575+00:00",
+      "ended_utc": "2026-10-07T11:19:05.881976+00:00"
+    },
+    {
+      "job": "build",
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T11:19:05.882945+00:00",
+      "ended_utc": "2026-10-07T11:19:08.048049+00:00"
+    }
+  ],
+  "model_only": true,
+  "source_sha256": {
+    "Cargo.lock": "6354af69eb34d676353849c702f441e770477e4fea41de3818907e9605c94781",
+    "Cargo.toml": "dbd2fca40418bd2e361ff57a52a4cffef6d0d25e498551b434679e330f3a34e1",
+    "src/main.rs": "119f7684a0ed3c4a27fe664c7348a61d73870340b4746691efd6ca65a7526ec3"
+  },
+  "binary_sha256": "27cc6695f139e7abd9ba29baf1cedb3dfbd50123ae03e6dbb1b71c10716e0c26",
+  "zstd_safe_pinned": "7.2.4",
+  "no_engine_build_or_edit": true
+}

@@ -1,0 +1,47 @@
+   Compiling cfg-if v1.0.4
+   Compiling getrandom v0.4.3
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.12
+   Compiling pkg-config v0.3.34
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling zstd-safe v7.2.4
+   Compiling crc32fast v1.5.0
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling jobserver v0.1.35
+   Compiling cc v1.4.6
+   Compiling zstd-sys v2.0.16+zstd.1.5.7
+   Compiling kestrel-checkpoint-compression-model v0.1.0 (C:\Users\Frizer\Documents\Codex\2026-10-05\letys\work\perf-070\model)
+error[E0369]: binary operation `!=` cannot be applied to type `Result<Option<u64>, ContentSizeError>`
+  --> src\main.rs:68:59
+   |
+68 |             || zstd_safe::get_frame_content_size(payload) != Ok(Some(raw_len as u64))
+   |                ------------------------------------------ ^^ ------------------------ Result<Option<u64>, ContentSizeError>
+   |                |
+   |                Result<Option<u64>, ContentSizeError>
+   |
+note: `ContentSizeError` does not implement `PartialEq`
+  --> C:\Users\Frizer\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\zstd-safe-7.2.4\src\lib.rs:77:1
+   |
+77 | pub struct ContentSizeError;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ContentSizeError` is defined in another crate
+
+error[E0369]: binary operation `==` cannot be applied to type `Result<Option<u64>, ContentSizeError>`
+   --> src\main.rs:283:9
+    |
+283 |         assert_eq!(zstd_safe::get_frame_content_size(&payload), Ok(None));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         Result<Option<u64>, ContentSizeError>
+    |         Result<Option<u64>, ContentSizeError>
+    |
+note: `ContentSizeError` does not implement `PartialEq`
+   --> C:\Users\Frizer\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\zstd-safe-7.2.4\src\lib.rs:77:1
+    |
+ 77 | pub struct ContentSizeError;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `ContentSizeError` is defined in another crate
+
+For more information about this error, try `rustc --explain E0369`.
+error: could not compile `kestrel-checkpoint-compression-model` (bin "kestrel-checkpoint-compression-model" test) due to 2 previous errors

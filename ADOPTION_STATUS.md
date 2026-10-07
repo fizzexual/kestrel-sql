@@ -40,3 +40,5 @@ The newer SDK/read experiments remain separate: [059](SERVICE_GUARDS_059.md) fai
 [Opt-in publication diagnostics 068](TRACE_068.md) preserves individual stage events, full correctness/recovery and exact released/default/traced store bytes. It remains development-only, with no measured overhead or service improvement and no primary-production adoption change.
 
 [Checkpoint compression model 069](COMPRESSION_069.md) reduces bytes but fails paid-publication latency. All 36 cases and 432 frames remain preserved. Rejected model; no SQL, service, production or supported-release qualification.
+
+[Zstandard checkpoint byte model 070](COMPRESSION_070.md) reduces stored bytes by about 70% but fails charged-publication goals and guards. All 36 cases and 432 frames remain preserved. Model rejected; supported 0.3.16 unchanged. No new SQL or service qualification.
