@@ -1,0 +1,5 @@
+The first077 cache verifier stopped before any deletion or native workload.
+prepare_cache_reclamation.py line12: raw Git blob assertion failed for one preserved artifact when git hash-object was invoked from the enclosing workspace and could apply that repository's text filters. SHA256 and byte sizes passed first. The corrected verifier explicitly uses --no-filters, matching the private Kestrel repository's * -text policy and recorded raw blob identities. No archive, sidecar, fixtures, binaries, sources or benchmark policy changed; no observed case was rerun.
+Observed output:
+AssertionError
+Cache verification failed
