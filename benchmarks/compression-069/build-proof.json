@@ -1,0 +1,84 @@
+{
+  "complete": true,
+  "tests": {
+    "debug": 8,
+    "release": 8
+  },
+  "format_and_strict_clippy_passed": true,
+  "commands": [
+    {
+      "job": "fmt",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T10:51:55.232603+00:00",
+      "ended_utc": "2026-10-07T10:51:55.665999+00:00"
+    },
+    {
+      "job": "debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T10:51:55.687004+00:00",
+      "ended_utc": "2026-10-07T10:52:11.589787+00:00"
+    },
+    {
+      "job": "release",
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T10:52:11.590788+00:00",
+      "ended_utc": "2026-10-07T10:52:26.382565+00:00"
+    },
+    {
+      "job": "clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T10:52:26.382565+00:00",
+      "ended_utc": "2026-10-07T10:52:30.058200+00:00"
+    },
+    {
+      "job": "build",
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "exit": 0,
+      "started_utc": "2026-10-07T10:52:30.059448+00:00",
+      "ended_utc": "2026-10-07T10:52:32.514933+00:00"
+    }
+  ],
+  "model_only": true,
+  "source_sha256": {
+    "Cargo.lock": "e5f42a18fceab50faada791c4d424825857cb73209b5a8a66ad19700625bbb62",
+    "Cargo.toml": "953c9590d2043e60d9c90ee746dad55bcdbfde03dcf694fc91c8ee89d72656eb",
+    "src/main.rs": "697ad6f469aee9cabe83eaeb9fd28cff31e53dd55b6f352a03e2bff63af811b7"
+  },
+  "binary_sha256": "d805de3cf2e53d8265d953ef59f980af83ec22019c9d69aa929bfe04ada41790",
+  "miniz_oxide_pinned": "0.8.9",
+  "no_engine_build_or_edit": true
+}
