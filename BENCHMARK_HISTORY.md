@@ -129,3 +129,7 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 [Release asset hashes and original package dates](release-history.json) identify the exact downloads. Git tags point to their actual historical snapshot rather than the current source tree. Benchmark execution stays local; repository GitHub Actions is disabled. No deployment is configured.
 
 [Publication verification](repository-publication.json) records all uploaded assets, server SHA-256 checks and matching historical tag commits.
+
+## Fresh D: service check 086 — October 8, 2026
+
+[54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.

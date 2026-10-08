@@ -1,0 +1,558 @@
+{
+  "trial": 86,
+  "declared_utc": "2026-10-08T10:51:40.807391+00:00",
+  "before_timing": true,
+  "status": "Fresh D: release-blocker check of the existing clean query fix; no new engine edit",
+  "versions": {
+    "baseline_a": "0.3.16",
+    "baseline_b": "0.3.16",
+    "candidate": "0.3.17-dev.61"
+  },
+  "binary_sha256": {
+    "baseline_a": "081ed43e56d45f1c57ed10e0bebe80ad59487aa92b3215b13bbde06d74e76024",
+    "baseline_b": "081ed43e56d45f1c57ed10e0bebe80ad59487aa92b3215b13bbde06d74e76024",
+    "candidate": "b9f14feff962217ca8d4792a76b78bba5bebe9a7539eef18541b7338d6ebf8fc"
+  },
+  "same_exact_executable_path_for_both_baseline_labels": true,
+  "numpy_version": "2.2.5",
+  "comparison": {
+    "rounds": 6,
+    "base_rows": 1000000,
+    "clients": 64,
+    "batch_rows": 100,
+    "group_delay_ms": 0,
+    "queue_capacity": 256,
+    "worker_expiry_seconds": 2,
+    "configs": [
+      [
+        "read",
+        2000,
+        8
+      ],
+      [
+        "write",
+        500,
+        8
+      ],
+      [
+        "mixed",
+        500,
+        60
+      ]
+    ],
+    "write_fractions": {
+      "read": 0,
+      "write": 0.25,
+      "mixed": 0.05
+    },
+    "order": "Frozen six permutations per profile; all six rounds balance pair order and positions. Each three-round block balances positions.",
+    "disk_preflight_min_free_bytes": 5000000000
+  },
+  "identity_calibration": {
+    "comparator": "baseline_b / baseline_a",
+    "each_successful_p99_ratio_min": 0.9,
+    "each_successful_p99_ratio_max": 1.1,
+    "window_rps_ratio_min": 0.9,
+    "window_rps_ratio_max": 1.1,
+    "absolute_loss_difference_max_offered_fraction": 0.01,
+    "overall_query_and_append_p99_recorded_separately": true
+  },
+  "candidate_regression_guards": {
+    "primary_comparator": "candidate / baseline_a",
+    "successful_p99_ratio_max": 1.1,
+    "window_rps_ratio_min": 0.9,
+    "loss_increase_max_offered_fraction": 0.01,
+    "candidate_over_baseline_b_always_reported_as_diagnostic_only": true
+  },
+  "outside_timer": [
+    "seed",
+    "cold reopen/exact retry",
+    "20 NumPy windows and full CRC per case",
+    "raw compression",
+    "compilation/audit/packaging/Git/cleanup"
+  ],
+  "limits": [
+    "Scoped read/write/minute-mixed service check, not the complete six-profile suite or a competitor comparison.",
+    "Six round pairs per profile and two slot-balanced blocks; tolerance checks are not statistical proof.",
+    "The two original binaries are reused exactly; no recompilation and no new native query measurements.",
+    "No direct C:/D: storage-speed claim; Python/NumPy and storage environment are freshly recorded.",
+    "Successful-operation latency must be assessed with every error, dropped and expired request.",
+    "No physical power-loss, production, complete release or universal benchmark claim."
+  ],
+  "physical_workspace": "D:\\Codex\\Kestrel",
+  "cases": [
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 0,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 1,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 2,
+      "block": 0,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 3,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 4,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "read",
+      "rate": 2000,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_a"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "candidate"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "write",
+      "rate": 500,
+      "seconds": 8,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "candidate"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_b"
+    },
+    {
+      "round": 5,
+      "block": 1,
+      "profile": "mixed",
+      "rate": 500,
+      "seconds": 60,
+      "variant": "baseline_a"
+    }
+  ],
+  "scopes": {
+    "full": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "first_block": [
+      0,
+      1,
+      2
+    ],
+    "second_block": [
+      3,
+      4,
+      5
+    ]
+  },
+  "acceptance": "All original 062 A/A and candidate/A guards must pass in full and both three-round blocks. No comparator selection, selective rerun or promotion.",
+  "expected_cases": 54,
+  "expected_offered_operations": 900000,
+  "expected_numpy_windows": 1080,
+  "hypothesis": "Determine whether the existing native query fix can advance on fresh D: service controls without write-tail, throughput or loss regressions.",
+  "engine_changed": false,
+  "supported_promotion_allowed": false,
+  "reused_correctness": "061 full retry/crash qualification retained, not rerun; each fresh anonymous-append service case reconciles ACKs, atomic batches, exact totals, 20 NumPy windows and full CRC after process reopen. No fresh named-retry or kill qualification.",
+  "runtime": {
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "python_executable": "C:\\Users\\Frizer\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "python_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "logical_cpu_count": 20
+  },
+  "native_source_provenance_sha256": "a933510ace1afc08c6cb5fff7feef904a4b3bcaf0caab0c9d2e36fe12dd21653",
+  "previous_failures_retained": {
+    "061_service_guards_failed": 10,
+    "062_identity_failed": 3,
+    "062_candidate_guards_failed": 2
+  }
+}

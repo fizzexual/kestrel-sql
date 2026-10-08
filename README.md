@@ -222,3 +222,7 @@ See [BENCHMARK.md](BENCHMARK.md) for the measured results and limitations, and [
 5. **Qualify correctness and operations.** Add coverage-guided parser/recovery fuzzing, independent SQL differential suites, filesystem fault injection, long mixed-workload stress tests, Linux verification, and real power-loss testing. Demonstrate backup restoration and upgrades with real datasets. Define supported environments and measurable release criteria before deployment.
 
 The useful result today is a runnable engine and evidence for one design bet. Production suitability is a further engineering and qualification milestone.
+
+## Fresh D: service check 086 — October 8, 2026
+
+[54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.
