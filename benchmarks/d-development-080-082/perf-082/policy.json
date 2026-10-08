@@ -1,0 +1,133 @@
+{
+  "trial": 82,
+  "declared_utc": "2026-10-08T07:31:42.485019+00:00",
+  "before_first_cohort_timer": true,
+  "model_only": true,
+  "default_engine_changed": false,
+  "method": {
+    "rounds": 12,
+    "cases": 108,
+    "variants": [
+      "baseline_a",
+      "baseline_b",
+      "hybrid"
+    ],
+    "all_variants_protocol": "hybrid",
+    "baseline_a_and_b": "exact qualified078 binary",
+    "hybrid_label": "freshly qualified bounded bulk reader081",
+    "original_receipts": [
+      126,
+      50126,
+      99126
+    ],
+    "publications_per_case": 64,
+    "complete_32_publication_cycles": 2,
+    "ordinary_receipts_per_case": 56,
+    "source_intervals_per_case": 8,
+    "source_keys_per_case": 2,
+    "fresh_recoveries_per_case": 12,
+    "recovery_after_publications": [
+      31,
+      32,
+      63,
+      64
+    ],
+    "all_six_orders_per_size": true,
+    "each_variant_and_size_each_position": 4,
+    "AB_relative_order_each_direction": 6,
+    "all_files_retained": true,
+    "no_observed_case_reruns": true,
+    "balanced_six_order_blocks": 2
+  },
+  "checks": {
+    "all_anchor_guards": {
+      "anchor31_p50_ms": 1.1,
+      "anchor31_p99_ms": 1.1
+    },
+    "publication_and_common_guards": {
+      "total_ms": 1.1,
+      "p50_ms": 1.05,
+      "p99_ms": 1.1,
+      "max_ms": 1.1,
+      "fresh_recovery_p99_ms": 1.1,
+      "migration_ms": 1.35,
+      "source_p99_ms": 1.1,
+      "ordinary_p50_ms": 1.05,
+      "ordinary_p99_ms": 1.1,
+      "ordinary_max_ms": 1.1,
+      "peak_working_set_bytes": 1.35,
+      "peak_commit_bytes": 1.35,
+      "stored_directory_bytes": 1.0,
+      "current_reachable_bytes": 1.0
+    },
+    "unchanged_checkpoint_guards": {
+      "checkpoint32_p50_ms": 1.1,
+      "checkpoint32_p99_ms": 1.1,
+      "checkpoint_delta63_p50_ms": 1.1,
+      "checkpoint_delta63_p99_ms": 1.1,
+      "checkpoint64_p50_ms": 1.1,
+      "checkpoint64_p99_ms": 1.1
+    },
+    "identity_metrics": [
+      "total_ms",
+      "p50_ms",
+      "p99_ms",
+      "max_ms",
+      "encode_total_ms",
+      "fresh_recovery_p99_ms",
+      "migration_ms",
+      "stored_directory_bytes",
+      "peak_working_set_bytes",
+      "peak_commit_bytes",
+      "source_p99_ms",
+      "source_p50_ms",
+      "ordinary_p50_ms",
+      "ordinary_p99_ms",
+      "ordinary_max_ms",
+      "current_reachable_bytes",
+      "anchor31_p50_ms",
+      "anchor31_p99_ms",
+      "checkpoint32_p50_ms",
+      "checkpoint32_p99_ms",
+      "checkpoint_delta63_p50_ms",
+      "checkpoint_delta63_p99_ms",
+      "checkpoint64_p50_ms",
+      "checkpoint64_p99_ms"
+    ],
+    "identity_interval": [
+      0.9,
+      1.1
+    ],
+    "large_reader_goals": {
+      "migration_ms": 0.9,
+      "fresh_recovery_p99_ms": 0.9,
+      "anchor31_p50_ms": 0.9,
+      "anchor31_p99_ms": 0.9,
+      "checkpoint32_p50_ms": 0.9,
+      "checkpoint32_p99_ms": 0.9,
+      "checkpoint_delta63_p50_ms": 0.9,
+      "checkpoint_delta63_p99_ms": 0.9,
+      "checkpoint64_p50_ms": 0.9,
+      "checkpoint64_p99_ms": 0.9
+    }
+  },
+  "expected_check_count": 158,
+  "qualification": "All20 reader goals,66 unchanged candidate guards and72 identical078-control checks must pass in the full cohort and each independent six-round block. Model only; no engine promotion.",
+  "timing": "Both variants retain the078 incremental source projection. Only authoritative map deserialization changes. Publication/digest/source preflight, validation/install and all IO remain charged; summary SHA outside timers.",
+  "recovery": "Same-process fresh opens after dropping writer, three per boundary; OS cache may be warm. Anchor31, checkpoint32, checkpoint+31deltas63 and checkpoint64 are individually guarded.",
+  "memory": "Full process peaks include candidate projection. This workload has two source keys; the4096-key bound is functional qualification, not measured maximum-fanout memory evidence.",
+  "minimum_free_bytes": 3000000000,
+  "timeout_per_case_seconds": 600,
+  "process_policy": "One owned child at a time; no compilation/tests/audit/package/Git concurrent with timed workload.",
+  "scope": "Metadata model only, opaque unchanged segments; no SQL/network/DuckDB/PostgreSQL comparison, cold cache, real segment IO, exclusive writer lock, physical power-loss or reclamation qualification.",
+  "prerequisite_078": "57 debug+57 release,15 errors+15 controlled kills,30 corruptions completed separately; reused, not rerun in079.",
+  "previous_075_and_077_failures_retained": true,
+  "language": "English",
+  "morning_report_frozen": true,
+  "hypothesis": "Bounded bulk receipt deserialization reduces large-store migration/recovery by at least10% without failing publication, memory, wire or calibration guards.",
+  "physical_workspace": "D:\\Codex\\Kestrel",
+  "old_C_timers_not_reused": true,
+  "robustness_acceptance": "All158 full-cohort gates plus all158 in each six-round block must pass, with no reruns or discarded samples.",
+  "stall_analysis": "Preserve all>100ms and>500ms publications and opens with sequence/stages, counts, p50/p95/p99/max by source/ordinary/recovery path and chronological case. Stalls and pooled quantiles are diagnostic; per-case paired metrics are the unchanged gates.",
+  "prerequisite_081": "Fresh60 debug+60 release, strict clippy,15 errors+15 owned kills,30 independent corruptions and201 full-file wire comparisons completed before timing."
+}

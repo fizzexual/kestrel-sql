@@ -1,0 +1,35 @@
+--- qualified078/src/main.rs
++++ bounded081/src/main.rs
+@@ -90,13 +90,21 @@
+             self,
+             mut a: A,
+         ) -> std::result::Result<Self::Value, A::Error> {
+-            let mut v = BTreeMap::new();
+-            while let Some((id, r)) = a.next_entry()? {
+-                if v.len() == MAX_IDS || v.insert(id, r).is_some() {
++            // Ignore untrusted size hints; bound entries before growing the buffer.
++            let mut v: Vec<(String, Record)> = Vec::new();
++            while let Some(entry) = a.next_entry()? {
++                if v.len() == MAX_IDS {
+                     return Err(serde::de::Error::custom("duplicate or excessive receipts"));
+                 }
+-            }
+-            Ok(v)
++                v.push(entry);
++            }
++            // Legacy JSON object order is arbitrary. Reject duplicates explicitly:
++            // BTreeMap::from_iter would otherwise discard a duplicate value.
++            v.sort_unstable_by(|a, b| a.0.cmp(&b.0));
++            if v.windows(2).any(|pair| pair[0].0 == pair[1].0) {
++                return Err(serde::de::Error::custom("duplicate or excessive receipts"));
++            }
++            Ok(v.into_iter().collect())
+         }
+     }
+     d.deserialize_map(Unique)
+@@ -1904,3 +1912,5 @@
+         }
+     }
+ }
++
++include!("bulk_tests.rs");

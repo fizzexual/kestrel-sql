@@ -1,8 +1,12 @@
 # Benchmark history: wins, losses and exact evidence
 
-**Latest measured source-state comparison:** [079 publication gains and failed guards](SOURCE_COMPARE_079.md) measures37.7%/56.6% lower large-history publication totals with stable controls. Only3/4 goals are calibrated;8 guards and19 A/A checks fail. Full qualification fails; supported0.3.16 stays unchanged. All prior reports and failures remain accessible.
+**Fresh D: loader comparison:** [082 rejects the bounded bulk reader](LOAD_COMPARE_082.md): all 20 reader goals, nine guards and 14 A/A checks fail. Peak process memory falls about 12%, but migration/recovery regress. [081 fresh correctness qualification](RECEIPT_LOAD_081.md) passes 60 debug and 60 release tests, 15 injected errors, 15 owned kills and 30 independent corruptions. Supported 0.3.16 remains unchanged.
 
-**Latest source-state qualification:** [078 bounded source positions](SOURCE_STATE_078.md) passes 57 debug/release tests, 15 injected errors, 15 owned kills and 30 independently corrupted fixtures. It removes whole-ledger cloning from new source publication; all 201 history files remain byte-identical. No fresh speed measurement or engine adoption. [077 measured recovery gains and failed guards](RECOVERY_COMPARE_077.md) remain visible.
+**Fresh D: source robustness:** [080 retains large publication gains and fails robustness](SOURCE_ROBUSTNESS_080.md): 108 cases, 6,912 publications and 1,296 opens; three guards and 11 calibration checks fail, as do both balanced halves. [Verified workspace cleanup](WORKSPACE_CUTOVER_2026-10-08.md) frees 52.90 GiB from C: while preserving all Kestrel history on D:. Shared Codex fresh-profile reset is separate and not yet executed.
+
+**Historical 079 source-state comparison:** [079 publication gains and failed guards](SOURCE_COMPARE_079.md) measures 37.7%/56.6% lower large-history publication totals with stable controls. Only three of four goals are calibrated; eight guards and 19 A/A checks fail. Full qualification fails; supported 0.3.16 stays unchanged. All prior reports and failures remain accessible.
+
+**Prior source-state qualification:** [078 bounded source positions](SOURCE_STATE_078.md) passes 57 debug/release tests, 15 injected errors, 15 owned kills and 30 independently corrupted fixtures. It removes whole-ledger cloning from new source publication; all 201 history files remain byte-identical. No fresh speed measurement or engine adoption. [077 measured recovery gains and failed guards](RECOVERY_COMPARE_077.md) remain visible.
 
 **Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51–52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
 
