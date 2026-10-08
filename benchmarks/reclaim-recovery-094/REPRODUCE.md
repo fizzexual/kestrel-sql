@@ -1,0 +1,9 @@
+# Candidate recovery experiment 094
+
+Read RECLAIM_RECOVERY_094.md and policy.json. This qualifies controlled recovery of an isolated candidate; 093 remains rejected and supported 0.3.16 is unchanged. No speed, physical power-loss, actual device-exhaustion or release qualification is claimed.
+
+All original D: source, binaries, native stores, stdout/stderr, wire journals, failed-build-v1 and unstarted-build records remain. Only regenerable target-* and Python caches are omitted from the archives with explicit inventory. No reset storage or credentials are packaged.
+
+Verify every ZIP sidecar SHA, member CRC, member SHA/size and exact file set. Extract into a new directory and recreate every directory listed by directory-inventory.json, including empty failure markers. Run audit_recovery_094.py ABSOLUTE_RESTORED_DIRECTORY from the extracted tree; this recomputes the 107 fixed cases, 22 corruption rejections, entire protected catalog/receipt chains and independent receipt digests, all current block CRCs/indexes and complete NumPy reference row multisets with zero Native or performance timer launches. The result must match offline-audit-proof.json exactly. Recheck every file SHA/size/set and directory set after audit. The saved restoration proof performs all these checks, including the preserved failed first build.
+
+The existing publication/live-retry harness case logic is unchanged; only owned work paths were relocated. The runner adds transparent byte stdout/stderr, owned bridge and wire journaling. New maintenance hooks exist only under incremental-reclaim plus fault-injection; normal baseline/candidate binaries exclude them. Successful deletions are accounted for before after-delete fault hooks. Controlled exits leave retired segments that cold open no longer remembers as intentionally preserved crash orphans. The one-target LiveRetry matrix is separate from actual maintenance cadence tests.
