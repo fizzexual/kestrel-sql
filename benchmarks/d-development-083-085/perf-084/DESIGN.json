@@ -1,0 +1,20 @@
+{
+  "declared_utc": "2026-10-08T09:35:56.323561+00:00",
+  "hypothesis": "Use borrowed raw receipt object plus bounded compact decimal/digest decoding and original fallback to reduce dominant parsing/map lifetime CPU.",
+  "original_profile": "perf-083/profile-audit.json",
+  "profile_direction_gate_passed": true,
+  "based_on_exact078_not_bulk081": true,
+  "only_reader_change": "hybrid import and immutable anchor Legacy decode; no writer/source projection change",
+  "unchanged_limits": {
+    "receipt_count": 100000,
+    "body_bytes": 67108864,
+    "source_keys": 4096
+  },
+  "header_and_JSON_validity": "serde_json1.0.151 borrowed RawValue; unknown/duplicate header fields and bounded columns/segments remain checked",
+  "fast_subset": "compact plain ASCII IDs, exactly32 decimalu8 digest bytes, either canonical field order, checked rows/generation; bounded duplicate-rejecting BTreeMap insertion",
+  "fallback": "Any non-fast receipt form or fast rejection drops partial state and uses original bounded Legacy deserializer; no malformed fast input accepted",
+  "required_correctness": "Fresh native debug/release/Clippy,4096 differential cases,max budget/duplicate/escape/numeric tests,195 independent historical heads,15 errors,15 owned kills,30 corruptions,201 exact original wire files",
+  "required_performance": "Separate fresh D: exact078 A/A vs084 with unchanged08220 reader goals,66 guards and72 identity checks in full cohort and both balanced halves; no adoption if any gate fails",
+  "supported_engine_unchanged": true,
+  "physical_power_loss_not_qualified": true
+}

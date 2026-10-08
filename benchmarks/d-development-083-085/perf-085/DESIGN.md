@@ -1,0 +1,7 @@
+# Fast receipt reader comparison 085
+
+Compare exact 078 twice as A/A against freshly qualified 084 on physical D:. Keep the complete 082 bench075 workload and every threshold: 12 rounds, two independently balanced six-order blocks, 108 serial fresh stores, 6,912 publications, 864 source intervals, 1,296 fresh opens. Require all 20 reader goals <=0.90, all 66 candidate guards and all 72 A/A identity checks separately in the full cohort and each block. Preserve every sample and failure; no observed reruns or selective gates. This is a metadata model experiment and does not authorize an engine promotion.
+
+Only hybrid import/immutable-anchor receipt decoding changes. Borrowed RawValue validates the JSON/header; a safe bounded decimal decoder handles the compact subset and falls back to the original bounded Legacy decoder otherwise. All writers, recovery validation, source projection and 100,000 receipt/64 MiB/4,096 source limits remain. Inputs and produced bytes must match the frozen independent decoder. JSON validity and any fallback are charged inside original migration/recovery timers. Full process peak memory includes parser state.
+
+No builds, qualification, hashing, copying, packaging, cleanup or Git during timing. One owned child at a time. Verify the reset helper is still waiting and all other task jobs have exited immediately before and after timing. Fresh opens may use warm OS cache; desktop activity is uncontrolled. No cold-cache, physical IO cause, SQL/network/DuckDB/PostgreSQL, power-loss, locking, reclamation or universal speed claim.

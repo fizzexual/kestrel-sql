@@ -1,5 +1,9 @@
 # Benchmark history: wins, losses and exact evidence
 
+**Fresh D: compact reader comparison:** [085 rejects the new reader](FAST_COMPARE_085.md): 11 speed goals, seven guards and nine A/A checks fail; both balanced halves fail. Full-cohort 99K migration/recovery p99 improve about 12%/14%, while publication tails fail calibrated guards. [084 correctness qualification](FAST_READER_084.md) passes 63 debug/release tests, 195 historical heads, 15 errors, 15 owned kills and 30 corruptions. Supported 0.3.16 remains unchanged.
+
+**Reader CPU diagnostic:** [083 identifies parsing/map lifetime as the main anchor cost](READER_CPU_083.md). All 108 cases and 648 phase windows pass complete ledger checks. Large parse/anchor CPU and wall controls pass in the full cohort and both halves; other diagnostic failures and short CPU windows remain visible. The diagnostic does not override the rejected full-workload candidates.
+
 **Fresh D: loader comparison:** [082 rejects the bounded bulk reader](LOAD_COMPARE_082.md): all 20 reader goals, nine guards and 14 A/A checks fail. Peak process memory falls about 12%, but migration/recovery regress. [081 fresh correctness qualification](RECEIPT_LOAD_081.md) passes 60 debug and 60 release tests, 15 injected errors, 15 owned kills and 30 independent corruptions. Supported 0.3.16 remains unchanged.
 
 **Fresh D: source robustness:** [080 retains large publication gains and fails robustness](SOURCE_ROBUSTNESS_080.md): 108 cases, 6,912 publications and 1,296 opens; three guards and 11 calibration checks fail, as do both balanced halves. [Verified workspace cleanup](WORKSPACE_CUTOVER_2026-10-08.md) frees 52.90 GiB from C: while preserving all Kestrel history on D:. Shared Codex fresh-profile reset is separate and not yet executed.
