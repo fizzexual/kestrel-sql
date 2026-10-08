@@ -1,0 +1,59 @@
+{
+  "valid_schedule_passed": true,
+  "bad_orders_rejected": [
+    "swapped_variant",
+    "missing_case",
+    "duplicate_round",
+    "wrong_family"
+  ],
+  "all_smokes_checked": [
+    {
+      "binary": "stock-016",
+      "resource_and_no_trace_checks": {
+        "traced": false,
+        "requests": 0,
+        "events": 0,
+        "publications": 0
+      }
+    },
+    {
+      "binary": "restored-default",
+      "resource_and_no_trace_checks": {
+        "traced": false,
+        "requests": 0,
+        "events": 0,
+        "publications": 0
+      }
+    },
+    {
+      "binary": "restored-writer",
+      "resource_and_no_trace_checks": {
+        "traced": true,
+        "requests": 27,
+        "events": 27,
+        "publications": 27,
+        "kinds": {
+          "append": 27,
+          "compact": 0,
+          "reclaim": 0
+        },
+        "stage_ms": [
+          0.4667,
+          7.695,
+          21.1283,
+          0.107,
+          5.6157,
+          25.8912,
+          7.6954
+        ]
+      }
+    }
+  ],
+  "invalid_resources_rejected": [
+    "wrong_pid",
+    "wrong_cpu_delta",
+    "wrong_epoch",
+    "unexpected_trace"
+  ],
+  "no_cohort_runs": true
+}

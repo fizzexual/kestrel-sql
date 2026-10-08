@@ -1,6 +1,6 @@
 # KestrelSQL
 
-**Controlled default-build investigation:** [089 completes 216 cases and 2.16 million requests](BUILD_COMPARE_089.md) with zero loss and no candidate guard failures. Eight A/A checks fail, so all comparison families remain unqualified. [088 calibrated write regressions](WRITER_OVERHEAD_088.md), [087 diagnostic correctness](WRITER_TRACE_087.md) and every prior result remain preserved. Supported 0.3.16 is unchanged; 0.3.17 is not qualified.
+**Maintenance source correction:** [090 passes every default compatibility gate](MAINTENANCE_ISOLATION_090.md) in two profiles/full/both halves. All 1.872 million requests and 179,280 reopened ACK batches pass correctness. Tracing remains unqualified because two half-cohort A/A checks fail; no candidate guard fails. [089](BUILD_COMPARE_089.md), [088 regressions](WRITER_OVERHEAD_088.md) and all history remain preserved. Supported 0.3.16 is unchanged; this is compatibility, not a speed gain or 0.3.17 release.
 
 **Fresh D: compact reader comparison:** [085 rejects the new reader](FAST_COMPARE_085.md): 11 speed goals, seven guards and nine A/A checks fail; both balanced halves fail. Full-cohort 99K migration/recovery p99 improve about 12%/14%, while publication tails fail calibrated guards. [084 correctness qualification](FAST_READER_084.md) passes 63 debug/release tests, 195 historical heads, 15 errors, 15 owned kills and 30 corruptions. Supported 0.3.16 remains unchanged.
 
