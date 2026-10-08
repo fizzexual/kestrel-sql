@@ -1,5 +1,7 @@
 # KestrelSQL 0.3.17 release target
 
+**Writer diagnostic milestone:** [091 passes all full/half overhead controls](TRACE_CONTROLS_091.md) under unchanged 5% limits with exact 090 artifacts, 1.872 million successful requests, 179,280 reopened ACK batches and 59,760 correlated traced ACKs. Reclamation is the next measured writer target. This qualifies scoped diagnostics, not an engine gain or 0.3.17 release; [090](MAINTENANCE_ISOLATION_090.md) and all earlier failures remain preserved. Supported 0.3.16 is unchanged.
+
 Updated October 8, 2026. Supported version: **0.3.16**. **0.3.17 is not qualified or released; there is no justified calendar ETA.** The next supported version requires a concrete engine change that passes the release checks below. Trial numbers are not released versions.
 
 The objective is wins across the declared analytical and service suites, with exact answers, preserved durability and explicit accounting of every failed request. A faster successful-operation p99 with more losses does not win. Neither a warm native subset nor a metadata model establishes superiority across SQL workloads or feature parity.

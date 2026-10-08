@@ -1,5 +1,7 @@
 # Benchmark history: wins, losses and exact evidence
 
+**Writer diagnostic milestone:** [091 passes all full/half overhead controls](TRACE_CONTROLS_091.md) under unchanged 5% limits with exact 090 artifacts, 1.872 million successful requests, 179,280 reopened ACK batches and 59,760 correlated traced ACKs. Reclamation is the next measured writer target. This qualifies scoped diagnostics, not an engine gain or 0.3.17 release; [090](MAINTENANCE_ISOLATION_090.md) and all earlier failures remain preserved. Supported 0.3.16 is unchanged.
+
 **Fresh D: compact reader comparison:** [085 rejects the new reader](FAST_COMPARE_085.md): 11 speed goals, seven guards and nine A/A checks fail; both balanced halves fail. Full-cohort 99K migration/recovery p99 improve about 12%/14%, while publication tails fail calibrated guards. [084 correctness qualification](FAST_READER_084.md) passes 63 debug/release tests, 195 historical heads, 15 errors, 15 owned kills and 30 corruptions. Supported 0.3.16 remains unchanged.
 
 **Reader CPU diagnostic:** [083 identifies parsing/map lifetime as the main anchor cost](READER_CPU_083.md). All 108 cases and 648 phase windows pass complete ledger checks. Large parse/anchor CPU and wall controls pass in the full cohort and both halves; other diagnostic failures and short CPU windows remain visible. The diagnostic does not override the rejected full-workload candidates.
