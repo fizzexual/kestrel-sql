@@ -1,0 +1,6614 @@
+{
+  "complete": true,
+  "byte_comparisons": [
+    {
+      "size": "sequence",
+      "variants": 3,
+      "exact": true
+    },
+    {
+      "size": "oversized",
+      "variants": 3,
+      "exact": true
+    }
+  ],
+  "cross_reads": [
+    [
+      "sequence",
+      "released016",
+      "released016"
+    ],
+    [
+      "sequence",
+      "released016",
+      "baseline"
+    ],
+    [
+      "sequence",
+      "released016",
+      "candidate"
+    ],
+    [
+      "sequence",
+      "baseline",
+      "released016"
+    ],
+    [
+      "sequence",
+      "baseline",
+      "baseline"
+    ],
+    [
+      "sequence",
+      "baseline",
+      "candidate"
+    ],
+    [
+      "sequence",
+      "candidate",
+      "released016"
+    ],
+    [
+      "sequence",
+      "candidate",
+      "baseline"
+    ],
+    [
+      "sequence",
+      "candidate",
+      "candidate"
+    ],
+    [
+      "oversized",
+      "released016",
+      "released016"
+    ],
+    [
+      "oversized",
+      "released016",
+      "baseline"
+    ],
+    [
+      "oversized",
+      "released016",
+      "candidate"
+    ],
+    [
+      "oversized",
+      "baseline",
+      "released016"
+    ],
+    [
+      "oversized",
+      "baseline",
+      "baseline"
+    ],
+    [
+      "oversized",
+      "baseline",
+      "candidate"
+    ],
+    [
+      "oversized",
+      "candidate",
+      "released016"
+    ],
+    [
+      "oversized",
+      "candidate",
+      "baseline"
+    ],
+    [
+      "oversized",
+      "candidate",
+      "candidate"
+    ]
+  ],
+  "sqlite_checks": [
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 0",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 0 AND ts < 1",
+      "expected": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 1 AND ts < 40",
+      "expected": [
+        [
+          39,
+          1560
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 40 AND ts < 41",
+      "expected": [
+        [
+          2,
+          160
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 50 AND ts < 72",
+      "expected": [
+        [
+          22,
+          2662
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 72 AND ts < 73",
+      "expected": [
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 73 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          74,
+          5336
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 0",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 0 AND ts < 1",
+      "expected": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 1 AND ts < 40",
+      "expected": [
+        [
+          39,
+          1560
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 40 AND ts < 41",
+      "expected": [
+        [
+          2,
+          160
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 50 AND ts < 72",
+      "expected": [
+        [
+          22,
+          2662
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 72 AND ts < 73",
+      "expected": [
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 73 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "baseline",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          74,
+          5336
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 0",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 0 AND ts < 1",
+      "expected": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 1 AND ts < 40",
+      "expected": [
+        [
+          39,
+          1560
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 40 AND ts < 41",
+      "expected": [
+        [
+          2,
+          160
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 50 AND ts < 72",
+      "expected": [
+        [
+          22,
+          2662
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 72 AND ts < 73",
+      "expected": [
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 73 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "candidate",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          74,
+          5336
+        ]
+      ]
+    }
+  ],
+  "wire_and_live_checks": [
+    {
+      "variant": "baseline",
+      "wire_fields": {
+        "archive": [
+          "block_rows",
+          "catalog_chain_files",
+          "generation",
+          "ingest",
+          "logical_data_bytes",
+          "metadata_bytes",
+          "page_cache_hits",
+          "page_cache_misses",
+          "physical_bytes",
+          "publication_profile",
+          "recorded_batch_ids",
+          "retained_page_cache_bytes",
+          "retained_stream_handles",
+          "rows",
+          "segments",
+          "stream_handle_opens",
+          "stream_handle_reuses"
+        ],
+        "ingest": [
+          "collected_groups",
+          "collection_total_ms",
+          "committed_batches",
+          "compaction_total_ms",
+          "compactions",
+          "duplicate_batches",
+          "durable_group_commits",
+          "fast_retry_conflicts",
+          "fast_retry_hits",
+          "fast_retry_validation_total_ms",
+          "flush_delay_ms",
+          "group_delay_ns",
+          "maintenance_errors",
+          "max_group_requests",
+          "prepared_retry_hits",
+          "publication_max_ms",
+          "publication_total_ms",
+          "queued_payload_bytes",
+          "retry_index_enabled",
+          "retry_index_ids",
+          "retry_index_logical_bytes",
+          "writer_poisoned",
+          "writer_stopped"
+        ]
+      },
+      "acks": [
+        {
+          "request": {
+            "op": "append",
+            "id": "id:0",
+            "data": [
+              [
+                16,
+                32,
+                1000
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 2
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:1",
+            "data": [
+              [
+                17,
+                34,
+                1001
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 3
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:2",
+            "data": [
+              [
+                18,
+                36,
+                1002
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 4
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:3",
+            "data": [
+              [
+                19,
+                38,
+                1003
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 5
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:4",
+            "data": [
+              [
+                20,
+                40,
+                1004
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 6
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:5",
+            "data": [
+              [
+                21,
+                42,
+                1005
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 7
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:6",
+            "data": [
+              [
+                22,
+                44,
+                1006
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 8
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:7",
+            "data": [
+              [
+                23,
+                46,
+                1007
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 9
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:8",
+            "data": [
+              [
+                24,
+                48,
+                1008
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 10
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:9",
+            "data": [
+              [
+                25,
+                50,
+                1009
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 11
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:10",
+            "data": [
+              [
+                26,
+                52,
+                1010
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 12
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:11",
+            "data": [
+              [
+                27,
+                54,
+                1011
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 13
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:12",
+            "data": [
+              [
+                28,
+                56,
+                1012
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 14
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:13",
+            "data": [
+              [
+                29,
+                58,
+                1013
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 15
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:14",
+            "data": [
+              [
+                30,
+                60,
+                1014
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 16
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:15",
+            "data": [
+              [
+                31,
+                62,
+                1015
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 17
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:16",
+            "data": [
+              [
+                32,
+                64,
+                1016
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 18
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:17",
+            "data": [
+              [
+                33,
+                66,
+                1017
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 19
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:18",
+            "data": [
+              [
+                34,
+                68,
+                1018
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 20
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:19",
+            "data": [
+              [
+                35,
+                70,
+                1019
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 21
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:20",
+            "data": [
+              [
+                36,
+                72,
+                1020
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 22
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:21",
+            "data": [
+              [
+                37,
+                74,
+                1021
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 23
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:22",
+            "data": [
+              [
+                38,
+                76,
+                1022
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 24
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:23",
+            "data": [
+              [
+                39,
+                78,
+                1023
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 25
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:24",
+            "data": [
+              [
+                40,
+                80,
+                1024
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 26
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:25",
+            "data": [
+              [
+                41,
+                82,
+                1025
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 27
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:26",
+            "data": [
+              [
+                42,
+                84,
+                1026
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 28
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:27",
+            "data": [
+              [
+                43,
+                86,
+                1027
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 29
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:28",
+            "data": [
+              [
+                44,
+                88,
+                1028
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 30
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:29",
+            "data": [
+              [
+                45,
+                90,
+                1029
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 31
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:30",
+            "data": [
+              [
+                46,
+                92,
+                1030
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 32
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:31",
+            "data": [
+              [
+                47,
+                94,
+                1031
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 33
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:32",
+            "data": [
+              [
+                48,
+                96,
+                1032
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 34
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:33",
+            "data": [
+              [
+                49,
+                98,
+                1033
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 35
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:34",
+            "data": [
+              [
+                50,
+                100,
+                1034
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 36
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:35",
+            "data": [
+              [
+                51,
+                102,
+                1035
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 37
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:36",
+            "data": [
+              [
+                52,
+                104,
+                1036
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 38
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:37",
+            "data": [
+              [
+                53,
+                106,
+                1037
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 39
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:38",
+            "data": [
+              [
+                54,
+                108,
+                1038
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 40
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:39",
+            "data": [
+              [
+                55,
+                110,
+                1039
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 41
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:40",
+            "data": [
+              [
+                56,
+                112,
+                1040
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 42
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:41",
+            "data": [
+              [
+                57,
+                114,
+                1041
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 43
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:42",
+            "data": [
+              [
+                58,
+                116,
+                1042
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 44
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:43",
+            "data": [
+              [
+                59,
+                118,
+                1043
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 45
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:44",
+            "data": [
+              [
+                60,
+                120,
+                1044
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 46
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:45",
+            "data": [
+              [
+                61,
+                122,
+                1045
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 47
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:46",
+            "data": [
+              [
+                62,
+                124,
+                1046
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 48
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:47",
+            "data": [
+              [
+                63,
+                126,
+                1047
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 49
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:48",
+            "data": [
+              [
+                64,
+                128,
+                1048
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 50
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:49",
+            "data": [
+              [
+                65,
+                130,
+                1049
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 51
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:50",
+            "data": [
+              [
+                66,
+                132,
+                1050
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 52
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:51",
+            "data": [
+              [
+                67,
+                134,
+                1051
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 53
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:52",
+            "data": [
+              [
+                68,
+                136,
+                1052
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 54
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:53",
+            "data": [
+              [
+                69,
+                138,
+                1053
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 55
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:54",
+            "data": [
+              [
+                70,
+                140,
+                1054
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 56
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:55",
+            "data": [
+              [
+                71,
+                142,
+                1055
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 57
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:56",
+            "data": [
+              [
+                72,
+                144,
+                1056
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 58
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:57",
+            "data": [
+              [
+                73,
+                146,
+                1057
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 59
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:58",
+            "data": [
+              [
+                74,
+                148,
+                1058
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 60
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:59",
+            "data": [
+              [
+                75,
+                150,
+                1059
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 61
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:60",
+            "data": [
+              [
+                76,
+                152,
+                1060
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 62
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:61",
+            "data": [
+              [
+                77,
+                154,
+                1061
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 63
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:62",
+            "data": [
+              [
+                78,
+                156,
+                1062
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 64
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:63",
+            "data": [
+              [
+                79,
+                158,
+                1063
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 66
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:64",
+            "data": [
+              [
+                80,
+                160,
+                1064
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 67
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:65",
+            "data": [
+              [
+                81,
+                162,
+                1065
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 68
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:66",
+            "data": [
+              [
+                82,
+                164,
+                1066
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 69
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:67",
+            "data": [
+              [
+                83,
+                166,
+                1067
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 70
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:68",
+            "data": [
+              [
+                84,
+                168,
+                1068
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 71
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:69",
+            "data": [
+              [
+                85,
+                170,
+                1069
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 72
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:70",
+            "data": [
+              [
+                86,
+                172,
+                1070
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 73
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:71",
+            "data": [
+              [
+                87,
+                174,
+                1071
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 74
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:72",
+            "data": [
+              [
+                88,
+                176,
+                1072
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 75
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:73",
+            "data": [
+              [
+                89,
+                178,
+                1073
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 76
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:74",
+            "data": [
+              [
+                90,
+                180,
+                1074
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 77
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:75",
+            "data": [
+              [
+                91,
+                182,
+                1075
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 78
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:76",
+            "data": [
+              [
+                92,
+                184,
+                1076
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 79
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:77",
+            "data": [
+              [
+                93,
+                186,
+                1077
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 80
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:78",
+            "data": [
+              [
+                94,
+                188,
+                1078
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 81
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:79",
+            "data": [
+              [
+                95,
+                190,
+                1079
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 82
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:80",
+            "data": [
+              [
+                96,
+                192,
+                1080
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 83
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:81",
+            "data": [
+              [
+                97,
+                194,
+                1081
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 84
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:82",
+            "data": [
+              [
+                98,
+                196,
+                1082
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 85
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:83",
+            "data": [
+              [
+                99,
+                198,
+                1083
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 86
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:84",
+            "data": [
+              [
+                100,
+                200,
+                1084
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 87
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:85",
+            "data": [
+              [
+                101,
+                202,
+                1085
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 88
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:86",
+            "data": [
+              [
+                102,
+                204,
+                1086
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 89
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:87",
+            "data": [
+              [
+                103,
+                206,
+                1087
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 90
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:88",
+            "data": [
+              [
+                104,
+                208,
+                1088
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 91
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:89",
+            "data": [
+              [
+                105,
+                210,
+                1089
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 92
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:90",
+            "data": [
+              [
+                106,
+                212,
+                1090
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 93
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:91",
+            "data": [
+              [
+                107,
+                214,
+                1091
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 94
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:92",
+            "data": [
+              [
+                108,
+                216,
+                1092
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 95
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:93",
+            "data": [
+              [
+                109,
+                218,
+                1093
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 96
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:94",
+            "data": [
+              [
+                110,
+                220,
+                1094
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 98
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:95",
+            "data": [
+              [
+                111,
+                222,
+                1095
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 99
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:96",
+            "data": [
+              [
+                112,
+                224,
+                1096
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 100
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:97",
+            "data": [
+              [
+                113,
+                226,
+                1097
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 101
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:98",
+            "data": [
+              [
+                114,
+                228,
+                1098
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 102
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:99",
+            "data": [
+              [
+                115,
+                230,
+                1099
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 103
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:100",
+            "data": [
+              [
+                116,
+                232,
+                1100
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 104
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:101",
+            "data": [
+              [
+                117,
+                234,
+                1101
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 105
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:102",
+            "data": [
+              [
+                118,
+                236,
+                1102
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 106
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:103",
+            "data": [
+              [
+                119,
+                238,
+                1103
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 107
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:104",
+            "data": [
+              [
+                120,
+                240,
+                1104
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 108
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:105",
+            "data": [
+              [
+                121,
+                242,
+                1105
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 109
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:106",
+            "data": [
+              [
+                122,
+                244,
+                1106
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 110
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:107",
+            "data": [
+              [
+                123,
+                246,
+                1107
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 111
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:108",
+            "data": [
+              [
+                124,
+                248,
+                1108
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 112
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:109",
+            "data": [
+              [
+                125,
+                250,
+                1109
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 113
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:110",
+            "data": [
+              [
+                126,
+                252,
+                1110
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 114
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:111",
+            "data": [
+              [
+                127,
+                254,
+                1111
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 115
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:112",
+            "data": [
+              [
+                128,
+                256,
+                1112
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 116
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:113",
+            "data": [
+              [
+                129,
+                258,
+                1113
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 117
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:114",
+            "data": [
+              [
+                130,
+                260,
+                1114
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 118
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:115",
+            "data": [
+              [
+                131,
+                262,
+                1115
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 119
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:116",
+            "data": [
+              [
+                132,
+                264,
+                1116
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 120
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:117",
+            "data": [
+              [
+                133,
+                266,
+                1117
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 121
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:118",
+            "data": [
+              [
+                134,
+                268,
+                1118
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 122
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:119",
+            "data": [
+              [
+                135,
+                270,
+                1119
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 123
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:120",
+            "data": [
+              [
+                136,
+                272,
+                1120
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 124
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:121",
+            "data": [
+              [
+                137,
+                274,
+                1121
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 125
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:122",
+            "data": [
+              [
+                138,
+                276,
+                1122
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 126
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:123",
+            "data": [
+              [
+                139,
+                278,
+                1123
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 127
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:124",
+            "data": [
+              [
+                140,
+                280,
+                1124
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 128
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:125",
+            "data": [
+              [
+                141,
+                282,
+                1125
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 130
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:126",
+            "data": [
+              [
+                142,
+                284,
+                1126
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 131
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:127",
+            "data": [
+              [
+                143,
+                286,
+                1127
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 132
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:128",
+            "data": [
+              [
+                144,
+                288,
+                1128
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 133
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:129",
+            "data": [
+              [
+                145,
+                290,
+                1129
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 134
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:130",
+            "data": [
+              [
+                146,
+                292,
+                1130
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 135
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:131",
+            "data": [
+              [
+                147,
+                294,
+                1131
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 136
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:132",
+            "data": [
+              [
+                148,
+                296,
+                1132
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 137
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:133",
+            "data": [
+              [
+                149,
+                298,
+                1133
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 138
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:134",
+            "data": [
+              [
+                150,
+                300,
+                1134
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 139
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:135",
+            "data": [
+              [
+                151,
+                302,
+                1135
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 140
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:136",
+            "data": [
+              [
+                152,
+                304,
+                1136
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 141
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:137",
+            "data": [
+              [
+                153,
+                306,
+                1137
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 142
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:138",
+            "data": [
+              [
+                154,
+                308,
+                1138
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 143
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:139",
+            "data": [
+              [
+                155,
+                310,
+                1139
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 144
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:140",
+            "data": [
+              [
+                156,
+                312,
+                1140
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 145
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:141",
+            "data": [
+              [
+                157,
+                314,
+                1141
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 146
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:142",
+            "data": [
+              [
+                158,
+                316,
+                1142
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 147
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:143",
+            "data": [
+              [
+                159,
+                318,
+                1143
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 148
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:144",
+            "data": [
+              [
+                160,
+                320,
+                1144
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 149
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:145",
+            "data": [
+              [
+                161,
+                322,
+                1145
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 150
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:146",
+            "data": [
+              [
+                162,
+                324,
+                1146
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 151
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:147",
+            "data": [
+              [
+                163,
+                326,
+                1147
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 152
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:148",
+            "data": [
+              [
+                164,
+                328,
+                1148
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 153
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:149",
+            "data": [
+              [
+                165,
+                330,
+                1149
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 154
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:150",
+            "data": [
+              [
+                166,
+                332,
+                1150
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 155
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:151",
+            "data": [
+              [
+                167,
+                334,
+                1151
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 156
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:152",
+            "data": [
+              [
+                168,
+                336,
+                1152
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 157
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:153",
+            "data": [
+              [
+                169,
+                338,
+                1153
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 158
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:154",
+            "data": [
+              [
+                170,
+                340,
+                1154
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 159
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:155",
+            "data": [
+              [
+                171,
+                342,
+                1155
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 160
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:156",
+            "data": [
+              [
+                172,
+                344,
+                1156
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 162
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:157",
+            "data": [
+              [
+                173,
+                346,
+                1157
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 163
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:158",
+            "data": [
+              [
+                174,
+                348,
+                1158
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 164
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:159",
+            "data": [
+              [
+                175,
+                350,
+                1159
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 165
+          }
+        }
+      ],
+      "repeat": {
+        "affected": 1,
+        "duplicate": true,
+        "generation": 19
+      },
+      "collision_error": "batch ID already committed with different content",
+      "state": {
+        "block_rows": 4096,
+        "catalog_chain_files": 4,
+        "generation": 165,
+        "ingest": {
+          "collected_groups": 162,
+          "collection_total_ms": 0.3329,
+          "committed_batches": 160,
+          "compaction_total_ms": 17.4595,
+          "compactions": 4,
+          "duplicate_batches": 1,
+          "durable_group_commits": 160,
+          "fast_retry_conflicts": 0,
+          "fast_retry_hits": 0,
+          "fast_retry_validation_total_ms": 0.0,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 1,
+          "prepared_retry_hits": 0,
+          "publication_max_ms": 23.3683,
+          "publication_total_ms": 681.6236,
+          "queued_payload_bytes": 0,
+          "retry_index_enabled": false,
+          "retry_index_ids": 0,
+          "retry_index_logical_bytes": 0,
+          "writer_poisoned": false,
+          "writer_stopped": false
+        },
+        "logical_data_bytes": 4224,
+        "metadata_bytes": 14767,
+        "page_cache_hits": 0,
+        "page_cache_misses": 0,
+        "physical_bytes": 50776,
+        "publication_profile": {
+          "attempts": 165,
+          "catalog_bytes_published": 363928,
+          "catalog_checkpoints": 7,
+          "catalog_deltas": 158,
+          "catalog_encode": {
+            "count": 165,
+            "histogram": [
+              162,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.1624,
+            "total_ms": 4.345099999999999
+          },
+          "catalog_rename": {
+            "count": 165,
+            "histogram": [
+              0,
+              160,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 4.6806,
+            "total_ms": 111.22860000000003
+          },
+          "catalog_sync": {
+            "count": 165,
+            "histogram": [
+              0,
+              148,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 2.1988,
+            "total_ms": 130.29409999999996
+          },
+          "catalog_write": {
+            "count": 165,
+            "histogram": [
+              0,
+              161,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.8806999999999998,
+            "total_ms": 91.68859999999998
+          },
+          "completed": 165,
+          "prepare": {
+            "count": 165,
+            "histogram": [
+              155,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.8073,
+            "total_ms": 12.270299999999995
+          },
+          "replay_validation": {
+            "count": 1,
+            "histogram": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0106,
+            "total_ms": 0.0106
+          },
+          "segment_sync": {
+            "count": 165,
+            "histogram": [
+              0,
+              4,
+              158,
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 19.0209,
+            "total_ms": 263.11029999999994
+          },
+          "segment_write": {
+            "count": 165,
+            "histogram": [
+              0,
+              162,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.7233,
+            "total_ms": 79.7921
+          }
+        },
+        "recorded_batch_ids": 160,
+        "retained_page_cache_bytes": 0,
+        "retained_stream_handles": 0,
+        "rows": 176,
+        "segments": 37,
+        "stream_handle_opens": 0,
+        "stream_handle_reuses": 0
+      },
+      "expected": [
+        [
+          176,
+          27000
+        ]
+      ],
+      "cross_process_ownership": [
+        {
+          "reader": "released016",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        },
+        {
+          "reader": "baseline",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        },
+        {
+          "reader": "candidate",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        }
+      ],
+      "reopen_passed": true
+    },
+    {
+      "variant": "candidate",
+      "wire_fields": {
+        "archive": [
+          "block_rows",
+          "catalog_chain_files",
+          "generation",
+          "ingest",
+          "logical_data_bytes",
+          "metadata_bytes",
+          "page_cache_hits",
+          "page_cache_misses",
+          "physical_bytes",
+          "publication_profile",
+          "recorded_batch_ids",
+          "retained_page_cache_bytes",
+          "retained_stream_handles",
+          "rows",
+          "segments",
+          "stream_handle_opens",
+          "stream_handle_reuses"
+        ],
+        "ingest": [
+          "collected_groups",
+          "collection_total_ms",
+          "committed_batches",
+          "compaction_total_ms",
+          "compactions",
+          "duplicate_batches",
+          "durable_group_commits",
+          "fast_retry_conflicts",
+          "fast_retry_hits",
+          "fast_retry_validation_total_ms",
+          "flush_delay_ms",
+          "group_delay_ns",
+          "maintenance_errors",
+          "max_group_requests",
+          "prepared_retry_hits",
+          "publication_max_ms",
+          "publication_total_ms",
+          "queued_payload_bytes",
+          "retry_index_enabled",
+          "retry_index_ids",
+          "retry_index_logical_bytes",
+          "writer_poisoned",
+          "writer_stopped"
+        ]
+      },
+      "acks": [
+        {
+          "request": {
+            "op": "append",
+            "id": "id:0",
+            "data": [
+              [
+                16,
+                32,
+                1000
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 2
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:1",
+            "data": [
+              [
+                17,
+                34,
+                1001
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 3
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:2",
+            "data": [
+              [
+                18,
+                36,
+                1002
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 4
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:3",
+            "data": [
+              [
+                19,
+                38,
+                1003
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 5
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:4",
+            "data": [
+              [
+                20,
+                40,
+                1004
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 6
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:5",
+            "data": [
+              [
+                21,
+                42,
+                1005
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 7
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:6",
+            "data": [
+              [
+                22,
+                44,
+                1006
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 8
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:7",
+            "data": [
+              [
+                23,
+                46,
+                1007
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 9
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:8",
+            "data": [
+              [
+                24,
+                48,
+                1008
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 10
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:9",
+            "data": [
+              [
+                25,
+                50,
+                1009
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 11
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:10",
+            "data": [
+              [
+                26,
+                52,
+                1010
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 12
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:11",
+            "data": [
+              [
+                27,
+                54,
+                1011
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 13
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:12",
+            "data": [
+              [
+                28,
+                56,
+                1012
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 14
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:13",
+            "data": [
+              [
+                29,
+                58,
+                1013
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 15
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:14",
+            "data": [
+              [
+                30,
+                60,
+                1014
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 16
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:15",
+            "data": [
+              [
+                31,
+                62,
+                1015
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 17
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:16",
+            "data": [
+              [
+                32,
+                64,
+                1016
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 18
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:17",
+            "data": [
+              [
+                33,
+                66,
+                1017
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 19
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:18",
+            "data": [
+              [
+                34,
+                68,
+                1018
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 20
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:19",
+            "data": [
+              [
+                35,
+                70,
+                1019
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 21
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:20",
+            "data": [
+              [
+                36,
+                72,
+                1020
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 22
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:21",
+            "data": [
+              [
+                37,
+                74,
+                1021
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 23
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:22",
+            "data": [
+              [
+                38,
+                76,
+                1022
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 24
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:23",
+            "data": [
+              [
+                39,
+                78,
+                1023
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 25
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:24",
+            "data": [
+              [
+                40,
+                80,
+                1024
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 26
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:25",
+            "data": [
+              [
+                41,
+                82,
+                1025
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 27
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:26",
+            "data": [
+              [
+                42,
+                84,
+                1026
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 28
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:27",
+            "data": [
+              [
+                43,
+                86,
+                1027
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 29
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:28",
+            "data": [
+              [
+                44,
+                88,
+                1028
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 30
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:29",
+            "data": [
+              [
+                45,
+                90,
+                1029
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 31
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:30",
+            "data": [
+              [
+                46,
+                92,
+                1030
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 32
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:31",
+            "data": [
+              [
+                47,
+                94,
+                1031
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 33
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:32",
+            "data": [
+              [
+                48,
+                96,
+                1032
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 34
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:33",
+            "data": [
+              [
+                49,
+                98,
+                1033
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 35
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:34",
+            "data": [
+              [
+                50,
+                100,
+                1034
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 36
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:35",
+            "data": [
+              [
+                51,
+                102,
+                1035
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 37
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:36",
+            "data": [
+              [
+                52,
+                104,
+                1036
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 38
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:37",
+            "data": [
+              [
+                53,
+                106,
+                1037
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 39
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:38",
+            "data": [
+              [
+                54,
+                108,
+                1038
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 40
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:39",
+            "data": [
+              [
+                55,
+                110,
+                1039
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 41
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:40",
+            "data": [
+              [
+                56,
+                112,
+                1040
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 42
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:41",
+            "data": [
+              [
+                57,
+                114,
+                1041
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 43
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:42",
+            "data": [
+              [
+                58,
+                116,
+                1042
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 44
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:43",
+            "data": [
+              [
+                59,
+                118,
+                1043
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 45
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:44",
+            "data": [
+              [
+                60,
+                120,
+                1044
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 46
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:45",
+            "data": [
+              [
+                61,
+                122,
+                1045
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 47
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:46",
+            "data": [
+              [
+                62,
+                124,
+                1046
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 48
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:47",
+            "data": [
+              [
+                63,
+                126,
+                1047
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 49
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:48",
+            "data": [
+              [
+                64,
+                128,
+                1048
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 50
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:49",
+            "data": [
+              [
+                65,
+                130,
+                1049
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 51
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:50",
+            "data": [
+              [
+                66,
+                132,
+                1050
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 52
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:51",
+            "data": [
+              [
+                67,
+                134,
+                1051
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 53
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:52",
+            "data": [
+              [
+                68,
+                136,
+                1052
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 54
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:53",
+            "data": [
+              [
+                69,
+                138,
+                1053
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 55
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:54",
+            "data": [
+              [
+                70,
+                140,
+                1054
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 56
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:55",
+            "data": [
+              [
+                71,
+                142,
+                1055
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 57
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:56",
+            "data": [
+              [
+                72,
+                144,
+                1056
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 58
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:57",
+            "data": [
+              [
+                73,
+                146,
+                1057
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 59
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:58",
+            "data": [
+              [
+                74,
+                148,
+                1058
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 60
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:59",
+            "data": [
+              [
+                75,
+                150,
+                1059
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 61
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:60",
+            "data": [
+              [
+                76,
+                152,
+                1060
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 62
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:61",
+            "data": [
+              [
+                77,
+                154,
+                1061
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 63
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:62",
+            "data": [
+              [
+                78,
+                156,
+                1062
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 64
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:63",
+            "data": [
+              [
+                79,
+                158,
+                1063
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 66
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:64",
+            "data": [
+              [
+                80,
+                160,
+                1064
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 67
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:65",
+            "data": [
+              [
+                81,
+                162,
+                1065
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 68
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:66",
+            "data": [
+              [
+                82,
+                164,
+                1066
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 69
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:67",
+            "data": [
+              [
+                83,
+                166,
+                1067
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 70
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:68",
+            "data": [
+              [
+                84,
+                168,
+                1068
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 71
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:69",
+            "data": [
+              [
+                85,
+                170,
+                1069
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 72
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:70",
+            "data": [
+              [
+                86,
+                172,
+                1070
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 73
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:71",
+            "data": [
+              [
+                87,
+                174,
+                1071
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 74
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:72",
+            "data": [
+              [
+                88,
+                176,
+                1072
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 75
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:73",
+            "data": [
+              [
+                89,
+                178,
+                1073
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 76
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:74",
+            "data": [
+              [
+                90,
+                180,
+                1074
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 77
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:75",
+            "data": [
+              [
+                91,
+                182,
+                1075
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 78
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:76",
+            "data": [
+              [
+                92,
+                184,
+                1076
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 79
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:77",
+            "data": [
+              [
+                93,
+                186,
+                1077
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 80
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:78",
+            "data": [
+              [
+                94,
+                188,
+                1078
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 81
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:79",
+            "data": [
+              [
+                95,
+                190,
+                1079
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 82
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:80",
+            "data": [
+              [
+                96,
+                192,
+                1080
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 83
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:81",
+            "data": [
+              [
+                97,
+                194,
+                1081
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 84
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:82",
+            "data": [
+              [
+                98,
+                196,
+                1082
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 85
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:83",
+            "data": [
+              [
+                99,
+                198,
+                1083
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 86
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:84",
+            "data": [
+              [
+                100,
+                200,
+                1084
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 87
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:85",
+            "data": [
+              [
+                101,
+                202,
+                1085
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 88
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:86",
+            "data": [
+              [
+                102,
+                204,
+                1086
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 89
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:87",
+            "data": [
+              [
+                103,
+                206,
+                1087
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 90
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:88",
+            "data": [
+              [
+                104,
+                208,
+                1088
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 91
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:89",
+            "data": [
+              [
+                105,
+                210,
+                1089
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 92
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:90",
+            "data": [
+              [
+                106,
+                212,
+                1090
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 93
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:91",
+            "data": [
+              [
+                107,
+                214,
+                1091
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 94
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:92",
+            "data": [
+              [
+                108,
+                216,
+                1092
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 95
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:93",
+            "data": [
+              [
+                109,
+                218,
+                1093
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 96
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:94",
+            "data": [
+              [
+                110,
+                220,
+                1094
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 98
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:95",
+            "data": [
+              [
+                111,
+                222,
+                1095
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 99
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:96",
+            "data": [
+              [
+                112,
+                224,
+                1096
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 100
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:97",
+            "data": [
+              [
+                113,
+                226,
+                1097
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 101
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:98",
+            "data": [
+              [
+                114,
+                228,
+                1098
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 102
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:99",
+            "data": [
+              [
+                115,
+                230,
+                1099
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 103
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:100",
+            "data": [
+              [
+                116,
+                232,
+                1100
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 104
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:101",
+            "data": [
+              [
+                117,
+                234,
+                1101
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 105
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:102",
+            "data": [
+              [
+                118,
+                236,
+                1102
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 106
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:103",
+            "data": [
+              [
+                119,
+                238,
+                1103
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 107
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:104",
+            "data": [
+              [
+                120,
+                240,
+                1104
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 108
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:105",
+            "data": [
+              [
+                121,
+                242,
+                1105
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 109
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:106",
+            "data": [
+              [
+                122,
+                244,
+                1106
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 110
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:107",
+            "data": [
+              [
+                123,
+                246,
+                1107
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 111
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:108",
+            "data": [
+              [
+                124,
+                248,
+                1108
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 112
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:109",
+            "data": [
+              [
+                125,
+                250,
+                1109
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 113
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:110",
+            "data": [
+              [
+                126,
+                252,
+                1110
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 114
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:111",
+            "data": [
+              [
+                127,
+                254,
+                1111
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 115
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:112",
+            "data": [
+              [
+                128,
+                256,
+                1112
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 116
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:113",
+            "data": [
+              [
+                129,
+                258,
+                1113
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 117
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:114",
+            "data": [
+              [
+                130,
+                260,
+                1114
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 118
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:115",
+            "data": [
+              [
+                131,
+                262,
+                1115
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 119
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:116",
+            "data": [
+              [
+                132,
+                264,
+                1116
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 120
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:117",
+            "data": [
+              [
+                133,
+                266,
+                1117
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 121
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:118",
+            "data": [
+              [
+                134,
+                268,
+                1118
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 122
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:119",
+            "data": [
+              [
+                135,
+                270,
+                1119
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 123
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:120",
+            "data": [
+              [
+                136,
+                272,
+                1120
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 124
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:121",
+            "data": [
+              [
+                137,
+                274,
+                1121
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 125
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:122",
+            "data": [
+              [
+                138,
+                276,
+                1122
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 126
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:123",
+            "data": [
+              [
+                139,
+                278,
+                1123
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 127
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:124",
+            "data": [
+              [
+                140,
+                280,
+                1124
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 128
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:125",
+            "data": [
+              [
+                141,
+                282,
+                1125
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 130
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:126",
+            "data": [
+              [
+                142,
+                284,
+                1126
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 131
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:127",
+            "data": [
+              [
+                143,
+                286,
+                1127
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 132
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:128",
+            "data": [
+              [
+                144,
+                288,
+                1128
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 133
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:129",
+            "data": [
+              [
+                145,
+                290,
+                1129
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 134
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:130",
+            "data": [
+              [
+                146,
+                292,
+                1130
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 135
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:131",
+            "data": [
+              [
+                147,
+                294,
+                1131
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 136
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:132",
+            "data": [
+              [
+                148,
+                296,
+                1132
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 137
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:133",
+            "data": [
+              [
+                149,
+                298,
+                1133
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 138
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:134",
+            "data": [
+              [
+                150,
+                300,
+                1134
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 139
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:135",
+            "data": [
+              [
+                151,
+                302,
+                1135
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 140
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:136",
+            "data": [
+              [
+                152,
+                304,
+                1136
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 141
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:137",
+            "data": [
+              [
+                153,
+                306,
+                1137
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 142
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:138",
+            "data": [
+              [
+                154,
+                308,
+                1138
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 143
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:139",
+            "data": [
+              [
+                155,
+                310,
+                1139
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 144
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:140",
+            "data": [
+              [
+                156,
+                312,
+                1140
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 145
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:141",
+            "data": [
+              [
+                157,
+                314,
+                1141
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 146
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:142",
+            "data": [
+              [
+                158,
+                316,
+                1142
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 147
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:143",
+            "data": [
+              [
+                159,
+                318,
+                1143
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 148
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:144",
+            "data": [
+              [
+                160,
+                320,
+                1144
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 149
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:145",
+            "data": [
+              [
+                161,
+                322,
+                1145
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 150
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:146",
+            "data": [
+              [
+                162,
+                324,
+                1146
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 151
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:147",
+            "data": [
+              [
+                163,
+                326,
+                1147
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 152
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:148",
+            "data": [
+              [
+                164,
+                328,
+                1148
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 153
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:149",
+            "data": [
+              [
+                165,
+                330,
+                1149
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 154
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:150",
+            "data": [
+              [
+                166,
+                332,
+                1150
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 155
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:151",
+            "data": [
+              [
+                167,
+                334,
+                1151
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 156
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:152",
+            "data": [
+              [
+                168,
+                336,
+                1152
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 157
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:153",
+            "data": [
+              [
+                169,
+                338,
+                1153
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 158
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:154",
+            "data": [
+              [
+                170,
+                340,
+                1154
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 159
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:155",
+            "data": [
+              [
+                171,
+                342,
+                1155
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 160
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:156",
+            "data": [
+              [
+                172,
+                344,
+                1156
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 162
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:157",
+            "data": [
+              [
+                173,
+                346,
+                1157
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 163
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:158",
+            "data": [
+              [
+                174,
+                348,
+                1158
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 164
+          }
+        },
+        {
+          "request": {
+            "op": "append",
+            "id": "id:159",
+            "data": [
+              [
+                175,
+                350,
+                1159
+              ]
+            ]
+          },
+          "receipt": {
+            "affected": 1,
+            "duplicate": false,
+            "generation": 165
+          }
+        }
+      ],
+      "repeat": {
+        "affected": 1,
+        "duplicate": true,
+        "generation": 19
+      },
+      "collision_error": "batch ID already committed with different content",
+      "state": {
+        "block_rows": 4096,
+        "catalog_chain_files": 4,
+        "generation": 165,
+        "ingest": {
+          "collected_groups": 162,
+          "collection_total_ms": 0.4064,
+          "committed_batches": 160,
+          "compaction_total_ms": 14.9347,
+          "compactions": 4,
+          "duplicate_batches": 1,
+          "durable_group_commits": 160,
+          "fast_retry_conflicts": 0,
+          "fast_retry_hits": 0,
+          "fast_retry_validation_total_ms": 0.0,
+          "flush_delay_ms": 0,
+          "group_delay_ns": 0,
+          "maintenance_errors": 0,
+          "max_group_requests": 1,
+          "prepared_retry_hits": 0,
+          "publication_max_ms": 7.4197,
+          "publication_total_ms": 631.2983,
+          "queued_payload_bytes": 0,
+          "retry_index_enabled": false,
+          "retry_index_ids": 0,
+          "retry_index_logical_bytes": 0,
+          "writer_poisoned": false,
+          "writer_stopped": false
+        },
+        "logical_data_bytes": 4224,
+        "metadata_bytes": 14767,
+        "page_cache_hits": 0,
+        "page_cache_misses": 0,
+        "physical_bytes": 92775,
+        "publication_profile": {
+          "attempts": 165,
+          "catalog_bytes_published": 363928,
+          "catalog_checkpoints": 7,
+          "catalog_deltas": 158,
+          "catalog_encode": {
+            "count": 165,
+            "histogram": [
+              162,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.6074999999999999,
+            "total_ms": 4.827800000000001
+          },
+          "catalog_rename": {
+            "count": 165,
+            "histogram": [
+              0,
+              162,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.2288,
+            "total_ms": 100.08589999999994
+          },
+          "catalog_sync": {
+            "count": 165,
+            "histogram": [
+              0,
+              146,
+              19,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.311,
+            "total_ms": 132.96860000000004
+          },
+          "catalog_write": {
+            "count": 165,
+            "histogram": [
+              0,
+              159,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 1.9037,
+            "total_ms": 86.3438
+          },
+          "completed": 165,
+          "prepare": {
+            "count": 165,
+            "histogram": [
+              156,
+              9,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.7242999999999999,
+            "total_ms": 11.730400000000001
+          },
+          "replay_validation": {
+            "count": 1,
+            "histogram": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 0.0133,
+            "total_ms": 0.0133
+          },
+          "segment_sync": {
+            "count": 165,
+            "histogram": [
+              0,
+              4,
+              161,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 3.811,
+            "total_ms": 223.23500000000004
+          },
+          "segment_write": {
+            "count": 165,
+            "histogram": [
+              0,
+              163,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "max_ms": 2.1565,
+            "total_ms": 73.83399999999999
+          }
+        },
+        "recorded_batch_ids": 160,
+        "retained_page_cache_bytes": 0,
+        "retained_stream_handles": 0,
+        "rows": 176,
+        "segments": 37,
+        "stream_handle_opens": 0,
+        "stream_handle_reuses": 0
+      },
+      "expected": [
+        [
+          176,
+          27000
+        ]
+      ],
+      "cross_process_ownership": [
+        {
+          "reader": "released016",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        },
+        {
+          "reader": "baseline",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        },
+        {
+          "reader": "candidate",
+          "rejected": true,
+          "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+        }
+      ],
+      "reopen_passed": true
+    }
+  ],
+  "no_new_controlled_cutpoint_kill_or_physical_power_loss_qualification": true,
+  "external_probe_CLI_invocations": 56,
+  "owned_bridge_initial_and_reopen_launches": 4
+}

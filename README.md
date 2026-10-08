@@ -1,5 +1,8 @@
 # KestrelSQL
 
+**Latest engine candidate:** [093 incremental reclamation is rejected](INCREMENTAL_RECLAIM_093.md): 2,650 queue drops, five failed A/A checks and missed append goals. All 178,622 ACK batches pass full independent data/CRC audit and exact restoration; lower medians do not qualify a win. Supported 0.3.16 remains unchanged; .17 is unqualified.
+
+
 **Reclamation measurement milestone:** [092 passes all native phase controls](RECLAIM_PHASES_092.md), 314 tests, both balanced halves and all 72 exact stores. File deletion accounts for about 83% of native reclaim time; this justifies a separate bounded Live cleanup candidate. Diagnostics are qualified in this scope; no engine gain or supported upgrade is claimed. All earlier failures remain preserved; supported 0.3.16 is unchanged.
 
 
