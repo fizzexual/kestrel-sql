@@ -133,3 +133,7 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Fresh D: service check 086 — October 8, 2026
 
 [54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.
+
+## Service-writer diagnostics087 — October8,2026
+
+[Bounded optional writer tracing](WRITER_TRACE_087.md): fresh correctness/byte/protocol qualification in both isolated cores,90 native commands and32 SQLite comparisons. Initial extra-field validation failure and all setup/audit stops preserved. No overhead/speed claim or supported upgrade.086 service regressions remain release blockers.

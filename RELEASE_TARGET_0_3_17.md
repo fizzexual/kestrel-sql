@@ -19,3 +19,5 @@ The current priority is the real service writer. Individual publication/compacti
 When these checks pass for an actual integrated change, prepare 0.3.17 artifacts and reviewable release evidence. Keep every old release/failure and the private repository intact. This target is not a release announcement or a promise of universal superiority.
 
 [Fresh D: service check 086](SERVICE_D_086.md), [clean query fix 061](CORE_READ_PATH_061.md), [complete benchmark history](BENCHMARK_HISTORY.md).
+
+[087 bounded service-writer diagnostics](WRITER_TRACE_087.md) now pass scoped correctness, byte/retry/reopen and ACK correlation in both isolated cores. The diagnostic bridge extra-field bug is fixed and its failed evidence retained. Tracing overhead/default-build performance and individual service-tail calibration remain next; no speed gate, supported promotion or release date changes.
