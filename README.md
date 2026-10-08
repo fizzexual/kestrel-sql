@@ -1,5 +1,8 @@
 # KestrelSQL
 
+**Reclamation measurement milestone:** [092 passes all native phase controls](RECLAIM_PHASES_092.md), 314 tests, both balanced halves and all 72 exact stores. File deletion accounts for about 83% of native reclaim time; this justifies a separate bounded Live cleanup candidate. Diagnostics are qualified in this scope; no engine gain or supported upgrade is claimed. All earlier failures remain preserved; supported 0.3.16 is unchanged.
+
+
 **Writer diagnostic milestone:** [091 passes all full/half overhead controls](TRACE_CONTROLS_091.md) under unchanged 5% limits with exact 090 artifacts, 1.872 million successful requests, 179,280 reopened ACK batches and 59,760 correlated traced ACKs. Reclamation is the next measured writer target. This qualifies scoped diagnostics, not an engine gain or 0.3.17 release; [090](MAINTENANCE_ISOLATION_090.md) and all earlier failures remain preserved. Supported 0.3.16 is unchanged.
 
 **Maintenance source correction:** [090 passes every default compatibility gate](MAINTENANCE_ISOLATION_090.md) in two profiles/full/both halves. All 1.872 million requests and 179,280 reopened ACK batches pass correctness. Tracing remains unqualified because two half-cohort A/A checks fail; no candidate guard fails. [089](BUILD_COMPARE_089.md), [088 regressions](WRITER_OVERHEAD_088.md) and all history remain preserved. Supported 0.3.16 is unchanged; this is compatibility, not a speed gain or 0.3.17 release.

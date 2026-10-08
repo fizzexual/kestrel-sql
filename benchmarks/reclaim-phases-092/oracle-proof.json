@@ -1,0 +1,238 @@
+{
+  "complete": true,
+  "smokes": [
+    {
+      "variant": "baseline_a",
+      "mode": "anonymous",
+      "excluded_from_cohort": true
+    },
+    {
+      "variant": "profiled",
+      "mode": "named",
+      "excluded_from_cohort": true
+    }
+  ],
+  "byte_comparisons": [
+    "sequence",
+    "oversized"
+  ],
+  "cross_reads": [
+    [
+      "sequence",
+      "released016",
+      "released016"
+    ],
+    [
+      "sequence",
+      "released016",
+      "profile"
+    ],
+    [
+      "sequence",
+      "profile",
+      "released016"
+    ],
+    [
+      "sequence",
+      "profile",
+      "profile"
+    ],
+    [
+      "oversized",
+      "released016",
+      "released016"
+    ],
+    [
+      "oversized",
+      "released016",
+      "profile"
+    ],
+    [
+      "oversized",
+      "profile",
+      "released016"
+    ],
+    [
+      "oversized",
+      "profile",
+      "profile"
+    ]
+  ],
+  "sqlite_checks": [
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 0",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 0 AND ts < 1",
+      "expected": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 1 AND ts < 40",
+      "expected": [
+        [
+          39,
+          1560
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 40 AND ts < 41",
+      "expected": [
+        [
+          2,
+          160
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 50 AND ts < 72",
+      "expected": [
+        [
+          22,
+          2662
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 72 AND ts < 73",
+      "expected": [
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 73 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "released016",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          74,
+          5336
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 0",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 0 AND ts < 1",
+      "expected": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 1 AND ts < 40",
+      "expected": [
+        [
+          39,
+          1560
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 40 AND ts < 41",
+      "expected": [
+        [
+          2,
+          160
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 50 AND ts < 72",
+      "expected": [
+        [
+          22,
+          2662
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 72 AND ts < 73",
+      "expected": [
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= 73 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          0,
+          null
+        ]
+      ]
+    },
+    {
+      "reader": "profile",
+      "sql": "SELECT COUNT(*), SUM(value) FROM events WHERE ts >= -9223372036854775808 AND ts < 9223372036854775807",
+      "expected": [
+        [
+          74,
+          5336
+        ]
+      ]
+    }
+  ],
+  "new_power_loss_or_crash_qualification": false,
+  "prior_service_crash_source_tests_reused_not_rerun": true,
+  "cross_process_ownership": [
+    {
+      "reader": "released016",
+      "lock_rejected": true,
+      "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+    },
+    {
+      "reader": "profile",
+      "lock_rejected": true,
+      "message": "archive lock unavailable: lock acquisition failed because the operation would block\n"
+    }
+  ],
+  "native_invocations": 32
+}

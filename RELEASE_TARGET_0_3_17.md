@@ -1,5 +1,8 @@
 # KestrelSQL 0.3.17 release target
 
+**Reclamation measurement milestone:** [092 passes all native phase controls](RECLAIM_PHASES_092.md), 314 tests, both balanced halves and all 72 exact stores. File deletion accounts for about 83% of native reclaim time; this justifies a separate bounded Live cleanup candidate. Diagnostics are qualified in this scope; no engine gain or supported upgrade is claimed. All earlier failures remain preserved; supported 0.3.16 is unchanged.
+
+
 **Writer diagnostic milestone:** [091 passes all full/half overhead controls](TRACE_CONTROLS_091.md) under unchanged 5% limits with exact 090 artifacts, 1.872 million successful requests, 179,280 reopened ACK batches and 59,760 correlated traced ACKs. Reclamation is the next measured writer target. This qualifies scoped diagnostics, not an engine gain or 0.3.17 release; [090](MAINTENANCE_ISOLATION_090.md) and all earlier failures remain preserved. Supported 0.3.16 is unchanged.
 
 Updated October 8, 2026. Supported version: **0.3.16**. **0.3.17 is not qualified or released; there is no justified calendar ETA.** The next supported version requires a concrete engine change that passes the release checks below. Trial numbers are not released versions.
