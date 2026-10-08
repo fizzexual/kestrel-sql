@@ -141,3 +141,7 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Controlled writer overhead 088 — October 8, 2026
 
 [Fresh four-family qualification](WRITER_OVERHEAD_088.md): 288 cases, 2.88 million successful offers and 147,024 reopened ACK batches. Fixed full/two-half checks fail 15 A/A and 12 candidate criteria; six candidate failures are calibrated. Default released-core write overall p99 regresses paired 23.4%. Read/memory/rate/loss checks pass. All slow cases and raw evidence retained; no low-overhead or supported release claim.
+
+## Controlled default-build investigation 089 — October 8, 2026
+
+[Three matched-toolchain source/build controls](BUILD_COMPARE_089.md): 464 native test executions, eight byte-equivalent stores, 32 cross-reopens, 32 SQLite comparisons and four wire/setup variants pass. All 216 timed cases, 2.16 million offers and 110,268 reopened ACK batches pass correctness with zero loss. No candidate guard fails, but eight of 117 A/A checks fail across six of nine required scopes; every family remains unqualified overall. Original rebuild, version-only and feature-disabled diagnostic source comparisons do not establish exclusive causality, speed gains, tracer overhead, competitor wins or a release. Complete raw evidence/restored audit and post-run reporting failure are preserved; 088 remains unchanged.
