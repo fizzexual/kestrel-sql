@@ -1,0 +1,469 @@
+{
+  "revision": 2,
+  "declared_utc": "2026-10-08T12:07:10.758372+00:00",
+  "cause": "Serde internally tagged unit variant accepts extra fields; diagnostic request uses empty struct variant to honor original deny_unknown_fields.",
+  "scope": "New private writer_trace operation only. Original Stats/schema, Archive/Live engine and query/format sources unchanged.",
+  "qualification": "New protocol regression test plus both bridge-bin debug/release feature/default tests, all five strict lint configurations and fresh complete five-binary protocol cohort. Preserve revision1 binaries and failed wire.",
+  "changes": {
+    "released": {
+      "path": "src/bin/kestrel-stress.rs",
+      "previous_sha256": "e449114c71e441d2c2e08610be2c1fdb9a81b95d49a252abf1b66f65619954ba",
+      "default_binary_sha256": "a31e91c545c7df14bd4c1acaf26db622a079914fa92579711a52e57d2d3454ec",
+      "writer_binary_sha256": "07fa3535a0ad787102ef3d8a5ef88eaffe065210bc1a14ffdb385b64e415a770",
+      "final_sha256": "70c8bcfd6162ac08db94a378032eb1d5f5aa77d2488513e689f29a9b1b572850",
+      "all_other_original_build_sources_unchanged": true
+    },
+    "clean": {
+      "path": "src/bin/kestrel-stress.rs",
+      "previous_sha256": "e449114c71e441d2c2e08610be2c1fdb9a81b95d49a252abf1b66f65619954ba",
+      "default_binary_sha256": "05da3a1af2885d9b463d5191ad6aee53ad405a4c040961deb61c17d91f603607",
+      "writer_binary_sha256": "19527aa1d603fa46bc6dba9dc2ede971d503d77baf8ad8b30b04c3c21b214306",
+      "final_sha256": "70c8bcfd6162ac08db94a378032eb1d5f5aa77d2488513e689f29a9b1b572850",
+      "all_other_original_build_sources_unchanged": true
+    }
+  },
+  "jobs": [
+    {
+      "label": "released",
+      "name": "format",
+      "argv": [
+        "cargo",
+        "fmt"
+      ],
+      "started_utc": "2026-10-08T12:07:10.759372+00:00",
+      "finished_utc": "2026-10-08T12:07:11.102384+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "format-check",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_utc": "2026-10-08T12:07:11.102384+00:00",
+      "finished_utc": "2026-10-08T12:07:11.442879+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "default-debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:11.444346+00:00",
+      "finished_utc": "2026-10-08T12:07:12.433814+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "released",
+      "name": "default-release",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:12.434815+00:00",
+      "finished_utc": "2026-10-08T12:07:19.584265+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "released",
+      "name": "default-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:19.584265+00:00",
+      "finished_utc": "2026-10-08T12:07:27.345820+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "writer-debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:27.388062+00:00",
+      "finished_utc": "2026-10-08T12:07:28.290630+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "released",
+      "name": "writer-release",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:28.291653+00:00",
+      "finished_utc": "2026-10-08T12:07:35.545061+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "released",
+      "name": "writer-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:35.546091+00:00",
+      "finished_utc": "2026-10-08T12:07:43.989880+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "default-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:07:44.029631+00:00",
+      "finished_utc": "2026-10-08T12:07:44.420270+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "writer-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:07:44.420270+00:00",
+      "finished_utc": "2026-10-08T12:07:44.831752+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "publication-only-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "publication-trace",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:07:44.831752+00:00",
+      "finished_utc": "2026-10-08T12:07:45.186624+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "fault-only-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:07:45.186624+00:00",
+      "finished_utc": "2026-10-08T12:07:45.529000+00:00",
+      "exit": 0
+    },
+    {
+      "label": "released",
+      "name": "writer-fault-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "writer-trace,fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:07:45.529597+00:00",
+      "finished_utc": "2026-10-08T12:07:45.959892+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "format",
+      "argv": [
+        "cargo",
+        "fmt"
+      ],
+      "started_utc": "2026-10-08T12:07:45.968932+00:00",
+      "finished_utc": "2026-10-08T12:07:46.297764+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "format-check",
+      "argv": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "started_utc": "2026-10-08T12:07:46.297764+00:00",
+      "finished_utc": "2026-10-08T12:07:46.622915+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "default-debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:46.623430+00:00",
+      "finished_utc": "2026-10-08T12:07:47.560338+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "clean",
+      "name": "default-release",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:47.560338+00:00",
+      "finished_utc": "2026-10-08T12:07:54.848496+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "clean",
+      "name": "default-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:07:54.848496+00:00",
+      "finished_utc": "2026-10-08T12:08:02.866597+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "writer-debug",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:08:02.908311+00:00",
+      "finished_utc": "2026-10-08T12:08:03.816725+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "clean",
+      "name": "writer-release",
+      "argv": [
+        "cargo",
+        "test",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:08:03.817704+00:00",
+      "finished_utc": "2026-10-08T12:08:11.182517+00:00",
+      "exit": 0,
+      "tests_passed": 2
+    },
+    {
+      "label": "clean",
+      "name": "writer-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--bin",
+        "kestrel-stress",
+        "--release",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked"
+      ],
+      "started_utc": "2026-10-08T12:08:11.183037+00:00",
+      "finished_utc": "2026-10-08T12:08:19.452292+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "default-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:08:19.491651+00:00",
+      "finished_utc": "2026-10-08T12:08:19.896661+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "writer-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "writer-trace",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:08:19.897197+00:00",
+      "finished_utc": "2026-10-08T12:08:20.290501+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "publication-only-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "publication-trace",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:08:20.291020+00:00",
+      "finished_utc": "2026-10-08T12:08:20.621221+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "fault-only-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:08:20.621748+00:00",
+      "finished_utc": "2026-10-08T12:08:21.048251+00:00",
+      "exit": 0
+    },
+    {
+      "label": "clean",
+      "name": "writer-fault-clippy",
+      "argv": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--features",
+        "writer-trace,fault-injection",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_utc": "2026-10-08T12:08:21.049753+00:00",
+      "finished_utc": "2026-10-08T12:08:21.456334+00:00",
+      "exit": 0
+    }
+  ],
+  "complete": true,
+  "completed_utc": "2026-10-08T12:08:21.464924+00:00"
+}

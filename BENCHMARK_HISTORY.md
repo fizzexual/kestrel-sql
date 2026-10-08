@@ -137,3 +137,7 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Service-writer diagnostics087 — October8,2026
 
 [Bounded optional writer tracing](WRITER_TRACE_087.md): fresh correctness/byte/protocol qualification in both isolated cores,90 native commands and32 SQLite comparisons. Initial extra-field validation failure and all setup/audit stops preserved. No overhead/speed claim or supported upgrade.086 service regressions remain release blockers.
+
+## Controlled writer overhead 088 — October 8, 2026
+
+[Fresh four-family qualification](WRITER_OVERHEAD_088.md): 288 cases, 2.88 million successful offers and 147,024 reopened ACK batches. Fixed full/two-half checks fail 15 A/A and 12 candidate criteria; six candidate failures are calibrated. Default released-core write overall p99 regresses paired 23.4%. Read/memory/rate/loss checks pass. All slow cases and raw evidence retained; no low-overhead or supported release claim.

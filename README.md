@@ -1,6 +1,6 @@
 # KestrelSQL
 
-**Service-writer diagnostics:** [087 qualifies bounded optional tracing](WRITER_TRACE_087.md) in isolated released/clean cores. Archive bytes, retry/failure/reopen, concurrent ACK correlation and corrected bridge protocol pass. Tracing overhead and service speed are unmeasured; supported0.3.16 remains unchanged. [086 write-tail regressions](SERVICE_D_086.md) still block0.3.17.
+**Controlled writer qualification:** [088 fails compatibility and write-latency overhead gates](WRITER_OVERHEAD_088.md): 288 cases and 2.88 million operations pass correctness/reopen, while 15 A/A checks and 12 candidate guards fail. The default released-core build has a calibrated paired 23.4% write-heavy overall p99 regression. Memory/read guards pass; supported 0.3.16 remains unchanged. [087 diagnostic correctness](WRITER_TRACE_087.md) and [086 write-tail failures](SERVICE_D_086.md) remain preserved.
 
 **Fresh D: compact reader comparison:** [085 rejects the new reader](FAST_COMPARE_085.md): 11 speed goals, seven guards and nine A/A checks fail; both balanced halves fail. Full-cohort 99K migration/recovery p99 improve about 12%/14%, while publication tails fail calibrated guards. [084 correctness qualification](FAST_READER_084.md) passes 63 debug/release tests, 195 historical heads, 15 errors, 15 owned kills and 30 corruptions. Supported 0.3.16 remains unchanged.
 
