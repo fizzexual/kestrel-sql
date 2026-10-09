@@ -1,5 +1,8 @@
 # Benchmark history: wins, losses and exact evidence
 
+**Latest synchronization candidate:** [101 scoped overlap passes fresh correctness and recovery](PARALLEL_SYNC_101.md): 682 tests, 576 coupled faults, 72 publication faults, 18 source faults, 22 corruption cases, old formats and exact normal/candidate bytes. Fully restored evidence; speed/adoption remain unqualified and 0.3.16 stays supported.
+
+
 **Latest matched tracer controls:** [095: stock-trace: unqualified; incremental-trace: unqualified](TRACE_CONTROLS_095.md), all 288 cases and every failure preserved. Diagnostic qualification is separate from an engine speed gain; 0.3.16 stays supported and .17 unqualified.
 
 
