@@ -1,5 +1,8 @@
 # KestrelSQL
 
+[104 complete native/service rejection and exact restoration](REUSABLE_SYNC_SPEED_104.md): 2,782 lost offers; all ACKs preserved. Supported0.3.16 unchanged; adaptive work is next.
+
+
 **Latest synchronization candidate:** [103 reusable worker passes correctness and recovery](REUSABLE_SYNC_103.md): 916 current tests, 6 strict lints, 832 coupled cases, 104 publication faults, 26 source faults, 22 corruption rejections and exact restored replay. Speed/adoption remain unqualified; supported 0.3.16 stays unchanged.
 
 
