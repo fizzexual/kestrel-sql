@@ -1,5 +1,7 @@
 # Benchmark history: wins, losses and exact evidence
 
+Latest adaptive engine trial: [110 complete before/after results](ADAPTIVE_ENGINE_110.md) fails93 A/A controls,35 guards and11 goals. Replay full-run gains fail required half controls and remain inconclusive. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
+
 Latest adaptive engine trial: [109 complete before/after results](ADAPTIVE_ENGINE_109.md) shows controlled filter and small-write gains, but fails 27 A/A controls, eight guards and one goal. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
 
 Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_105.md) implements workload-dependent write collection and passes complete restored correctness. Speed and0.3.17 remain unqualified.
