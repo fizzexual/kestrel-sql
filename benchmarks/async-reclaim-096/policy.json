@@ -1,0 +1,110 @@
+{
+  "experiment": 96,
+  "declared_utc": "2026-10-09T02:12:19.749310+00:00",
+  "type": "isolated implementation and correctness/recovery, NO performance timers",
+  "base_commit": "a687626233b423334b30022bb05696debf9e9954",
+  "source": "work/perf-094/source",
+  "source_hash_reference": "work/perf-094/source-derivation.json:final",
+  "hypothesis": "Move eligible obsolete-file remove_file calls off the Live publication thread with bounded owned work. Investigate from qualified 091/092, never from unqualified 095 tail attribution.",
+  "implementation": {
+    "feature": "async-reclaim",
+    "requires": "incremental-reclaim",
+    "worker_threads": 1,
+    "max_inflight_batches": 2,
+    "max_files_per_batch": 20,
+    "live_cadence_inserted_groups": 8,
+    "handoff": "try_send, no wait; rejected handoff leaves original tracking intact",
+    "tracking": "Original retired Arc remains until observed success; batch retains handles; preallocated per-file atomic success bitmap recorded immediately after actual remove_file success before fault hook",
+    "last_handle_close": "Conservative first implementation retains original tracking. Final retired handle close/reconciliation may still cost the writer; do not claim all deletion/close cost moved.",
+    "ownership": "Worker captures exact Archive lock Arc, Drop closes channel and joins worker before its lease/handles can release",
+    "errors": "No ignored NotFound/permissions; partial successes reconcile exactly, failures/unstarted retryable; callback counts failure even without another append",
+    "selection": "Same old-catalog generation/protected-chain predicate, only currently unpinned retired segments, no current/orphan/pending selection",
+    "disabled": "Original full reclaim, default feature-disabled maintenance, formats/version/dependencies/sync/ACK/source/receipt/queue rules unchanged"
+  },
+  "build": {
+    "toolchain": "rustc/cargo 1.97.1",
+    "offline_locked": true,
+    "unsafe": "forbid",
+    "dependencies_unchanged": true,
+    "release": "thin LTO, one codegen unit",
+    "serial": true,
+    "fresh_tests": [
+      "default debug/release",
+      "incremental debug/release",
+      "async debug/release",
+      "async+writer-trace+fault-injection debug/release"
+    ],
+    "strict_lints": [
+      "default",
+      "incremental",
+      "async",
+      "async+writer-trace+fault-injection"
+    ]
+  },
+  "correctness_requirements": [
+    "Byte-identical outputs and old016/full/incremental cold readers",
+    "Independent complete catalog/receipt/generation/payload CRC and SQL/NumPy reference of every reached store",
+    "Anonymous/named exact ACK/retry/collision and source boundaries",
+    "Pinned snapshots and protected chains survive worker selection/new publication/compaction",
+    "Explicit two-inflight bound including executing and queued; no duplicate identities; rejected handoff unchanged",
+    "Real filesystem deletion failure, partial success, worker panic/disconnect and coherent retry",
+    "Callback error visible while idle; no poison from maintenance error",
+    "Drop/join drains before exclusive lease release; snapshot continues lease",
+    "Orphan999/pending998 remain exact; cold-reopen retired leftovers retained"
+  ],
+  "fault_matrix": {
+    "histories": [
+      "anonymous",
+      "named"
+    ],
+    "targets": [
+      "catalog",
+      "retired"
+    ],
+    "points": [
+      "before-delete",
+      "after-delete"
+    ],
+    "ordinals": [
+      1,
+      20
+    ],
+    "modes": [
+      "error",
+      "exit"
+    ],
+    "cases": 32,
+    "completion_points": [
+      "before-complete",
+      "after-complete"
+    ],
+    "completion_modes": [
+      "error",
+      "exit"
+    ],
+    "completion_histories": [
+      "anonymous",
+      "named"
+    ],
+    "completion_cases": 8,
+    "concurrent_pause_cases": {
+      "histories": [
+        "anonymous",
+        "named"
+      ],
+      "targets": [
+        "catalog",
+        "retired"
+      ],
+      "actions": [
+        "new publication/compaction with pins",
+        "owner drop/join lease"
+      ],
+      "cases": 8
+    }
+  },
+  "fault_acceptance": "Each fixed cut must reach actual declared eligible path/ordinal. Reconcile every emitted ACK, complete protected chain/digests/current CRC/row multiset after exit/error. Errors healthy and retryable. Pauses use owned marker release, no unrelated process stop. No physical power-loss/device-exhaustion claim.",
+  "performance": "NONE in 096. Any later timing requires a new predeclared balanced same-D incremental A/A versus async candidate, no fault/tracing hooks, full+both halves, all previous p99/rate/memory/disk/loss guards. Arrival/drain unchanged; background completion/shutdown/final disk outside window explicitly accounted. Full release/competitor gates still required.",
+  "preservation": "All sources/locks/binaries/raw stores/stdout/stderr/failures/unstarted cases and empty dirs retained; bounded ZIP SHA/CRC/set restoration plus independent audit with zero Native/timer launches before closing experiment",
+  "release": "Supported 0.3.16 untouched; 0.3.17 unqualified, no ETA; local/private only"
+}

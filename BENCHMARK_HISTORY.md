@@ -163,3 +163,8 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Maintenance source isolation 090 — October 8, 2026
 
 [Corrective source isolation](MAINTENANCE_ISOLATION_090.md) restores original feature-disabled maintenance statements while preserving traced behavior.322 Native test executions/five lint modes and 104 untimed commands pass byte/cross-reopen/SQLite/named/concurrent/controlled unknown-outcome/old-format/wire checks. All 144 service cases, 1.872 million requests and 179,280 reopened ACK batches pass correctness. Default compatibility passes full/both halves; complete tracing qualification fails two write-overall A/A half controls, with 0 candidate failures. All stalls, failed preparation and complete raw/restored evidence remain preserved. Supported 0.3.16 is unchanged; no engine gain/competitor win/release claim.
+
+
+## Isolated asynchronous reclamation 096
+
+[ASYNC_RECLAIM_096.md](ASYNC_RECLAIM_096.md): actual bounded owned deletion worker;693 native tests/four lints,40 fault and8 concurrent cases, exact ACK/CRC/ownership/format/retry/restoration pass. All first failures and partial stores retained. No performance timing, speed/adoption/competitor/release claim;0.3.16 supported,0.3.17 unqualified.
