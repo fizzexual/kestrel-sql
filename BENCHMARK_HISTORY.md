@@ -188,3 +188,8 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Append publication diagnostic 100
 
 [PUBLICATION_COST_100.md](PUBLICATION_COST_100.md): all 144 cases, historical/current data and lifecycle checks pass, but one named p99 repeatability gate fails. All stages, stalls and unchanged decisions are restored exactly. Unqualified, no adoption; supported 0.3.16 stays unchanged and .17 is pending. A separate static proof retains qualified 091 as the basis for a future code hypothesis.
+
+
+## October 9, 2026 — verified local storage cleanup
+
+[Storage cleanup](STORAGE_CLEANUP_20261009.md) removes 49 redundant top-level ZIP copies (8.97 GiB) only after full private GitHub download/hash verification. Every original benchmark failure/raw store and all newer unbacked-up experiments remain. No performance result or release status changes.
