@@ -1,5 +1,8 @@
 # KestrelSQL
 
+**Latest controlled performance:** [102 scoped synchronization speed rejected](PARALLEL_SYNC_SPEED_102.md): 144 native + 144 service cases, 1,872,000 successful offers/zero loss and full restored correctness; native 7 controls/2 guards/1 goal fail, service 1 control/1 goal fail. No adoption; 0.3.16 remains supported.
+
+
 **Latest synchronization candidate:** [101 scoped overlap passes fresh correctness and recovery](PARALLEL_SYNC_101.md): 682 tests, 576 coupled faults, 72 publication faults, 18 source faults, 22 corruption cases, old formats and exact normal/candidate bytes. Fully restored evidence; speed/adoption remain unqualified and 0.3.16 stays supported.
 
 

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:\Codex\Kestrel\work\commit_speed_102.py", line 106, in <module>
+    git('-c','core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol','diff','--cached','--check')
+  File "D:\Codex\Kestrel\work\commit_speed_102.py", line 14, in git
+    r=subprocess.run(cmd,capture_output=True);assert r.returncode==0,(cmd,r.stdout,r.stderr);return r.stdout
+                                                     ^^^^^^^^^^^^^^^
+AssertionError: (['git', '--no-optional-locks', '-c', 'safe.directory=D:/Codex/Kestrel/outputs/kestrel-sql', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-C', 'D:\\Codex\\Kestrel\\outputs\\kestrel-sql', '-c', 'core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol', 'diff', '--cached', '--check'], b'benchmarks/parallel-sync-speed-102/audit_service_095.py:188: new blank line at EOF.\nbenchmarks/parallel-sync-speed-102/outcomes_098.py:41: new blank line at EOF.\n', b'')
