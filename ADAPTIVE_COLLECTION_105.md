@@ -1,0 +1,27 @@
+# Adaptive Live write collection105 â€” October9,2026
+
+**Implemented and correctness-qualified in isolation. Speed and0.3.17 remain unqualified.** Supported0.3.16 remains byte-exact. This trial adds an optional workload-dependent collector from the supported source; it does not incorporate rejected103/104 synchronization work or061 query changes.
+
+| Work already available | Decision | Intentional waiting |
+| --- | --- | --- |
+| One request, unknown publication cost, closed small queue or zero cap | Latency | Zero |
+| Two through seven ready requests | Coalescing | Minimum of configured cap and half the recent successful-publication estimate |
+| Eight or more ready requests | Pressure | Zero; drain ready work to the existing64-command cap |
+
+The default maximum coalescing window is2ms, within the existing0..20ms ceiling. One deadline starts before ready-sibling inspection; later arrivals never extend it. The writer learns from successful nonempty publication costs with a bounded one-eighth update. The estimate covers the existing append timer and does not identify exclusive physical sync cost. A separate optional getter exposes bounded phase counts and selected-window diagnostics. Existing fixed constructors and LiveStats fields remain available; the adaptive LiveStats delay field represents its configured cap, while the separate getter reports selected windows.
+
+Archive publication, both sync_all calls, snapshot-before-ACK, immutable format, named receipts and original generations, whole-group validation rejection, poisoning/unknown outcomes, source/WAL/query paths, exclusive lease/pins and original compaction64/full-reclaim32 remain intact. There is one existing writer and channel; no additional worker or per-request tracking allocation is introduced.
+
+Final fresh full debug/release baseline/fixed/adaptive/fault suites passed **684 test executions and five strict all-target lints**. Deterministic collector checks cover sparse and concurrent work, phase transitions, disconnect,64-command cap, zero/max windows and overflow-safe estimation. Integration checks cover prepared/indexed retries and conflicts, concurrent ACK visibility, pinned old views, actual writer join/cold reopen,10K batch limits,64-column payloads and exact i128 totals.
+
+Independent external correctness replay passed two named/prepared concurrent scenarios,256 anonymous concurrent ACKs,28 publication failure schedules across all seven existing cut points in both retry modes,10 corruption rejections,CAT2/CAT3 reads, two exact baseline/candidate sequential file-byte fixtures and300 cold SQL comparisons with SQLite. Every acknowledged row, receipt digest/original generation, metadata/payload CRC and index is checked;69,360 external CRC bytes are independently verified. Actual owned-process exits and injected I/O errors are controlled failure tests. They do not establish physical power-loss or resource-exhaustion guarantees.
+
+Every failed attempt remains. Closed raw logs are exact gzip supplements, with raw and encoded SHA checks; original bytes are retained and no whitespace exclusions or normalization are used. The first complete auditor manifest-key access failure is also preserved. The initial build caught a private error-constructor call and u64/usize mismatch in the new test driver; the corrected build changes only that driver. The first external attempt completed319 commands before its legacy checker incorrectly assumed input row order. A fresh complete attempt executed359 commands, then its final pure checker incorrectly expected indexed prepared-hit counts with the index disabled. Corrected pure replay requires512 exact duplicates in both modes,512 prepared fast-path hits with the index and zero without it. The engine and binaries were unchanged for both checker repairs; no Native/timer rerun was used for the counter correction. Prior helpers, snapshots, logs, partial/full stores and frozen evidence remain.
+
+Complete local preservation contains **18,622 files, 4,793 directories, 6 bounded ZIP parts and 476,823,681 logical bytes**. All memberCRC/order/offset/size, complete original/restored fileSHA/set/size and directory sets pass before and after an independent complete restored audit. That replay launches zero Native/timers and writes no existing files. Only inventoried regenerable build/Python caches are excluded from parts; all originals remain. There is no complete verified105 privateGitHub backup and no recent raw deletion.
+
+The next106 candidate may carry0.3.17 metadata for integrated testing. It remains unreleased until declared native/service controls, loss/resource guards, improvement goals, recovery/compatibility and reproducibility pass. No before/after speed, competitor win or production claim follows from105 correctness.
+
+The design follows concurrent group-commit guidance in [PostgreSQL's WAL documentation](https://www.postgresql.org/docs/17/wal-configuration.html) and bounded channel operations in [Rust's Receiver documentation](https://doc.rust-lang.org/std/sync/mpsc/struct.Receiver.html). Those sources motivate the design; they are not Kestrel measurements.
+
+See [complete evidence and reproduction](benchmarks/adaptive-collection-105/REPRODUCE.md),[policy](benchmarks/adaptive-collection-105/policy.json),[complete audit](benchmarks/adaptive-collection-105/complete-audit-proof.json),[restored audit](benchmarks/adaptive-collection-105/restored-audit-proof.json) and[all rejected speed104 outcomes](REUSABLE_SYNC_SPEED_104.md).

@@ -1,0 +1,9 @@
+{
+  "before_raw_replay": true,
+  "no_Native_or_performance_timer_launches": true,
+  "cause": "Prepared retry hits measure the optional index fast path. Index-disabled exact retries are counted in duplicate_batches and have zero prepared_retry_hits.",
+  "change": "Require all512 duplicates in each mode; require512 prepared fast hits with the index and zero without it.",
+  "retained_prior_helpers_and_all_raw": true,
+  "new_auditor_sha256": "2ef4470a0ac0320ba369cd21d4fdbda0eb61075a6dcfc710aab9e0c7fb205d4e",
+  "original_v2_auditor_sha256": "e22877ca68af030207593a1319da825f261b17af67b62d9bba932d6f6971ea4b"
+}
