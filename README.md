@@ -1,5 +1,8 @@
 # KestrelSQL
 
+**Latest synchronization candidate:** [103 reusable worker passes correctness and recovery](REUSABLE_SYNC_103.md): 916 current tests, 6 strict lints, 832 coupled cases, 104 publication faults, 26 source faults, 22 corruption rejections and exact restored replay. Speed/adoption remain unqualified; supported 0.3.16 stays unchanged.
+
+
 **Latest controlled performance:** [102 scoped synchronization speed rejected](PARALLEL_SYNC_SPEED_102.md): 144 native + 144 service cases, 1,872,000 successful offers/zero loss and full restored correctness; native 7 controls/2 guards/1 goal fail, service 1 control/1 goal fail. No adoption; 0.3.16 remains supported.
 
 

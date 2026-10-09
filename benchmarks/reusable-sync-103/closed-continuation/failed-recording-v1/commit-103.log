@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "D:\Codex\Kestrel\work\commit_103.py", line 88, in <module>
+    git('diff','--cached','--check')
+  File "D:\Codex\Kestrel\work\commit_103.py", line 12, in git
+    return subprocess.check_output(['git','--no-optional-locks','-c','safe.directory='+REPO.as_posix(),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Frizer\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Frizer\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '--no-optional-locks', '-c', 'safe.directory=D:/Codex/Kestrel/outputs/kestrel-sql', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-C', 'D:\\Codex\\Kestrel\\outputs\\kestrel-sql', 'diff', '--cached', '--check']' returned non-zero exit status 2.
