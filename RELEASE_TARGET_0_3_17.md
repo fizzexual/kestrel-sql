@@ -1,5 +1,8 @@
 # KestrelSQL 0.3.17 release target
 
+**Latest matched tracer controls:** [095: stock-trace: unqualified; incremental-trace: unqualified](TRACE_CONTROLS_095.md), all 288 cases and every failure preserved. Diagnostic qualification is separate from an engine speed gain; 0.3.16 stays supported and .17 unqualified.
+
+
 **Latest recovery milestone:** [094 passes 107 fixed fault cases and 22 corruption rejections](RECLAIM_RECOVERY_094.md), with exact independent restoration. This closes a recovery gap; 093 remains rejected on speed and supported 0.3.16 is unchanged. .17 remains unqualified.
 
 
