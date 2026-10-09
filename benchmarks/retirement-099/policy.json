@@ -1,0 +1,1137 @@
+{
+  "trial": 99,
+  "declared_utc": "2026-10-09T06:33:52.760862+00:00",
+  "purpose": "Measure completed writer retirement reconciliation, including final retained-handle release, before proposing another code improvement",
+  "hypothesis": "The settled original Reclaimer.poll can still consume a material portion of the append budget after deletion is offloaded; its last segment references may close retained boundary and cached streaming files on the writer",
+  "measured_motivation": {
+    "091": "Qualified synchronous reclaim intervals and ordinary append intervals",
+    "092": "Qualified deletion phase; file-close/drop remains outside that phase",
+    "098": "Normal async cohort unqualified; no causal tail attribution or repeat permitted"
+  },
+  "source": "Exact immutable repaired work/perf-098/source",
+  "supported_core": "0.3.16 unchanged",
+  "parent_private_commit": "c475c3424f20b260ab9021336fe8146ca3a23433",
+  "source_changes": [
+    "Cargo.toml optional feature/example declarations",
+    "src/archive.rs cfg-only exports",
+    "src/async_reclaim_096.rs appended cfg-only probe wrapper and meaningful wrapper unit tests",
+    "examples/retirement_probe_099.rs"
+  ],
+  "normal_hot_bodies_remain_byte_exact": true,
+  "feature": "retirement-profile-099 depends only on async-reclaim",
+  "timed_fault_or_writer_trace_features": false,
+  "all_variants_same_exact_release_binary": true,
+  "variant_actions": {
+    "baseline_a": "Original poll with common external timer",
+    "baseline_b": "Same original poll with same external timer",
+    "profiled": "An additional inner timer around the exact original poll; no rewritten poll body"
+  },
+  "fixture": {
+    "seed_rows": 32768,
+    "groups": 256,
+    "rows_per_group": 100,
+    "columns": [
+      "ts",
+      "value",
+      "kind"
+    ],
+    "rows": 58368,
+    "values": "value=2*ts, kind=ts%97",
+    "cycles": 4,
+    "groups_per_cycle": 64,
+    "original_compaction_calls_per_cycle": 1,
+    "original_compaction_selected_segments": 32,
+    "retired_segments_per_cycle": 32,
+    "cold_cycles": [
+      1,
+      3
+    ],
+    "cached_stream_cycles": [
+      2,
+      4
+    ],
+    "clear_idle_streams_before_each_condition": "Untimed cfg-only wrapper invokes the existing Segment.clear_stream on current/retired segments in all variants",
+    "warm_query": "SELECT kind, COUNT(*), SUM(value) FROM events GROUP BY kind ORDER BY kind",
+    "pin": "Hold a real pre-compaction snapshot through public full catalog cleanup; prove pinned data; release it before worker selection",
+    "public_cleanup_before_windows": "Existing public reclaim while pin held removes obsolete catalogs and skips pinned retired data",
+    "worker_budget": 20,
+    "batches_per_cycle": [
+      20,
+      12
+    ],
+    "poll_windows_per_case": 8,
+    "settled_condition": "All pending batches done Acquire and each batch Arc strong count exactly 1 (manager only); worker no longer owns the timed batch",
+    "timed_retired_segment_owners_before_poll": 2,
+    "worker_wait_health_seconds": 5,
+    "pending_orphan_markers": [
+      "catalog-00000000000000000998.pending",
+      "segment-00000000000000000999.ks2"
+    ],
+    "inventory_query_CRC_cold_reopen_and_serialization": "Outside poll clocks",
+    "final_graceful_worker_join": true
+  },
+  "cohort": {
+    "rounds": 24,
+    "halves": 2,
+    "rounds_per_half": 12,
+    "permutation_repetitions_per_half": 2,
+    "seed": 9910,
+    "histories": [
+      "anonymous",
+      "named"
+    ],
+    "cases": 144
+  },
+  "cases": [
+    {
+      "half": 0,
+      "round": 0,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 0,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 0,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 0,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 0,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 0,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 1,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 2,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 3,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 4,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 5,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 6,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 7,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 8,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 9,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 10,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 0,
+      "round": 11,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 12,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 13,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 14,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 15,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 16,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 17,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 18,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 19,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 20,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "named",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 21,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "named",
+      "slot": 0,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "named",
+      "slot": 1,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 22,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "named",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "named",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "named",
+      "slot": 2,
+      "variant": "baseline_b"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "anonymous",
+      "slot": 0,
+      "variant": "baseline_a"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "anonymous",
+      "slot": 1,
+      "variant": "profiled"
+    },
+    {
+      "half": 1,
+      "round": 23,
+      "history": "anonymous",
+      "slot": 2,
+      "variant": "baseline_b"
+    }
+  ],
+  "metrics": [
+    "sum_poll_ns",
+    "case_poll_p99_ns",
+    "cold_sum_poll_ns",
+    "cold_poll_p99_ns",
+    "cached_sum_poll_ns",
+    "cached_poll_p99_ns",
+    "sum_append_ns",
+    "case_append_p99_ns"
+  ],
+  "gates": {
+    "identical_B_over_A_min": 0.9,
+    "identical_B_over_A_max": 1.1,
+    "profiled_C_over_A_max": 1.1,
+    "all_full_and_half_scopes_required": true,
+    "C_over_B_diagnostic_only": true
+  },
+  "material_cost_criteria": {
+    "only_if_all_profile_controls_pass": true,
+    "all_histories_full_and_both_halves_required": true,
+    "criterion_1": "Median case completed-poll p99 / median case ordinary-append p50 >=0.05",
+    "criterion_2": "Median case completed-poll p99 >=100000ns",
+    "both_criteria_required": true,
+    "not_service_p99_decomposition_or_pure_file_close_cost": true
+  },
+  "correctness": [
+    "Fresh profile debug/release suite",
+    "Default/async/profile/combined strict lints",
+    "Cold/cached original-vs-profile exact data files",
+    "Exact receipts/generations/digests and named retry/collision",
+    "Current/pin/full-block CRC and NumPy row references",
+    "Actual settled unique-batch/segment ownership",
+    "Exact deleted retirement names and unchanged pending/orphan/current files",
+    "Writer lease through worker and snapshot ownership/drop",
+    "Graceful worker finish and cold old/current reader"
+  ],
+  "reuse_not_fresh": "Unchanged 098 default/incremental and 096/097/094 external fault/corruption matrices",
+  "resource_limits": "Finite native fixture only; no service/CPU/full-lifetime-RSS claim",
+  "no_selective_repeat_extension_gate_change_or_durability_reduction": true,
+  "hard_failures_preserve_partial_and_all_unstarted_cases": true,
+  "preservation": "All source/binary/native stdout/stderr/stores/policies/helpers/closed logs/failures/empty dirs, exact bounded chunks and full restored pure audit; originals and regenerable caches retained",
+  "release_claim": "Diagnostic only, no adoption/.17 date/competitor claim; subsequent measured code candidate and full release gates remain required"
+}
