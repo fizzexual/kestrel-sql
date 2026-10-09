@@ -173,3 +173,8 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 ## Coupled worker/publication recovery 097
 
 [COUPLED_RECOVERY_097.md](COUPLED_RECOVERY_097.md): 448 actual coupled worker error/exit and publication/compaction schedules pass; 370 fresh tests/four lints, complete ACK/ambiguous receipt/CRC/ownership checks and exact restoration. Every failed controller/preparation remains. Speed unmeasured; 0.3.16 supported and .17 unqualified.
+
+
+## Normal owned async service 098
+
+[ASYNC_SERVICE_098.md](ASYNC_SERVICE_098.md): all 1,872,000 offers and 179,280 ACKs pass independent data and graceful completion checks, but second-half append calibration and improvement miss the fixed gates. The entire 144-case result and all failures were restored exactly; unqualified, no adoption, supported 0.3.16 unchanged and .17 pending.

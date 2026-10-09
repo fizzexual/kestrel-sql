@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\Codex\Kestrel\work\commit_098.py", line 73, in <module>
+    paths=['ASYNC_SERVICE_098.md','README.md','BENCHMARK_HISTORY.md','RELEASE_TARGET_0_3_17.md','benchmarks/async-service-098'];git('add','--',*paths);git('-c','core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol','diff','--cached','--check','--',*paths)
+                                                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex\Kestrel\work\commit_098.py", line 12, in git
+    assert p.returncode==0,(args,p.stdout[-2000:],p.stderr[-2000:]);return p.stdout if binary else p.stdout.decode().strip()
+           ^^^^^^^^^^^^^^^
+AssertionError: (('-c', 'core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol', 'diff', '--cached', '--check', '--', 'ASYNC_SERVICE_098.md', 'README.md', 'BENCHMARK_HISTORY.md', 'RELEASE_TARGET_0_3_17.md', 'benchmarks/async-service-098'), b'benchmarks/async-service-098/audit_service_095.py:188: new blank line at EOF.\nbenchmarks/async-service-098/outcomes_098.py:41: new blank line at EOF.\n', b'')
