@@ -1,5 +1,7 @@
 # Benchmark history: wins, losses and exact evidence
 
+Latest adaptive engine trial: [109 complete before/after results](ADAPTIVE_ENGINE_109.md) shows controlled filter and small-write gains, but fails 27 A/A controls, eight guards and one goal. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
+
 Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_105.md) implements workload-dependent write collection and passes complete restored correctness. Speed and0.3.17 remain unqualified.
 
 [104 complete native/service rejection and exact restoration](REUSABLE_SYNC_SPEED_104.md): 2,782 lost offers; all ACKs preserved. Supported0.3.16 unchanged; adaptive work is next.
