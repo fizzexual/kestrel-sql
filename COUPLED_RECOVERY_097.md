@@ -1,0 +1,35 @@
+# Coupled worker/publication recovery 097 — October 9, 2026
+
+The isolated bounded deletion worker now passes **448 schedules that fail or exit the worker during a real new append or compaction**. Full independent data/journal checks and exact restoration pass. This closes the coupling gap left by 096. **Speed remains unmeasured; supported 0.3.16 is unchanged and 0.3.17 remains unqualified, with no justified date.**
+
+The complete matrix was fixed before copying or editing source: anonymous/named history × catalog/retired selection × before/after actual delete × ordinals 1/20 × seven publication points × append/compaction × error/exit. Publication points are segment partial/written/synced, catalog partial/written/synced/published. A host pauses the eligible worker, arms only after seeding, pauses the publisher at its actual boundary, then releases the worker into the error/exit while the publisher remains paused. For injected errors, the actual failure callback must be observed before allowing publication to continue. Raw gate writes, stdin bytes, markers, process handles, stdout/stderr and commands are journaled.
+
+Only separate fault-injection controls and an example are added to an exact 096 source copy. Worker selection/progress/accounting/shutdown and normal Live/publication bodies remain exact after removing diagnostic additions; normal artifacts exclude fault keys. No dependency, unsafe, version, durability, ACK, receipt, source, queue, compaction or cleanup-budget change occurs. Main core remains byte-exact.
+
+| Fresh checks | Result |
+| --- | --- |
+| Native tests / strict lint configurations | 370 executions / 4 pass |
+| Coupled boundary schedules | 448 / 448 pass |
+| Acknowledged 100-row batches | 28,784 fully reconciled |
+| Committed appends without an ACK at process exit | 16 fully reconciled, including original named generation 66 |
+| Cold readers | Five per store, including original 0.3.16 |
+| Writer-lock rejections while paused | 2,688 pass |
+| Final current data / block CRC references | 69,120,000 bytes pass |
+| New worker unit stores | 76 stores / 74,560 bytes independently pass |
+| Failed first controller cohort | 40 completed plus one partial store / 2,634 ACKs / one committed-unacknowledged append; all data pass, controller failure retained |
+
+Test counts are actual newly executed suites: 90 async and 95 combined (async/writer/fault), each debug/release, totaling 370. All nine existing worker tests now execute in all four suites, producing 19 worker stores per suite. 096's 693 tests/48 cases, 094's 107 faults/22 corruptions and the unchanged default/incremental suites are reused where stated; they are not recounted as new 097 coverage. Source checkpoint/late-data/replay/collision/gap tests are freshly executed within these suites, while the coupled external matrix covers anonymous/named Archive publications rather than every source schedule.
+
+Every error case independently checks exact successful-deletion prefix (ordinal minus one before, ordinal after), healthy retry, final zero in-flight jobs, one maintenance error, a readable 6,400-row pinned snapshot and immutable protected current files during the fault. Exit cases preserve all 64 seeded ACKs; before rename the old generation 65 remains current. At catalog-published, generation 66 is current despite no target ACK: append rows/receipt or compaction data are reconciled explicitly. Current receipt chains, original generations/content digests, all segment/index/block CRCs and full NumPy row multisets pass. Orphan 999 and pending 998 bytes remain exact. All cold reads/retries leave the closed file inventory unchanged. Reopen intentionally retains unreferenced retired leftovers whose memory tracking was lost.
+
+Two preparation stops remain: an LF/CRLF pattern assertion before any source edit, then a final status-print NameError after exact guarded diagnostic edits. No Native test ran during either stop. The first controller matrix completed 40 cases, then treated a newly created empty worker.observed file as complete and aborted only its exact Popen-owned child while the real publisher was paused. The empty marker, partial store, raw commands and all 408 uncompleted original decisions remain. A host-only reader repair requires complete typed marker contents and journals incomplete reads; the Native engine, binary and policy hashes remain unchanged. A complete fresh 448-case matrix uses v2 paths. No speed case was selectively rerun.
+
+All **565 original reached current stores** pass independent checks totaling **75,518,560 data/reference bytes**: 448 final schedules, 76 unit stores and 41 first-run stores. First-run data correctness does not make its controller run acceptable. These are finite controlled schedules on a live OS/filesystem, not physical power loss, device exhaustion, all concurrency or full release qualification.
+
+7 bounded archives preserve 68,872 files / 2,715 directories / 503,327,464 logical bytes. Every source, binary, raw/control byte, ACK, store, failed helper, closed log, unstarted decision and empty marker remains on D:. Only explicitly inventoried regenerable target-build/Python caches are omitted; originals remain. The qualified 096/095 chunk algorithm is reused. Full chunk order/CRC/SHA/size and exact original/restored file+directory sets pass. The complete independent audit exactly replays from restored dependencies with zero Native/timer launches, followed by every file/set check. Closed packager stdout is a separately hashed post-exit supplement.
+
+Evidence: [policy](benchmarks/coupled-recovery-097/policy.json), [summary](benchmarks/coupled-recovery-097/decision-summary.json), [recovery](benchmarks/coupled-recovery-097/recovery-proof-v2.json), [preservation](benchmarks/coupled-recovery-097/preservation-proof.json), [restoration](benchmarks/coupled-recovery-097/restored-audit-proof.json), [reproduction](benchmarks/coupled-recovery-097/REPRODUCE.md). Original work: D:\Codex\Kestrel\work\perf-097; restore: D:\Codex\Kestrel\work\restored-coupled-recovery-097. Full audit proof remains in original/restored/archive evidence rather than a large direct Git blob.
+
+Next: normal same-D incremental A/A versus async, both with budget 20/cadence 8. Predeclare complete balanced full/both-half speed/loss/peak/disk gates and the original overall <=0.95 / append <=0.90 goals. Qualify sustained physical backlog and a common graceful shutdown path before timers; the old service bridge's process termination cannot establish worker completion. Preserve unchanged arrival/drain and report shutdown/final disk separately. No favorable-scope selection, extra rounds, relaxed gates or durability reduction. Full integrated six-profile/minute/overload/scan/resource/competitor/source/retry/crash/corruption/old-format/ownership/restoration checks still precede .17.
+
+Everything remains private/local; all preceding history remains. No remote publication, supported adoption, C: cleanup repetition, reset execution, app force-close, abandoned-chat resume or old task/automation reactivation occurred.

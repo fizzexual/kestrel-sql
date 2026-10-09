@@ -247,3 +247,8 @@ The useful result today is a runnable engine and evidence for one design bet. Pr
 ## Isolated asynchronous reclamation 096
 
 [ASYNC_RECLAIM_096.md](ASYNC_RECLAIM_096.md): actual bounded owned deletion worker;693 native tests/four lints,40 fault and8 concurrent cases, exact ACK/CRC/ownership/format/retry/restoration pass. All first failures and partial stores retained. No performance timing, speed/adoption/competitor/release claim;0.3.16 supported,0.3.17 unqualified.
+
+
+## Coupled worker/publication recovery 097
+
+[COUPLED_RECOVERY_097.md](COUPLED_RECOVERY_097.md): 448 actual coupled worker error/exit and publication/compaction schedules pass; 370 fresh tests/four lints, complete ACK/ambiguous receipt/CRC/ownership checks and exact restoration. Every failed controller/preparation remains. Speed unmeasured; 0.3.16 supported and .17 unqualified.

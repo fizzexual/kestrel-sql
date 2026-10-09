@@ -1,0 +1,4537 @@
+{
+  "trial": 97,
+  "declared_utc": "2026-10-09T03:21:41.013744+00:00",
+  "hypothesis": "The exact bounded096 eligible-delete worker preserves current data, pins, original receipts, writer leases and durable ACKs when a real worker error/process exit occurs during a new publication/compaction at each existing boundary.",
+  "base_source": "D:\\Codex\\Kestrel\\work\\perf-096\\driver-control-v2\\source",
+  "supported_version": "0.3.16",
+  "candidate_version_unchanged": "0.3.16",
+  "no_performance_timers": true,
+  "cases": [
+    {
+      "index": 0,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 1,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 2,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 3,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 4,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 5,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 6,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 7,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 8,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 9,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 10,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 11,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 12,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 13,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 14,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 15,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 16,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 17,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 18,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 19,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 20,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 21,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 22,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 23,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 24,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 25,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 26,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 27,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 28,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 29,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 30,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 31,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 32,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 33,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 34,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 35,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 36,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 37,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 38,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 39,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 40,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 41,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 42,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 43,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 44,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 45,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 46,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 47,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 48,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 49,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 50,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 51,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 52,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 53,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 54,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 55,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 56,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 57,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 58,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 59,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 60,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 61,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 62,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 63,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 64,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 65,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 66,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 67,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 68,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 69,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 70,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 71,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 72,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 73,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 74,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 75,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 76,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 77,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 78,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 79,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 80,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 81,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 82,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 83,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 84,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 85,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 86,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 87,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 88,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 89,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 90,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 91,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 92,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 93,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 94,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 95,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 96,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 97,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 98,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 99,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 100,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 101,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 102,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 103,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 104,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 105,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 106,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 107,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 108,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 109,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 110,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 111,
+      "history": "anonymous",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 112,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 113,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 114,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 115,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 116,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 117,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 118,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 119,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 120,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 121,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 122,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 123,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 124,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 125,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 126,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 127,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 128,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 129,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 130,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 131,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 132,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 133,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 134,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 135,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 136,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 137,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 138,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 139,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 140,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 141,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 142,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 143,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 144,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 145,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 146,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 147,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 148,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 149,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 150,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 151,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 152,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 153,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 154,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 155,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 156,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 157,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 158,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 159,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 160,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 161,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 162,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 163,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 164,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 165,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 166,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 167,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 168,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 169,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 170,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 171,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 172,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 173,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 174,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 175,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 176,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 177,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 178,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 179,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 180,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 181,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 182,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 183,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 184,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 185,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 186,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 187,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 188,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 189,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 190,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 191,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 192,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 193,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 194,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 195,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 196,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 197,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 198,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 199,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 200,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 201,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 202,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 203,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 204,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 205,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 206,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 207,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 208,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 209,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 210,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 211,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 212,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 213,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 214,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 215,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 216,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 217,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 218,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 219,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 220,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 221,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 222,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 223,
+      "history": "anonymous",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 224,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 225,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 226,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 227,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 228,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 229,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 230,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 231,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 232,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 233,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 234,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 235,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 236,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 237,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 238,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 239,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 240,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 241,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 242,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 243,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 244,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 245,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 246,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 247,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 248,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 249,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 250,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 251,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 252,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 253,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 254,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 255,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 256,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 257,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 258,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 259,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 260,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 261,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 262,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 263,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 264,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 265,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 266,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 267,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 268,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 269,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 270,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 271,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 272,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 273,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 274,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 275,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 276,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 277,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 278,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 279,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 280,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 281,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 282,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 283,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 284,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 285,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 286,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 287,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 288,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 289,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 290,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 291,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 292,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 293,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 294,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 295,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 296,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 297,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 298,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 299,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 300,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 301,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 302,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 303,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 304,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 305,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 306,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 307,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 308,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 309,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 310,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 311,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 312,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 313,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 314,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 315,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 316,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 317,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 318,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 319,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 320,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 321,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 322,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 323,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 324,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 325,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 326,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 327,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 328,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 329,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 330,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 331,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 332,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 333,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 334,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 335,
+      "history": "named",
+      "target": "catalog",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 336,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 337,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 338,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 339,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 340,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 341,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 342,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 343,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 344,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 345,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 346,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 347,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 348,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 349,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 350,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 351,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 352,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 353,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 354,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 355,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 356,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 357,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 358,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 359,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 360,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 361,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 362,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 363,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 364,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 365,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 366,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 367,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 368,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 369,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 370,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 371,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 372,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 373,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 374,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 375,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 376,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 377,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 378,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 379,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 380,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 381,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 382,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 383,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 384,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 385,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 386,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 387,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 388,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 389,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 390,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 391,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "before-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 392,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 393,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 394,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 395,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 396,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 397,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 398,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 399,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 400,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 401,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 402,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 403,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 404,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 405,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 406,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 407,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 408,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 409,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 410,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 411,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 412,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 413,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 414,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 415,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 416,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 417,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 418,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 419,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 1,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 420,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 421,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 422,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 423,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 424,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 425,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 426,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 427,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 428,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 429,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 430,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 431,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "segment_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 432,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 433,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 434,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 435,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_partial",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 436,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 437,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 438,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 439,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_written",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 440,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 441,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 442,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 443,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_synced",
+      "operation": "compact",
+      "mode": "exit"
+    },
+    {
+      "index": 444,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "error"
+    },
+    {
+      "index": 445,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "append",
+      "mode": "exit"
+    },
+    {
+      "index": 446,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "error"
+    },
+    {
+      "index": 447,
+      "history": "named",
+      "target": "retired",
+      "worker_point": "after-delete",
+      "ordinal": 20,
+      "publication_point": "catalog_published",
+      "operation": "compact",
+      "mode": "exit"
+    }
+  ],
+  "fixed_case_count": 448,
+  "worker_cuts": [
+    "before/after real delete ordinals1/20"
+  ],
+  "publication_points": [
+    "segment_partial",
+    "segment_written",
+    "segment_synced",
+    "catalog_partial",
+    "catalog_written",
+    "catalog_synced",
+    "catalog_published"
+  ],
+  "operations": [
+    "append100row",
+    "compact32currentsegments"
+  ],
+  "seed_groups": 64,
+  "seed_rows_per_group": 100,
+  "initial_compaction_generation": 65,
+  "target_publication_generation": 66,
+  "coordination": "pause actual worker cut; arm only after seed; pause real new publisher boundary; hold publisher while release worker into error/exit. Error callback observed before release publisher. Owned handles only. Journal all stdin, gate writes, stdout/stderr, env, exact native commands.",
+  "expected_error": "64 seed ACKs plus append group64 ACK only for append. Current generation66; rows6500 append/6400 compact; one worker error, deleted count ordinal-1 before or ordinal after; healthy retry and pin read before shutdown.",
+  "expected_exit": "exactly64 seed ACKs. Current gen65 and6400rows before rename, or gen66 after catalog_published with6500append rows/6400compact rows; committed append65th batch unacknowledged must reconcile receipt gen66. No ambiguous case omitted.",
+  "gates": [
+    "actual worker target/ordinal AND publisher boundary markers from SAME owned process",
+    "no new-ACK loss; committed unacknowledged target explicitly reconciled",
+    "full current chain/schema/receipt original generations/content digest; complete independent NumPy row multiset and segment/index/blockCRC",
+    "five cold readers including exact old016; cold reads/retries byte-inventory unchanged",
+    "two writer lock phases while held, all four normal/old readers reject",
+    "one-shot worker error healthy retry, first-drained successes exact; <=2 in-flight; pinned6400rows; untouched pending998/orphan999",
+    "native tests/lints and exact derivation: new controls diagnostic-only; supported/main core unchanged",
+    "every raw/failure/unstarted path preserved, fresh full matrix on any control repair; no selective rerun",
+    "bounded ZIP/full SHA/file+directory sets/restored independent complete audit with ZERO native/timers"
+  ],
+  "limits": [
+    "finite controlled OS process exits and injected errors, not physical power loss/device exhaustion/all concurrency/source/full release",
+    "096693tests/48cases and094107/22 are reused, not new097counts",
+    "no speed/competitor/adoption/all-benchmark/release claim"
+  ],
+  "new_build_plan": {
+    "async_and_combined_full_debug_release": true,
+    "four_strict_lint_modes": true,
+    "normal_default_incremental_async_artifacts": "same exact toolchain1.97.1/locked/offline/thinLTO/onecodegen/incremental0; all fault keys absent",
+    "no_new_dependencies_or_unsafe": true
+  }
+}
