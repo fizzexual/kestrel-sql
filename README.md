@@ -1,5 +1,7 @@
 # KestrelSQL
 
+Latest adaptive engine trial: [111 complete before/after results](ADAPTIVE_ENGINE_111.md) fails16 A/A controls,6 guards and17 goals. Five specific Native goals pass full and both halves; grouped targets and release qualification fail. Fresh772 tests,recovery and exact restored evidence pass;0.3.17 remains unreleased and0.3.16 supported.
+
 Latest adaptive engine trial: [110 complete before/after results](ADAPTIVE_ENGINE_110.md) fails93 A/A controls,35 guards and11 goals. Replay full-run gains fail required half controls and remain inconclusive. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
 
 Latest adaptive engine trial: [109 complete before/after results](ADAPTIVE_ENGINE_109.md) shows controlled filter and small-write gains, but fails 27 A/A controls, eight guards and one goal. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.

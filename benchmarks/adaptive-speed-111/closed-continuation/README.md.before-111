@@ -1,0 +1,287 @@
+# KestrelSQL
+
+Latest adaptive engine trial: [110 complete before/after results](ADAPTIVE_ENGINE_110.md) fails93 A/A controls,35 guards and11 goals. Replay full-run gains fail required half controls and remain inconclusive. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
+
+Latest adaptive engine trial: [109 complete before/after results](ADAPTIVE_ENGINE_109.md) shows controlled filter and small-write gains, but fails 27 A/A controls, eight guards and one goal. Correctness/recovery and exact restored evidence pass; 0.3.17 remains unreleased and 0.3.16 supported.
+
+Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_105.md) implements workload-dependent write collection and passes complete restored correctness. Speed and0.3.17 remain unqualified.
+
+[104 complete native/service rejection and exact restoration](REUSABLE_SYNC_SPEED_104.md): 2,782 lost offers; all ACKs preserved. Supported0.3.16 unchanged; adaptive work is next.
+
+
+**Latest synchronization candidate:** [103 reusable worker passes correctness and recovery](REUSABLE_SYNC_103.md): 916 current tests, 6 strict lints, 832 coupled cases, 104 publication faults, 26 source faults, 22 corruption rejections and exact restored replay. Speed/adoption remain unqualified; supported 0.3.16 stays unchanged.
+
+
+**Latest controlled performance:** [102 scoped synchronization speed rejected](PARALLEL_SYNC_SPEED_102.md): 144 native + 144 service cases, 1,872,000 successful offers/zero loss and full restored correctness; native 7 controls/2 guards/1 goal fail, service 1 control/1 goal fail. No adoption; 0.3.16 remains supported.
+
+
+**Latest synchronization candidate:** [101 scoped overlap passes fresh correctness and recovery](PARALLEL_SYNC_101.md): 682 tests, 576 coupled faults, 72 publication faults, 18 source faults, 22 corruption cases, old formats and exact normal/candidate bytes. Fully restored evidence; speed/adoption remain unqualified and 0.3.16 stays supported.
+
+
+**Latest matched tracer controls:** [095: stock-trace: unqualified; incremental-trace: unqualified](TRACE_CONTROLS_095.md), all 288 cases and every failure preserved. Diagnostic qualification is separate from an engine speed gain; 0.3.16 stays supported and .17 unqualified.
+
+
+**Latest recovery milestone:** [094 passes 107 fixed fault cases and 22 corruption rejections](RECLAIM_RECOVERY_094.md), with exact independent restoration. This closes a recovery gap; 093 remains rejected on speed and supported 0.3.16 is unchanged. .17 remains unqualified.
+
+
+**Latest engine candidate:** [093 incremental reclamation is rejected](INCREMENTAL_RECLAIM_093.md): 2,650 queue drops, five failed A/A checks and missed append goals. All 178,622 ACK batches pass full independent data/CRC audit and exact restoration; lower medians do not qualify a win. Supported 0.3.16 remains unchanged; .17 is unqualified.
+
+
+**Reclamation measurement milestone:** [092 passes all native phase controls](RECLAIM_PHASES_092.md), 314 tests, both balanced halves and all 72 exact stores. File deletion accounts for about 83% of native reclaim time; this justifies a separate bounded Live cleanup candidate. Diagnostics are qualified in this scope; no engine gain or supported upgrade is claimed. All earlier failures remain preserved; supported 0.3.16 is unchanged.
+
+
+**Writer diagnostic milestone:** [091 passes all full/half overhead controls](TRACE_CONTROLS_091.md) under unchanged 5% limits with exact 090 artifacts, 1.872 million successful requests, 179,280 reopened ACK batches and 59,760 correlated traced ACKs. Reclamation is the next measured writer target. This qualifies scoped diagnostics, not an engine gain or 0.3.17 release; [090](MAINTENANCE_ISOLATION_090.md) and all earlier failures remain preserved. Supported 0.3.16 is unchanged.
+
+**Maintenance source correction:** [090 passes every default compatibility gate](MAINTENANCE_ISOLATION_090.md) in two profiles/full/both halves. All 1.872 million requests and 179,280 reopened ACK batches pass correctness. Tracing remains unqualified because two half-cohort A/A checks fail; no candidate guard fails. [089](BUILD_COMPARE_089.md), [088 regressions](WRITER_OVERHEAD_088.md) and all history remain preserved. Supported 0.3.16 is unchanged; this is compatibility, not a speed gain or 0.3.17 release.
+
+**Fresh D: compact reader comparison:** [085 rejects the new reader](FAST_COMPARE_085.md): 11 speed goals, seven guards and nine A/A checks fail; both balanced halves fail. Full-cohort 99K migration/recovery p99 improve about 12%/14%, while publication tails fail calibrated guards. [084 correctness qualification](FAST_READER_084.md) passes 63 debug/release tests, 195 historical heads, 15 errors, 15 owned kills and 30 corruptions. Supported 0.3.16 remains unchanged.
+
+**Reader CPU diagnostic:** [083 identifies parsing/map lifetime as the main anchor cost](READER_CPU_083.md). All 108 cases and 648 phase windows pass complete ledger checks. Large parse/anchor CPU and wall controls pass in the full cohort and both halves; other diagnostic failures and short CPU windows remain visible. The diagnostic does not override the rejected full-workload candidates.
+
+**Fresh D: loader comparison:** [082 rejects the bounded bulk reader](LOAD_COMPARE_082.md): all 20 reader goals, nine guards and 14 A/A checks fail. Peak process memory falls about 12%, but migration/recovery regress. [081 fresh correctness qualification](RECEIPT_LOAD_081.md) passes 60 debug and 60 release tests, 15 injected errors, 15 owned kills and 30 independent corruptions. Supported 0.3.16 remains unchanged.
+
+**Fresh D: source robustness:** [080 retains large publication gains and fails robustness](SOURCE_ROBUSTNESS_080.md): 108 cases, 6,912 publications and 1,296 opens; three guards and 11 calibration checks fail, as do both balanced halves. [Verified workspace cleanup](WORKSPACE_CUTOVER_2026-10-08.md) frees 52.90 GiB from C: while preserving all Kestrel history on D:. Shared Codex fresh-profile reset is separate and not yet executed.
+
+**Historical 079 source-state comparison:** [079 publication gains and failed guards](SOURCE_COMPARE_079.md) measures 37.7%/56.6% lower large-history publication totals with stable controls. Only three of four goals are calibrated; eight guards and 19 A/A checks fail. Full qualification fails; supported 0.3.16 stays unchanged. All prior reports and failures remain accessible.
+
+**Prior source-state qualification:** [078 bounded source positions](SOURCE_STATE_078.md) passes 57 debug/release tests, 15 injected errors, 15 owned kills and 30 independently corrupted fixtures. It removes whole-ledger cloning from new source publication; all 201 history files remain byte-identical. No fresh speed measurement or engine adoption. [077 measured recovery gains and failed guards](RECOVERY_COMPARE_077.md) remain visible.
+
+**Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51–52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
+
+**Latest recovery qualification:** [076 validated anchor reuse](ANCHOR_REUSE_076.md) passes 49 debug/release tests, 15 errors, 15 owned kills and 30 independent corruption cases. Anchor-terminated recovery reads/parses once; no fresh latency comparison yet. Publication bytes are unchanged. Supported 0.3.16 stays unchanged; [075 failed performance guards](HYBRID_CYCLES_075.md) remain visible.
+
+**Latest hybrid benchmark:** [075 full-cycle metadata trial](HYBRID_CYCLES_075.md) passes four large-history goals but fails nine guards and ten identical-control checks. Retained-history bytes fall about 67%; publication p50 and recovery regress. All raw cases remain visible. Supported 0.3.16 stays unchanged; [074 correctness qualification](HYBRID_RECEIPTS_074.md) and [073 failed page trial](RECEIPT_CYCLES_073.md) remain preserved.
+
+**Latest hybrid qualification:** [074 passes metadata correctness/error/kill checks](HYBRID_RECEIPTS_074.md). Forty debug/release tests, 15 injected errors, 15 owned process kills and 21 independent corruption cases pass. Import/ordinary deltas sync one file; speed is not measured. Supported 0.3.16 stays unchanged; [073 performance failures remain visible](RECEIPT_CYCLES_073.md).
+
+**Latest receipt-cycle benchmark:** [073 passes large metadata goals but fails adoption](RECEIPT_CYCLES_073.md). All 54 cases/3,456 publications/648 recoveries pass logical-history checks. At 50K matched publication time falls 10.8%, but p50/migration/small-store regressions and 11 guards/six A-A failures reject the candidate. Retained evidence bytes shrink; current reachable page metadata is about 10% larger. Supported 0.3.16 stays unchanged.
+
+**Latest structural model:** [072 preserves full retry/source history across actual edits and interrupted writes](RECEIPT_PAGES_072.md). 18 debug/release tests, 73 full-history oracle checks, seven error cuts, seven process kills and 12 malformed-file cases pass. Large checkpoint bytes fall, normal delta bytes and migration grow; no new speed benchmark or engine promotion. [071 timings and ordering correction remain visible](COMPRESSION_071.md).
+
+**Latest checkpoint model and benchmark correction:** [071 uses verified balanced order; fast Zstandard still fails adoption gates](COMPRESSION_071.md). All 54 cases and 648 frames are preserved. Read the [069/070 order correction](MODEL_ORDER_AUDIT_071.md): their size rotation cancelled variant rotation. Original reports/raw evidence remain unchanged. In 071, large bytes fall about 46%, but two goals, five guards and four A/A checks fail. Supported 0.3.16 remains unchanged.
+
+**Latest checkpoint model:** [070 Zstandard level 1 cuts stored bytes by about 70% but fails publication speed gates](COMPRESSION_070.md). All 36 cases and 432 frames are preserved. Large charged totals are 1.1501x/1.2058x raw; two goals, four guards and five A/A checks fail. Twelve native debug/release tests and all native/Python/Arrow byte checks pass. Model rejected; supported 0.3.16 remains unchanged.
+
+**Latest checkpoint compression model:** [069 saves 62.8% of stored large-checkpoint bytes but fails paid-latency gates](COMPRESSION_069.md). All 36 cases and 432 frames are preserved. Large publication totals are 1.71x/1.89x raw; two goals, six guards and three A/A checks fail. Exact native/Python decoding and eight debug/release tests pass. Model rejected; no SQL engine edit or supported promotion. 0.3.16 remains supported.
+
+**Latest publication diagnostics:** [068 identifies individual slow publication stages](TRACE_068.md). An opt-in one-slot tracer on the exact released core passes 80 debug/release tests and full correctness/recovery. All six diagnostic stores, six byte-equivalence stores and 32 group-kill stores are retained. No speedup or competitor comparison, overhead qualification, physical-cause claim or supported promotion. Supported 0.3.16 remains unchanged.
+
+**Latest engine buffer trial:** [067 bounds reusable catalog memory](BUFFER_067.md). Large-history catalog encoding takes 17.1%/19.8% less time; six memory guards pass. All 54 native cases and all 32 validated group-kill stores are preserved. Failures: 1 speed goal, 4 latency guards, 11 identical-baseline checks. Full correctness and exact released/candidate archive bytes pass. No service advance or supported promotion; 0.3.16 remains supported.
+
+**Latest encoder profiles:** [065/066 isolate catalog-buffer allocation](ENCODER_PROFILES_065_066.md). Separate twelve-round replication passes 43/43 checks and reduces fixed-input encoding time by 21.1%/22.8% on large checkpoints. Original calibration failure remains visible. These are CPU models; supported 0.3.16 and all database results remain unchanged.
+
+**Latest compaction trial:** [064 increases bounded merge fan-in](COMPACTION_064.md). 5/6 native speed goals, 1/12 candidate guards and 5/18 identical-baseline checks fail. Correctness/recovery pass, including fourteen wider-merge cuts. No service advance or supported promotion; 0.3.16 and all earlier results remain unchanged.
+
+**Latest batching experiment:** [063 tests current released 0/1/4 ms options with identical zero-delay controls](BATCHING_063.md). 4/10 identity checks and 6/26 option criteria fail. All previous native gains and service failures remain preserved. Supported 0.3.16 and its zero-delay default are unchanged.
+
+**Latest service calibration:** [062 compares identical released binaries and unchanged clean core 061](SERVICE_CALIBRATION_062.md). 3/14 A/A tolerance checks fail; 2/14 candidate/A guards fail. Original 061 native gains, full DuckDB matrix and all ten service failures remain preserved. No engine change or supported promotion.
+
+**Latest clean core development:** [061 ports the parser gain independently of SDK 058/060](CORE_READ_PATH_061.md). Native range medians 5.6 to 2.7 microseconds; 60/60 fresh DuckDB median wins, 0/60 failed native guards, 10/29 failed service guards. 77 tests per mode and full correctness/recovery gates pass. Supported 0.3.16 is unchanged.
+
+**Latest read-path development:** [060 reproduces roughly 50% shorter native range queries and 28–29% shorter parsing](READ_PATH_060.md). 82 tests per mode, 4,000 SQL cases per reference, 42 fault/retry stores and 18 read-service cases pass. Network p99 has no consistent win; prior write-tail failures remain. Supported 0.3.16 is unchanged.
+
+**Latest service qualification:** [059 retains SDK gains and rejects nine regression criteria](SERVICE_GUARDS_059.md). All 36 cold checks pass; three current minute runs have zero loss, while overload losses and slower tails remain. The disk stop, original 20 cases and resumed-only 16 cases are preserved. Supported 0.3.16 is unchanged.
+
+**Latest SDK development trial:** [058 adds machine-readable ingestion outcomes](ERROR_CONTRACT_TRIAL_058.md). 82 debug/release tests, 42 fault/reopen cases and seven paired guards pass; slower samples and driver failures remain visible. No speed-up or supported engine release is claimed; 0.3.16 is unchanged.
+
+**Latest storage model:** [057 rejects advance zero filling after charging initialization](PUBLICATION_057.md), with a verified standalone Cargo reproduction. [Adoption assessment](ADOPTION_STATUS.md) explains the current case for Kestrel alongside PostgreSQL. No SQL engine upgrade; supported 0.3.16 and every earlier result remain unchanged.
+
+**Morning report, October 7:** [Bulgarian before/after, wins/losses, recovery and every failed trial](OVERNIGHT_2026-10-07.md). [056 tests a persistent-file primitive and fails two hypothesis checks](PUBLICATION_056.md); it changes no SQL engine. Supported 0.3.16 and all earlier releases remain unchanged.
+
+**Latest CAT6 service qualification:** [055 preserves native gains but fails write-tail and zero-loss service gates](SERVICE_TRIAL_055.md). [054 keeps all ten native pairs and adds 88 debug passes](PUBLICATION_054.md). The disk-space failure and resumed-only missing tests remain visible; supported 0.3.16 is unchanged.
+
+**Latest compact-receipt trial:** [053 halves checkpoint metadata and improves native tails, but fails the p50 guard](TRIAL_053.md). Full correctness/migration checks pass; all slower rounds and raw evidence remain visible. Supported 0.3.16 is unchanged.
+
+**Latest native publication work:** [051 measured receipt-checkpoint stalls](PUBLICATION_051.md) and [052 file-sizing experiment rejected by all four gates](TRIAL_052.md). Raw results, slower rounds and failure evidence remain accessible; supported 0.3.16 is unchanged.
+
+**Fresh isolated 050 service results:** [all 36 paired cases, wins/losses, raw samples and recovery audit](SERVICE_TRIAL_050.md). Supported 0.3.16 remains unchanged; older measurements and rejected trials remain visible.
+
+**Verified development hardening 050:** [CAT5 restore identity fix, failing/passing regressions and full recovery checks](TRIAL_050.md). Supported 0.3.16 remains unchanged; fresh performance qualification is pending.
+
+**Unreleased trial 049:** [retained-handle service measurements and recovery evidence](TRIAL_049.md). Supported 0.3.16 remains unchanged; all rounds, failures and raw data are preserved.
+
+**Unreleased storage trial 048:** [paired service results, failed gates and full recovery evidence](TRIAL_048.md) test a single synchronized generation file. Supported 0.3.16 remains unchanged; all baseline, slower and failed trial evidence is preserved.
+
+[Benchmark history: wins, losses and raw evidence](BENCHMARK_HISTORY.md) · [Download every preserved release](https://github.com/fizzexual/kestrel-sql/releases) · [Latest 0.3.16 package](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.16)
+
+**Fresh post-release service qualification:** [SERVICE_047.md](SERVICE_047.md) retains 52 million-row cases and 1,327,600 offered operations on unchanged 0.3.16. In three current six-engine rounds, Kestrel had 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins. Its failed 60-second soak and inconsistent batching trials remain visible; these results establish no engine upgrade or production service guarantee.
+
+**Current source: 0.3.16 experimental packed medium key-cache candidate.** Exact signed tags and checked group indexes reduce the promoted table from 384 to 256 KiB on this 64-bit build. Cache budgets/fallback, randomized HashMap authority, exact i128 reductions and reader ownership remain. In 21 alternating 1M-row irregular SUM pairs, timings changed from 19.788 to 17.743 ms (paired ratio 0.897); wide SUM changed from 15.906 to 15.232 ms (paired ratio 0.950). Fresh DuckDB scores are 60 wins/0 losses over 60 shapes; the closest case has a 0.32% median gap and 2/3 round wins. A separate 21-pair repeat records a win with paired candidate/DuckDB ratio 0.979; its outcome is retained separately. [PERFORMANCE_046.md](PERFORMANCE_046.md) keeps every slower guard, two preserved build failures, predeclared criteria, 77 Rust tests, 4,000 SQL cases against each reference and current retry/crash/Parquet evidence.
+
+**The 0.3.15 bounded reader reuse experiment.** Each segment can retain one exclusively owned idle stream file, with a shared limit of 128 idle files per archive. Queries still read and validate payload checksums; full scrubs open fresh files. In 21 alternating 1M-row fragmented scan pairs, the unordered query changed from 7.830 to 4.551 ms (paired ratio 0.581); 1,000-row sparse SUM changed from 0.118 to 0.065 ms (paired ratio 0.560). Fresh DuckDB scores are 59 wins/1 loss over 60 shapes. [PERFORMANCE_045.md](PERFORMANCE_045.md) retains every slower guard, the unselected offset-only trial, 76 Rust tests, 4,000 SQL checks against each reference, 104 concurrent/manual bridge oracles and current retry/crash/Parquet evidence.
+
+**The 0.3.14 adaptive sparse SUM experiment.** Cache hits avoid redundant writes; shared sparse SUM/AVG fuses into key lookup while the small cache is active at block entry, with the earlier wider mapper retained. In 21 alternating 1M-row pairs, small sparse SUM changed from 8.566 to 8.013 ms (paired ratio 0.931); wide sparse SUM changed from 12.475 to 12.179 ms (paired ratio 0.954). Fresh DuckDB scores are 58 wins/2 losses over 60 shapes. [PERFORMANCE_044.md](PERFORMANCE_044.md) retains all results, rejected wider-fusion trials, 74 Rust tests, 4,000 SQL checks against each reference and current durable retry/crash/Parquet evidence.
+
+**The 0.3.13 fused dense SUM experiment.** Dense GROUP SUM/AVG shares one exact counting and reduction pass. In 21 alternating 10M-row pairs, GROUP SUM changed from 73.730 to 66.423 ms (paired ratio 0.898); seven 100M-row pairs measured 733.970 to 666.307 ms (paired ratio 0.907). Fresh DuckDB scores are 58 wins/2 losses over 60 shapes. [PERFORMANCE_043.md](PERFORMANCE_043.md) preserves every result and guard, 73 Rust tests, 3,400 SQL checks against each reference, signed wide JSON and current recovery/Parquet evidence.
+
+**The 0.3.12 medium-group cache experiment.** Sparse groups promote a wider exact-tag cache after measured key reuse, deferring allocation until the next nonempty block. In 21 alternating 1M-row wide-key pairs, GROUP SUM changed from 27.704 to 16.834 ms (paired ratio 0.616). Fresh DuckDB scores are 56 wins/4 losses over 60 shapes. [PERFORMANCE_042.md](PERFORMANCE_042.md) retains every result, the rejected tiny-query regression, all guards, 72 Rust tests, 2,800 SQL checks against each reference and current recovery/Parquet evidence. Promoted queries allocate an additional 384 KiB on this computer.
+
+**The 0.3.11 seeded group-cache experiment.** Sparse GROUP BY cache indexing now uses a per-query multiplier while retaining exact key tags and randomized hash-table fallback. In 21 alternating 1M-row collision pairs, GROUP SUM changed from 18.115 to 8.972 ms. Fresh DuckDB scores are 28 wins/2 losses on matched shapes, 14/1 on prior stress shapes and 10/0 on added key patterns. [PERFORMANCE_041.md](PERFORMANCE_041.md) retains all 55 shapes, every loss, guard measurements, 70 Rust tests, 2,200 SQL cases against each reference and retry/crash/Parquet evidence.
+
+**The 0.3.10 direct-filter experiment.** Streaming scans generate matching row positions directly from the first residual predicate. In 21 alternating 1M-row pairs, the unordered scan changed from 3.154 to 2.893 ms; seven 100M-row pairs changed from 340.939 to 318.823 ms. The fresh matched DuckDB matrix has 29 median wins and 1 loss. [PERFORMANCE_040.md](PERFORMANCE_040.md) keeps every loss, the rejected outlining trial, checks against 0.3.8, 70 Rust tests, 1,600 SQL cases against each reference and current retry/crash/Parquet evidence.
+
+**The 0.3.9 sparse-grouping experiment.** Compact domains now have a 65,536-slot ceiling with the existing 8 MiB state budget and row-count guard; wider keys use typed hash states and a bounded tagged cache that disables itself for poor hit rates or higher cardinality. In the fresh 1M-row full-grouping cases, sparse keys changed from 72.40 to 24.81 ms and 5,003 compact keys from 106.96 to 17.11 ms. The matched matrix has 22 median DuckDB wins and 8 losses; an additional wide/collision/high-cardinality matrix keeps its own score. [PERFORMANCE_039.md](PERFORMANCE_039.md) includes every loss, cache regressions, 69 Rust tests, 1,000 SQL oracle cases and current recovery/Parquet checks.
+
+**The 0.3.8 grouping experiment.** Compact integer group domains use bounded direct-address arrays, with exact shared SUM/AVG reductions and hash fallback for wider keys. In the fresh 100M-row full GROUP BY comparison, the median of three run medians changed from 5.504 s in 0.3.7 to 1.694 s; DuckDB measured 1.896 s. All results matched. [PERFORMANCE_038.md](PERFORMANCE_038.md) includes every win/loss, raw samples, short control repeats, 63 Rust tests and current recovery/Parquet checks. No new network req/s or production-service claim is made.
+
+**The 0.3.7 source-checkpoint experiment.** `SourceArchive` commits each nonempty output and its source interval in one synchronized receipt publication. Reopening recovers the resume position with its data; gaps, overlaps, stale offsets and changed retries are rejected. It adds no checkpoint file or sync and preserves CAT4/SEG2. See [PERFORMANCE_037.md](PERFORMANCE_037.md) for measured costs, 55 Rust tests, current recovery/Parquet checks and retained write stalls, and [SOURCE_INGEST.md](SOURCE_INGEST.md) for the SDK. This is archive-local checkpoint atomicity; distributed consumer fencing and zero-output checkpointing remain work.
+
+The [0.3.6 immutable batch experiment](PERFORMANCE_036.md) adds `PreparedBatch` and `LiveArchive::append_prepared` for confirmed embedded retries. Its extra receipt index stays off by default; construction and fresh-write costs remain disclosed. Previous packages and measurements are preserved.
+
+The [0.3.5 lookup experiment](PERFORMANCE_035.md) separates confirmed retries from writer queueing. Its initial write-heavy regression is preserved; the additional lookup remains opt-in.
+
+The [0.3.4 coalescing experiment](PERFORMANCE_034.md) adds an explicit `LiveOptions` window and collection diagnostics. Optional waiting can regress latency and loss, so the default remains zero delay.
+
+In the [0.3.3 receipt-catalog experiment](PERFORMANCE_033.md), 50,000 retained retry IDs and 96 new appends wrote 24.72 MB of catalogs versus 788.02 MB in the fresh 0.3.2 baseline (96.86% fewer bytes). CAT4 uses receipt deltas and bounded checkpoints, preserves synchronization before ACK, reads older catalogs and is rejected by pre-CAT4 writers. Checkpoint/storage stalls and service-target failures remain disclosed.
+
+The [0.3.2 scan experiment](PERFORMANCE_032.md) reduced unordered-filter median time from 6.49 to 3.69 ms on a paired 1M-row fixture, while failing repeated service targets. The 0.3.1 measurements below describe an earlier release and run; they do not describe the current service envelope.
+
+An experimental embedded SQL database for exact live metrics over append-only events. The working product idea is **automatically indexed, arbitrary time-window totals inside an application**, with durable ingestion and no materialized-view definition per window.
+
+**Version 0.3.1 improves replay and compaction costs and adds publication-stage diagnostics.** `LiveArchive` combines immutable read snapshots, durable group commits, SHA-256 batch receipts, small-segment compaction and a bounded decoded-page cache. Late batches immediately contribute to new read views; exact retries do not add duplicate rows. Try the [Rust and Parquet workflows](LIVE_METRICS.md), inspect [current measured results](PERFORMANCE_031.md), and read the [primary-source design notebook](RESEARCH.md).
+
+`Archive` stores immutable sorted column segments with sparse prefix sums, block extrema, checksums and atomic catalog generations. Raw rows remain on disk. The original `Database` API below remains a separate RAM-resident transactional prototype. See [ARCHIVE.md](ARCHIVE.md), [historical large-scale results](SCALE.md), and the [portfolio case study](PORTFOLIO.md).
+
+**Readiness: research prototype.** This repository demonstrates a specialized speed advantage and tests important recovery behavior. Production release still requires the work and acceptance criteria below. There is no verified claim that this is the world's fastest database or that the underlying algorithm is novel.
+
+**Performance evidence includes failures.** The [0.2 stress baseline](HARD_TESTS.md) completed about 881 requests/s at 2,000 offered mixed requests/s, with 53.94% loss/unexecuted work. Version 0.3 addresses the coarse writer lock, repeated boundary decoding and growing small-run count. Version 0.3.1 targets receipt copies, small publication writes and compaction input reads. Repeated comparisons, raw samples, intermediate regressions and remaining failures are in [PERFORMANCE_031.md](PERFORMANCE_031.md); [V03_RESULTS.md](V03_RESULTS.md) preserves the preceding release. Archive SQL capability gaps still prevent a transactional social-graph comparison.
+
+In three rotated 15-second mixed runs at 2,000 offered requests/s, version 0.3.1 completed all offers with run p99s of 4.24–31.17 ms (median 6.38 ms). The old 0.3 build had 54.15–117.86 ms p99 (median 73.64 ms) on the same harness. A separate one-minute 500/s run had 4.87 ms p99 and zero loss. The 10,000/s overload case still lost 25,367 offers, and the single-client mixed p99 remained 147.72 ms. These shared-desktop results do not qualify a production service envelope.
+
+Three alternating in-process probes at 50,000 stored batch IDs reduced median exact-retry latency from 11.85 ms to 2.8 microseconds. A full 100,000-ID test verifies capacity, reopen, exact replay and checksums. New-ID catalog rewrite endurance remains work. Grouped query timings improved on the tested 1M-row fixture, while the unordered-filter probe regressed; all query results and timings are retained.
+
+## Why this direction
+
+The opportunity is the combination of embedding, fresh committed data, and automatically maintained exact range aggregates. For example, an application can ask for a count, total, and average for any interval of its event timeline immediately after ingestion.
+
+DuckDB documents that its ART indexes do not accelerate aggregation, although its zonemaps help skip data. SQLite documents range scans through covering indexes. Materialize already maintains query results incrementally, and ClickHouse provides incremental materialized views. These are capable competitors; a blanket claim that popular databases lack live analytics would be incorrect. Our differentiator is a specific automatic embedded experience that needs validation with users.
+
+Sources: [DuckDB indexing](https://duckdb.org/docs/guides/performance/indexing), [SQLite query planning](https://www.sqlite.org/queryplanner.html), [Materialize indexes](https://materialize.com/docs/fundamentals/concepts/indexes/), [ClickHouse incremental views](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/materialized-view/incremental-materialized-view.md). Aggregate range indexes also have [published prior art](https://arxiv.org/abs/1910.11754).
+
+## Run it
+
+Rust 1.89 or later is required to build. Cargo.lock pins the dependencies used in this run. Commands below assume PowerShell in this project directory.
+
+```powershell
+cargo build --release --locked
+.\target\release\kestrel.exe --file examples\live_metrics.sql
+.\target\release\kestrel.exe --db ..\..\work\my-events
+```
+
+The second command executes a sample in memory. The third opens a durable database and reads one SQL statement per input line. Output is JSON lines. An unfinished transaction is discarded when the process exits. A supplied `bin/kestrel.exe` runs the same engine without a local Rust build; it has been tested on this Windows machine.
+
+```sql
+CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL);
+INSERT INTO events VALUES (100, 12, 1), (101, 18, 2), (102, 25, 1);
+SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE ts >= 100 AND ts < 102;
+EXPLAIN SELECT SUM(value) FROM events WHERE ts >= 100 AND ts < 102;
+```
+
+The result is `[[2, 30, 15.0]]`. EXPLAIN reports `prefix-range-aggregate` and the query result includes `rows_scanned: 0`. Prefix entries are current, including a transaction's own staged writes.
+
+The CLI also accepts `--sql "..."` and `--help`. File input uses one complete statement per line, with blank lines and SQL line comments allowed. It is a development interface; there is no network listener.
+
+## Embed it in Rust
+
+```rust
+use kestrel_sql::Database;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut db = Database::open("my-events")?;
+    db.execute("CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL)")?;
+    // The batch API accepts columns in schema order.
+    db.append("events", vec![vec![100, 101, 102], vec![12, 18, 25]])?;
+    let result = db.query("SELECT SUM(value) FROM events WHERE ts >= 100 AND ts < 102")?;
+    println!("{:?}", result.rows);
+    Ok(())
+}
+```
+
+Use `Database::memory()` for an ephemeral database. The schema example requires a fresh directory. Use `begin`, `commit`, and `rollback` to batch durable writes. One Database owns one transaction context; Rust borrowing protects mutation, and application synchronization is needed when sharing it. Concurrent independent sessions and MVCC are future work.
+
+## Implemented SQL and behavior: Database API
+
+- CREATE TABLE with 1–64 unique `BIGINT NOT NULL` columns.
+- INSERT INTO ... VALUES with multiple complete rows, and a column batch API.
+- SELECT columns or `*`; COUNT(*), SUM, AVG, MIN, MAX; explicit AS aliases.
+- WHERE column comparisons against integer literals, combined with AND.
+- GROUP BY one column; ORDER BY one selected name or alias; LIMIT.
+- BEGIN, COMMIT, ROLLBACK, EXPLAIN SELECT.
+
+Identifiers are unquoted ASCII and case insensitive in SQL. Values are signed 64-bit integers. Application code chooses the time unit for a `ts` column. Sums use 128-bit integers and may exceed BIGINT; averages are floating point. Empty aggregate inputs return SQL NULL, except COUNT which returns zero. Unsupported grammar is rejected, including trailing statements. A failed statement leaves the surrounding explicit transaction open; earlier successful statements remain staged.
+
+Strings, nullable input columns, decimal money, native timestamps, joins, UPDATE, DELETE, uniqueness constraints, parameter binding, foreign keys, and query cancellation remain unimplemented. The source is ordinary Rust with unsafe code forbidden in this crate; dependencies have their own implementations.
+
+## Why the RAM fast path works
+
+Each column stores its values and exact cumulative sums. For nondecreasing filter columns, binary search finds the two row boundaries of a contiguous range. Subtracting the cumulative sums gives an exact range total; the boundary difference gives its count. AVG uses those two quantities. No row scan or query-result cache is needed.
+
+An eligible range aggregate takes O(log n + a), where `a` is the number of requested aggregate expressions. Whole-table totals take O(a). Appending a batch costs O(rows × columns), plus serialization and synchronization in durable mode. This moves work and memory to ingestion, which is the central tradeoff.
+
+The fast path accepts AND predicates on one nondecreasing column, with `=`, `<`, `<=`, `>`, or `>=`. Contradictory bounds yield an empty range. MIN/MAX and grouped queries use scans. Multiple filter columns and `<>` also use scans. If a late event breaks ordering, filtered queries on that column automatically fall back to a correct scan. Whole-table sums still use prefixes. Rollback restores the prefixes and ordering detection, but recalculating ordering during rollback can scan existing data.
+
+Values and prefixes occupy **24 logical bytes per column per row**, compared with 8 bytes for raw BIGINT data. This excludes allocation slack, transaction buffers, WAL buffers, query state, and process runtime. The measured one-million-row, three-column table uses 72,000,048 logical bytes. This Database implementation is entirely RAM-resident, with per-table limits of 10 million rows, 64 tables, and 100,000 materialized result rows/groups. ORDER BY currently materializes within that result budget before LIMIT; it does not implement a bounded top-k sort. There is no global memory governor or disk spilling. The separate Archive implementation has different storage and limits; see [ARCHIVE.md](ARCHIVE.md).
+
+## Durable storage
+
+`--db` opens a directory containing `events.ksql` and a held OS lock in `writer.lockfile`. A second cooperating opener fails while the lock is held; the lock is released on close or process termination.
+
+Each committed transaction is one length-delimited WAL frame with a magic value, length complement, and CRC32 checksum. Commit attempts `sync_all()` before acknowledging success. Recovery rebuilds values and indexes from valid committed frames. A structurally incomplete final frame is discarded and its tail truncated; complete corrupt frames are rejected. An I/O failure poisons the live handle and reports an **unknown commit outcome**. A complete frame may survive even when its caller did not receive acknowledgment, so the application must reconcile before retrying.
+
+The current on-disk format is version 1 and has no migration commitment. CRC32 detects accidental changes and does not authenticate data. Recovery cannot distinguish a crash-truncated tail from external file truncation. The WAL grows without checkpointing or retention, and reopen time grows with its history. `sync_all` relies on operating-system and storage behavior; process termination and simulated truncations are tested, but physical power-loss behavior and Windows directory-entry durability are not qualified.
+
+## Verify and benchmark
+
+```powershell
+$env:KESTREL_TEST_ROOT = "..\..\work\cargo-tests"
+cargo fmt --all -- --check
+cargo clippy --all-targets --locked -- -D warnings
+cargo test --release --locked
+python -m pip install -r benchmarks\requirements.txt
+python benchmarks\compare.py
+```
+
+The reference benchmark needs Python 3 and the pinned DuckDB dependency. SQLite comes with Python. `compare.py --binary PATH --rows 1000000 --repeats 31 --output PATH` overrides defaults. On Linux, pass `--binary target/release/kestrel`.
+
+The benchmark uses a deterministic three-column event dataset. SQLite receives a `(ts,value)` covering index and a `value` index; DuckDB receives a `ts` ART index. All engines use one execution thread. There are three warmups and 31 measured repetitions. Query timings include parsing, execution, and result materialization. Direct Rust and Python bindings have different boundary costs; a second Kestrel measurement includes the Python caller, pipe round trip, and JSON encoding/decoding. Dataset construction and index maintenance differ by engine, so their recorded load times are diagnostic and must not be presented as fair ingestion rankings.
+
+See [BENCHMARK.md](BENCHMARK.md) for the measured results and limitations, and [raw results](benchmarks/results.json) for every sample and reference query plan. The deterministic differential test compares 1,002 queries against both DuckDB and SQLite, including grouped/empty inputs, late arrivals, and reopening after process termination. Rust tests cover integer extremes, malformed statement atomicity, rollback, locking, partial final records, complete corruption, and injected commit failures.
+
+## Production work and release gates
+
+1. **Validate the product need.** Test actual app traces, especially late arrivals, device cardinality, event sizes, and retention. Establish which API latency matters and compare with existing engines plus equivalent maintained indexes/views. Publish costs of maintenance, storage, and restarts alongside query latency.
+2. **Bound storage and recovery.** Implement checkpoints, compaction/retention, snapshot backup/restore, format migration, and a global memory budget. Test interrupted checkpoints, damaged snapshots, disk exhaustion, and directory-entry durability on supported filesystems.
+3. **Preserve speed under realistic ingestion.** The Archive combines exact aggregates across independently sorted segments, including late batches, with bounded small-run compaction. Selective index policies, compression and faster grouping remain future work. Benchmark additional batch sizes, write amplification, ingest stalls and tail latency; repeated durable-write service performance remains a gate.
+4. **Finish the application contract.** Batch retry identifiers and immutable read views are implemented. Required types and constraints, parameter binding, schema evolution, cancellation and complete session semantics remain work. Add stable error codes and production health metrics. Authentication is necessary if a network service is introduced.
+5. **Qualify correctness and operations.** Add coverage-guided parser/recovery fuzzing, independent SQL differential suites, filesystem fault injection, long mixed-workload stress tests, Linux verification, and real power-loss testing. Demonstrate backup restoration and upgrades with real datasets. Define supported environments and measurable release criteria before deployment.
+
+The useful result today is a runnable engine and evidence for one design bet. Production suitability is a further engineering and qualification milestone.
+
+## Fresh D: service check 086 — October 8, 2026
+
+[54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.
+
+
+## Isolated asynchronous reclamation 096
+
+[ASYNC_RECLAIM_096.md](ASYNC_RECLAIM_096.md): actual bounded owned deletion worker;693 native tests/four lints,40 fault and8 concurrent cases, exact ACK/CRC/ownership/format/retry/restoration pass. All first failures and partial stores retained. No performance timing, speed/adoption/competitor/release claim;0.3.16 supported,0.3.17 unqualified.
+
+
+## Coupled worker/publication recovery 097
+
+[COUPLED_RECOVERY_097.md](COUPLED_RECOVERY_097.md): 448 actual coupled worker error/exit and publication/compaction schedules pass; 370 fresh tests/four lints, complete ACK/ambiguous receipt/CRC/ownership checks and exact restoration. Every failed controller/preparation remains. Speed unmeasured; 0.3.16 supported and .17 unqualified.
+
+
+## Normal owned async service 098
+
+[ASYNC_SERVICE_098.md](ASYNC_SERVICE_098.md): all 1,872,000 offers and 179,280 ACKs pass independent data and graceful completion checks, but second-half append calibration and improvement miss the fixed gates. The entire 144-case result and all failures were restored exactly; unqualified, no adoption, supported 0.3.16 unchanged and .17 pending.
+
+
+## Retirement diagnostic 099
+
+[RETIREMENT_099.md](RETIREMENT_099.md): all 144 native cases, data and lifecycle checks pass, but four baseline repeatability gates fail. The approximately 1.1 ms retirement signal remains unqualified; no handle offload or speed adoption. All raw and failed attempts are restored exactly, supported 0.3.16 stays unchanged and .17 is pending.
+
+
+## Append publication diagnostic 100
+
+[PUBLICATION_COST_100.md](PUBLICATION_COST_100.md): all 144 cases, historical/current data and lifecycle checks pass, but one named p99 repeatability gate fails. All stages, stalls and unchanged decisions are restored exactly. Unqualified, no adoption; supported 0.3.16 stays unchanged and .17 is pending. A separate static proof retains qualified 091 as the basis for a future code hypothesis.
