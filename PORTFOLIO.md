@@ -93,10 +93,10 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Evidence | Result | Where |
 |---|---|---|
 | Scale | 100M persisted rows; 2.4 GB raw integer payload | [SCALE.md](SCALE.md) |
-| Process memory | 30.8 MiB measured peak for the ordered scale process, excluding OS file cache | [large-results.json](benchmarks/large-results.json) |
-| Random window latency | 2.095 ms Kestrel median vs 165.798 ms DuckDB; 31 fresh windows at 100M rows | [random-window-results.json](benchmarks/random-window-results.json) |
-| Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](benchmarks/nyc-results.json) |
-| Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](benchmarks/archive-verification.json) |
+| Process memory | 30.8 MiB measured peak for the ordered scale process, excluding OS file cache | [large-results.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/large-results.json) |
+| Random window latency | 2.095 ms Kestrel median vs 165.798 ms DuckDB; 31 fresh windows at 100M rows | [random-window-results.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/random-window-results.json) |
+| Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/nyc-results.json) |
+| Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/archive-verification.json) |
 | Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
 | Adaptive integer grouping | Fresh 100M-row full aggregate grouping: 5.504 s to 1.694 s; all shapes/controls/losses retained | [PERFORMANCE_038.md](PERFORMANCE_038.md) |
 | Engineering checks | 63 Rust tests pass in debug and release for 0.3.8; format and Clippy pass | [verification.json](verification.json) |
@@ -107,7 +107,7 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Historical concurrent stress | Six engines, 66 cases, 933,600 offered requests, 64 clients; exact reconciliation | [HARD_TESTS.md](HARD_TESTS.md) |
 | Current live ingestion | Snapshots, group commits, identified retries, bounded cache and compaction; repeated comparisons with retained failures | [PERFORMANCE_035.md](PERFORMANCE_035.md) |
 | Replay/backfill pipeline | 30,000 Parquet rows with 8 ms policy; both sources replayed without duplication; 42 exact SQL checks | [live-pipeline-035-results.json](portfolio/live-pipeline-035-results.json) |
-| Actual Archive crashes | 32 concurrent process kills across 0/2/8/20 ms policies; whole batches, original receipt generations and no lost acknowledged batches | [group-035-recovery.json](benchmarks/group-035-recovery.json) |
+| Actual Archive crashes | 32 concurrent process kills across 0/2/8/20 ms policies; whole batches, original receipt generations and no lost acknowledged batches | [group-035-recovery.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/group-035-recovery.json) |
 | Research decisions | Primary papers and official docs connect architecture decisions to explicit future experiment gates | [RESEARCH.md](RESEARCH.md) |
 
 The 0.2 hard tests exposed a significant limit: Kestrel completed 881.12 requests/s at 2,000 offered mixed requests/s, with 611.30 ms successful-request p99 and 53.94% loss/unexecuted work. Version 0.3 addresses writer exclusion, repeated boundary decoding and small-run growth. Version 0.3.1 adds stage profiling, faster exact retries, buffered durable writes and cheaper compaction input reads. [Historical 0.3.1 results](PERFORMANCE_031.md) disclose repeated comparisons, intermediate regressions and remaining failures; [0.3 results](V03_RESULTS.md) preserve the earlier evidence. [Fresh 0.3.16 service qualification](SERVICE_047.md) separates read/write percentiles and retains a failed minute-long soak. Durable-write tail latency remains a production qualification gate. Archive also lacks raw point retrieval, joins and transactional updates. Explain those boundaries and retain failed runs when presenting the project.
