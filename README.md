@@ -305,3 +305,5 @@ The useful result today is a runnable engine and evidence for one design bet. Pr
 
 
 - [Maintenance-tail diagnostic118](MAINTENANCE_TAILS_118.md): all216 reused117 live cases/479232 ACKs independently reconstructed. Pressure tails concentrate after compaction; descriptive post-hoc association, no new speed qualification. Complete restored evidence; supported016 unchanged.
+
+- [Bounded compaction workspace trial119](ADAPTIVE_ENGINE_119.md):828 fresh tests,359 recovery commands and324 correct Native cases;21 controls,five guards,two goals fail. All252 service cases unstarted. Complete restored evidence retained; supported016 unchanged.
