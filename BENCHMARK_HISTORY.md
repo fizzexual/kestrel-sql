@@ -228,3 +228,6 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 
 
 - October10 continuation: [private backup and exact unused-restore cleanup](STORAGE_CLEANUP_20261010.md). All32 pending commits uploaded; complete trial117 raw tree freshly downloaded/hash-verified. Only its unused restored duplicate was removed after full current hashes; original raw data and failures remain. Other recent raw download verification is still pending. Supported016 and trial117 performance outcome are unchanged.
+
+
+- [Maintenance-tail diagnostic118](MAINTENANCE_TAILS_118.md): all216 reused117 live cases/479232 ACKs independently reconstructed. Pressure tails concentrate after compaction; descriptive post-hoc association, no new speed qualification. Complete restored evidence; supported016 unchanged.
