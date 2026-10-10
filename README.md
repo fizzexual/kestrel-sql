@@ -1,6 +1,6 @@
 # KestrelSQL
 
-**Supported version 0.3.16. Research prototype. Version0.3.17 is unreleased.**
+**Supported version 0.3.16. Research prototype. Version 0.3.17 is unreleased.**
 
 Rust embedded SQL and append-only analytics with exact range aggregates,
 immutable archive snapshots, checksummed segments and retryable batch ingestion.
@@ -11,6 +11,9 @@ The Archive and RAM-resident transactional Database APIs have different contract
 Completed experiments use short Markdown reports in [benchmark history](BENCHMARK_HISTORY.md).
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
+
+Latest [experimental compaction phase repair](COMPACTION_PHASE_127.md) passed
+correctness prerequisites; its performance and release qualification are pending.
 
 ## Run it
 

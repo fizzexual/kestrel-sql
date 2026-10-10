@@ -2,6 +2,12 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Latest isolated Archive phase repair 127 passed 336 fresh tests, two strict
+lints and independent exact row/CRC/receipt audits of all four new ordered
+stores. It bypasses merge planning for already ordered input while preserving
+publication checks. Performance is unmeasured; no timed cases were declared.
+[Code and correctness outcome](COMPACTION_PHASE_127.md).
+
 New isolated kernel diagnostic 126 found controlled clustered layout reductions
 of 62.46% elapsed work and 65.16% thread cycles. Ordered full elapsed regressed
 12.27%; 10/72 controls, 5/72 guards and 3/12 goals failed. This excludes input

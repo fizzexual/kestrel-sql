@@ -1,0 +1,40 @@
+--- a/src/archive.rs
++++ b/src/archive.rs
+@@ -15,0 +16,4 @@
++
++#[cfg(feature = "adaptive-compaction-phase-127")]
++#[path = "merge_runs_127.rs"]
++mod compaction_merge;
+@@ -1118,0 +1123,4 @@
++        #[cfg(feature = "adaptive-compaction-phase-127")]
++        let mut runs = Vec::with_capacity(selected.len());
++        #[cfg(feature = "adaptive-compaction-phase-127")]
++        let mut concatenation_ordered = true;
+@@ -1119,0 +1128,2 @@
++            #[cfg(feature = "adaptive-compaction-phase-127")]
++            let start = columns[0].len();
+@@ -1133,0 +1144,13 @@
++                    #[cfg(feature = "adaptive-compaction-phase-127")]
++                    {
++                        let values = reader.read_block(column, block, false)?;
++                        // First-block boundary values are already CRC validated
++                        // and hot while collecting input. Charge the phase choice
++                        // here, rather than probing all runs after concatenation.
++                        if column == 0 && block == 0 && concatenation_ordered {
++                            concatenation_ordered = data.last().zip(values.first())
++                                .is_none_or(|(previous, next)| previous <= next);
++                        }
++                        data.extend(values);
++                    }
++                    #[cfg(not(feature = "adaptive-compaction-phase-127"))]
+@@ -1136,0 +1160,6 @@
++            #[cfg(feature = "adaptive-compaction-phase-127")]
++            runs.push(start..columns[0].len());
++        }
++        #[cfg(feature = "adaptive-compaction-phase-127")]
++        if !concatenation_ordered {
++            compaction_merge::arrange(&mut columns, &runs);
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,0 +21 @@
++adaptive-compaction-phase-127 = []
