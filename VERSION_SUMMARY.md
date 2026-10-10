@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Latest randomized baseline calibration 125 independently passed all 648 stores.
+51/144 identity controls failed; no candidate speedup was tested.
+[Complete outcome](COMPACTION_CONTROLS_125.md).
+
 New baseline calibration 124 passed all 648 independent correctness checks,
 but 24/144 identity controls failed despite fixed CPU placement. No engine
 candidate was involved. [Timing investigation](COMPACTION_CONTROLS_124.md).

@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Random balanced control calibration 125](COMPACTION_CONTROLS_125.md)
 - [Fixed-CPU control calibration 124](COMPACTION_CONTROLS_124.md)
 - [Earlier compaction fallback 122](COMPACTION_MERGE_122.md)
 - [Bounded compaction merge 121](COMPACTION_MERGE_121.md)
