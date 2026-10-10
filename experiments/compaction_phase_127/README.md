@@ -30,3 +30,10 @@ No timed benchmark cohort was declared or run in 127. Future comparisons must
 charge input/phase selection and retain original full release gates and balanced
 full/both-half controls. Save concise results and useful source privately,
 freshly verify remote bytes, then clear regenerable test/build outputs.
+
+check_global_build_activity.ps1 is the current read-only visible-build guard.
+It covers direct Java Maven/Gradle launchers as well as compiler/build wrappers.
+This post-timing extension followed an observed other-project Maven job at
+14:27 UTC, after all reported timers and 127 tests. It does not establish the
+cause of earlier control failures. Exit 3 means busy; start no timer and stop
+no other process. The separate reset/task guard is also required.
