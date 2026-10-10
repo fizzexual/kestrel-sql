@@ -1,9 +1,0 @@
-# Reproduce the current-release batching controls
-
-Use a new task-owned work directory and new output paths; never overwrite a preserved run. The original policy and frozen executable are included. The supported engine stays on 0.3.16 with zero delay. All four labels use the same executable. Original 034 and 061/062 outcomes remain separate.
-
-The original Windows commands set `PYTHONPATH` to the repository benchmarks, `work/python-deps` (DuckDB), `work/plot-deps` (NumPy) and `work/stress-deps`. Run `prepare.py` once, then `python recovery.py --binary binaries/released-016.exe --expected-version 0.3.16 --output recovery.json`. Adapt only absolute workspace paths in a fresh reproduction, recording changed source and policy hashes. Run `check-processes.ps1 pre-timing` from the workspace root, then `python run.py` alone. Do not compile, audit, archive, clean caches or run another database workload during performance arrivals.
-
-After the timed driver exits, run the post-qualification process check, `assemble_audit.py`, and `audit.py`. Audit reconstruction uses the preserved `audit.py.head`, unchanged raw accounting block and `audit.py.tail`; these are included alongside the assembled auditor and derivation hashes. Every raw case, outlier, recovery fixture and final service fixture remains in the supplemental ZIP. The minute soak is finite and successful-request p99 always accompanies all offered-request losses.
-
-Full fixtures use ZIP prefixes `kestrel-sql/benchmarks/batching-063/service-fixtures/` and `kestrel-sql/benchmarks/batching-063/recovery-fixtures/`. Extract into a new directory, validate the inventory and ZIP manifest before opening. Rebuilding, reopening or repeating produces new measurements; it does not replace the original evidence. The local loopback bridge is a test adapter.

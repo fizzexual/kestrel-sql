@@ -1,5 +1,0 @@
-All five native jobs completed successfully in attempt-1 (fmt, 18 debug tests, 18 release tests, strict Clippy, release build). The finalizer failed before build-proof.json while asserting that optimized executable bytes contained the contiguous literal RECEIPTPAGES072. The compiler need not retain this string contiguously. No timed workload or external publication ran.
-
-Traceback, build.py line32: assert b'RECEIPTPAGES072' in out.read_bytes(); AssertionError.
-
-The original finalizer and all logs/source/executable are preserved. The corrected finalizer verifies identical source and completed command logs, target/frozen executable SHA, PE header and CLI behavior. It finalizes the already completed qualification rather than rerunning builds/tests. Full native/Python receipt oracle checks remain required afterward.

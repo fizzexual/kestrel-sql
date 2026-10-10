@@ -1,9 +1,0 @@
-# Fresh recovery comparison077
-
-Two identical075 hybrid controls versus the already qualified076 reader, all using unchanged bench07564. Original gen129 inputs, actual126/50126/99126 receipts,64 real edits and two complete checkpoint cycles. Six fully balanced permutations. No source or supported engine changes, no rebuild, no reused timer controls. The hybrid label selects the candidate binary; every case uses hybrid protocol, unlike075 CAT4 comparisons.
-
-Anchor-terminated opens after31 are separated from checkpoint32, checkpoint+31deltas63 and checkpoint64. Predeclared meaningful large anchor p50/p99 goals are0.80/0.85, each requiring its A/A calibration0.90..1.10. Small anchor and unchanged checkpoint paths are guarded at1.10. Publication, source p99, migration, full process memory, exact retained/currentbytes and all-open p99 remain guarded. Full checks and drift retained; narrow recovery does not erase075 failures or authorize adoption.
-
-Each recovery sample is a fresh native open in the same process, potentially warm OS cache. Three opens per boundary and six paired rounds yield descriptive medians; no cold-cache or statistical population guarantee. Full ledger SHA is outside recovery timers. All shared publication/source/digest/clone/file sync behavior is charged. Only native metadata model IO is profiled; no real data-segment/SQL/network comparison.
-
-Independent frozen Python canonical decoder reconstructs every one of67 files for three sizes, then SHA-checks all54 stores across both binaries. Receipt digests, generations, source positions, retries, sync counts, exact input anchors, per-sample stage sums and balanced order must pass. No hashing/audit/package work during timers. One owned child, wait/kill+wait on timeout; preserve each observed case and stop at3GB disk guard. A frozen cohort may resume only unstarted cases after a separately preserved process check, no changes to policy, source, binaries, inputs or oracle.

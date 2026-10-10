@@ -1,4 +1,0 @@
-After the first57debug/57release native pass and test-only lint repair, the next build invocation stopped at build.py line22 before creating attempt2 or starting any compilation/test command:
-assert shutil.disk_usage(work).free >= 2_500_000_000
-AssertionError
-The2.5GB guard was retained. Subsequent read-only disk inventory observed2,733,056,000bytes free; the unstarted second build may proceed under the same guard. No timed cohort has run and no observed external qualification case was rerun. Source-state implementation remained unchanged; all first-attempt source/logs/native fixtures are retained. No physical cause of the transient free-space change is established.
