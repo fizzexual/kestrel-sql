@@ -50,7 +50,7 @@ Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_10
 
 **Prior source-state qualification:** [078 bounded source positions](SOURCE_STATE_078.md) passes 57 debug/release tests, 15 injected errors, 15 owned kills and 30 independently corrupted fixtures. It removes whole-ledger cloning from new source publication; all 201 history files remain byte-identical. No fresh speed measurement or engine adoption. [077 measured recovery gains and failed guards](RECOVERY_COMPARE_077.md) remain visible.
 
-**Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51–52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
+**Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51â€“52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
 
 **Latest recovery qualification:** [076 validated anchor reuse](ANCHOR_REUSE_076.md) passes 49 debug/release tests, 15 errors, 15 owned kills and 30 independent corruption cases. Anchor-terminated recovery reads/parses once; no fresh latency comparison yet. Publication bytes are unchanged. Supported 0.3.16 stays unchanged; [075 failed performance guards](HYBRID_CYCLES_075.md) remain visible.
 
@@ -82,7 +82,7 @@ Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_10
 
 **Latest clean core development:** [061 ports the parser gain independently of SDK 058/060](CORE_READ_PATH_061.md). Native range medians 5.6 to 2.7 microseconds; 60/60 fresh DuckDB median wins, 0/60 failed native guards, 10/29 failed service guards. 77 tests per mode and full correctness/recovery gates pass. Supported 0.3.16 is unchanged.
 
-**Latest read-path development:** [060 reproduces roughly 50% shorter native range queries and 28–29% shorter parsing](READ_PATH_060.md). 82 tests per mode, 4,000 SQL cases per reference, 42 fault/retry stores and 18 read-service cases pass. Network p99 has no consistent win; prior write-tail failures remain. Supported 0.3.16 is unchanged.
+**Latest read-path development:** [060 reproduces roughly 50% shorter native range queries and 28â€“29% shorter parsing](READ_PATH_060.md). 82 tests per mode, 4,000 SQL cases per reference, 42 fault/retry stores and 18 read-service cases pass. Network p99 has no consistent win; prior write-tail failures remain. Supported 0.3.16 is unchanged.
 
 **Latest service qualification:** [059 retains SDK gains and rejects nine regression criteria](SERVICE_GUARDS_059.md). All 36 cold checks pass; three current minute runs have zero loss, while overload losses and slower tails remain. The disk stop, original 20 cases and resumed-only 16 cases are preserved. Supported 0.3.16 is unchanged.
 
@@ -106,7 +106,7 @@ Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_10
 
 **Unreleased storage trial 048:** [paired service results, failed gates and full recovery evidence](TRIAL_048.md) test a single synchronized generation file. Supported 0.3.16 remains unchanged; all baseline, slower and failed trial evidence is preserved.
 
-[Benchmark history: wins, losses and raw evidence](BENCHMARK_HISTORY.md) · [Download every preserved release](https://github.com/fizzexual/kestrel-sql/releases) · [Latest 0.3.16 package](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.16)
+[Benchmark history: wins, losses and raw evidence](BENCHMARK_HISTORY.md) Â· [Download every preserved release](https://github.com/fizzexual/kestrel-sql/releases) Â· [Latest 0.3.16 package](https://github.com/fizzexual/kestrel-sql/releases/tag/v0.3.16)
 
 **Fresh post-release service qualification:** [SERVICE_047.md](SERVICE_047.md) retains 52 million-row cases and 1,327,600 offered operations on unchanged 0.3.16. In three current six-engine rounds, Kestrel had 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins. Its failed 60-second soak and inconsistent batching trials remain visible; these results establish no engine upgrade or production service guarantee.
 
@@ -150,7 +150,7 @@ An experimental embedded SQL database for exact live metrics over append-only ev
 
 **Performance evidence includes failures.** The [0.2 stress baseline](HARD_TESTS.md) completed about 881 requests/s at 2,000 offered mixed requests/s, with 53.94% loss/unexecuted work. Version 0.3 addresses the coarse writer lock, repeated boundary decoding and growing small-run count. Version 0.3.1 targets receipt copies, small publication writes and compaction input reads. Repeated comparisons, raw samples, intermediate regressions and remaining failures are in [PERFORMANCE_031.md](PERFORMANCE_031.md); [V03_RESULTS.md](V03_RESULTS.md) preserves the preceding release. Archive SQL capability gaps still prevent a transactional social-graph comparison.
 
-In three rotated 15-second mixed runs at 2,000 offered requests/s, version 0.3.1 completed all offers with run p99s of 4.24–31.17 ms (median 6.38 ms). The old 0.3 build had 54.15–117.86 ms p99 (median 73.64 ms) on the same harness. A separate one-minute 500/s run had 4.87 ms p99 and zero loss. The 10,000/s overload case still lost 25,367 offers, and the single-client mixed p99 remained 147.72 ms. These shared-desktop results do not qualify a production service envelope.
+In three rotated 15-second mixed runs at 2,000 offered requests/s, version 0.3.1 completed all offers with run p99s of 4.24â€“31.17 ms (median 6.38 ms). The old 0.3 build had 54.15â€“117.86 ms p99 (median 73.64 ms) on the same harness. A separate one-minute 500/s run had 4.87 ms p99 and zero loss. The 10,000/s overload case still lost 25,367 offers, and the single-client mixed p99 remained 147.72 ms. These shared-desktop results do not qualify a production service envelope.
 
 Three alternating in-process probes at 50,000 stored batch IDs reduced median exact-retry latency from 11.85 ms to 2.8 microseconds. A full 100,000-ID test verifies capacity, reopen, exact replay and checksums. New-ID catalog rewrite endurance remains work. Grouped query timings improved on the tested 1M-row fixture, while the unordered-filter probe regressed; all query results and timings are retained.
 
@@ -205,7 +205,7 @@ Use `Database::memory()` for an ephemeral database. The schema example requires 
 
 ## Implemented SQL and behavior: Database API
 
-- CREATE TABLE with 1–64 unique `BIGINT NOT NULL` columns.
+- CREATE TABLE with 1â€“64 unique `BIGINT NOT NULL` columns.
 - INSERT INTO ... VALUES with multiple complete rows, and a column batch API.
 - SELECT columns or `*`; COUNT(*), SUM, AVG, MIN, MAX; explicit AS aliases.
 - WHERE column comparisons against integer literals, combined with AND.
@@ -220,7 +220,7 @@ Strings, nullable input columns, decimal money, native timestamps, joins, UPDATE
 
 Each column stores its values and exact cumulative sums. For nondecreasing filter columns, binary search finds the two row boundaries of a contiguous range. Subtracting the cumulative sums gives an exact range total; the boundary difference gives its count. AVG uses those two quantities. No row scan or query-result cache is needed.
 
-An eligible range aggregate takes O(log n + a), where `a` is the number of requested aggregate expressions. Whole-table totals take O(a). Appending a batch costs O(rows × columns), plus serialization and synchronization in durable mode. This moves work and memory to ingestion, which is the central tradeoff.
+An eligible range aggregate takes O(log n + a), where `a` is the number of requested aggregate expressions. Whole-table totals take O(a). Appending a batch costs O(rows Ã— columns), plus serialization and synchronization in durable mode. This moves work and memory to ingestion, which is the central tradeoff.
 
 The fast path accepts AND predicates on one nondecreasing column, with `=`, `<`, `<=`, `>`, or `>=`. Contradictory bounds yield an empty range. MIN/MAX and grouped queries use scans. Multiple filter columns and `<>` also use scans. If a late event breaks ordering, filtered queries on that column automatically fall back to a correct scan. Whole-table sums still use prefixes. Rollback restores the prefixes and ordering detection, but recalculating ordering during rollback can scan existing data.
 
@@ -261,7 +261,7 @@ See [BENCHMARK.md](BENCHMARK.md) for the measured results and limitations, and [
 
 The useful result today is a runnable engine and evidence for one design bet. Production suitability is a further engineering and qualification milestone.
 
-## Fresh D: service check 086 — October 8, 2026
+## Fresh D: service check 086 â€” October 8, 2026
 
 [54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.
 
@@ -289,3 +289,5 @@ The useful result today is a runnable engine and evidence for one design bet. Pr
 ## Append publication diagnostic 100
 
 [PUBLICATION_COST_100.md](PUBLICATION_COST_100.md): all 144 cases, historical/current data and lifecycle checks pass, but one named p99 repeatability gate fails. All stages, stalls and unchanged decisions are restored exactly. Unqualified, no adoption; supported 0.3.16 stays unchanged and .17 is pending. A separate static proof retains qualified 091 as the basis for a future code hypothesis.
+
+- [Publication-stage diagnostic 113](PUBLICATION_STAGES_113.md): unchanged engine; 144 balanced cases, 331,776 correct ACKs; durable sync stages dominate measured publication cost. Twenty controls and twenty guards fail; no supported upgrade. Exact restored raw evidence preserved.

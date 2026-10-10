@@ -48,7 +48,7 @@ Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_10
 
 **Prior source-state qualification:** [078 bounded source positions](SOURCE_STATE_078.md) passes 57 debug/release tests, 15 injected errors, 15 owned kills and 30 independently corrupted fixtures. It removes whole-ledger cloning from new source publication; all 201 history files remain byte-identical. No fresh speed measurement or engine adoption. [077 measured recovery gains and failed guards](RECOVERY_COMPARE_077.md) remain visible.
 
-**Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51–52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
+**Fresh recovery comparison:** [077 anchor recovery benchmark](RECOVERY_COMPARE_077.md) measures about 51â€“52% lower large-history anchor medians with stable controls. All four goals pass; four guards and two A/A checks fail. Full histories and regressions remain preserved. Supported 0.3.16 stays unchanged; [075 failed CAT4 comparison](HYBRID_CYCLES_075.md) is not superseded.
 
 **Latest recovery qualification:** [076 validated anchor reuse](ANCHOR_REUSE_076.md) passes 49 debug/release tests, 15 errors, 15 owned kills and 30 independent corruption cases. Anchor-terminated recovery reads/parses once; no fresh latency comparison yet. Publication bytes are unchanged. Supported 0.3.16 stays unchanged; [075 failed performance guards](HYBRID_CYCLES_075.md) remain visible.
 
@@ -80,7 +80,7 @@ Latest adaptive code trial: [Adaptive Live collection105](ADAPTIVE_COLLECTION_10
 
 **Latest clean core development:** [061 ports the parser gain independently of SDK 058/060](CORE_READ_PATH_061.md). Native range medians 5.6 to 2.7 microseconds; 60/60 fresh DuckDB median wins, 0/60 failed native guards, 10/29 failed service guards. 77 tests per mode and full correctness/recovery gates pass. Supported 0.3.16 is unchanged.
 
-**Latest read-path development:** [060 reproduces roughly 50% shorter native range queries and 28–29% shorter parsing](READ_PATH_060.md). 82 tests per mode, 4,000 SQL cases per reference, 42 fault/retry stores and 18 read-service cases pass. Network p99 has no consistent win; prior write-tail failures remain. Supported 0.3.16 is unchanged.
+**Latest read-path development:** [060 reproduces roughly 50% shorter native range queries and 28â€“29% shorter parsing](READ_PATH_060.md). 82 tests per mode, 4,000 SQL cases per reference, 42 fault/retry stores and 18 read-service cases pass. Network p99 has no consistent win; prior write-tail failures remain. Supported 0.3.16 is unchanged.
 
 **Latest service qualification:** [059 retains SDK gains and rejects nine regression criteria](SERVICE_GUARDS_059.md). All 36 cold checks pass; three current minute runs have zero loss, while overload losses and slower tails remain. The disk stop, original 20 cases and resumed-only 16 cases are preserved. Supported 0.3.16 is unchanged.
 
@@ -166,23 +166,23 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 
 [Publication verification](repository-publication.json) records all uploaded assets, server SHA-256 checks and matching historical tag commits.
 
-## Fresh D: service check 086 — October 8, 2026
+## Fresh D: service check 086 â€” October 8, 2026
 
 [54-case service check](SERVICE_D_086.md): 900,000/900,000 operations, zero losses and all 45,072 acknowledged batches survive reopen. Full A/A passes, but write-heavy overall/append p99 regress by paired 15.75%/24.32%; full and first-block qualification fail. No supported upgrade. [0.3.17 release target and remaining gates](RELEASE_TARGET_0_3_17.md). All previous results remain preserved.
 
-## Service-writer diagnostics087 — October8,2026
+## Service-writer diagnostics087 â€” October8,2026
 
 [Bounded optional writer tracing](WRITER_TRACE_087.md): fresh correctness/byte/protocol qualification in both isolated cores,90 native commands and32 SQLite comparisons. Initial extra-field validation failure and all setup/audit stops preserved. No overhead/speed claim or supported upgrade.086 service regressions remain release blockers.
 
-## Controlled writer overhead 088 — October 8, 2026
+## Controlled writer overhead 088 â€” October 8, 2026
 
 [Fresh four-family qualification](WRITER_OVERHEAD_088.md): 288 cases, 2.88 million successful offers and 147,024 reopened ACK batches. Fixed full/two-half checks fail 15 A/A and 12 candidate criteria; six candidate failures are calibrated. Default released-core write overall p99 regresses paired 23.4%. Read/memory/rate/loss checks pass. All slow cases and raw evidence retained; no low-overhead or supported release claim.
 
-## Controlled default-build investigation 089 — October 8, 2026
+## Controlled default-build investigation 089 â€” October 8, 2026
 
 [Three matched-toolchain source/build controls](BUILD_COMPARE_089.md): 464 native test executions, eight byte-equivalent stores, 32 cross-reopens, 32 SQLite comparisons and four wire/setup variants pass. All 216 timed cases, 2.16 million offers and 110,268 reopened ACK batches pass correctness with zero loss. No candidate guard fails, but eight of 117 A/A checks fail across six of nine required scopes; every family remains unqualified overall. Original rebuild, version-only and feature-disabled diagnostic source comparisons do not establish exclusive causality, speed gains, tracer overhead, competitor wins or a release. Complete raw evidence/restored audit and post-run reporting failure are preserved; 088 remains unchanged.
 
-## Maintenance source isolation 090 — October 8, 2026
+## Maintenance source isolation 090 â€” October 8, 2026
 
 [Corrective source isolation](MAINTENANCE_ISOLATION_090.md) restores original feature-disabled maintenance statements while preserving traced behavior.322 Native test executions/five lint modes and 104 untimed commands pass byte/cross-reopen/SQLite/named/concurrent/controlled unknown-outcome/old-format/wire checks. All 144 service cases, 1.872 million requests and 179,280 reopened ACK batches pass correctness. Default compatibility passes full/both halves; complete tracing qualification fails two write-overall A/A half controls, with 0 candidate failures. All stalls, failed preparation and complete raw/restored evidence remain preserved. Supported 0.3.16 is unchanged; no engine gain/competitor win/release claim.
 
@@ -212,6 +212,8 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 [PUBLICATION_COST_100.md](PUBLICATION_COST_100.md): all 144 cases, historical/current data and lifecycle checks pass, but one named p99 repeatability gate fails. All stages, stalls and unchanged decisions are restored exactly. Unqualified, no adoption; supported 0.3.16 stays unchanged and .17 is pending. A separate static proof retains qualified 091 as the basis for a future code hypothesis.
 
 
-## October 9, 2026 — verified local storage cleanup
+## October 9, 2026 â€” verified local storage cleanup
 
 [Storage cleanup](STORAGE_CLEANUP_20261009.md) removes 49 redundant top-level ZIP copies (8.97 GiB) only after full private GitHub download/hash verification. Every original benchmark failure/raw store and all newer unbacked-up experiments remain. No performance result or release status changes.
+
+- [Publication-stage diagnostic 113](PUBLICATION_STAGES_113.md): unchanged engine; 144 balanced cases, 331,776 correct ACKs; durable sync stages dominate measured publication cost. Twenty controls and twenty guards fail; no supported upgrade. Exact restored raw evidence preserved.
