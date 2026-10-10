@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Bounded compaction merge 121](COMPACTION_MERGE_121.md)
 - [Adaptive Live write collection105 â€” October9,2026](ADAPTIVE_COLLECTION_105.md)
 - [Adaptive engine trial 109](ADAPTIVE_ENGINE_109.md)
 - [Adaptive engine trial 110](ADAPTIVE_ENGINE_110.md)

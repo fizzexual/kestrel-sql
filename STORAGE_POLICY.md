@@ -13,5 +13,4 @@ Never delete unrelated directories or active data. Do not overlap timed runs
 with backup, cleanup or other heavy jobs.
 
 Use a shallow clone for a small current checkout. A full-history clone also
-downloads archived evidence. Automation is paused and work must remain stopped
-until the user resumes it.
+downloads archived evidence. The user resumed work after cleanup; keep these storage limits during new trials.

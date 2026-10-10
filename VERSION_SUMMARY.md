@@ -1,6 +1,11 @@
 # Version summary — October 10, 2026
 
-**Supported: 0.3.16. Version 0.3.17 has not been released. Cleanup is complete and work is stopped.**
+**Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
+
+New component trial 121 passed 478 tests and independently checked all 216 cases.
+Clustered compaction wall improved 12.0%, preparation 35.6%, with full/half
+controls. Nine controls/three guards still fail; it is experimental.
+[Short result and remaining failures](COMPACTION_MERGE_121.md).
 
 KestrelSQL is a Rust embedded analytics prototype with BIGINT SQL, exact range
 aggregates, immutable archive snapshots, checksummed segments and retryable
@@ -12,7 +17,7 @@ selective filter/range paths, replay lookup, grouped-range scans, buffered recei
 hashing, and a publication index builder selected by actual row count. These
 are experimental; rejected changes have not been promoted into supported code.
 
-Latest trial 120 passed 836 fresh tests, five strict lints, 359 recovery commands
+Latest full qualification trial 120 passed 836 fresh tests, five strict lints, 359 recovery commands
 and correctness for all 324 Native cases. Performance failed 84/153 A/A controls,
 22/171 regression guards and 7/42 goals. All 252 service cases remain unstarted.
 It cannot qualify 0.3.17.
@@ -37,6 +42,6 @@ No evidence supports a reliable release ETA.
 
 Completed runs are represented by concise Markdown. Existing full evidence and
 failed attempts remain in private GitHub history, without history rewriting.
-Scheduled continuation is paused; Actions has a verified account-wide $0 cap
+Continuation has been authorized again; Actions has a verified account-wide $0 cap
 with Stop usage enabled. [Cleanup](STORAGE_CLEANUP_FINAL.md),
 [latest trial](ADAPTIVE_ENGINE_120.md), [history](BENCHMARK_HISTORY.md).
