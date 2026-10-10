@@ -1,0 +1,223 @@
+{
+  "complete": true,
+  "original_build_actual_API_exit": 1,
+  "failed_test_compile_not_engine_or_timed_failure": true,
+  "prior_successful_test_executions": 324,
+  "fresh820_full_suite_required": true,
+  "error": "tests/digest_117.rs:59 expected u64,found usize",
+  "test_preimage_sha256": "1674bb8fdc60de34896c0d7e5238b74ecfbf6f058865d411f4c2d106a1662751",
+  "test_corrected_sha256": "fc66638c9441da146b79be08ccaa98bf48b47dc55bf96b24d7babab1376cee90",
+  "sole_test_edit": [
+    "assert_eq!(archive.stats().unwrap().rows, rows);",
+    "assert_eq!(archive.stats().unwrap().rows, u64::try_from(rows).unwrap());"
+  ],
+  "all_original_source_proofs_logs_targets_and_failed_input_bytes_retained": true,
+  "files": {
+    "build_117_v3.py": {
+      "parent": "build_117_v2.py",
+      "parent_sha256": "099498dc418b8b7630fb8022fbead52f0c33fe3f58a187adcaaadf1599778f45",
+      "derived_sha256": "a8e78ebb02507767d83840ddd45066e17e58070e12b97681a4cc4ef0797349d6",
+      "edits": [
+        [
+          "preparation-proof-v2",
+          "preparation-proof-v3"
+        ],
+        [
+          "build-proof-v2",
+          "build-proof-v3"
+        ],
+        [
+          "build-failure-v2",
+          "build-failure-v3"
+        ],
+        [
+          "build-declaration-v2",
+          "build-declaration-v3"
+        ],
+        [
+          "build-v2-step-",
+          "build-v3-step-"
+        ],
+        [
+          "toolchain-v2",
+          "toolchain-v3"
+        ],
+        [
+          "target-build-v2-",
+          "target-build-v3-"
+        ],
+        [
+          "cargo-tests-v2",
+          "cargo-tests-v3"
+        ],
+        [
+          "logs-v2",
+          "logs-v3"
+        ],
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ],
+        [
+          "baseline-v2",
+          "baseline-v3"
+        ],
+        [
+          "source-v2",
+          "source-v3"
+        ],
+        [
+          "'source'",
+          "'source-repaired117'"
+        ]
+      ],
+      "exact_inverse": true
+    },
+    "run_preflight_117_v3.py": {
+      "parent": "run_preflight_117_v2.py",
+      "parent_sha256": "7afd3ce7c496a1ccc9a69d8407e1bf02db5c54e91c90c8a08c37f716798ef0bc",
+      "derived_sha256": "f6b351514de9c71c31a2ee873ffc2add6f3471eba12cd8fb1ebf50597472b922",
+      "edits": [
+        [
+          "audit_preflight_117_v2",
+          "audit_preflight_117_v3"
+        ],
+        [
+          "run_preflight_117_v2",
+          "run_preflight_117_v3"
+        ],
+        [
+          "build-proof-v2",
+          "build-proof-v3"
+        ],
+        [
+          "build-declaration-v2",
+          "build-declaration-v3"
+        ],
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ],
+        [
+          "baseline-v2",
+          "baseline-v3"
+        ],
+        [
+          "source-v2",
+          "source-v3"
+        ]
+      ],
+      "exact_inverse": true
+    },
+    "audit_preflight_117_v3.py": {
+      "parent": "audit_preflight_117_v2.py",
+      "parent_sha256": "35040b432b3860a20d7c62950a004a4e3566f3e3908afb58333ee783084e77a4",
+      "derived_sha256": "35040b432b3860a20d7c62950a004a4e3566f3e3908afb58333ee783084e77a4",
+      "edits": [],
+      "exact_inverse": true
+    },
+    "preperformance_117_v3.py": {
+      "parent": "preperformance_117_v2.py",
+      "parent_sha256": "3a547c93112d09d93db756c63c8a3c6de4c78384b83616bded84d5149acb9db8",
+      "derived_sha256": "d31796f6086e583e1b906e5c0c28a80b7aa5c38901f4806a8ce9e033c05cf184",
+      "edits": [
+        [
+          "build-proof-v2",
+          "build-proof-v3"
+        ],
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ]
+      ],
+      "exact_inverse": true
+    },
+    "run_native_117_v3.py": {
+      "parent": "run_native_117_v2.py",
+      "parent_sha256": "02890ade0c46c8505c478c8a27ac0f69e3d7ef8507a8b0e9fb5461e8ab0ec19b",
+      "derived_sha256": "43fc40476cf207e82e88bd3907341da045a1ca6c3a850d40a60fbe8dedc96c42",
+      "edits": [
+        [
+          "build-proof-v2",
+          "build-proof-v3"
+        ],
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ]
+      ],
+      "exact_inverse": true
+    },
+    "audit_native_117_v3.py": {
+      "parent": "audit_native_117_v2.py",
+      "parent_sha256": "8b8017670df4f2f9d6211f808db95a47f09cc90aef3bd16cc6b968087bc7e92b",
+      "derived_sha256": "8b8017670df4f2f9d6211f808db95a47f09cc90aef3bd16cc6b968087bc7e92b",
+      "edits": [],
+      "exact_inverse": true
+    },
+    "run_service_117_v3.py": {
+      "parent": "run_service_117_v2.py",
+      "parent_sha256": "0f39045f75d424c65572b1a0e69819be0a4674903260ab531e20850326ae0c72",
+      "derived_sha256": "ce0c4600f632671d0d8d7dfe057a53004d95a9093d53246a31a4dd8288db4c5b",
+      "edits": [
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ]
+      ],
+      "exact_inverse": true
+    },
+    "audit_service_117_v3.py": {
+      "parent": "audit_service_117_v2.py",
+      "parent_sha256": "659c0215b2796122c555f6b571a576fcf048b74cbe58eb3f1e6d32a934b964c6",
+      "derived_sha256": "659c0215b2796122c555f6b571a576fcf048b74cbe58eb3f1e6d32a934b964c6",
+      "edits": [],
+      "exact_inverse": true
+    },
+    "audit_prefix_117_v3.py": {
+      "parent": "audit_prefix_117.py",
+      "parent_sha256": "c6b66391aec2ce4ae9f14bdc4af783e77085af84b7f89bf45b33b773c4c11812",
+      "derived_sha256": "80255ece9e617d45d50f38e4da07cdf66090308c37fb79a5142d0164de772734",
+      "edits": [
+        [
+          "audit_preflight_117_v2",
+          "audit_preflight_117_v3"
+        ],
+        [
+          "audit_native_117_v2",
+          "audit_native_117_v3"
+        ],
+        [
+          "preparation-proof-v2",
+          "preparation-proof-v3"
+        ],
+        [
+          "build-proof-v2",
+          "build-proof-v3"
+        ],
+        [
+          "binaries-v3",
+          "binaries-v4"
+        ],
+        [
+          "baseline-v2",
+          "baseline-v3"
+        ],
+        [
+          "source-v2",
+          "source-v3"
+        ],
+        [
+          "'source'",
+          "'source-repaired117'"
+        ],
+        [
+          "digest_tests_117.rs",
+          "digest_tests_117_v3.rs"
+        ]
+      ],
+      "exact_inverse": true
+    }
+  },
+  "no_benchmark_started": true
+}

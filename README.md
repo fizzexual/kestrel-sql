@@ -297,3 +297,5 @@ The useful result today is a runnable engine and evidence for one design bet. Pr
 - [Publication strategies diagnostic 115](PUBLICATION_STRATEGIES_115.md): exact serial112 A/A versus concurrent114; 144 balanced correct cases; completion improves 1.55–4.45% with full/half controls, but pressure-anonymous p99 half1 regresses 6.61%. Twelve controls and 39 guards fail; no supported upgrade. Exact restored evidence retained.
 
 - [Adaptive grouped-range trial 116](ADAPTIVE_ENGINE_116.md): 796 fresh tests, 359 recovery commands and 324 correct cases. Grouped medians improve 21.94% ordered and 20.91% late versus016 with full/half controls, but 21 controls/five guards/three goals fail. All252 service cases unstarted; supported016 unchanged. Complete restored evidence retained.
+
+- [Byte-buffered receipt hashing trial 117](ADAPTIVE_ENGINE_117.md): 820 fresh tests, 359 recovery commands and 324 correct cases. Replay p99 improves14.52% versus016 with full/half controls, but15 controls/six guards/four goals fail. All252 service cases unstarted; supported016 unchanged. Exact restored evidence and failed prerequisite attempts retained.

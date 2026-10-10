@@ -1,0 +1,25 @@
+{
+  "parent_sha256": "1f3c5c8fbe5c6136dd0fbd6b8c5be635d062d6aa1ce58ca7998037ba2fc409e7",
+  "derived_sha256": "050eb879e8aac977de69df98ae5db39c6d2169fc8ba068ad52883176b1416a5f",
+  "exact_inverse_with_metadata_completion_proof_logs_and_failure_prose_only": true,
+  "edits": [
+    [
+      "assert json.loads((WORK/'preserve-117.log').read_text(encoding='utf-8-sig').splitlines()[-1])['complete']",
+      "assert json.loads((WORK/'finish-preservation-117.log').read_text(encoding='utf-8-sig').splitlines()[-1])['complete']\ncompletion=load(OUT/'preservation-completion/completion-proof.json');assert completion['complete'] and completion['original_preserver_actual_API_exit']==1 and completion['all_raw_archives_and_originals_unchanged']"
+    ],
+    [
+      "'prepare-preserver-117.log','preserve-117.log']",
+      "'prepare-preserver-117.log','preserve-117.log','finish-preservation-117.log']"
+    ],
+    [
+      "logs and actual exits are retained. No timed or numerical rerun occurred.",
+      "logs and actual exits are retained. The preservation helper later exited1\nafter all archive/restore proofs passed, on the absent first-build success\nsummary. Its failed log is retained. A separate metadata completion verifies\nall53 existing ZIP SHA/CRC/order/size and whole original/restored inventories\nagain, and indexes the failed-build record plus successful v3 proof. That\ncompletion exits0; no archive, source, Native or timer is rewritten/rerun."
+    ],
+    [
+      "from the324 executions before the first compile failure. No numerical retry.",
+      "from the324 executions before the first compile failure. The original\npreserver metadata-index failure and successful independent completion are\nretained separately; all raw archives and original inputs remain exact."
+    ]
+  ],
+  "all_source_native_gates_restore_proof_all171_rows_and_narrow_whitespace_checks_unchanged": true,
+  "original_committer_draft_was_unexecuted": true
+}

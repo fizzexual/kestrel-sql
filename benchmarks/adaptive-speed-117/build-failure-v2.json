@@ -1,0 +1,256 @@
+{
+  "utc": "2026-10-10T04:33:01.734933+00:00",
+  "records": [
+    {
+      "step": "baseline-debug",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--features",
+        "benchmark-shutdown",
+        "--offline",
+        "--locked"
+      ],
+      "source": "baseline",
+      "returncode": 0,
+      "started_utc": "2026-10-10T04:30:24.287656+00:00",
+      "completed_utc": "2026-10-10T04:30:44.956217+00:00",
+      "log": "logs-v2/baseline-debug.log",
+      "log_sha256": "a495c6bac26da68dedbe4fcae58ae513d85e0a35047a54ce8931acdf05e79626",
+      "target": "D:\\Codex\\Kestrel\\work\\perf-117\\target-build-v2-baseline",
+      "tests_passed": 81
+    },
+    {
+      "step": "baseline-release",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--release",
+        "--features",
+        "benchmark-shutdown",
+        "--offline",
+        "--locked"
+      ],
+      "source": "baseline",
+      "returncode": 0,
+      "started_utc": "2026-10-10T04:30:44.966226+00:00",
+      "completed_utc": "2026-10-10T04:31:36.327710+00:00",
+      "log": "logs-v2/baseline-release.log",
+      "log_sha256": "7d5a70e2515c1931258fed1cee7a68e5cce0d1eec19d0cee8099c9fd8ca118d7",
+      "target": "D:\\Codex\\Kestrel\\work\\perf-117\\target-build-v2-baseline",
+      "tests_passed": 81
+    },
+    {
+      "step": "candidate-fixed-debug",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--features",
+        "benchmark-shutdown",
+        "--offline",
+        "--locked"
+      ],
+      "source": "source",
+      "returncode": 0,
+      "started_utc": "2026-10-10T04:31:36.334757+00:00",
+      "completed_utc": "2026-10-10T04:31:53.265847+00:00",
+      "log": "logs-v2/candidate-fixed-debug.log",
+      "log_sha256": "ce2ae15e907e298d30610d6881588a2dd335fab0b3d96390b65b2d6b416adfe5",
+      "target": "D:\\Codex\\Kestrel\\work\\perf-117\\target-build-v2-candidate-fixed",
+      "tests_passed": 81
+    },
+    {
+      "step": "candidate-fixed-release",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--release",
+        "--features",
+        "benchmark-shutdown",
+        "--offline",
+        "--locked"
+      ],
+      "source": "source",
+      "returncode": 0,
+      "started_utc": "2026-10-10T04:31:53.273979+00:00",
+      "completed_utc": "2026-10-10T04:32:51.129133+00:00",
+      "log": "logs-v2/candidate-fixed-release.log",
+      "log_sha256": "a8ee64068b5d15654ac758bacdf7d9f43270dd75a46c374a2790f4cd3b68751d",
+      "target": "D:\\Codex\\Kestrel\\work\\perf-117\\target-build-v2-candidate-fixed",
+      "tests_passed": 81
+    },
+    {
+      "step": "candidate-adaptive-debug",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--features",
+        "benchmark-shutdown,adaptive-engine",
+        "--offline",
+        "--locked"
+      ],
+      "source": "source",
+      "returncode": 101,
+      "started_utc": "2026-10-10T04:32:51.135822+00:00",
+      "completed_utc": "2026-10-10T04:33:01.728930+00:00",
+      "log": "logs-v2/candidate-adaptive-debug.log",
+      "log_sha256": "a1152dc884898890454ecabb44c8fce5125251b25a317f22fa5c99eb30cd71f0",
+      "target": "D:\\Codex\\Kestrel\\work\\perf-117\\target-build-v2-candidate-adaptive",
+      "tests_passed": 0
+    }
+  ],
+  "error": "Traceback (most recent call last):\n  File \"D:\\Codex\\Kestrel\\work\\build_117_v2.py\", line 46, in <module>\n    records.append(r);save(W/('build-v2-step-'+label+'.json'),r);assert result.returncode==0,(label,result.stdout[-3500:],result.stderr[-3500:])\n                                                                        ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('candidate-adaptive-debug', '', '   Compiling version_check v0.9.5\\n   Compiling proc-macro2 v1.0.107\\n   Compiling typenum v1.20.1\\n   Compiling quote v1.0.47\\n   Compiling unicode-ident v1.0.24\\n   Compiling serde_core v1.0.229\\n   Compiling zmij v1.0.23\\n   Compiling crc32fast v1.5.2\\n   Compiling cfg-if v1.0.4\\n   Compiling serde v1.0.229\\n   Compiling serde_json v1.0.151\\n   Compiling memchr v2.8.3\\n   Compiling itoa v1.0.18\\n   Compiling cpufeatures v0.2.17\\n   Compiling generic-array v0.14.7\\n   Compiling syn v3.0.5\\n   Compiling block-buffer v0.10.4\\n   Compiling crypto-common v0.1.7\\n   Compiling digest v0.10.7\\n   Compiling sha2 v0.10.9\\n   Compiling serde_derive v1.0.229\\n   Compiling kestrel-sql v0.3.17 (D:\\\\Codex\\\\Kestrel\\\\work\\\\perf-117\\\\source)\\nerror[E0308]: mismatched types\\n  --> tests\\\\digest_117.rs:59:13\\n   |\\n59 |             assert_eq!(archive.stats().unwrap().rows, rows);\\n   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`\\n\\nerror[E0277]: can\\'t compare `u64` with `usize`\\n   --> tests\\\\digest_117.rs:59:13\\n    |\\n 59 |             assert_eq!(archive.stats().unwrap().rows, rows);\\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no implementation for `u64 == usize`\\n    |\\n    = help: the trait `PartialEq<usize>` is not implemented for `u64`\\nhelp: `u64` implements trait `PartialEq<Rhs>`\\n   --> /rustc/8bab26f4f68e0e26f0bb7960be334d5b520ea452/library\\\\core\\\\src\\\\cmp.rs:1876:12\\n    |\\n    = note: `PartialEq`\\n   ::: /rustc/8bab26f4f68e0e26f0bb7960be334d5b520ea452/library\\\\core\\\\src\\\\cmp.rs:1900:5\\n    |\\n    = note: in this macro invocation\\n    |\\n   ::: C:\\\\Users\\\\Frizer\\\\.cargo\\\\registry\\\\src\\\\index.crates.io-1949cf8c6b5b557f\\\\serde_json-1.0.151\\\\src\\\\value\\\\partial_eq.rs:76:13\\n    |\\n 76 |               impl PartialEq<Value> for $ty {\\n    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `PartialEq<serde_json::Value>`\\n...\\n 97 | / partialeq_numeric! {\\n 98 | |     eq_i64[i8 i16 i32 i64 isize]\\n 99 | |     eq_u64[u8 u16 u32 u64 usize]\\n100 | |     eq_f32[f32]\\n101 | |     eq_f64[f64]\\n102 | |     eq_bool[bool]\\n103 | | }\\n    | |_- in this macro invocation\\n    = note: this error originates in the macro `assert_eq` which comes from the expansion of the macro `partialeq_numeric` (in Nightly builds, run with -Z macro-backtrace for more info)\\n\\nSome errors have detailed explanations: E0277, E0308.\\nFor more information about an error, try `rustc --explain E0277`.\\nerror: could not compile `kestrel-sql` (test \"digest_117\") due to 2 previous errors\\nwarning: build failed, waiting for other jobs to finish...\\n')\n",
+  "unstarted_jobs": [
+    [
+      "candidate-adaptive-release",
+      "source",
+      [
+        "test",
+        "--release",
+        "--features",
+        "benchmark-shutdown,adaptive-engine"
+      ],
+      null,
+      "candidate-adaptive"
+    ],
+    [
+      "candidate-fault-debug",
+      "source",
+      [
+        "test",
+        "--features",
+        "benchmark-shutdown,adaptive-engine,fault-injection"
+      ],
+      null,
+      "candidate-fault"
+    ],
+    [
+      "candidate-fault-release",
+      "source",
+      [
+        "test",
+        "--release",
+        "--features",
+        "benchmark-shutdown,adaptive-engine,fault-injection"
+      ],
+      null,
+      "candidate-fault"
+    ],
+    [
+      "baseline-lint",
+      "baseline",
+      [
+        "clippy",
+        "--all-targets",
+        "--features",
+        "benchmark-shutdown,fault-injection"
+      ],
+      null,
+      "baseline-fault-lint"
+    ],
+    [
+      "candidate-default-lint",
+      "source",
+      [
+        "clippy",
+        "--all-targets"
+      ],
+      null,
+      "candidate-default"
+    ],
+    [
+      "candidate-fixed-lint",
+      "source",
+      [
+        "clippy",
+        "--all-targets",
+        "--features",
+        "benchmark-shutdown"
+      ],
+      null,
+      "candidate-fixed"
+    ],
+    [
+      "candidate-adaptive-lint",
+      "source",
+      [
+        "clippy",
+        "--all-targets",
+        "--features",
+        "benchmark-shutdown,adaptive-engine"
+      ],
+      null,
+      "candidate-adaptive"
+    ],
+    [
+      "candidate-fault-lint",
+      "source",
+      [
+        "clippy",
+        "--all-targets",
+        "--features",
+        "benchmark-shutdown,adaptive-engine,fault-injection"
+      ],
+      null,
+      "candidate-fault"
+    ],
+    [
+      "baseline-artifacts",
+      "baseline",
+      [
+        "build",
+        "--release",
+        "--features",
+        "benchmark-shutdown",
+        "--bin",
+        "kestrel",
+        "--bin",
+        "kestrel-stress-098",
+        "--example",
+        "adaptive_perf_probe_106",
+        "--example",
+        "performance_probe"
+      ],
+      "baseline",
+      "baseline"
+    ],
+    [
+      "candidate-artifacts",
+      "source",
+      [
+        "build",
+        "--release",
+        "--features",
+        "benchmark-shutdown,adaptive-engine",
+        "--bin",
+        "kestrel",
+        "--bin",
+        "kestrel-stress-098",
+        "--example",
+        "adaptive_perf_probe_106",
+        "--example",
+        "performance_probe",
+        "--example",
+        "adaptive_probe_105"
+      ],
+      "candidate",
+      "candidate-adaptive"
+    ],
+    [
+      "candidate-fault-artifacts",
+      "source",
+      [
+        "build",
+        "--release",
+        "--features",
+        "benchmark-shutdown,adaptive-engine,fault-injection",
+        "--example",
+        "adaptive_probe_105"
+      ],
+      "candidate-fault",
+      "candidate-fault"
+    ]
+  ],
+  "all_source_targets_logs_unit_and_failed_stores_retained": true,
+  "no_performance_started": true
+}
