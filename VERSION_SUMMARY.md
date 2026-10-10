@@ -2,6 +2,12 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New isolated kernel diagnostic 126 found controlled clustered layout reductions
+of 62.46% elapsed work and 65.16% thread cycles. Ordered full elapsed regressed
+12.27%; 10/72 controls, 5/72 guards and 3/12 goals failed. This excludes input
+reads/CRCs, indexes and durable sync; it is not a whole-database gain.
+[Outcome and next code target](KERNEL_LAYOUT_126.md).
+
 Latest randomized baseline calibration 125 independently passed all 648 stores.
 51/144 identity controls failed; no candidate speedup was tested.
 [Complete outcome](COMPACTION_CONTROLS_125.md).
