@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New baseline calibration 124 passed all 648 independent correctness checks,
+but 24/144 identity controls failed despite fixed CPU placement. No engine
+candidate was involved. [Timing investigation](COMPACTION_CONTROLS_124.md).
+
 Latest component trial 122 passed 332 fresh candidate tests and all 216
 independent correctness checks. 24/72 A/A controls and 10/72 guards fail;
 it remains experimental. Trial 121's controlled clustered compaction gain was
