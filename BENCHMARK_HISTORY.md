@@ -217,3 +217,5 @@ The reports explicitly retain the initial overload failures, slow live runs, the
 [Storage cleanup](STORAGE_CLEANUP_20261009.md) removes 49 redundant top-level ZIP copies (8.97 GiB) only after full private GitHub download/hash verification. Every original benchmark failure/raw store and all newer unbacked-up experiments remain. No performance result or release status changes.
 
 - [Publication-stage diagnostic 113](PUBLICATION_STAGES_113.md): unchanged engine; 144 balanced cases, 331,776 correct ACKs; durable sync stages dominate measured publication cost. Twenty controls and twenty guards fail; no supported upgrade. Exact restored raw evidence preserved.
+
+- [Adaptive publication trial 114](ADAPTIVE_ENGINE_114.md): 796 fresh tests, 359 recovery commands and 324 correct native cases; nine controlled goal metrics, but 12 controls/five guards/nine goals fail. All 252 service cases unstarted; supported 0.3.16 unchanged. Exact restored raw evidence retained.
