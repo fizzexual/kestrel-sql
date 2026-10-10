@@ -2,10 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
-New component trial 121 passed 478 tests and independently checked all 216 cases.
-Clustered compaction wall improved 12.0%, preparation 35.6%, with full/half
-controls. Nine controls/three guards still fail; it is experimental.
-[Short result and remaining failures](COMPACTION_MERGE_121.md).
+Latest component trial 122 passed 332 fresh candidate tests and all 216
+independent correctness checks. 24/72 A/A controls and 10/72 guards fail;
+it remains experimental. Trial 121's controlled clustered compaction gain was
+12.0%, with outstanding regressions. [Latest result](COMPACTION_MERGE_122.md).
 
 KestrelSQL is a Rust embedded analytics prototype with BIGINT SQL, exact range
 aggregates, immutable archive snapshots, checksummed segments and retryable

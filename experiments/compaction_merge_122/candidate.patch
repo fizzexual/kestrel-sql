@@ -1,0 +1,24 @@
+--- a/src/archive.rs
++++ b/src/archive.rs
+@@ -15,0 +16,4 @@
++
++#[cfg(feature = "adaptive-compaction-merge-122")]
++#[path = "merge_runs_122.rs"]
++mod compaction_merge;
+@@ -1118,0 +1123,2 @@
++        #[cfg(feature = "adaptive-compaction-merge-122")]
++        let mut runs = Vec::with_capacity(selected.len());
+@@ -1119,0 +1126,2 @@
++            #[cfg(feature = "adaptive-compaction-merge-122")]
++            let start = columns[0].len();
+@@ -1137 +1145,5 @@
+-        }
++            #[cfg(feature = "adaptive-compaction-merge-122")]
++            runs.push(start..columns[0].len());
++        }
++        #[cfg(feature = "adaptive-compaction-merge-122")]
++        compaction_merge::arrange(&mut columns, &runs);
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,0 +21 @@
++adaptive-compaction-merge-122 = []
