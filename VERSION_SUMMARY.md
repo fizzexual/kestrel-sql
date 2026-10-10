@@ -1,6 +1,6 @@
 # Version summary — October 10, 2026
 
-**Supported: 0.3.16. Version 0.3.17 has not been released. Work is stopped after cleanup.**
+**Supported: 0.3.16. Version 0.3.17 has not been released. Cleanup is complete and work is stopped.**
 
 KestrelSQL is a Rust embedded analytics prototype with BIGINT SQL, exact range
 aggregates, immutable archive snapshots, checksummed segments and retryable

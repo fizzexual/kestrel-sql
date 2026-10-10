@@ -1,22 +1,40 @@
-# Cleanup — October10,2026
+# Cleanup completed — October 10, 2026
 
-Completed task-owned run cleanup removed **667 directories /
-317.04 GB**, including94 original run directories
-and34 restored copies. The small current checkout removes another
-**14.91 GB** of tracked raw outputs and stale metadata.
-Existing complete raw data and failed attempts remain in private Git history.
+Work is stopped as requested; scheduled continuation is paused.
 
-Before deletion, fresh authenticated GitHub retrieval verified18,155 tracked
-files/15.04 GB, every complete SHA-256/size, exact Git trees, strict full Git
-integrity and privacy. Native PowerShell verified exact absolute paths, closed
-file/directory census and absence of reparse points. Supported0.3.16 engine,
-tests, dependencies, examples and binaries remain byte-identical.
+| Storage | Before | After |
+| --- | ---: | ---: |
+| Kestrel workspace, logical | 340.33 GB | 473.75 MB |
+| D: free space, observed | 153.00 GB | 490.38 GB |
 
-One previously unreferenced historical encoder commit was additionally saved
-on private branch `archive-local-history-20261010`, then freshly fetched and
-integrity-checked. No history rewrite, tag or release deletion occurred.
+Net workspace reduction: **339.86 GB**.
+Observed free-space increase: **337.37 GB**;
+background activity can affect that figure. Current repository including shallow
+Git metadata: **148.39 MB**.
 
-Local package verification, temporary backup removal and shallow local Git
-replacement are finishing; the final storage totals will replace this checkpoint.
-Scheduled continuation is paused; no new benchmark was started. The account's
-Actions cap is verified$0 with Stop usage enabled. [Version summary](VERSION_SUMMARY.md).
+Removed 667 closed task-owned directories: 94 `perf-*` directories, 34 restored
+copies, completed fixtures, dependencies and build outputs. Removed 14.91 GB
+of freshly verified tracked raw outputs from the current checkout, verified
+package duplicates and temporary backup copies. Short Markdown run outcomes
+and reusable baseline harnesses remain. Unsaved control records are retained.
+
+Fresh authenticated private GitHub retrieval checked 18,155 files/15.04 GB,
+complete SHA-256/size, exact trees and strict Git integrity. Native PowerShell
+checked exact absolute scope and every descendant for reparse points. All
+supported 0.3.16 source/tests/examples/dependencies/binaries remain byte-identical;
+the supplied binary's help check exits 0. No engine change or new benchmark ran.
+
+All existing Git commits/tags/releases remain private and unchanged. One abandoned
+historical encoder commit was additionally preserved on private branch
+`archive-local-history-20261010`, then freshly fetched and integrity-checked.
+Full raw history remains at commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
+Current downloads can use `git clone --depth 1`; full-history clones also fetch
+historical evidence. No remote history rewrite occurred.
+
+Retained **2 unverified package exports /
+189.57 MB** because no byte-identical GitHub backup
+was verified: kestrel-sql-development-063-batching-first-package-evidence.zip; kestrel-sql-development-077-recovery-evidence-part-1-of-3.zip. They were not eligible under the conditional
+deletion instruction. Account Actions cap is verified $0 with Stop usage enabled.
+
+**Supported 0.3.16; 0.3.17 remains unreleased.** [Version summary](VERSION_SUMMARY.md)
+and [short benchmark history](BENCHMARK_HISTORY.md) include the failed gates.
