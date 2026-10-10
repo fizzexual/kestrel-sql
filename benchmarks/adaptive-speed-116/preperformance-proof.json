@@ -1,0 +1,123 @@
+{
+  "complete": true,
+  "utc": "2026-10-10T03:38:08.264859+00:00",
+  "native_smokes": [
+    {
+      "argv": [
+        "D:\\Codex\\Kestrel\\work\\perf-116\\binaries-v3\\baseline\\adaptive_perf_probe_106.exe",
+        "D:\\Codex\\Kestrel\\work\\perf-116\\excluded-smokes\\baseline-1-0",
+        "1",
+        "8",
+        "0",
+        "0"
+      ],
+      "identity": {
+        "pid": 66328,
+        "creation_filetime": 134360770857378813,
+        "owned_CreateProcess_handle": true
+      },
+      "returncode": 0,
+      "actual_wait_completed": true,
+      "label": "baseline-1-0",
+      "fixture": "excluded-smokes/baseline-1-0",
+      "stdout_sha256": "9ce47e576cf0d77044d1a19a4e81ad25b1d550b682d0457fd21618beb58369a9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "correctness_passed": true
+    },
+    {
+      "argv": [
+        "D:\\Codex\\Kestrel\\work\\perf-116\\binaries-v3\\baseline\\adaptive_perf_probe_106.exe",
+        "D:\\Codex\\Kestrel\\work\\perf-116\\excluded-smokes\\baseline-4-1",
+        "4",
+        "8",
+        "1",
+        "0"
+      ],
+      "identity": {
+        "pid": 27984,
+        "creation_filetime": 134360770858048439,
+        "owned_CreateProcess_handle": true
+      },
+      "returncode": 0,
+      "actual_wait_completed": true,
+      "label": "baseline-4-1",
+      "fixture": "excluded-smokes/baseline-4-1",
+      "stdout_sha256": "5b2e4417ec6d3a7f639b817ca394c72d0895843a55a9d9a546a56efa76eb9d22",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "correctness_passed": true
+    },
+    {
+      "argv": [
+        "D:\\Codex\\Kestrel\\work\\perf-116\\binaries-v3\\candidate\\adaptive_perf_probe_106.exe",
+        "D:\\Codex\\Kestrel\\work\\perf-116\\excluded-smokes\\candidate-1-0",
+        "1",
+        "8",
+        "0",
+        "1"
+      ],
+      "identity": {
+        "pid": 51320,
+        "creation_filetime": 134360770870468256,
+        "owned_CreateProcess_handle": true
+      },
+      "returncode": 0,
+      "actual_wait_completed": true,
+      "label": "candidate-1-0",
+      "fixture": "excluded-smokes/candidate-1-0",
+      "stdout_sha256": "8819631da0272ee1763da853eeeb7d04c2862a12d9e0a46c04606b87854fb246",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "correctness_passed": true
+    },
+    {
+      "argv": [
+        "D:\\Codex\\Kestrel\\work\\perf-116\\binaries-v3\\candidate\\adaptive_perf_probe_106.exe",
+        "D:\\Codex\\Kestrel\\work\\perf-116\\excluded-smokes\\candidate-4-1",
+        "4",
+        "8",
+        "1",
+        "1"
+      ],
+      "identity": {
+        "pid": 29568,
+        "creation_filetime": 134360770871036377,
+        "owned_CreateProcess_handle": true
+      },
+      "returncode": 0,
+      "actual_wait_completed": true,
+      "label": "candidate-4-1",
+      "fixture": "excluded-smokes/candidate-4-1",
+      "stdout_sha256": "862f604b262ff5d8624952febc1fb992b6883fd30812cb60490727466e3185a8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "correctness_passed": true
+    }
+  ],
+  "service_smokes": [
+    {
+      "variant": "baseline",
+      "offered": 100,
+      "actual_owned_joins_exit0": 2,
+      "report": "excluded-smokes/baseline-service.json"
+    },
+    {
+      "variant": "candidate",
+      "offered": 100,
+      "actual_owned_joins_exit0": 2,
+      "report": "excluded-smokes/candidate-service.json"
+    }
+  ],
+  "excluded_from_qualification": true,
+  "balanced_full_and_half_order_controls": 48,
+  "invalid_conservation_controls": {
+    "validation_only_not_timing": true,
+    "six_invalid_outcome_records_rejected": [
+      "duplicate_raw",
+      "expired_raw_overlap",
+      "wrong_drop_count",
+      "wrong_loss_count",
+      "unknown_sequence",
+      "duplicate_expiry"
+    ]
+  },
+  "fresh_preflight_recovery_qualified": true,
+  "no_qualification_timer_launched": true
+}
