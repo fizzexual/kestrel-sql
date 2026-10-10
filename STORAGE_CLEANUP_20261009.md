@@ -21,3 +21,6 @@ At verification, GitHub main was `14155d52d36faafe31654de19914e12cd3e805d3` and 
 ## Standing cleanup rule
 
 Continue removing obsolete copies/caches and inactive benchmark material when their complete required contents have a verified recoverable private GitHub backup and they are not needed by current work. Record exact paths, coverage, hashes, recovery URLs and actual deletion results. For raw experiment/store removal, first establish full archive coverage and restoration/reference audit for all raw results and failed attempts; never infer coverage from a report or archive filename. Retain active sources, current release artifacts and current experiment prerequisites locally. Verify task jobs and reset state before cleanup; serialize it against all timed workloads. Leave unbacked-up or ambiguous files intact.
+
+
+- October10 continuation: [private backup and exact unused-restore cleanup](STORAGE_CLEANUP_20261010.md). All32 pending commits uploaded; complete trial117 raw tree freshly downloaded/hash-verified. Only its unused restored duplicate was removed after full current hashes; original raw data and failures remain. Other recent raw download verification is still pending. Supported016 and trial117 performance outcome are unchanged.

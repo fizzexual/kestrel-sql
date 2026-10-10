@@ -298,3 +298,6 @@ universal win, Native CPU/RSS or physical power-loss guarantee is claimed.
 Recent raw GitHub backup remains unverified; no recent raw deletion is eligible.
 See [reproduction](benchmarks/adaptive-speed-117/REPRODUCE.md) and the
 [complete audit](benchmarks/adaptive-speed-117/complete-audit-proof.json).
+
+
+- October10 continuation: [private backup and exact unused-restore cleanup](STORAGE_CLEANUP_20261010.md). All32 pending commits uploaded; complete trial117 raw tree freshly downloaded/hash-verified. Only its unused restored duplicate was removed after full current hashes; original raw data and failures remain. Other recent raw download verification is still pending. Supported016 and trial117 performance outcome are unchanged.
