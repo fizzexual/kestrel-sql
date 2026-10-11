@@ -12,6 +12,9 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Fresh comparison preflight128](COMPACTION_PREFLIGHT_128.md) passed six independent checks;
+a new external build held all216 timings before case0. Performance remains pending.
+
 Latest [experimental compaction phase repair](COMPACTION_PHASE_127.md) passed
 correctness prerequisites; its performance and release qualification are pending.
 

@@ -1,6 +1,11 @@
-# Version summary — October 10, 2026
+# Version summary — October 11, 2026
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
+
+Fresh phase comparison128 passed six independent preflights, but a new
+external build triggered the guard after cooldown. All216 timings are unstarted;
+performance remains unmeasured. Supervisor detection is repaired.
+[Preflight outcome](COMPACTION_PREFLIGHT_128.md).
 
 Latest isolated Archive phase repair 127 passed 336 fresh tests, two strict
 lints and independent exact row/CRC/receipt audits of all four new ordered
