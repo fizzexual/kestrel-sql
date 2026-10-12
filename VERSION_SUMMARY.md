@@ -2,6 +2,9 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New bounded-read140 passed352 fresh tests/two lints,36 independent stores,
+six exact wire pairs and14 recovery cases. Speed unmeasured. [Actual code](COMPACTION_READ_140.md).
+
 Complete139 rejects input reuse138:216 independently correct cases,27/144
 A/A,22/144 guards and4/6 goals fail. Full clustered preparation is9.92% lower
 but does not hold in both halves; ten calibrated guards fail. [Complete outcome](COMPACTION_INPUT_COMPARE_139.md).
