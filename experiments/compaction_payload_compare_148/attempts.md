@@ -22,3 +22,11 @@ The first publication launcher was guard-held before Python publisher creation;
 no destination, repository edit or commit existed. Its source remains preserved.
 A separate v2 launcher uses fresh guards and separate logs; no engine, frozen
 cohort source, native case or already-passed audit changed or repeated.
+
+Final review caught an overly broad98->206 text substitution in the unused
+cleanup helper, which also corrupted its CRC count literal. No cleanup had
+started and no fixture was removed. Corrected exact expected CRC count7864320
+and narrowed generation of the unstarted-case field; the original unused source
+remains in private history. Actual engine/timing/audit source and results are
+unchanged; no passed audit or native case repeated. Corrected source is saved
+and freshly byte-verified before cleanup.

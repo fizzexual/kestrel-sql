@@ -8,7 +8,7 @@ def write(p,s):
     p.write_text(s.rstrip()+'\n',encoding='utf-8',newline='\n')
 verify=(D/'verify_prefix145_remote.py').read_text(encoding='utf-8').replace('145','148').replace('experiments/compaction_compare_148','experiments/compaction_payload_compare_148')
 write(R/'verify_prefix148_remote.py',verify)
-close=(D/'close_prefix145_storage.ps1').read_text(encoding='utf-8').replace('145','148').replace('118','10').replace('98','206')
+close=(D/'close_prefix145_storage.ps1').read_text(encoding='utf-8').replace('145','148').replace('118','10').replace('unstarted_declared_cases=98','unstarted_declared_cases=206')
 close=close.replace('3866624','327680').replace('92798976','7864320').replace('42532','1248')
 close=close.replace('compaction-kit-144','compaction-kit-147').replace('candidate144.exe','candidate147.exe')
 close=close.replace('$taskLife.no_performance_qualification','$taskLife.no_qualification_metrics_evaluated')

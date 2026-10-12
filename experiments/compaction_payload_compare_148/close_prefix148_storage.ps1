@@ -32,7 +32,7 @@ while($taskStack.Count){foreach($taskChild in $taskStack.Pop().EnumerateFileSyst
 $taskFailure=Get-Content -LiteralPath (Join-Path $taskTarget 'cohort-failure.json') -Raw | ConvertFrom-Json
 if($taskFailure.completed -ne 10 -or (@($taskFailure.unstarted_indices | ForEach-Object {[int]$_}) -join ',') -ne ((10..215) -join ',')){throw 'Prefix/unstarted suffix mismatch'}
 $taskAudit=Get-Content -LiteralPath (Join-Path $taskTarget 'prefix-audit.json') -Raw | ConvertFrom-Json
-if(-not $taskAudit.complete_prefix_audit -or -not $taskAudit.independent_correctness_passed -or $taskAudit.completed_cases -ne 10 -or $taskAudit.full_payload_rows -ne 327680 -or $taskAudit.fully_checked_crc_bytes -ne 927206976){throw 'Full prefix independent decode missing'}
+if(-not $taskAudit.complete_prefix_audit -or -not $taskAudit.independent_correctness_passed -or $taskAudit.completed_cases -ne 10 -or $taskAudit.full_payload_rows -ne 327680 -or $taskAudit.fully_checked_crc_bytes -ne 7864320){throw 'Full prefix independent decode missing'}
 $taskLife=Get-Content -LiteralPath (Join-Path $taskTarget 'prefix-lifecycle-audit.json') -Raw | ConvertFrom-Json
 if(-not $taskLife.complete -or -not $taskLife.no_qualification_metrics_evaluated -or $taskLife.probe_native_interval_pairs_checked -ne 1248){throw 'Full lifecycle audit missing'}
 foreach($taskAuditName in @('phase148-prefix-audit-actual-exits.json','phase148-prefix-lifecycle-actual-exits.json')){
