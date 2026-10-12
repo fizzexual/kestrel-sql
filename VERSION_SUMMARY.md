@@ -1,6 +1,11 @@
-# Version summary — October 11, 2026
+# Version summary — October 12, 2026
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
+
+Comparison129 stopped after seven independently correct cases when our own
+read-only status query triggered the idle guard.209 timings remain unstarted;
+no speed or release qualification is claimed.
+[Complete prefix and harness correction](COMPACTION_PREFIX_129.md).
 
 Fresh phase comparison128 passed six independent preflights, but a new
 external build triggered the guard after cooldown. All216 timings are unstarted;
