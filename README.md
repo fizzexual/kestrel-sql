@@ -12,6 +12,9 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Complete writer comparison135](COMPACTION_WRITE_COMPARE_135.md) rejects write-through:
+216 correct cases,24 controls/35 guards/all6 goals fail.0.3.17 is unreleased.
+
 [Isolated bounded compaction writer134](COMPACTION_WRITE_134.md) passed344 tests,
 exact legacy wire and14 recovery cases; speed is unmeasured.
 

@@ -2,9 +2,13 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Complete135 is REJECTED: all216 stores pass independent correctness;24/144
+A/A,35/144 guards and all6 goals fail. Write-through moves stalls into writes;
+whole medians are0.64–5.21% slower. [Complete before/after and failures](COMPACTION_WRITE_COMPARE_135.md).
+
 Isolated bounded writer134 passed344 fresh tests/two lints,16 independent
 store audits, six exact legacy wire pairs and14 publication recovery cases.
-Speed is unmeasured;0.3.17 remains unreleased. [Source and outcome](COMPACTION_WRITE_134.md).
+Speed was measured and rejected in135;0.3.17 remains unreleased. [Source and correctness](COMPACTION_WRITE_134.md).
 
 Complete133 independently passed216 stores/7,077,888 rows. Clustered whole
 compaction is10.80% lower and preparation29.37% lower with passing full/both-half
@@ -17,8 +21,8 @@ protocol held the run. Full performance qualification is unevaluated.
 [Full prefix/protocol finding](COMPACTION_PREFIX_132.md).
 
 New isolated phase131 defers merge workspace until disorder is known.340 fresh
-tests/two strict lints and eight full independent store audits pass. Its speed
-is unmeasured. [Code and correctness](COMPACTION_PHASE_131.md).
+tests/two strict lints and eight full independent store audits pass. Combined speed is now measured in133, whose overall
+qualification fails. [Code and correctness](COMPACTION_PHASE_131.md).
 
 Comparison130 independently passed all44 completed stores but a different
 PowerShell process held the remaining172 cases. No complete speed/control
