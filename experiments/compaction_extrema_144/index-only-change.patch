@@ -1,0 +1,26 @@
+--- exact131/src/archive.rs
++++ candidate144/src/archive.rs
+@@ -927,13 +927,23 @@
+                 block_min.push(*block.iter().min().unwrap());
+                 block_max.push(*block.iter().max().unwrap());
+             }
++            #[cfg(feature = "reuse-publish-extrema-144")]
++            let global_min = *block_min.iter().min().unwrap();
++            #[cfg(feature = "reuse-publish-extrema-144")]
++            let global_max = *block_max.iter().max().unwrap();
+             indexes.push(Index {
+                 prefix,
+                 last,
+                 crc,
+                 block_min,
+                 block_max,
++                #[cfg(feature = "reuse-publish-extrema-144")]
++                min: global_min,
++                #[cfg(not(feature = "reuse-publish-extrema-144"))]
+                 min: *column.iter().min().unwrap(),
++                #[cfg(feature = "reuse-publish-extrema-144")]
++                max: global_max,
++                #[cfg(not(feature = "reuse-publish-extrema-144"))]
+                 max: *column.iter().max().unwrap(),
+                 monotonic: column.windows(2).all(|x| x[0] <= x[1]),
+             });

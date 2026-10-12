@@ -1,0 +1,198 @@
+{
+  "utc": "2026-10-12T18:17:58.385680+00:00",
+  "error": "Traceback (most recent call last):\n  File \"D:\\Codex\\Kestrel\\work\\run_extrema144_recovery.py\", line 48, in <module>\n    guard('before-'+label)\n  File \"D:\\Codex\\Kestrel\\work\\run_extrema144_recovery.py\", line 22, in guard\n    assert result.returncode==0,result.stdout.decode()\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError: {\"utc\":\"2026-10-12T18:17:58.2428368Z\",\"no_process_or_app_changed\":true,\"no_visible_build_jobs\":false,\"visible_build_jobs\":[{\"name\":\"node.exe\",\"pid\":87724,\"creation_utc\":\"2026-10-12T18:17:55.1513980Z\"}],\"not_during_timing\":true}\r\n\n",
+  "completed_checks": [
+    {
+      "point": "segment_partial",
+      "mode": "exit",
+      "head": 2,
+      "rows": 2048,
+      "CRC_bytes": 49152,
+      "all_acknowledged_input_rows_original_receipts_indexes_checked": true,
+      "cold_query_passed": true,
+      "writer_poison_old_snapshot_checked": false,
+      "controlled_owned_exit_not_forced_unrelated_kill": true
+    },
+    {
+      "point": "segment_partial",
+      "mode": "io_error",
+      "head": 2,
+      "rows": 2048,
+      "CRC_bytes": 49152,
+      "all_acknowledged_input_rows_original_receipts_indexes_checked": true,
+      "cold_query_passed": true,
+      "writer_poison_old_snapshot_checked": true,
+      "controlled_owned_exit_not_forced_unrelated_kill": true
+    },
+    {
+      "point": "segment_written",
+      "mode": "exit",
+      "head": 2,
+      "rows": 2048,
+      "CRC_bytes": 49152,
+      "all_acknowledged_input_rows_original_receipts_indexes_checked": true,
+      "cold_query_passed": true,
+      "writer_poison_old_snapshot_checked": false,
+      "controlled_owned_exit_not_forced_unrelated_kill": true
+    },
+    {
+      "point": "segment_written",
+      "mode": "io_error",
+      "head": 2,
+      "rows": 2048,
+      "CRC_bytes": 49152,
+      "all_acknowledged_input_rows_original_receipts_indexes_checked": true,
+      "cold_query_passed": true,
+      "writer_poison_old_snapshot_checked": true,
+      "controlled_owned_exit_not_forced_unrelated_kill": true
+    }
+  ],
+  "actual_commands": [
+    {
+      "label": "segment_partial-exit-seed",
+      "pid": 30420,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:09.319793+00:00",
+      "completed_utc": "2026-10-12T18:17:09.401784+00:00"
+    },
+    {
+      "label": "segment_partial-exit-import",
+      "pid": 94132,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:09.402787+00:00",
+      "completed_utc": "2026-10-12T18:17:09.496415+00:00"
+    },
+    {
+      "label": "segment_partial-exit-fault",
+      "pid": 90488,
+      "actual_exit": 86,
+      "expected_exit": 86,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:09.507595+00:00",
+      "completed_utc": "2026-10-12T18:17:09.575375+00:00"
+    },
+    {
+      "label": "segment_partial-exit-cold-query",
+      "pid": 93140,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:14.596326+00:00",
+      "completed_utc": "2026-10-12T18:17:14.627991+00:00"
+    },
+    {
+      "label": "segment_partial-io_error-seed",
+      "pid": 31992,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:20.098320+00:00",
+      "completed_utc": "2026-10-12T18:17:20.139739+00:00"
+    },
+    {
+      "label": "segment_partial-io_error-import",
+      "pid": 80836,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:20.140718+00:00",
+      "completed_utc": "2026-10-12T18:17:20.180767+00:00"
+    },
+    {
+      "label": "segment_partial-io_error-fault",
+      "pid": 95900,
+      "actual_exit": 87,
+      "expected_exit": 87,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:20.186980+00:00",
+      "completed_utc": "2026-10-12T18:17:20.224991+00:00"
+    },
+    {
+      "label": "segment_partial-io_error-cold-query",
+      "pid": 91340,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:25.966594+00:00",
+      "completed_utc": "2026-10-12T18:17:25.996181+00:00"
+    },
+    {
+      "label": "segment_written-exit-seed",
+      "pid": 94528,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:32.285165+00:00",
+      "completed_utc": "2026-10-12T18:17:32.323903+00:00"
+    },
+    {
+      "label": "segment_written-exit-import",
+      "pid": 49120,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:32.324905+00:00",
+      "completed_utc": "2026-10-12T18:17:32.369453+00:00"
+    },
+    {
+      "label": "segment_written-exit-fault",
+      "pid": 91832,
+      "actual_exit": 86,
+      "expected_exit": 86,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:32.374966+00:00",
+      "completed_utc": "2026-10-12T18:17:32.413066+00:00"
+    },
+    {
+      "label": "segment_written-exit-cold-query",
+      "pid": 91648,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:39.234680+00:00",
+      "completed_utc": "2026-10-12T18:17:39.267458+00:00"
+    },
+    {
+      "label": "segment_written-io_error-seed",
+      "pid": 97700,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:45.109913+00:00",
+      "completed_utc": "2026-10-12T18:17:45.159733+00:00"
+    },
+    {
+      "label": "segment_written-io_error-import",
+      "pid": 86472,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:45.161323+00:00",
+      "completed_utc": "2026-10-12T18:17:45.203700+00:00"
+    },
+    {
+      "label": "segment_written-io_error-fault",
+      "pid": 9912,
+      "actual_exit": 87,
+      "expected_exit": 87,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:45.211218+00:00",
+      "completed_utc": "2026-10-12T18:17:45.241956+00:00"
+    },
+    {
+      "label": "segment_written-io_error-cold-query",
+      "pid": 88012,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T18:17:51.769924+00:00",
+      "completed_utc": "2026-10-12T18:17:51.808066+00:00"
+    }
+  ],
+  "timed_performance_cases": 0,
+  "no_selected_rerun": true
+}

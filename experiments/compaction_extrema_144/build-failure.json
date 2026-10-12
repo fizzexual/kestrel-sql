@@ -1,0 +1,43 @@
+{
+  "utc": "2026-10-12T17:42:24.867398+00:00",
+  "records": [
+    {
+      "label": "normal-debug",
+      "actual_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T17:37:35.768852+00:00",
+      "completed_utc": "2026-10-12T17:38:54.934516+00:00",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--features",
+        "reuse-publish-extrema-144",
+        "--offline",
+        "--locked"
+      ],
+      "log_sha256": "2b9268c0f148154b23bf237c9ca0d0f7a6a418cfa46a7c1650be0d4f346c7e52",
+      "fresh_tests": 86
+    },
+    {
+      "label": "normal-release",
+      "actual_exit": 0,
+      "actual_wait_completed": true,
+      "started_utc": "2026-10-12T17:39:04.408916+00:00",
+      "completed_utc": "2026-10-12T17:42:18.181810+00:00",
+      "argv": [
+        "C:/Users/Frizer/.cargo/bin/cargo.exe",
+        "test",
+        "--release",
+        "--features",
+        "reuse-publish-extrema-144",
+        "--offline",
+        "--locked"
+      ],
+      "log_sha256": "705b1f9d1255a8bc05f969b3bf2ae6725e4369e58bd87231317839f0aaf303f9",
+      "fresh_tests": 86
+    }
+  ],
+  "error": "Traceback (most recent call last):\n  File \"D:\\Codex\\Kestrel\\work\\build_extrema_144.py\", line 40, in <module>\n    guard(label)\n  File \"D:\\Codex\\Kestrel\\work\\build_extrema_144.py\", line 22, in guard\n    assert result.returncode==0,('Other task/timed/reset work appeared; stop untimed prerequisites',row)\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('Other task/timed/reset work appeared; stop untimed prerequisites', {'utc': '2026-10-12T17:42:24.866396+00:00', 'before_job': 'normal-lint', 'actual_exit': 3, 'stdout': '{\"verified_controller_creation_filetime\":134363002433578235,\"no_other_task_work\":false,\"outside_actual_case_timers_only\":true,\"utc\":\"2026-10-12T17:42:24.7245507Z\",\"verified_controller_pid\":88372,\"other_work\":[{\"pid\":96620,\"name\":\"python.exe\",\"creation_utc\":\"2026-10-12T17:42:21.1871520Z\"}],\"reset_jobs\":[],\"no_hash_copy_or_process_change\":true}\\r\\n', 'stderr': ''})\n",
+  "timed_cases_declared": 0,
+  "all_failures_preserved": true
+}

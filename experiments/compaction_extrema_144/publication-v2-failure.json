@@ -1,0 +1,7 @@
+{
+  "utc": "2026-10-12T18:32:43.335974+00:00",
+  "actual_exit": 1,
+  "before_commit": true,
+  "cause": "Scope assertion exposed first attempt partially wrote VERSION_SUMMARY using cp1252. Exact failed bytes preserved; restored only this owned edit from HEAD, then final explicit UTF-8 continuation. No engine/result/test rerun.",
+  "actual_failure_log": "Traceback (most recent call last):\n  File \"D:\\Codex\\Kestrel\\work\\complete_extrema144_publication_v2.py\", line 30, in <module>\n    assert all(row[3:]=='COMPACTION_EXTREMA_144.md' or row[3:].startswith('experiments/compaction_extrema_144/') for row in git('status','--porcelain=v1','--untracked-files=all').splitlines()) and git('rev-parse','HEAD').strip()==policy['source_commit']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}
