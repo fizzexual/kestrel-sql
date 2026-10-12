@@ -138,3 +138,5 @@ Comparison145 stopped after118 independently correct cases;98 unstarted.
 Possible overlapping Python activity rejects performance; all full/both-half
 controls/goals remain unevaluated.144 stays unadopted,017 unreleased.
 [Complete prefix outcome](COMPACTION_PREFIX_145.md).
+
+Complete146:216 independently correct stores, 32 A/A/14 guards/0 goals fail; extra manual-query boundary unproven.144 stays unadopted,017 unreleased. [Outcome](COMPACTION_EXTREMA_COMPARE_146.md).

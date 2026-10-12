@@ -146,3 +146,5 @@ production-service or physical power-loss claim is qualified.
 
 [Comparison145 interrupted prefix](COMPACTION_PREFIX_145.md):118 independently
 correct cases,98 unstarted; no speed qualification because of possible overlap.
+
+[Extrema comparison146](COMPACTION_EXTREMA_COMPARE_146.md):216 independently correct stores; unqualified performance and manual-probe boundary.017 remains unreleased.
