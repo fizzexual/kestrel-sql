@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Complete input-allocation comparison139](COMPACTION_INPUT_COMPARE_139.md)
 - [Compaction input-workspace fix138](COMPACTION_INPUT_138.md)
 - [Complete buffer-only comparison137](COMPACTION_BUFFER_COMPARE_137.md)
 - [Untimed buffer-only alternative136](COMPACTION_BUFFER_136.md)

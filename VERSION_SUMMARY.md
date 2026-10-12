@@ -2,9 +2,13 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Complete139 rejects input reuse138:216 independently correct cases,27/144
+A/A,22/144 guards and4/6 goals fail. Full clustered preparation is9.92% lower
+but does not hold in both halves; ten calibrated guards fail. [Complete outcome](COMPACTION_INPUT_COMPARE_139.md).
+
 New input-workspace reuse138 is implemented:344 fresh tests/two lints,20
-independent stores, six exact wire pairs and14 recovery cases pass. Speed
-unmeasured. [Actual code and correctness](COMPACTION_INPUT_138.md).
+independent stores, six exact wire pairs and14 recovery cases pass. Performance
+was measured and rejected in139. [Actual code and correctness](COMPACTION_INPUT_138.md).
 
 Complete137 is rejected:216 independently correct stores,32/144 A/A,13/144
 guards and all six goals fail. Clustered paired whole time is3.15% lower, short
