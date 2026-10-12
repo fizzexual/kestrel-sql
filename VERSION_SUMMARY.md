@@ -126,3 +126,5 @@ with Stop usage enabled. [Cleanup](STORAGE_CLEANUP_FINAL.md),
 [latest trial](ADAPTIVE_ENGINE_120.md), [history](BENCHMARK_HISTORY.md).
 
 Index diagnostic142 closed before any qualification timing: four kernel tests/one lint passed, five excluded complete index outputs passed; wide i128 JSON Value output failed in the sixth. All216 cases/18AA/18guards/18goals unstarted or unevaluated. Supported016 exact; no speed/release qualification. [Concise outcome](INDEX_DIAGNOSTIC_142.md).
+
+Index-only diagnostic143: all216 exact outputs/715-probe lifecycle audit pass. Full paired kernel medians13.5–23.3% lower; five shapes pass both halves. Ordered second-half identical control0.858189 fails, so overall1/18AA/guard/goal inconclusive. All Archive I/O/phase/sync/ACK excluded; no durable/release qualification. [Concise result](INDEX_DIAGNOSTIC_143.md).
