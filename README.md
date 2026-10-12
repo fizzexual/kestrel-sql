@@ -143,3 +143,6 @@ archived. No new benchmark was run during cleanup. No universal speed,
 production-service or physical power-loss claim is qualified.
 
 [Cleanup result](STORAGE_CLEANUP_FINAL.md), [benchmark history](BENCHMARK_HISTORY.md).
+
+[Comparison145 interrupted prefix](COMPACTION_PREFIX_145.md):118 independently
+correct cases,98 unstarted; no speed qualification because of possible overlap.

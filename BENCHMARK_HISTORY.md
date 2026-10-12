@@ -122,3 +122,5 @@ Actual Archive extrema reuse144 passed344 fresh tests/two strict lints,28
 independent stores, six exact supported016 format pairs and14 recovery cases/
 56 commands. Removes redundant global extrema rescans on exact131; durable
 speed unmeasured,0.3.17 unreleased. [Code and proof](COMPACTION_EXTREMA_144.md).
+
+- [Interrupted comparison145](COMPACTION_PREFIX_145.md):118 correct,98 unstarted; possible overlap rejects performance.

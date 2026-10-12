@@ -133,3 +133,8 @@ Actual Archive extrema reuse144 passed344 fresh tests/two strict lints,28
 independent stores, six exact supported016 format pairs and14 recovery cases/
 56 commands. Removes redundant global extrema rescans on exact131; durable
 speed unmeasured,0.3.17 unreleased. [Code and proof](COMPACTION_EXTREMA_144.md).
+
+Comparison145 stopped after118 independently correct cases;98 unstarted.
+Possible overlapping Python activity rejects performance; all full/both-half
+controls/goals remain unevaluated.144 stays unadopted,017 unreleased.
+[Complete prefix outcome](COMPACTION_PREFIX_145.md).
