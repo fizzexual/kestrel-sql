@@ -2,6 +2,11 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Comparison132 passed independent correctness for all88 completed cases;128
+remain unstarted. Post-case activity began after native exit but the conservative
+protocol held the run. Full performance qualification is unevaluated.
+[Full prefix/protocol finding](COMPACTION_PREFIX_132.md).
+
 New isolated phase131 defers merge workspace until disorder is known.340 fresh
 tests/two strict lints and eight full independent store audits pass. Its speed
 is unmeasured. [Code and correctness](COMPACTION_PHASE_131.md).

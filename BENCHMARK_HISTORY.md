@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Interrupted comparison132](COMPACTION_PREFIX_132.md)
 - [Lazy Archive workspace131](COMPACTION_PHASE_131.md)
 - [Stopped comparison prefix130](COMPACTION_PREFIX_130.md)
 - [Stopped comparison prefix 129](COMPACTION_PREFIX_129.md)

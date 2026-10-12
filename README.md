@@ -12,6 +12,9 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Interrupted comparison132](COMPACTION_PREFIX_132.md) preserves88 independently
+correct cases;128 remain unstarted after an activity hold between timers.
+
 [Experimental lazy compaction workspace131](COMPACTION_PHASE_131.md) passed340
 fresh tests/two lints/eight independent store audits; speed qualification is pending.
 
