@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New isolated phase131 defers merge workspace until disorder is known.340 fresh
+tests/two strict lints and eight full independent store audits pass. Its speed
+is unmeasured. [Code and correctness](COMPACTION_PHASE_131.md).
+
 Comparison130 independently passed all44 completed stores but a different
 PowerShell process held the remaining172 cases. No complete speed/control
 qualification is available. [Full prefix outcome](COMPACTION_PREFIX_130.md).
