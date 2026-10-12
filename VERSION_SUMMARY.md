@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New buffer-only alternative136 passed344 fresh tests/two lints,16 independent
+store audits, six exact legacy wire pairs and14 recovery cases. Speed remains
+unmeasured. [Code and correctness](COMPACTION_BUFFER_136.md).
+
 Complete135 is REJECTED: all216 stores pass independent correctness;24/144
 A/A,35/144 guards and all6 goals fail. Write-through moves stalls into writes;
 whole medians are0.64–5.21% slower. [Complete before/after and failures](COMPACTION_WRITE_COMPARE_135.md).
