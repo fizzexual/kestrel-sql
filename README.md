@@ -12,6 +12,9 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Complete comparison133](COMPACTION_COMPARE_133.md) finds controlled clustered
+whole compaction10.80% lower;7/72 controls and1/72 guard fail.0.3.17 is unreleased.
+
 [Interrupted comparison132](COMPACTION_PREFIX_132.md) preserves88 independently
 correct cases;128 remain unstarted after an activity hold between timers.
 

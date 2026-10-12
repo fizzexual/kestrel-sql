@@ -2,6 +2,11 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Complete133 independently passed216 stores/7,077,888 rows. Clustered whole
+compaction is10.80% lower and preparation29.37% lower with passing full/both-half
+goals/controls. Overall7/72 A/A and1/72 guard fail; large sync tails remain.
+[Before/after and every failure](COMPACTION_COMPARE_133.md).
+
 Comparison132 passed independent correctness for all88 completed cases;128
 remain unstarted. Post-case activity began after native exit but the conservative
 protocol held the run. Full performance qualification is unevaluated.
