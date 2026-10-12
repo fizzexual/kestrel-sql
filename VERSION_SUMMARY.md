@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+New input-workspace reuse138 is implemented:344 fresh tests/two lints,20
+independent stores, six exact wire pairs and14 recovery cases pass. Speed
+unmeasured. [Actual code and correctness](COMPACTION_INPUT_138.md).
+
 Complete137 is rejected:216 independently correct stores,32/144 A/A,13/144
 guards and all six goals fail. Clustered paired whole time is3.15% lower, short
 of its goal; five calibrated regressions remain. [Results and failures](COMPACTION_BUFFER_COMPARE_137.md).

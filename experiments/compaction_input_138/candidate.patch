@@ -1,0 +1,71 @@
+--- a/src/archive.rs
++++ b/src/archive.rs
+@@ -15,0 +16,4 @@
++
++#[cfg(feature = "adaptive-compaction-phase-131")]
++#[path = "merge_runs_131.rs"]
++mod compaction_merge;
+@@ -1118,0 +1123,4 @@
++        #[cfg(feature = "adaptive-compaction-phase-131")]
++        let mut concatenation_ordered = true;
++        #[cfg(feature = "reuse-compaction-input-138")]
++        let (mut input_values, mut input_scratch) = (Vec::new(), Vec::new());
+@@ -1121,0 +1130,3 @@
++                #[cfg(feature = "reuse-compaction-input-138")]
++                scratch: std::mem::take(&mut input_scratch),
++                #[cfg(not(feature = "reuse-compaction-input-138"))]
+@@ -1133,0 +1145,24 @@
++                    #[cfg(feature = "reuse-compaction-input-138")]
++                    {
++                        // Keep the existing full payload read and CRC validation.
++                        // Reuse decoding storage instead of allocating per block.
++                        reader.read_block_into(column, block, false, &mut input_values)?;
++                        if column == 0 && block == 0 && concatenation_ordered {
++                            concatenation_ordered = data.last().zip(input_values.first())
++                                .is_none_or(|(previous, next)| previous <= next);
++                        }
++                        data.extend_from_slice(&input_values);
++                    }
++                    #[cfg(all(feature = "adaptive-compaction-phase-131", not(feature = "reuse-compaction-input-138")))]
++                    {
++                        let values = reader.read_block(column, block, false)?;
++                        // First-block boundary values are already CRC validated
++                        // and hot while collecting input. Charge the phase choice
++                        // here, rather than probing all runs after concatenation.
++                        if column == 0 && block == 0 && concatenation_ordered {
++                            concatenation_ordered = data.last().zip(values.first())
++                                .is_none_or(|(previous, next)| previous <= next);
++                        }
++                        data.extend(values);
++                    }
++                    #[cfg(not(feature = "adaptive-compaction-phase-131"))]
+@@ -1136,0 +1172,24 @@
++            #[cfg(feature = "reuse-compaction-input-138")]
++            {
++                // Move only the scratch allocation; retained segment handles and
++                // Reader error/Drop behavior stay as before.
++                input_scratch = std::mem::take(&mut reader.scratch);
++            }
++        }
++        #[cfg(feature = "reuse-compaction-input-138")]
++        {
++            drop(input_values);
++            drop(input_scratch);
++        }
++        #[cfg(feature = "adaptive-compaction-phase-131")]
++        if !concatenation_ordered {
++            // Only unordered concatenation needs the merge workspace. Input
++            // blocks were fully CRC checked above; their selected row counts
++            // define the same ranges without eagerly recording ordered runs.
++            let mut offset = 0;
++            let runs: Vec<_> = selected.iter().map(|segment| {
++                let start = offset;
++                offset += segment.metadata.rows;
++                start..offset
++            }).collect();
++            compaction_merge::arrange(&mut columns, &runs);
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,0 +21,2 @@
++adaptive-compaction-phase-131 = []
++reuse-compaction-input-138 = ["adaptive-compaction-phase-131"]
