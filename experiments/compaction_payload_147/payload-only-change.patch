@@ -1,0 +1,74 @@
+--- exact144/src/archive.rs
++++ candidate147/src/archive.rs
+@@ -909,6 +909,15 @@
+                 *column = order.iter().map(|i| column[*i]).collect();
+             }
+         }
++        #[cfg(feature = "reuse-compaction-payload-147")]
++        let mut prepared_payload = (!remove.is_empty()
++            && rows
++                .checked_mul(columns.len())
++                .and_then(|cells| cells.checked_mul(8))
++                .is_some_and(|bytes| bytes <= 1024 * 1024))
++        .then(Vec::<Vec<u8>>::new);
++        #[cfg(feature = "reuse-compaction-payload-147")]
++        let mut retained_capacity = 0_usize;
+         let mut indexes = Vec::new();
+         for column in &columns {
+             let mut prefix = vec![0_i128];
+@@ -924,6 +933,18 @@
+                 last.push(*block.last().unwrap());
+                 let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
+                 crc.push(crc32fast::hash(&bytes));
++                #[cfg(feature = "reuse-compaction-payload-147")]
++                if let Some(prepared) = prepared_payload.as_mut() {
++                    if let Some(capacity) = retained_capacity
++                        .checked_add(bytes.capacity())
++                        .filter(|capacity| *capacity <= 1024 * 1024)
++                    {
++                        retained_capacity = capacity;
++                        prepared.push(bytes);
++                    } else {
++                        prepared_payload = None;
++                    }
++                }
+                 block_min.push(*block.iter().min().unwrap());
+                 block_max.push(*block.iter().max().unwrap());
+             }
+@@ -986,16 +1007,28 @@
+                     .open(self.path.join(&name))?;
+                 let mut output = BufWriter::with_capacity(64 * 1024, &mut segment_file);
+                 write_envelope(&mut output, SEG_MAGIC, &metadata_bytes)?;
+-                let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
+-                for column in &columns {
+-                    for block in column.chunks(BLOCK_ROWS) {
+-                        buffer.clear();
+-                        for value in block {
+-                            buffer.extend_from_slice(&value.to_le_bytes());
+-                        }
+-                        output.write_all(&buffer)?;
++                #[cfg(feature = "reuse-compaction-payload-147")]
++                let prepared = prepared_payload.take();
++                #[cfg(not(feature = "reuse-compaction-payload-147"))]
++                let prepared: Option<Vec<Vec<u8>>> = None;
++                if let Some(prepared) = prepared {
++                    for bytes in prepared {
++                        output.write_all(&bytes)?;
+                         #[cfg(feature = "fault-injection")]
+                         publication_cut_point("segment_partial")?;
++                    }
++                } else {
++                    let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
++                    for column in &columns {
++                        for block in column.chunks(BLOCK_ROWS) {
++                            buffer.clear();
++                            for value in block {
++                                buffer.extend_from_slice(&value.to_le_bytes());
++                            }
++                            output.write_all(&buffer)?;
++                            #[cfg(feature = "fault-injection")]
++                            publication_cut_point("segment_partial")?;
++                        }
+                     }
+                 }
+                 output.flush()?;

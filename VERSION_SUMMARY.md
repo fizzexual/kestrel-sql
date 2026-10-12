@@ -140,3 +140,5 @@ controls/goals remain unevaluated.144 stays unadopted,017 unreleased.
 [Complete prefix outcome](COMPACTION_PREFIX_145.md).
 
 Complete146:216 independently correct stores, 32 A/A/14 guards/0 goals fail; extra manual-query boundary unproven.144 stays unadopted,017 unreleased. [Outcome](COMPACTION_EXTREMA_COMPARE_146.md).
+
+New bounded CRC payload reuse147 passed348 fresh tests/two lints,52 independent stores, six exact format pairs and14 recovery cases. Performance unmeasured;017 unreleased. [Actual code](COMPACTION_PAYLOAD_147.md).

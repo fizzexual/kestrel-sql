@@ -126,3 +126,5 @@ speed unmeasured,0.3.17 unreleased. [Code and proof](COMPACTION_EXTREMA_144.md).
 - [Interrupted comparison145](COMPACTION_PREFIX_145.md):118 correct,98 unstarted; possible overlap rejects performance.
 
 - [Complete extrema comparison146](COMPACTION_EXTREMA_COMPARE_146.md):numerical failures and manual-probe uncertainty;216 independently correct.
+
+- [Bounded compaction payload147](COMPACTION_PAYLOAD_147.md):correctness/wire/recovery passed, untimed.
