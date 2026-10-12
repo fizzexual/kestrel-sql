@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Isolated bounded writer134 passed344 fresh tests/two lints,16 independent
+store audits, six exact legacy wire pairs and14 publication recovery cases.
+Speed is unmeasured;0.3.17 remains unreleased. [Source and outcome](COMPACTION_WRITE_134.md).
+
 Complete133 independently passed216 stores/7,077,888 rows. Clustered whole
 compaction is10.80% lower and preparation29.37% lower with passing full/both-half
 goals/controls. Overall7/72 A/A and1/72 guard fail; large sync tails remain.
