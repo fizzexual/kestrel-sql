@@ -2,9 +2,12 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Complete137 is rejected:216 independently correct stores,32/144 A/A,13/144
+guards and all six goals fail. Clustered paired whole time is3.15% lower, short
+of its goal; five calibrated regressions remain. [Results and failures](COMPACTION_BUFFER_COMPARE_137.md).
+
 New buffer-only alternative136 passed344 fresh tests/two lints,16 independent
-store audits, six exact legacy wire pairs and14 recovery cases. Speed remains
-unmeasured. [Code and correctness](COMPACTION_BUFFER_136.md).
+store audits, six exact legacy wire pairs and14 recovery cases. Performance was measured and rejected in137. [Code and correctness](COMPACTION_BUFFER_136.md).
 
 Complete135 is REJECTED: all216 stores pass independent correctness;24/144
 A/A,35/144 guards and all6 goals fail. Write-through moves stalls into writes;

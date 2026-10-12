@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Complete buffer-only comparison137](COMPACTION_BUFFER_COMPARE_137.md)
 - [Untimed buffer-only alternative136](COMPACTION_BUFFER_136.md)
 - [Rejected write-through comparison135](COMPACTION_WRITE_COMPARE_135.md)
 - [Bounded compaction writer134](COMPACTION_WRITE_134.md)
