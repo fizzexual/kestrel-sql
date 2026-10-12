@@ -2,6 +2,7 @@
 
 Concise completed-run records; current supported version is 0.3.16. Experimental gains do not imply release qualification. Existing complete reports and raw evidence remain at private commit `bb25f1547be393a6e6607a4ce54cf179abb85666`.
 
+- [Complete bounded-read comparison141](COMPACTION_READ_COMPARE_141.md)
 - [Bounded compaction reads140](COMPACTION_READ_140.md)
 - [Complete input-allocation comparison139](COMPACTION_INPUT_COMPARE_139.md)
 - [Compaction input-workspace fix138](COMPACTION_INPUT_138.md)

@@ -12,8 +12,11 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Complete bounded-read comparison141](COMPACTION_READ_COMPARE_141.md):216
+correct cases,20 controls/15 guards/4 goals fail;140 is not adopted.
+
 [Bounded compaction reads140](COMPACTION_READ_140.md) passed352 tests,36 independent
-stores and14 recovery cases. Speed unmeasured;0.3.17 unreleased.
+stores and14 recovery cases. Performance measured and rejected in141;0.3.17 unreleased.
 
 [Complete input-allocation comparison139](COMPACTION_INPUT_COMPARE_139.md):216
 correct cases,27 controls/22 guards/4 goals fail;138 is not adopted.
