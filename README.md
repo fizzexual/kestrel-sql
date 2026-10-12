@@ -150,3 +150,5 @@ correct cases,98 unstarted; no speed qualification because of possible overlap.
 [Extrema comparison146](COMPACTION_EXTREMA_COMPARE_146.md):216 independently correct stores; unqualified performance and manual-probe boundary.017 remains unreleased.
 
 [Bounded CRC payload reuse147](COMPACTION_PAYLOAD_147.md):actual code,348 fresh tests/two lints/52 independent stores/wire/recovery pass; speed unmeasured.
+
+[Payload comparison148](COMPACTION_PREFIX_148.md):10 correct,206 unstarted; no speed qualification because of possible background overlap.

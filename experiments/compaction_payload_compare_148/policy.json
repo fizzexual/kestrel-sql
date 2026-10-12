@@ -1,0 +1,1605 @@
+{
+  "trial": 148,
+  "declared_utc": "2026-10-12T22:51:02.327835+00:00",
+  "source_commit": "435f750fedbe105976803d699daaa9177789fe5e",
+  "kind": "Complete Archive compaction: supported016 identical A/B versus JOINT131+144+147 C",
+  "hypothesis": "147 reuses CRC output bytes once during eligible compaction with checked total actual Vec byte capacity<=1MiB, dropping all retention on overflow/overbudget and using original stream.131 selects ordered concatenation or bounded merge from charged input disorder;144 reduces existing block extrema. Original64KiB writer, all input/readCRC/phase/index/write/flush/sync, both explicit syncs, format, receipts/ACK and cutpoints remain. This compares JOINT131+144+147 against supported016, not isolated147 versus144; it cannot qualify release/service by itself.",
+  "component_configs": [
+    "ordered",
+    "clustered",
+    "interleaved",
+    "duplicates",
+    "late",
+    "extreme"
+  ],
+  "cases": [
+    {
+      "index": 0,
+      "round": 1,
+      "seed": 1,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 1,
+      "round": 1,
+      "seed": 1,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 2,
+      "round": 1,
+      "seed": 1,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 3,
+      "round": 1,
+      "seed": 1,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 4,
+      "round": 1,
+      "seed": 1,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 5,
+      "round": 1,
+      "seed": 1,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 6,
+      "round": 1,
+      "seed": 1,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 7,
+      "round": 1,
+      "seed": 1,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 8,
+      "round": 1,
+      "seed": 1,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 9,
+      "round": 1,
+      "seed": 1,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 10,
+      "round": 1,
+      "seed": 1,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 11,
+      "round": 1,
+      "seed": 1,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 12,
+      "round": 1,
+      "seed": 1,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 13,
+      "round": 1,
+      "seed": 1,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 14,
+      "round": 1,
+      "seed": 1,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 15,
+      "round": 1,
+      "seed": 1,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 16,
+      "round": 1,
+      "seed": 1,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 17,
+      "round": 1,
+      "seed": 1,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 18,
+      "round": 2,
+      "seed": 2,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 19,
+      "round": 2,
+      "seed": 2,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 20,
+      "round": 2,
+      "seed": 2,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 21,
+      "round": 2,
+      "seed": 2,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 22,
+      "round": 2,
+      "seed": 2,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 23,
+      "round": 2,
+      "seed": 2,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 24,
+      "round": 2,
+      "seed": 2,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 25,
+      "round": 2,
+      "seed": 2,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 26,
+      "round": 2,
+      "seed": 2,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 27,
+      "round": 2,
+      "seed": 2,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 28,
+      "round": 2,
+      "seed": 2,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 29,
+      "round": 2,
+      "seed": 2,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 30,
+      "round": 2,
+      "seed": 2,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 31,
+      "round": 2,
+      "seed": 2,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 32,
+      "round": 2,
+      "seed": 2,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 33,
+      "round": 2,
+      "seed": 2,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 34,
+      "round": 2,
+      "seed": 2,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 35,
+      "round": 2,
+      "seed": 2,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 36,
+      "round": 3,
+      "seed": 3,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 37,
+      "round": 3,
+      "seed": 3,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 38,
+      "round": 3,
+      "seed": 3,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 39,
+      "round": 3,
+      "seed": 3,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 40,
+      "round": 3,
+      "seed": 3,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 41,
+      "round": 3,
+      "seed": 3,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 42,
+      "round": 3,
+      "seed": 3,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 43,
+      "round": 3,
+      "seed": 3,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 44,
+      "round": 3,
+      "seed": 3,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 45,
+      "round": 3,
+      "seed": 3,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 46,
+      "round": 3,
+      "seed": 3,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 47,
+      "round": 3,
+      "seed": 3,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 48,
+      "round": 3,
+      "seed": 3,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 49,
+      "round": 3,
+      "seed": 3,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 50,
+      "round": 3,
+      "seed": 3,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 51,
+      "round": 3,
+      "seed": 3,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 52,
+      "round": 3,
+      "seed": 3,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 53,
+      "round": 3,
+      "seed": 3,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 54,
+      "round": 4,
+      "seed": 4,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 55,
+      "round": 4,
+      "seed": 4,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 56,
+      "round": 4,
+      "seed": 4,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 57,
+      "round": 4,
+      "seed": 4,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 58,
+      "round": 4,
+      "seed": 4,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 59,
+      "round": 4,
+      "seed": 4,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 60,
+      "round": 4,
+      "seed": 4,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 61,
+      "round": 4,
+      "seed": 4,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 62,
+      "round": 4,
+      "seed": 4,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 63,
+      "round": 4,
+      "seed": 4,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 64,
+      "round": 4,
+      "seed": 4,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 65,
+      "round": 4,
+      "seed": 4,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 66,
+      "round": 4,
+      "seed": 4,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 67,
+      "round": 4,
+      "seed": 4,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 68,
+      "round": 4,
+      "seed": 4,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 69,
+      "round": 4,
+      "seed": 4,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 70,
+      "round": 4,
+      "seed": 4,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 71,
+      "round": 4,
+      "seed": 4,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 72,
+      "round": 5,
+      "seed": 5,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 73,
+      "round": 5,
+      "seed": 5,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 74,
+      "round": 5,
+      "seed": 5,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 75,
+      "round": 5,
+      "seed": 5,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 76,
+      "round": 5,
+      "seed": 5,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 77,
+      "round": 5,
+      "seed": 5,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 78,
+      "round": 5,
+      "seed": 5,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 79,
+      "round": 5,
+      "seed": 5,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 80,
+      "round": 5,
+      "seed": 5,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 81,
+      "round": 5,
+      "seed": 5,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 82,
+      "round": 5,
+      "seed": 5,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 83,
+      "round": 5,
+      "seed": 5,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 84,
+      "round": 5,
+      "seed": 5,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 85,
+      "round": 5,
+      "seed": 5,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 86,
+      "round": 5,
+      "seed": 5,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 87,
+      "round": 5,
+      "seed": 5,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 88,
+      "round": 5,
+      "seed": 5,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 89,
+      "round": 5,
+      "seed": 5,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 90,
+      "round": 6,
+      "seed": 6,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 91,
+      "round": 6,
+      "seed": 6,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 92,
+      "round": 6,
+      "seed": 6,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 93,
+      "round": 6,
+      "seed": 6,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 94,
+      "round": 6,
+      "seed": 6,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 95,
+      "round": 6,
+      "seed": 6,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 96,
+      "round": 6,
+      "seed": 6,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 97,
+      "round": 6,
+      "seed": 6,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 98,
+      "round": 6,
+      "seed": 6,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 99,
+      "round": 6,
+      "seed": 6,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 100,
+      "round": 6,
+      "seed": 6,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 101,
+      "round": 6,
+      "seed": 6,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 102,
+      "round": 6,
+      "seed": 6,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 103,
+      "round": 6,
+      "seed": 6,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 104,
+      "round": 6,
+      "seed": 6,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 105,
+      "round": 6,
+      "seed": 6,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 106,
+      "round": 6,
+      "seed": 6,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 107,
+      "round": 6,
+      "seed": 6,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 108,
+      "round": 7,
+      "seed": 7,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 109,
+      "round": 7,
+      "seed": 7,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 110,
+      "round": 7,
+      "seed": 7,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 111,
+      "round": 7,
+      "seed": 7,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 112,
+      "round": 7,
+      "seed": 7,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 113,
+      "round": 7,
+      "seed": 7,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 114,
+      "round": 7,
+      "seed": 7,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 115,
+      "round": 7,
+      "seed": 7,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 116,
+      "round": 7,
+      "seed": 7,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 117,
+      "round": 7,
+      "seed": 7,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 118,
+      "round": 7,
+      "seed": 7,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 119,
+      "round": 7,
+      "seed": 7,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 120,
+      "round": 7,
+      "seed": 7,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 121,
+      "round": 7,
+      "seed": 7,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 122,
+      "round": 7,
+      "seed": 7,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 123,
+      "round": 7,
+      "seed": 7,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 124,
+      "round": 7,
+      "seed": 7,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 125,
+      "round": 7,
+      "seed": 7,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 126,
+      "round": 8,
+      "seed": 8,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 127,
+      "round": 8,
+      "seed": 8,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 128,
+      "round": 8,
+      "seed": 8,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 129,
+      "round": 8,
+      "seed": 8,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 130,
+      "round": 8,
+      "seed": 8,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 131,
+      "round": 8,
+      "seed": 8,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 132,
+      "round": 8,
+      "seed": 8,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 133,
+      "round": 8,
+      "seed": 8,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 134,
+      "round": 8,
+      "seed": 8,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 135,
+      "round": 8,
+      "seed": 8,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 136,
+      "round": 8,
+      "seed": 8,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 137,
+      "round": 8,
+      "seed": 8,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 138,
+      "round": 8,
+      "seed": 8,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 139,
+      "round": 8,
+      "seed": 8,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 140,
+      "round": 8,
+      "seed": 8,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 141,
+      "round": 8,
+      "seed": 8,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 142,
+      "round": 8,
+      "seed": 8,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 143,
+      "round": 8,
+      "seed": 8,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 144,
+      "round": 9,
+      "seed": 9,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 145,
+      "round": 9,
+      "seed": 9,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 146,
+      "round": 9,
+      "seed": 9,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 147,
+      "round": 9,
+      "seed": 9,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 148,
+      "round": 9,
+      "seed": 9,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 149,
+      "round": 9,
+      "seed": 9,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 150,
+      "round": 9,
+      "seed": 9,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 151,
+      "round": 9,
+      "seed": 9,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 152,
+      "round": 9,
+      "seed": 9,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 153,
+      "round": 9,
+      "seed": 9,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 154,
+      "round": 9,
+      "seed": 9,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 155,
+      "round": 9,
+      "seed": 9,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 156,
+      "round": 9,
+      "seed": 9,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 157,
+      "round": 9,
+      "seed": 9,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 158,
+      "round": 9,
+      "seed": 9,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 159,
+      "round": 9,
+      "seed": 9,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 160,
+      "round": 9,
+      "seed": 9,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 161,
+      "round": 9,
+      "seed": 9,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 162,
+      "round": 10,
+      "seed": 10,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 163,
+      "round": 10,
+      "seed": 10,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 164,
+      "round": 10,
+      "seed": 10,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 165,
+      "round": 10,
+      "seed": 10,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 166,
+      "round": 10,
+      "seed": 10,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 167,
+      "round": 10,
+      "seed": 10,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 168,
+      "round": 10,
+      "seed": 10,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 169,
+      "round": 10,
+      "seed": 10,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 170,
+      "round": 10,
+      "seed": 10,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 171,
+      "round": 10,
+      "seed": 10,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 172,
+      "round": 10,
+      "seed": 10,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 173,
+      "round": 10,
+      "seed": 10,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 174,
+      "round": 10,
+      "seed": 10,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 175,
+      "round": 10,
+      "seed": 10,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 176,
+      "round": 10,
+      "seed": 10,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 177,
+      "round": 10,
+      "seed": 10,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 178,
+      "round": 10,
+      "seed": 10,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 179,
+      "round": 10,
+      "seed": 10,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 180,
+      "round": 11,
+      "seed": 11,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 181,
+      "round": 11,
+      "seed": 11,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 182,
+      "round": 11,
+      "seed": 11,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 183,
+      "round": 11,
+      "seed": 11,
+      "name": "clustered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 184,
+      "round": 11,
+      "seed": 11,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 185,
+      "round": 11,
+      "seed": 11,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 186,
+      "round": 11,
+      "seed": 11,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 187,
+      "round": 11,
+      "seed": 11,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 188,
+      "round": 11,
+      "seed": 11,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 189,
+      "round": 11,
+      "seed": 11,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 190,
+      "round": 11,
+      "seed": 11,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 191,
+      "round": 11,
+      "seed": 11,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 192,
+      "round": 11,
+      "seed": 11,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 193,
+      "round": 11,
+      "seed": 11,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 194,
+      "round": 11,
+      "seed": 11,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 195,
+      "round": 11,
+      "seed": 11,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 196,
+      "round": 11,
+      "seed": 11,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 197,
+      "round": 11,
+      "seed": 11,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 198,
+      "round": 12,
+      "seed": 12,
+      "name": "late",
+      "variant": "candidate"
+    },
+    {
+      "index": 199,
+      "round": 12,
+      "seed": 12,
+      "name": "late",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 200,
+      "round": 12,
+      "seed": 12,
+      "name": "late",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 201,
+      "round": 12,
+      "seed": 12,
+      "name": "extreme",
+      "variant": "candidate"
+    },
+    {
+      "index": 202,
+      "round": 12,
+      "seed": 12,
+      "name": "extreme",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 203,
+      "round": 12,
+      "seed": 12,
+      "name": "extreme",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 204,
+      "round": 12,
+      "seed": 12,
+      "name": "interleaved",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 205,
+      "round": 12,
+      "seed": 12,
+      "name": "interleaved",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 206,
+      "round": 12,
+      "seed": 12,
+      "name": "interleaved",
+      "variant": "candidate"
+    },
+    {
+      "index": 207,
+      "round": 12,
+      "seed": 12,
+      "name": "duplicates",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 208,
+      "round": 12,
+      "seed": 12,
+      "name": "duplicates",
+      "variant": "candidate"
+    },
+    {
+      "index": 209,
+      "round": 12,
+      "seed": 12,
+      "name": "duplicates",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 210,
+      "round": 12,
+      "seed": 12,
+      "name": "ordered",
+      "variant": "baseline_b"
+    },
+    {
+      "index": 211,
+      "round": 12,
+      "seed": 12,
+      "name": "ordered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 212,
+      "round": 12,
+      "seed": 12,
+      "name": "ordered",
+      "variant": "candidate"
+    },
+    {
+      "index": 213,
+      "round": 12,
+      "seed": 12,
+      "name": "clustered",
+      "variant": "baseline_a"
+    },
+    {
+      "index": 214,
+      "round": 12,
+      "seed": 12,
+      "name": "clustered",
+      "variant": "candidate"
+    },
+    {
+      "index": 215,
+      "round": 12,
+      "seed": 12,
+      "name": "clustered",
+      "variant": "baseline_b"
+    }
+  ],
+  "rounds": 12,
+  "schedule_rng": "Python random.Random(20261011), fixed before timing; all six permutations once per workload per half",
+  "affinity_mask": 256,
+  "cooldown_seconds": 120,
+  "cooldown_poll_seconds": 10,
+  "cooldown_deadline_seconds": 7200,
+  "AA_lower": 0.9,
+  "AA_upper": 1.1,
+  "candidate_guard_upper": 1.1,
+  "scopes": [
+    "full",
+    "first_half",
+    "second_half"
+  ],
+  "metrics": [
+    "wall_ms",
+    "prepare_ms",
+    "segment_write_ms",
+    "segment_sync_ms",
+    "catalog_sync_ms",
+    "write_sync_ms",
+    "wall_p95_ms",
+    "setup_p95_ms"
+  ],
+  "goals": {
+    "clustered_wall_ms_max_ratio": 0.95,
+    "clustered_prepare_ms_max_ratio": 0.9
+  },
+  "runs_per_case": 32,
+  "rows_per_run": 1024,
+  "columns": 3,
+  "same_original_driver": true,
+  "binary_sha256": {
+    "baseline.exe": "2392cb6e53c0736a2d3bb67fd89369016848e6e12010989369b46a7a4ec2c1c7",
+    "candidate147.exe": "e2e20801121855cce9303151fcbe85cfb72864b240e15aa95e509289a38fa247"
+  },
+  "prerequisites_reused": {
+    "baseline016_tests": 154,
+    "candidate147_tests": 348,
+    "candidate_strict_lints": 2,
+    "new_Rust_build_or_tests": 0,
+    "baseline_source_commit": "703c748e92f21c21a9d7d9b7bf60f861ed060614",
+    "candidate_source_commit": "435f750fedbe105976803d699daaa9177789fe5e",
+    "candidate_independent_stores": 52,
+    "candidate_supported016_wire_pairs": 6,
+    "candidate_recovery_cases": 14,
+    "candidate_recovery_commands": 56
+  },
+  "unchanged_release_gates": {
+    "Native": 324,
+    "service": 252,
+    "goals": 42,
+    "AA": 153,
+    "guards": 171
+  },
+  "same_physical_D": true,
+  "resource_bound_bytes": 600000000,
+  "timeout_seconds": 90,
+  "no_selected_retiming": true,
+  "no_global_CPU_power_ASLR_or_security_change": true,
+  "platform": "Windows-10-10.0.19045-SP0",
+  "new_protocol": "One owned persistent PowerShell metadata worker blocks on stdin between requests; identical reset/task/supervisor/global-build checks before/after every native case and during120-second continuous quiet window. Worker does no probe during native lifetime and must actually exit0 after all cases. Busy before a timer waits120 continuous clear seconds. Busy after a completed native child can wait ONLY if every observed blocker began after child exit+100ms and after the post-probe began; possible overlap rejects entire prefix. All samples/cases kept exactly once, no metric-dependent selection. No engine/numerical gate/input reduction; waits/startup outside compaction clock. Bounded nonsecret blocker reasons retained; no command-line dumping.",
+  "timer": "Instant around entire Archive.compact_small; preparation begins at input CRC/read/collection. Setup, native verification/pins/reclaim/reopen outside timer.",
+  "environment_limits": "Other local development/server apps remain running; no app stopped. Reset/task work and visible build checks required before timing and before and after each actual native case. A/A controls decide qualification; snapshots cannot exclude every brief background task.",
+  "storage": "Concise private Markdown outcomes/failures and useful source, fresh byte-exact remote verification, then native scoped completed fixture cleanup; no raw bundle.",
+  "quantile_guards": "For wall/setup p95, nearest-rank quantile ratio B/A and C/A in full and both halves; controls[.90,1.10], guard<=1.10. With12/full or6/half samples, p95 equals max; retain every stall, no outlier removal. Other metrics use median within-round ratios. This adds tail/write/setup guards; original release gates unchanged.",
+  "component_checks": {
+    "AA": 144,
+    "guards": 144,
+    "clustered_goals": 6
+  },
+  "supplemental_independent_checks": {
+    "all_probe_intervals_against_every_native_lifetime": true,
+    "receipt_generations_from_declared_run_plus_one_not_stdout": true,
+    "all_controller_and_decoder_sources_frozen": true
+  }
+}
