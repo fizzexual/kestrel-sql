@@ -12,6 +12,9 @@ Completed experiments use short Markdown reports in [benchmark history](BENCHMAR
 Large historical artifacts remain in private Git history. To download only the
 current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
 
+[Comparison130](COMPACTION_PREFIX_130.md) preserves44 independently correct cases;
+172 timings remain unstarted after a new activity hold. Performance stays pending.
+
 [Stopped comparison129](COMPACTION_PREFIX_129.md) preserves all seven independently
 correct cases;209 timings are unstarted. A status-query false alarm held the run.
 

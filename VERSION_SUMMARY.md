@@ -2,6 +2,10 @@
 
 **Supported: 0.3.16. Version 0.3.17 has not been released. Work resumed at the user's request.**
 
+Comparison130 independently passed all44 completed stores but a different
+PowerShell process held the remaining172 cases. No complete speed/control
+qualification is available. [Full prefix outcome](COMPACTION_PREFIX_130.md).
+
 Comparison129 stopped after seven independently correct cases when our own
 read-only status query triggered the idle guard.209 timings remain unstarted;
 no speed or release qualification is claimed.
