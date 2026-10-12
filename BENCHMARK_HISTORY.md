@@ -113,3 +113,5 @@ Concise completed-run records; current supported version is 0.3.16. Experimental
 - [Bounded service-writer diagnostics 087](WRITER_TRACE_087.md)
 
 Use [version summary](VERSION_SUMMARY.md) for current status and [storage policy](STORAGE_POLICY.md) for retention.
+
+Index diagnostic142 closed before any qualification timing: four kernel tests/one lint passed, five excluded complete index outputs passed; wide i128 JSON Value output failed in the sixth. All216 cases/18AA/18guards/18goals unstarted or unevaluated. Supported016 exact; no speed/release qualification. [Concise outcome](INDEX_DIAGNOSTIC_142.md).
