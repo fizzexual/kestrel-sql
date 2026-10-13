@@ -1,0 +1,68 @@
+--- exact144/src/archive.rs
++++ candidate150/src/archive.rs
+@@ -911,0 +912,10 @@
++        #[cfg(feature = "contiguous-compaction-payload-150")]
++        let mut prepared_payload = if remove.is_empty() {
++            None
++        } else {
++            rows.checked_mul(columns.len())
++                .and_then(|cells| cells.checked_mul(8))
++                .filter(|bytes| *bytes <= 1024 * 1024)
++                .map(Vec::<u8>::with_capacity)
++                .filter(|bytes| bytes.capacity() <= 1024 * 1024)
++        };
+@@ -925,2 +935,14 @@
+-                let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
+-                crc.push(crc32fast::hash(&bytes));
++                #[cfg(feature = "contiguous-compaction-payload-150")]
++                if let Some(bytes) = prepared_payload.as_mut() {
++                    let start = bytes.len();
++                    bytes.extend(block.iter().flat_map(|x| x.to_le_bytes()));
++                    crc.push(crc32fast::hash(&bytes[start..]));
++                } else {
++                    let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
++                    crc.push(crc32fast::hash(&bytes));
++                }
++                #[cfg(not(feature = "contiguous-compaction-payload-150"))]
++                {
++                    let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
++                    crc.push(crc32fast::hash(&bytes));
++                }
+@@ -989,6 +1011,13 @@
+-                let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
+-                for column in &columns {
+-                    for block in column.chunks(BLOCK_ROWS) {
+-                        buffer.clear();
+-                        for value in block {
+-                            buffer.extend_from_slice(&value.to_le_bytes());
++                #[cfg(feature = "contiguous-compaction-payload-150")]
++                let prepared = prepared_payload.take();
++                #[cfg(not(feature = "contiguous-compaction-payload-150"))]
++                let prepared: Option<Vec<u8>> = None;
++                if let Some(prepared) = prepared {
++                    let mut offset = 0;
++                    for column in &columns {
++                        for block in column.chunks(BLOCK_ROWS) {
++                            let end = offset + block.len() * 8;
++                            output.write_all(&prepared[offset..end])?;
++                            offset = end;
++                            #[cfg(feature = "fault-injection")]
++                            publication_cut_point("segment_partial")?;
+@@ -996,3 +1025,14 @@
+-                        output.write_all(&buffer)?;
+-                        #[cfg(feature = "fault-injection")]
+-                        publication_cut_point("segment_partial")?;
++                    }
++                    debug_assert_eq!(offset, prepared.len());
++                } else {
++                    let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
++                    for column in &columns {
++                        for block in column.chunks(BLOCK_ROWS) {
++                            buffer.clear();
++                            for value in block {
++                                buffer.extend_from_slice(&value.to_le_bytes());
++                            }
++                            output.write_all(&buffer)?;
++                            #[cfg(feature = "fault-injection")]
++                            publication_cut_point("segment_partial")?;
++                        }

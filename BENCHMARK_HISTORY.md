@@ -132,3 +132,5 @@ speed unmeasured,0.3.17 unreleased. [Code and proof](COMPACTION_EXTREMA_144.md).
 - [Interrupted payload comparison148](COMPACTION_PREFIX_148.md):10 correct,206 unstarted; possible overlap rejects performance.
 
 - [Complete payload comparison149](COMPACTION_PAYLOAD_COMPARE_149.md):216 correct,31 A/A/22 guards fail; clustered goals pass, candidate rejected.
+
+- [Bounded compaction contiguous150](COMPACTION_CONTIGUOUS_150.md):correctness/wire/recovery passed, untimed.

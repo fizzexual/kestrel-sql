@@ -1,0 +1,123 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,0 +21,3 @@
++adaptive-compaction-phase-131 = []
++reuse-publish-extrema-144 = ["adaptive-compaction-phase-131"]
++contiguous-compaction-payload-150 = ["reuse-publish-extrema-144"]
+--- a/src/archive.rs
++++ b/src/archive.rs
+@@ -15,0 +16,4 @@
++
++#[cfg(feature = "adaptive-compaction-phase-131")]
++#[path = "merge_runs_131.rs"]
++mod compaction_merge;
+@@ -907,0 +912,10 @@
++        #[cfg(feature = "contiguous-compaction-payload-150")]
++        let mut prepared_payload = if remove.is_empty() {
++            None
++        } else {
++            rows.checked_mul(columns.len())
++                .and_then(|cells| cells.checked_mul(8))
++                .filter(|bytes| *bytes <= 1024 * 1024)
++                .map(Vec::<u8>::with_capacity)
++                .filter(|bytes| bytes.capacity() <= 1024 * 1024)
++        };
+@@ -921,2 +935,14 @@
+-                let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
+-                crc.push(crc32fast::hash(&bytes));
++                #[cfg(feature = "contiguous-compaction-payload-150")]
++                if let Some(bytes) = prepared_payload.as_mut() {
++                    let start = bytes.len();
++                    bytes.extend(block.iter().flat_map(|x| x.to_le_bytes()));
++                    crc.push(crc32fast::hash(&bytes[start..]));
++                } else {
++                    let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
++                    crc.push(crc32fast::hash(&bytes));
++                }
++                #[cfg(not(feature = "contiguous-compaction-payload-150"))]
++                {
++                    let bytes: Vec<_> = block.iter().flat_map(|x| x.to_le_bytes()).collect();
++                    crc.push(crc32fast::hash(&bytes));
++                }
+@@ -925,0 +952,4 @@
++            #[cfg(feature = "reuse-publish-extrema-144")]
++            let global_min = *block_min.iter().min().unwrap();
++            #[cfg(feature = "reuse-publish-extrema-144")]
++            let global_max = *block_max.iter().max().unwrap();
+@@ -931,0 +962,3 @@
++                #[cfg(feature = "reuse-publish-extrema-144")]
++                min: global_min,
++                #[cfg(not(feature = "reuse-publish-extrema-144"))]
+@@ -932,0 +966,3 @@
++                #[cfg(feature = "reuse-publish-extrema-144")]
++                max: global_max,
++                #[cfg(not(feature = "reuse-publish-extrema-144"))]
+@@ -975,6 +1011,13 @@
+-                let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
+-                for column in &columns {
+-                    for block in column.chunks(BLOCK_ROWS) {
+-                        buffer.clear();
+-                        for value in block {
+-                            buffer.extend_from_slice(&value.to_le_bytes());
++                #[cfg(feature = "contiguous-compaction-payload-150")]
++                let prepared = prepared_payload.take();
++                #[cfg(not(feature = "contiguous-compaction-payload-150"))]
++                let prepared: Option<Vec<u8>> = None;
++                if let Some(prepared) = prepared {
++                    let mut offset = 0;
++                    for column in &columns {
++                        for block in column.chunks(BLOCK_ROWS) {
++                            let end = offset + block.len() * 8;
++                            output.write_all(&prepared[offset..end])?;
++                            offset = end;
++                            #[cfg(feature = "fault-injection")]
++                            publication_cut_point("segment_partial")?;
+@@ -982,3 +1025,14 @@
+-                        output.write_all(&buffer)?;
+-                        #[cfg(feature = "fault-injection")]
+-                        publication_cut_point("segment_partial")?;
++                    }
++                    debug_assert_eq!(offset, prepared.len());
++                } else {
++                    let mut buffer = Vec::with_capacity(BLOCK_ROWS * 8);
++                    for column in &columns {
++                        for block in column.chunks(BLOCK_ROWS) {
++                            buffer.clear();
++                            for value in block {
++                                buffer.extend_from_slice(&value.to_le_bytes());
++                            }
++                            output.write_all(&buffer)?;
++                            #[cfg(feature = "fault-injection")]
++                            publication_cut_point("segment_partial")?;
++                        }
+@@ -1118,0 +1173,2 @@
++        #[cfg(feature = "adaptive-compaction-phase-131")]
++        let mut concatenation_ordered = true;
+@@ -1133,0 +1190,13 @@
++                    #[cfg(feature = "adaptive-compaction-phase-131")]
++                    {
++                        let values = reader.read_block(column, block, false)?;
++                        // First-block boundary values are already CRC validated
++                        // and hot while collecting input. Charge the phase choice
++                        // here, rather than probing all runs after concatenation.
++                        if column == 0 && block == 0 && concatenation_ordered {
++                            concatenation_ordered = data.last().zip(values.first())
++                                .is_none_or(|(previous, next)| previous <= next);
++                        }
++                        data.extend(values);
++                    }
++                    #[cfg(not(feature = "adaptive-compaction-phase-131"))]
+@@ -1136,0 +1206,13 @@
++        }
++        #[cfg(feature = "adaptive-compaction-phase-131")]
++        if !concatenation_ordered {
++            // Only unordered concatenation needs the merge workspace. Input
++            // blocks were fully CRC checked above; their selected row counts
++            // define the same ranges without eagerly recording ordered runs.
++            let mut offset = 0;
++            let runs: Vec<_> = selected.iter().map(|segment| {
++                let start = offset;
++                offset += segment.metadata.rows;
++                start..offset
++            }).collect();
++            compaction_merge::arrange(&mut columns, &runs);
