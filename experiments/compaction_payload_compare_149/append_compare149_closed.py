@@ -29,13 +29,12 @@ goals/controls pass full/both halves: whole6.06690->5.53325ms paired8.74% lower,
 preparation1.94355->1.45345ms paired25.73% lower. Clustered write+sync full+2.07%
 with passing controls; no write+sync gain. This compares JOINT131+144+147 vs016,
 not isolated147; do not combine ratios with146/133 or identify an exclusive cause.
-13 calibrated failed guards: ordered prepare full/first/second1.192616/1.164632/
+{load(R/'phase149-publication-proof.json')['calibrated_guards_failed']} calibrated failed guards: ordered prepare full/first/second1.192616/1.164632/
 1.215284, ordered write full/second1.128638/1.144353 and ordered second whole
 p95 1.103552; interleaved first prepare/write1.149541/1.136762; duplicates full/
 second write1.144384/1.145262; late full/first prepare1.104436/1.124586; extreme
 full whole p95 5.615382 (9.8802->55.4811ms,AA.977845), extreme first write1.158307.
-Check actual report for the exact total calibrated count: the listed guards
-are14 rows if each scope is counted separately. Other failed guards have failed
+Other failed guards have failed
 controls and remain inconclusive. Every53 failed check is saved. Candidate147
 UNADOPTED/performance-rejected; supported016 exact,017 UNRELEASED.
 
