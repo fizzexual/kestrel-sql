@@ -152,3 +152,5 @@ correct cases,98 unstarted; no speed qualification because of possible overlap.
 [Bounded CRC payload reuse147](COMPACTION_PAYLOAD_147.md):actual code,348 fresh tests/two lints/52 independent stores/wire/recovery pass; speed unmeasured.
 
 [Payload comparison148](COMPACTION_PREFIX_148.md):10 correct,206 unstarted; no speed qualification because of possible background overlap.
+
+[Complete payload comparison149](COMPACTION_PAYLOAD_COMPARE_149.md):limited clustered gains, overall31 control/22 guard failures; no adoption or release.

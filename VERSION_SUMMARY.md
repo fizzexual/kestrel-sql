@@ -144,3 +144,5 @@ Complete146:216 independently correct stores, 32 A/A/14 guards/0 goals fail; ext
 New bounded CRC payload reuse147 passed348 fresh tests/two lints,52 independent stores, six exact format pairs and14 recovery cases. Performance unmeasured;017 unreleased. [Actual code](COMPACTION_PAYLOAD_147.md).
 
 Comparison148:10 independently correct cases;206 unstarted. Possible background overlap rejects performance;147 speed unqualified,017 unreleased. [Outcome](COMPACTION_PREFIX_148.md).
+
+Complete149:216 correct;clustered whole8.74% lower/preparation25.73% lower with full/both-half goals and controls. Overall31 A/A/22 guards fail, including ordered preparation and extreme tail regressions;147 not adopted,017 unreleased. [Outcome](COMPACTION_PAYLOAD_COMPARE_149.md).
