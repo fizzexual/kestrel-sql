@@ -26,8 +26,8 @@ pub fn import_i64(
         file.read_exact(&mut raw)?;
         let mut columns = vec![Vec::with_capacity(n); width];
         for row in raw.chunks_exact(width * 8) {
-            for (c, value) in columns.iter_mut().zip(row.chunks_exact(8)) {
-                c.push(i64::from_le_bytes(value.try_into().unwrap()));
+            for (c, value) in columns.iter_mut().zip(row.as_chunks::<8>().0) {
+                c.push(i64::from_le_bytes(*value));
             }
         }
         drop(raw);

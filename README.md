@@ -1,74 +1,14 @@
 # KestrelSQL
 
-**Supported version 0.3.16. Research prototype. Version 0.3.17 is unreleased.**
+A small embedded analytics engine in Rust for **append-only integer time series**.
 
-Rust embedded SQL and append-only analytics with exact range aggregates,
-immutable archive snapshots, checksummed segments and retryable batch ingestion.
-The Archive and RAM-resident transactional Database APIs have different contracts.
-[Archive API](ARCHIVE.md), [live ingestion](LIVE_METRICS.md),
-[version and benchmark summary](VERSION_SUMMARY.md).
+It answers `COUNT`, `SUM` and `AVG` over a time range in a few microseconds without reading the
+rows. Its storage is designed and tested so that a write cut off halfway is detected and discarded
+on the next open, without touching data that was already committed.
 
-Completed experiments use short Markdown reports in [benchmark history](BENCHMARK_HISTORY.md).
-Large historical artifacts remain in private Git history. To download only the
-current project: `git clone --depth 1 https://github.com/fizzexual/kestrel-sql.git`. [Storage policy](STORAGE_POLICY.md).
-
-[Complete bounded-read comparison141](COMPACTION_READ_COMPARE_141.md):216
-correct cases,20 controls/15 guards/4 goals fail;140 is not adopted.
-
-[Bounded compaction reads140](COMPACTION_READ_140.md) passed352 tests,36 independent
-stores and14 recovery cases. Performance measured and rejected in141;0.3.17 unreleased.
-
-[Complete input-allocation comparison139](COMPACTION_INPUT_COMPARE_139.md):216
-correct cases,27 controls/22 guards/4 goals fail;138 is not adopted.
-
-[Actual compaction input fix138](COMPACTION_INPUT_138.md) reuses decoded/scratch
-workspaces;344 tests,20 independent stores and14 recovery cases pass. Performance
-was measured and rejected in139;0.3.17 unreleased.
-
-[Complete buffer-only comparison137](COMPACTION_BUFFER_COMPARE_137.md):216 correct
-cases,32 controls/13 guards/all six goals fail;0.3.17 remains unreleased.
-
-[Buffer-only alternative136](COMPACTION_BUFFER_136.md) passed344 tests, exact
-legacy wire and14 recovery cases; performance remains unmeasured.
-
-[Complete writer comparison135](COMPACTION_WRITE_COMPARE_135.md) rejects write-through:
-216 correct cases,24 controls/35 guards/all6 goals fail.0.3.17 is unreleased.
-
-[Isolated bounded compaction writer134](COMPACTION_WRITE_134.md) passed344 tests,
-exact legacy wire and14 recovery cases; speed is unmeasured.
-
-[Complete comparison133](COMPACTION_COMPARE_133.md) finds controlled clustered
-whole compaction10.80% lower;7/72 controls and1/72 guard fail.0.3.17 is unreleased.
-
-[Interrupted comparison132](COMPACTION_PREFIX_132.md) preserves88 independently
-correct cases;128 remain unstarted after an activity hold between timers.
-
-[Experimental lazy compaction workspace131](COMPACTION_PHASE_131.md) passed340
-fresh tests/two lints/eight independent store audits; speed qualification is pending.
-
-[Comparison130](COMPACTION_PREFIX_130.md) preserves44 independently correct cases;
-172 timings remain unstarted after a new activity hold. Performance stays pending.
-
-[Stopped comparison129](COMPACTION_PREFIX_129.md) preserves all seven independently
-correct cases;209 timings are unstarted. A status-query false alarm held the run.
-
-[Fresh comparison preflight128](COMPACTION_PREFLIGHT_128.md) passed six independent checks;
-a new external build held all216 timings before case0. Performance remains pending.
-
-Latest [experimental compaction phase repair](COMPACTION_PHASE_127.md) passed
-correctness prerequisites; its performance and release qualification are pending.
-
-## Run it
-
-Rust 1.89 or later is required to build. Cargo.lock pins the dependencies used in this run. Commands below assume PowerShell in this project directory.
-
-```powershell
-cargo build --release --locked
-.\target\release\kestrel.exe --file examples\live_metrics.sql
-.\target\release\kestrel.exe --db ..\..\work\my-events
-```
-
-The second command executes a sample in memory. The third opens a durable database and reads one SQL statement per input line. Output is JSON lines. An unfinished transaction is discarded when the process exits. A supplied `bin/kestrel.exe` runs the same engine without a local Rust build; it has been tested on this Windows machine.
+**Status: research prototype, version 0.3.16.** It is not a general SQL database and it is not
+production-qualified. [What it does not do](#what-it-does-not-do) and
+[what the tests do not cover](#crash-safety-and-tests) are part of the description, not footnotes.
 
 ```sql
 CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL);
@@ -77,9 +17,170 @@ SELECT COUNT(*) AS n, SUM(value) AS total, AVG(value) AS mean FROM events WHERE 
 EXPLAIN SELECT SUM(value) FROM events WHERE ts >= 100 AND ts < 102;
 ```
 
-The result is `[[2, 30, 15.0]]`. EXPLAIN reports `prefix-range-aggregate` and the query result includes `rows_scanned: 0`. Prefix entries are current, including a transaction's own staged writes.
+The result is `[[2, 30, 15.0]]`. `EXPLAIN` reports `prefix-range-aggregate`, and the query result
+carries `rows_scanned: 0`.
 
-The CLI also accepts `--sql "..."` and `--help`. File input uses one complete statement per line, with blank lines and SQL line comments allowed. It is a development interface; there is no network listener.
+## The idea
+
+Every column stores its values and, next to them, the exact running total up to each row. When the
+filter column is in nondecreasing order (time usually is), a range such as `ts >= a AND ts < b` is
+two binary searches. The sum of the range is one subtraction of two running totals, the count is the
+distance between the two positions, and the average is those two divided. No row is read and there
+is no result cache to go stale.
+
+The price is paid when data is loaded: 24 bytes per value (8 for the value, 16 for a 128-bit running
+total) instead of 8, and the totals are computed on every append. If a late event breaks the order,
+filtered queries on that column fall back to a correct scan.
+
+## Two APIs
+
+- **`Database`** keeps tables in memory and writes every committed transaction to a log. It speaks
+  the SQL subset below and has `BEGIN` / `COMMIT` / `ROLLBACK`. The benchmark in the next section
+  measures this API.
+- **`Archive`** is the on-disk store: sorted immutable segments, snapshots, compaction, and batches
+  that can be retried safely. It answers `SELECT` queries through the same parser. `LiveArchive`
+  puts concurrent writers in front of it.
+
+## How fast
+
+One million rows, three columns, in memory, the `Database` API. Same data and the same SQL text in
+both engines; every answer is compared and all of them agree.
+
+SQLite is **not the fair rival** here: it is a row store built for transactions. It is in the table
+because everyone has it and can check the result. The fair comparison is a column store such as
+DuckDB, and the script adds a DuckDB column when it is installed.
+
+| Query | KestrelSQL | SQLite | SQLite with an index on `(ts, value)` |
+| --- | ---: | ---: | ---: |
+| `COUNT`, `SUM`, `AVG` of the whole table | 2.1–2.3 µs | 30–33 ms | 33–45 ms |
+| The same over half of the time range | 2.7–2.9 µs | 54–56 ms | 33–36 ms |
+| `COUNT`, `SUM` over the last 1,000 rows | 2.1–2.2 µs | 24–25 ms | 0.05–0.06 ms |
+| `COUNT`, `SUM` with a filter on an unsorted column | 3.4–3.6 ms | 39–42 ms | 39–41 ms |
+| `SUM` per device (97 groups), sorted | 12.8–13.4 ms | 261–284 ms | 264–277 ms |
+| `MIN`, `MAX` over half of the time range | 1.9–2.1 ms | 46–53 ms | 28–32 ms |
+
+Medians of 21 timed runs after 3 warm-ups; each cell is the range across three consecutive runs of
+the script on 2026-11-15 (Intel Core i9-13900KF, Windows 11, Rust 1.99.1, SQLite 3.50.4). With
+other work running on the same machine both engines were up to about twice as slow, with similar
+ratios.
+
+Reproduce it:
+
+```
+cargo build --release --locked
+python benchmarks/quick_compare.py
+```
+
+It needs only the Python standard library (on Linux the command is usually `python3`).
+`pip install duckdb` adds the DuckDB column.
+
+How to read the table:
+
+- **The first three rows are the running-total path.** That work was moved to load time and to
+  memory. The last three rows are ordinary column scans.
+- **The timers are not identical.** KestrelSQL reports its own in-process time. SQLite is timed in
+  Python around `execute` and `fetchall`, which adds a few microseconds per call.
+- **Earlier DuckDB comparisons** are summarised in the [lab notebook](lab-notebook/README.md). Their
+  drivers are not all in this repository, so treat them as history, not as a claim you can check
+  here.
+- **Where it loses.** As a service under concurrent load it is not the fastest. In the 0.3.16
+  comparison against five other engines it recorded 3 of 5 mixed-p99 median wins, 4 of 5 for reads
+  and 2 of 5 for appends, and it failed a 60-second soak test
+  ([SERVICE_047.md](lab-notebook/SERVICE_047.md)). An older version (0.2) completed 881 of 2,000
+  offered requests per second ([HARD_TESTS.md](lab-notebook/HARD_TESTS.md)).
+
+## What is inside
+
+About 5,700 lines of Rust, four direct dependencies (`serde`, `serde_json`, `crc32fast`, `sha2`),
+and `unsafe` code is forbidden for the whole crate.
+
+| Part | File | What it does |
+| --- | --- | --- |
+| SQL parser | [src/sql.rs](src/sql.rs) | Hand-written lexer and recursive-descent parser for the supported subset |
+| Planner and executor | [src/query.rs](src/query.rs) | Picks one of four plans: running-total range, bounded scan, filtered scan, grouped scan |
+| In-memory database | [src/lib.rs](src/lib.rs) | Tables, transactions, hard limits on rows, columns and tables |
+| Write-ahead log | [src/wal.rs](src/wal.rs) | One checksummed frame per committed transaction, replayed on open |
+| On-disk archive | [src/archive.rs](src/archive.rs) | Sorted immutable segments with a checksum, minimum, maximum and running total per 4,096-row block; compaction; snapshots |
+| Live ingestion | [src/live.rs](src/live.rs) | Concurrent writers grouped into bounded durable commits; readers work on immutable snapshots |
+| Source positions | [src/source.rs](src/source.rs) | Stores how far an input was consumed in the same atomic step as the data |
+
+Two details worth reading in the code, both in the `Archive`:
+
+- **Publishing a segment** (`Archive::publish` in `src/archive.rs`): the segment is written and
+  synced, then the new catalog is written to a `.pending` file, synced, and renamed into place. A
+  reader sees either the old catalog or the new one, never half of each.
+- **Retried batches are stored once.** A batch can carry an ID. The archive keeps a SHA-256 digest
+  per ID, so sending the same batch again returns the original receipt, and sending different data
+  under the same ID is refused.
+
+Longer descriptions: [Archive API](docs/ARCHIVE.md), [live ingestion](docs/LIVE_METRICS.md),
+[source ingestion](docs/SOURCE_INGEST.md).
+
+## Crash safety and tests
+
+```
+cargo fmt --all -- --check
+cargo clippy --all-targets --locked -- -D warnings
+cargo test --release --locked
+```
+
+`cargo test` runs 77 tests. The ones that say most about the design:
+
+- `every_partial_final_frame_is_discarded_and_all_prior_commits_survive`
+  ([tests/engine.rs](tests/engine.rs)): cuts the last log frame at every byte offset and checks
+  that everything committed before it is still there.
+- `complete_corruption_is_rejected_without_modifying_the_wal`: flips one bit at every byte offset
+  and checks that opening fails and the file is left untouched.
+- `process_kill_preserves_acknowledged_commit_and_releases_lock`: kills a child process and checks
+  that acknowledged commits survive and the lock is released.
+- `random_ranges_match_an_independent_scan`: 1,000 random ranges checked against a plain scan.
+- `concurrent_ingestion_retries_and_snapshot_reads_reconcile`
+  ([tests/archive.rs](tests/archive.rs)): several writers and a reader at once, with an invariant
+  checked on every snapshot.
+
+When a write or sync fails, the handle is poisoned and reports **"commit outcome unknown"** instead
+of guessing. A complete frame can survive even when its caller never got the acknowledgement, so
+the application has to reconcile before retrying.
+
+What the tests do not cover:
+
+- Physical power loss. Torn writes are produced by truncating files, and the kill test stops the
+  process between statements, not during a write.
+- The archive's on-disk format gets single-offset corruption tests, not the every-byte sweep the
+  log gets.
+- There is no fuzzing and no property-based testing of the SQL parser.
+- The comparison against SQLite and DuckDB lives in `benchmarks/`, not in `cargo test`.
+- Continuous integration builds with the current stable Rust only; the minimum version in
+  `Cargo.toml` (1.89) is not built there.
+
+## What it does not do
+
+- Values are signed 64-bit integers only. No text, no decimals, no native timestamps, no `NULL`
+  input.
+- One table per query. No joins, no subqueries.
+- No `UPDATE` and no `DELETE`. Data is append-only.
+- `WHERE` is a list of `column <op> integer` comparisons joined by `AND`. No `OR`, no `BETWEEN`, no
+  arithmetic in expressions.
+- Aggregates are `COUNT(*)`, `SUM`, `AVG`, `MIN` and `MAX` of a column. No `COUNT(column)`, no
+  `DISTINCT`. `GROUP BY` takes one column.
+- The `Database` API keeps everything in memory (up to 10 million rows per table). Its log grows
+  without checkpointing, so reopening gets slower as history grows. The `Archive` API is the
+  on-disk store and has its own limits.
+- No network server, no parameter binding, no query cancellation.
+
+## Run it
+
+Rust 1.89 or later.
+
+```
+cargo build --release --locked
+./target/release/kestrel --file examples/live_metrics.sql
+./target/release/kestrel --db demo-db
+```
+
+The second command runs a sample in memory. The third opens a durable database in the folder
+`demo-db` and reads one SQL statement per input line; output is JSON lines. `--help` lists the
+archive, import and benchmark modes.
 
 ## Embed it in Rust
 
@@ -97,62 +198,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-Use `Database::memory()` for an ephemeral database. The schema example requires a fresh directory. Use `begin`, `commit`, and `rollback` to batch durable writes. One Database owns one transaction context; Rust borrowing protects mutation, and application synchronization is needed when sharing it. Concurrent independent sessions and MVCC are future work.
+This prints `[[Int(30)]]`. It creates the table in the folder `my-events`, so it needs a fresh
+folder: a second run stops with `table already exists`. `Database::memory()` gives a database that
+is not written to disk.
 
-## Implemented SQL and behavior: Database API
+## How it was built: the lab notebook
 
-- CREATE TABLE with 1â€“64 unique `BIGINT NOT NULL` columns.
-- INSERT INTO ... VALUES with multiple complete rows, and a column batch API.
-- SELECT columns or `*`; COUNT(*), SUM, AVG, MIN, MAX; explicit AS aliases.
-- WHERE column comparisons against integer literals, combined with AND.
-- GROUP BY one column; ORDER BY one selected name or alias; LIMIT.
-- BEGIN, COMMIT, ROLLBACK, EXPLAIN SELECT.
+The engine was developed as a series of numbered experiments. Each one has a short report: what
+was changed, what was measured, and whether it was adopted. Versions 0.3.1 to 0.3.16 came out of
+that process. None of the candidates for 0.3.17 was adopted: where a gain was measured, it came
+with regressions elsewhere or did not hold up against the identity (A/A) controls, and the reports
+say so.
 
-Identifiers are unquoted ASCII and case insensitive in SQL. Values are signed 64-bit integers. Application code chooses the time unit for a `ts` column. Sums use 128-bit integers and may exceed BIGINT; averages are floating point. Empty aggregate inputs return SQL NULL, except COUNT which returns zero. Unsupported grammar is rejected, including trailing statements. A failed statement leaves the surrounding explicit transaction open; earlier successful statements remain staged.
+The reports, the experiment scripts and the charts are in [lab-notebook/](lab-notebook/README.md).
+The release notes are in [CHANGELOG.md](CHANGELOG.md).
 
-Strings, nullable input columns, decimal money, native timestamps, joins, UPDATE, DELETE, uniqueness constraints, parameter binding, foreign keys, and query cancellation remain unimplemented. The source is ordinary Rust with unsafe code forbidden in this crate; dependencies have their own implementations.
+## License
 
-## Why the RAM fast path works
-
-Each column stores its values and exact cumulative sums. For nondecreasing filter columns, binary search finds the two row boundaries of a contiguous range. Subtracting the cumulative sums gives an exact range total; the boundary difference gives its count. AVG uses those two quantities. No row scan or query-result cache is needed.
-
-An eligible range aggregate takes O(log n + a), where `a` is the number of requested aggregate expressions. Whole-table totals take O(a). Appending a batch costs O(rows Ã— columns), plus serialization and synchronization in durable mode. This moves work and memory to ingestion, which is the central tradeoff.
-
-The fast path accepts AND predicates on one nondecreasing column, with `=`, `<`, `<=`, `>`, or `>=`. Contradictory bounds yield an empty range. MIN/MAX and grouped queries use scans. Multiple filter columns and `<>` also use scans. If a late event breaks ordering, filtered queries on that column automatically fall back to a correct scan. Whole-table sums still use prefixes. Rollback restores the prefixes and ordering detection, but recalculating ordering during rollback can scan existing data.
-
-Values and prefixes occupy **24 logical bytes per column per row**, compared with 8 bytes for raw BIGINT data. This excludes allocation slack, transaction buffers, WAL buffers, query state, and process runtime. The measured one-million-row, three-column table uses 72,000,048 logical bytes. This Database implementation is entirely RAM-resident, with per-table limits of 10 million rows, 64 tables, and 100,000 materialized result rows/groups. ORDER BY currently materializes within that result budget before LIMIT; it does not implement a bounded top-k sort. There is no global memory governor or disk spilling. The separate Archive implementation has different storage and limits; see [ARCHIVE.md](ARCHIVE.md).
-
-## Durable storage
-
-`--db` opens a directory containing `events.ksql` and a held OS lock in `writer.lockfile`. A second cooperating opener fails while the lock is held; the lock is released on close or process termination.
-
-Each committed transaction is one length-delimited WAL frame with a magic value, length complement, and CRC32 checksum. Commit attempts `sync_all()` before acknowledging success. Recovery rebuilds values and indexes from valid committed frames. A structurally incomplete final frame is discarded and its tail truncated; complete corrupt frames are rejected. An I/O failure poisons the live handle and reports an **unknown commit outcome**. A complete frame may survive even when its caller did not receive acknowledgment, so the application must reconcile before retrying.
-
-The current on-disk format is version 1 and has no migration commitment. CRC32 detects accidental changes and does not authenticate data. Recovery cannot distinguish a crash-truncated tail from external file truncation. The WAL grows without checkpointing or retention, and reopen time grows with its history. `sync_all` relies on operating-system and storage behavior; process termination and simulated truncations are tested, but physical power-loss behavior and Windows directory-entry durability are not qualified.
-
-## Verify
-
-```powershell
-cargo fmt --all -- --check
-cargo clippy --all-targets --locked -- -D warnings
-cargo test --release --locked
-```
-
-Reusable baseline harnesses remain under `benchmarks/`; completed run data is
-archived. No new benchmark was run during cleanup. No universal speed,
-production-service or physical power-loss claim is qualified.
-
-[Cleanup result](STORAGE_CLEANUP_FINAL.md), [benchmark history](BENCHMARK_HISTORY.md).
-
-[Comparison145 interrupted prefix](COMPACTION_PREFIX_145.md):118 independently
-correct cases,98 unstarted; no speed qualification because of possible overlap.
-
-[Extrema comparison146](COMPACTION_EXTREMA_COMPARE_146.md):216 independently correct stores; unqualified performance and manual-probe boundary.017 remains unreleased.
-
-[Bounded CRC payload reuse147](COMPACTION_PAYLOAD_147.md):actual code,348 fresh tests/two lints/52 independent stores/wire/recovery pass; speed unmeasured.
-
-[Payload comparison148](COMPACTION_PREFIX_148.md):10 correct,206 unstarted; no speed qualification because of possible background overlap.
-
-[Complete payload comparison149](COMPACTION_PAYLOAD_COMPARE_149.md):limited clustered gains, overall31 control/22 guard failures; no adoption or release.
-
-[Bounded CRC contiguous reuse150](COMPACTION_CONTIGUOUS_150.md):actual code,348 fresh tests/two lints/52 independent stores/wire/recovery pass; speed unmeasured.
+MIT. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

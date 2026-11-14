@@ -358,6 +358,9 @@ impl Segment {
             .take()
             .map(CachedStreamFile::into_file)
     }
+    // `fetch_update` is deprecated in favour of `try_update`, which is newer than this
+    // crate's minimum supported Rust version (see `rust-version` in Cargo.toml).
+    #[allow(deprecated)]
     fn cache_stream(&self, file: File) {
         let mut idle = self.idle_stream.lock().unwrap_or_else(|e| e.into_inner());
         if idle.is_none()
@@ -1718,8 +1721,10 @@ impl Reader<'_> {
         values.reserve(count);
         values.extend(
             self.scratch
-                .chunks_exact(8)
-                .map(|x| i64::from_le_bytes(x.try_into().unwrap())),
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|x| i64::from_le_bytes(*x)),
         );
         Ok(())
     }

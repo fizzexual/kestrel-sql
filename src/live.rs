@@ -398,6 +398,9 @@ impl LiveArchive {
         Arc::clone(&self.inner.reader.read().unwrap_or_else(|e| e.into_inner()))
     }
 
+    // `fetch_update` is deprecated in favour of `try_update`, which is newer than this
+    // crate's minimum supported Rust version (see `rust-version` in Cargo.toml).
+    #[allow(deprecated)]
     pub fn append(&self, batch: IngestBatch) -> Result<IngestReceipt> {
         self.writer_healthy()?;
         if batch.columns.len() != self.inner.columns

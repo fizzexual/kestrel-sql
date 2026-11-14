@@ -97,7 +97,7 @@ The portfolio demonstrates SQL, source lineage, data modeling, quality controls,
 | Random window latency | 2.095 ms Kestrel median vs 165.798 ms DuckDB; 31 fresh windows at 100M rows | [random-window-results.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/random-window-results.json) |
 | Public source pipeline | 3,475,226 input / 3,475,077 accepted / 149 rejected | [nyc-results.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/nyc-results.json) |
 | Independent SQL checks | 500 Archive cases against each of SQLite and DuckDB; 124 scale windows against DuckDB | [archive-verification.json](https://github.com/fizzexual/kestrel-sql/blob/bb25f1547be393a6e6607a4ce54cf179abb85666/benchmarks/archive-verification.json) |
-| Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](tests/archive.rs) |
+| Recovery and integrity | Metadata/page CRC, atomic catalog publication, lock ownership, corruption/pending-file regression tests | [tests/archive.rs](../tests/archive.rs) |
 | Adaptive integer grouping | Fresh 100M-row full aggregate grouping: 5.504 s to 1.694 s; all shapes/controls/losses retained | [PERFORMANCE_038.md](PERFORMANCE_038.md) |
 | Engineering checks | 63 Rust tests pass in debug and release for 0.3.8; format and Clippy pass | [verification.json](verification.json) |
 | Retry availability | Opt-in confirmed retries validate independently of writer queueing; original receipts, bounded lookup memory, pending-ID races and fail-closed health; unsuccessful always-on trial preserved | [PERFORMANCE_035.md](PERFORMANCE_035.md) |
@@ -153,10 +153,10 @@ Keep the workload qualification when citing latency. Explain the memory counter'
 ## Five-minute demonstration
 
 1. Open the real-data quality report and explain why negative charges were retained and timezone/money conversions were explicit.
-2. Run `cargo test --release --locked`, then use the bundled executable with a fresh small archive via the commands in [ARCHIVE.md](ARCHIVE.md).
+2. Run `cargo test --release --locked`, then use the bundled executable with a fresh small archive via the commands in [ARCHIVE.md](../docs/ARCHIVE.md).
 3. Show an unaligned time-window SQL query and its `bytes_read` and `plan` fields. Explain the boundary lookup and cumulative subtraction.
 4. Show the 100M random-window report, then the unordered/grouped losses. Explain why the design favors a subset of analytics.
-5. Run the [live Rust example](examples/live_ingest.rs) in a fresh directory, showing the stable pinned view, deduplicated replay and new view after a late event. Walk through receipt/catalog publication and one forced-kill recovery result. State that physical power loss remains unqualified.
+5. Run the [live Rust example](../examples/live_ingest.rs) in a fresh directory, showing the stable pinned view, deduplicated replay and new view after a late event. Walk through receipt/catalog publication and one forced-kill recovery result. State that physical power loss remains unqualified.
 
 ## Next milestones with acceptance criteria
 

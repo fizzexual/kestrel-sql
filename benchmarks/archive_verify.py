@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--binary",type=Path,default=ROOT / "bin" / "kestrel.exe")
+    parser.add_argument("--binary",type=Path,default=ROOT / "target" / "release" / "kestrel.exe")
     parser.add_argument("--output",type=Path,default=ROOT / "benchmarks" / "archive-verification.json")
     parser.add_argument("--queries",type=int,default=500)
     args=parser.parse_args()

@@ -385,7 +385,7 @@ def run_load(engine, profile, clients, seconds, rate, batch, queue_size=256, *, 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--engines',default='kestrel,postgres,mysql,mariadb,sqlite,duckdb')
-    parser.add_argument('--binary',type=Path,default=ROOT/'bin'/'kestrel-stress.exe')
+    parser.add_argument('--binary',type=Path,default=ROOT/'target'/'release'/'kestrel-stress.exe')
     parser.add_argument('--expected-version',help='Reject an unexpected Kestrel bridge version')
     parser.add_argument('--servers',type=Path,default=ROOT.parent.parent/'work'/'stress-engines'/'running.json')
     parser.add_argument('--rows',type=int,default=1_000_000)

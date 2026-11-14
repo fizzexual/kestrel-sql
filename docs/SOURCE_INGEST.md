@@ -30,12 +30,12 @@ Rust mutable ownership serializes writes; callers can share the owner through a 
 
 The API requires an advancing interval and nonempty output. Archive batch limits apply: at most 1M rows and 64MiB in 1..64 equal-length schema columns. Zero-output filtering cannot advance a checkpoint yet. Source reset/registration, receipt retention, external source transactions, multiple-sink atomicity, consumer leases and distributed fencing are not delivered. The local offset check does not identify a consumer owner or reject a stale owner who knows the current offset.
 
-Run the [SDK example](examples/source_ingest.rs) with a fresh directory:
+Run the [SDK example](../examples/source_ingest.rs) with a fresh directory:
 
 ```powershell
 cargo run --release --example source_ingest -- FRESH_DIRECTORY
 ```
 
-It verifies exact replay, gap rejection, a stable pinned view, late data and offset/data reopening. [The executed Parquet workflow](portfolio/source-pipeline-037-results.json) commits and replays 300 intervals from two sources, rejects changed/gapped input, resumes at 25K/5K offsets and matches 42 DuckDB SQL queries. Its stdin adapter is task-only tooling with limited error handling. Kestrel still has no native Parquet/Arrow or Kafka connector.
+It verifies exact replay, gap rejection, a stable pinned view, late data and offset/data reopening. [The executed Parquet workflow](../lab-notebook/portfolio/source-pipeline-037-results.json) commits and replays 300 intervals from two sources, rejects changed/gapped input, resumes at 25K/5K offsets and matches 42 DuckDB SQL queries. Its stdin adapter is task-only tooling with limited error handling. Kestrel still has no native Parquet/Arrow or Kafka connector.
 
-[PERFORMANCE_037.md](PERFORMANCE_037.md) includes matched-ID cost measurements, 55 Rust tests, 14 exact publication failures and eight forced process-kill/resume cycles. Write stalls remain unqualified; this release adds a useful recovery contract without claiming a new durable-write throughput record.
+[PERFORMANCE_037.md](../lab-notebook/PERFORMANCE_037.md) includes matched-ID cost measurements, 55 Rust tests, 14 exact publication failures and eight forced process-kill/resume cycles. Write stalls remain unqualified; this release adds a useful recovery contract without claiming a new durable-write throughput record.
