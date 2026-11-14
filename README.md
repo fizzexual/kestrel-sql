@@ -38,8 +38,8 @@ filtered queries on that column fall back to a correct scan.
   the SQL subset below and has `BEGIN` / `COMMIT` / `ROLLBACK`. The benchmark in the next section
   measures this API.
 - **`Archive`** is the on-disk store: sorted immutable segments, snapshots, compaction, and batches
-  that can be retried safely. It answers `SELECT` queries through the same parser. `LiveArchive`
-  puts concurrent writers in front of it.
+  that can be retried safely. It answers totals and groupings through the same parser, but it does
+  not list rows. `LiveArchive` puts concurrent writers in front of it.
 
 ## How fast
 
@@ -47,8 +47,9 @@ One million rows, three columns, in memory, the `Database` API. Same data and th
 both engines; every answer is compared and all of them agree.
 
 SQLite is **not the fair rival** here: it is a row store built for transactions. It is in the table
-because everyone has it and can check the result. The fair comparison is a column store such as
-DuckDB, and the script adds a DuckDB column when it is installed.
+because everyone has it and can check the result with one command. The fair comparison, against
+DuckDB and three database servers at 10 million rows, is in the
+[next section](#hard-test-against-five-engines).
 
 | Query | KestrelSQL | SQLite | SQLite with an index on `(ts, value)` |
 | --- | ---: | ---: | ---: |
@@ -80,14 +81,59 @@ How to read the table:
   memory. The last three rows are ordinary column scans.
 - **The timers are not identical.** KestrelSQL reports its own in-process time. SQLite is timed in
   Python around `execute` and `fetchall`, which adds a few microseconds per call.
-- **Earlier DuckDB comparisons** are summarised in the [lab notebook](lab-notebook/README.md). Their
-  drivers are not all in this repository, so treat them as history, not as a claim you can check
-  here.
-- **Where it loses.** As a service under concurrent load it is not the fastest. In the 0.3.16
-  comparison against five other engines it recorded 3 of 5 mixed-p99 median wins, 4 of 5 for reads
-  and 2 of 5 for appends, and it failed a 60-second soak test
-  ([SERVICE_047.md](lab-notebook/SERVICE_047.md)). An older version (0.2) completed 881 of 2,000
-  offered requests per second ([HARD_TESTS.md](lab-notebook/HARD_TESTS.md)).
+
+## Hard test against five engines
+
+Four tests that try to make it fail, run once on 2026-11-15 against DuckDB 2.0.0, SQLite 3.50.4,
+PostgreSQL 17.12, MySQL 8.4.13 and MariaDB 11.4.13. Scripts, commands and raw results are in
+[benchmarks/hard-test/](benchmarks/hard-test/README.md).
+
+**Correctness.** 4,000 random queries over two datasets of 100,000 rows, one of them with 5% of the
+rows arriving late. The five other engines agreed with each other on every query, and KestrelSQL
+matched them on every query it accepts: 4,000 of 4,000 through `Database`, 3,554 of 3,554 through
+`Archive` (which refuses the other 446 because they list rows).
+
+**Crash.** The process was killed 300 times in the middle of writing. `Archive`: 150 kills under 8
+concurrent writers; all 47,663 acknowledged batches were present and complete after every reopen,
+and all 1,200 interrupted batches, re-sent with the same ID, ended up stored exactly once.
+`Database`: 150 kills; all 15,491 acknowledged inserts were present and complete.
+
+**Speed at 10 million rows.** Median milliseconds per query as the client sees it, 9.5 million rows
+in time order. Every engine returned the same answers on all 792 queries.
+
+| Query | KestrelSQL `Database` | KestrelSQL `Archive` | DuckDB | DuckDB, 1 thread | SQLite | PostgreSQL | MySQL | MariaDB |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Totals over a random time range (300 queries) | 0.057 | 0.172 | 1.6 | 1.9 | 2.0 | 2.5 | 7.7 | 5.4 |
+| `MIN`, `MAX` over a random time range (40) | 10.1 | 0.201 | 1.7 | 5.2 | 88.5 | 35.5 | 224 | 144 |
+| Totals per device over a random time range (40) | 37.2 | 8.2 | 3.5 | 15.7 | 443 | 66.7 | 1,460 | 1,189 |
+| Totals per device, whole table | 270 | 44.8 | 5.6 | 66.5 | 3,517 | 234 | 3,004 | 1,990 |
+| Filter on unsorted columns (10) | 44.7 | 39.7 | 3.6 | 33.0 | 439 | 97.3 | 1,637 | 959 |
+| Totals over a random time range, after adding 5% late rows | 43.9 | 0.395 | 1.9 | 3.6 | 2.3 | 2.6 | 7.4 | 6.2 |
+
+**Load.** The project's own paced test with 64 clients and one million rows, 95% reads and 5%
+appends. At 2,000 requests per second every engine served everything; KestrelSQL's 99th percentile
+was 3.3 ms, SQLite's 2.0 ms. At 10,000 requests per second, an overload, KestrelSQL served 9,989 per
+second and dropped nothing, SQLite served 9,588 and the other four between 6,907 and 7,534. Every
+engine kept all its acknowledged writes in all 30 cases.
+
+What this says:
+
+- **It wins the query it was built for.** Totals over a time range are about 28 times faster than
+  DuckDB through `Database` and 9 times faster through `Archive`.
+- **It loses to DuckDB on everything that reads the whole table.** Grouping 9.5 million rows takes
+  270 ms through `Database` against 5.6 ms, and DuckDB held to one thread still wins there.
+- **`Database` depends on time order.** After 5% late rows its range totals go from 0.057 ms to
+  43.9 ms, slower than every other engine in the table. `Archive` keeps its speed because each
+  batch is sorted and indexed on its own.
+- **Read it with these limits.** One run. The three servers ran in Docker with near-default
+  settings. DuckDB and SQLite ran inside the test process while KestrelSQL paid a round trip. The
+  load test holds DuckDB to one thread and is partly limited by its Python client. A killed process
+  is not a power cut. All data is synthetic integers that fit in memory.
+
+Older results from the project's history, including a mixed-load test that version 0.2 failed
+(881 of 2,000 requests per second, [HARD_TESTS.md](lab-notebook/HARD_TESTS.md)) and the 0.3.16
+service comparison ([SERVICE_047.md](lab-notebook/SERVICE_047.md)), are in the
+[lab notebook](lab-notebook/README.md).
 
 ## What is inside
 
@@ -144,8 +190,9 @@ the application has to reconcile before retrying.
 
 What the tests do not cover:
 
-- Physical power loss. Torn writes are produced by truncating files, and the kill test stops the
-  process between statements, not during a write.
+- Physical power loss. Torn writes are produced by truncating files, and the kill test in
+  `cargo test` stops the process between statements. The hard test above kills it during writes,
+  which is still a process kill and not a power cut.
 - The archive's on-disk format gets single-offset corruption tests, not the every-byte sweep the
   log gets.
 - There is no fuzzing and no property-based testing of the SQL parser.
@@ -165,7 +212,8 @@ What the tests do not cover:
   `DISTINCT`. `GROUP BY` takes one column.
 - The `Database` API keeps everything in memory (up to 10 million rows per table). Its log grows
   without checkpointing, so reopening gets slower as history grows. The `Archive` API is the
-  on-disk store and has its own limits.
+  on-disk store and has its own limits: it returns totals and groupings only and does not list
+  rows.
 - No network server, no parameter binding, no query cancellation.
 
 ## Run it
