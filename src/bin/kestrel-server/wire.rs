@@ -1,4 +1,5 @@
 //! PostgreSQL v3 message framing: bounded reads, a startup/auth deadline, and encoders.
+use crate::memory::Ticket;
 use std::io::{self, BufReader, Read, Write};
 use std::net::TcpStream;
 use std::time::{Duration, Instant};
@@ -13,6 +14,10 @@ pub const MAX_STARTUP: usize = 10_000;
 pub const AUTH_TIMEOUT: Duration = Duration::from_secs(10);
 /// The startup packet(s) must arrive this soon: a socket that says nothing is cheap to refuse.
 pub const STARTUP_TIMEOUT: Duration = Duration::from_secs(2);
+
+/// Pending output may stay allocated between messages up to this size; a bigger buffer (left by
+/// one large result) is given back after the flush, so a quiet connection holds at most this.
+pub const OUT_KEEP: usize = 1024 * 1024;
 
 /// An error that reaches the client as an `ErrorResponse`.
 #[derive(Debug, Clone)]
@@ -37,6 +42,16 @@ impl PgError {
             message: message.into(),
         }
     }
+}
+
+/// The next message after authentication.
+pub enum Incoming {
+    /// The peer closed the connection between messages.
+    Closed,
+    Message(u8, Vec<u8>),
+    /// The memory budget could not hold the body. It was read and discarded; the connection is
+    /// still in step.
+    Refused(u8, PgError),
 }
 
 /// Ends the connection: either the socket failed or the client broke the protocol.
@@ -118,10 +133,23 @@ impl Conn {
     pub fn flush(&mut self) -> io::Result<()> {
         if !self.out.is_empty() {
             let result = self.writer.write_all(&self.out);
-            self.out.clear();
+            if self.out.capacity() > OUT_KEEP {
+                // `clear` would keep the capacity of the largest result ever sent.
+                self.out = Vec::new();
+            } else {
+                self.out.clear();
+            }
             result?;
         }
         self.writer.flush()
+    }
+
+    /// Called between messages, with at most [`OUT_KEEP`] bytes pending: a buffer that a big
+    /// result grew past that is cut back, so a quiet connection never holds more than that.
+    pub fn trim_out(&mut self) {
+        if self.out.capacity() > OUT_KEEP {
+            self.out.shrink_to(OUT_KEEP);
+        }
     }
 
     pub fn raw(&mut self, bytes: &[u8]) -> io::Result<()> {
@@ -150,8 +178,9 @@ impl Conn {
         self.read_vec(len - 4)
     }
 
-    /// `None` means the peer closed the connection cleanly between messages.
-    pub fn read_message(&mut self, limit: usize) -> Result<Option<(u8, Vec<u8>)>, Fatal> {
+    /// The tag and body length of the next message; `None` when the peer closed the connection
+    /// cleanly between messages.
+    fn read_header(&mut self, limit: usize) -> Result<Option<(u8, usize)>, Fatal> {
         let mut tag = [0u8; 1];
         loop {
             match self.reader.read(&mut tag) {
@@ -173,7 +202,87 @@ impl Conn {
                 format!("message of {len} bytes exceeds the {limit} byte limit"),
             )));
         }
-        Ok(Some((tag[0], self.read_vec(len - 4)?)))
+        Ok(Some((tag[0], len - 4)))
+    }
+
+    /// `None` means the peer closed the connection cleanly between messages. Only for the
+    /// messages before authentication, which are at most 64 KiB and need no reservation.
+    pub fn read_message(&mut self, limit: usize) -> Result<Option<(u8, Vec<u8>)>, Fatal> {
+        match self.read_header(limit)? {
+            None => Ok(None),
+            Some((tag, n)) => Ok(Some((tag, self.read_vec(n)?))),
+        }
+    }
+
+    /// The next message after authentication. The body is paid for from `ticket` as it arrives,
+    /// so a peer that announces 16 MiB and sends nothing holds nothing. When the budget cannot
+    /// cover it the rest of the body is read and thrown away, which keeps the connection in step
+    /// with the protocol, and the message comes back as [`Incoming::Refused`].
+    pub fn read_charged(
+        &mut self,
+        limit: usize,
+        ticket: &mut Ticket,
+        id: u64,
+    ) -> Result<Incoming, Fatal> {
+        let Some((tag, n)) = self.read_header(limit)? else {
+            return Ok(Incoming::Closed);
+        };
+        let mut buf: Vec<u8> = Vec::new();
+        // What `ticket` has been charged for `buf`: its capacity.
+        let mut charged = 0usize;
+        let mut refusal = None;
+        if ticket.exceeds_budget(n) {
+            // Cannot fit even in an empty budget: do not start.
+            refusal = ticket.grow(n).err();
+        }
+        while refusal.is_none() && buf.len() < n {
+            if buf.len() == charged {
+                // Double the buffer (at most to the announced size). The new block is reserved
+                // while the old one is still alive, because growing copies from one to the other.
+                let next = n.min(charged.saturating_mul(2).max(64 * 1024));
+                if let Err(e) = ticket.grow(next) {
+                    refusal = Some(e);
+                    break;
+                }
+                if buf.try_reserve_exact(next - buf.len()).is_err() {
+                    ticket.shrink(next);
+                    refusal = Some(PgError::new(
+                        "53200",
+                        "out of memory: the operating system refused the message buffer",
+                    ));
+                    break;
+                }
+                ticket.shrink(charged);
+                charged = next;
+            }
+            let want = (charged - buf.len()) as u64;
+            let got = (&mut self.reader).take(want).read_to_end(&mut buf)?;
+            if got as u64 != want {
+                return Err(io::Error::from(io::ErrorKind::UnexpectedEof).into());
+            }
+        }
+        match refusal {
+            None => Ok(Incoming::Message(tag, buf)),
+            Some(error) => {
+                // Logged now, not after the rest of the body has been read and discarded.
+                crate::session::log(
+                    id,
+                    &format!(
+                        "refused {} for a message of {} bytes: {}",
+                        error.code, n, error.message
+                    ),
+                );
+                let received = buf.len();
+                drop(buf);
+                ticket.shrink(charged);
+                let rest = (n - received) as u64;
+                let skipped = io::copy(&mut (&mut self.reader).take(rest), &mut io::sink())?;
+                if skipped != rest {
+                    return Err(io::Error::from(io::ErrorKind::UnexpectedEof).into());
+                }
+                Ok(Incoming::Refused(tag, error))
+            }
+        }
     }
 
     // ---- encoders -------------------------------------------------------------------------

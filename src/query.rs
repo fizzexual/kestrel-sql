@@ -5,6 +5,32 @@ use std::collections::BTreeMap;
 
 pub const MAX_RESULT_ROWS: usize = 100_000;
 
+/// An upper bound on the heap one query needs while it runs and holds its result, in bytes.
+/// `rows` is the most rows the result (or, with `grouped`, the most groups) can have; `cols` the
+/// number of output columns. `sorted` adds the scratch space of `ORDER BY`. The pieces:
+///
+/// * a plain result is a vector of rows that doubles (so 1.5 times its final size while it
+///   grows), one exactly sized `Vec<Value>` per row, and the plan's names and expressions;
+/// * a grouped result also holds one map entry and one `Vec<State>` per group, and the rows
+///   built from them while they are still alive.
+///
+/// `Value` is 32 bytes and `State` 64 on a 64-bit build; the tests below check the bound against
+/// the capacities of real results.
+pub fn result_bytes(rows: usize, cols: usize, grouped: bool, sorted: bool) -> usize {
+    use crate::sql::ALLOC_SLACK;
+    const MAP_ENTRY: usize = 64;
+    let row_header = std::mem::size_of::<Vec<Value>>();
+    let cells = cols * std::mem::size_of::<Value>() + ALLOC_SLACK;
+    let plan = cols * 128 + 4 * ALLOC_SLACK;
+    let sort = if sorted { row_header * rows + 4096 } else { 0 };
+    let rows_bytes = if grouped {
+        rows * (MAP_ENTRY + cols * std::mem::size_of::<State>() + ALLOC_SLACK + row_header + cells)
+    } else {
+        row_header * (rows.next_power_of_two() * 3 / 2) + rows * cells
+    };
+    plan + sort + rows_bytes
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum Value {
@@ -355,4 +381,82 @@ pub(crate) fn execute(table: &Table, plan: Plan) -> Result<QueryResult> {
         plan: description,
         rows_scanned: scanned,
     })
+}
+
+#[cfg(test)]
+mod size_tests {
+    use super::*;
+    use crate::Database;
+    use crate::sql::ALLOC_SLACK;
+
+    #[test]
+    fn value_and_state_have_the_sizes_the_bound_assumes() {
+        assert_eq!(std::mem::size_of::<Value>(), 32);
+        assert_eq!(std::mem::size_of::<State>(), 64);
+    }
+
+    /// What a finished result holds, from the capacities of its vectors.
+    fn held(result: &QueryResult) -> usize {
+        std::mem::size_of::<Vec<Value>>() * result.rows.capacity()
+            + result
+                .rows
+                .iter()
+                .map(|r| r.capacity() * std::mem::size_of::<Value>() + ALLOC_SLACK)
+                .sum::<usize>()
+    }
+
+    #[test]
+    fn the_bound_covers_real_results() {
+        let mut db = Database::memory();
+        db.execute("CREATE TABLE t (a BIGINT NOT NULL, b BIGINT NOT NULL, c BIGINT NOT NULL)")
+            .unwrap();
+        let rows: Vec<String> = (0..5000)
+            .map(|i| format!("({},{},{})", i, i % 7, i % 1000))
+            .collect();
+        db.execute(&format!("INSERT INTO t VALUES {}", rows.join(",")))
+            .unwrap();
+        let cases = [
+            ("SELECT * FROM t", 5000, 3, false, false),
+            ("SELECT a, b FROM t WHERE a >= 100", 5000, 2, false, false),
+            (
+                "SELECT a, b, c, a AS d, b AS e FROM t ORDER BY a DESC",
+                5000,
+                5,
+                false,
+                true,
+            ),
+            (
+                "SELECT c, COUNT(*), SUM(a), AVG(b), MIN(a), MAX(a) FROM t GROUP BY c",
+                1000,
+                6,
+                true,
+                false,
+            ),
+            (
+                "SELECT b, COUNT(*) FROM t GROUP BY b ORDER BY b",
+                7,
+                2,
+                true,
+                true,
+            ),
+            ("SELECT COUNT(*), SUM(a) FROM t", 1, 2, false, false),
+            ("SELECT a FROM t LIMIT 3", 3, 1, false, false),
+        ];
+        for (sql, max_rows, cols, grouped, sorted) in cases {
+            let result = db.query(sql).unwrap();
+            assert!(result.rows.len() <= max_rows, "{sql}");
+            let bound = result_bytes(max_rows, cols, grouped, sorted);
+            assert!(
+                held(&result) <= bound,
+                "{sql}: holds {} but bound is {bound}",
+                held(&result)
+            );
+            // Not wildly loose either; a grouped query also held its map and state vectors.
+            assert!(
+                bound <= if grouped { 8 } else { 3 } * held(&result) + 8192,
+                "{sql}: {bound} against {}",
+                held(&result)
+            );
+        }
+    }
 }

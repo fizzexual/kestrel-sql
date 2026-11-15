@@ -9,6 +9,13 @@
   unless `--allow-remote` is given. Limits on logins in progress, authenticated sessions, memory per
   connection (256 MiB) and statements per transaction. No TLS. See [docs/SERVER.md](docs/SERVER.md).
   New dependency: `getrandom`, for login nonces.
+- **`kestrel-server` memory is bounded by a formula, enforced in code.** A shared `--max-memory`
+  budget (default 1024 MiB) is reserved by every request for its message buffer, parsed statement,
+  result rows and encoded reply, and returned on any exit; a request that cannot get it fails with
+  `53200` (busy) or `54000` (too big) and the connection stays usable. Worst case:
+  `--max-connections` x 257.5 MiB + `--max-memory` + 10 MiB, plus the data. One 16 MiB `SELECT a,a,a,...`
+  took 2.4 GiB and eight bulk inserts 1.9 GiB; now the first is refused and the eight peak at 525 MiB
+  ([docs/SERVER.md](docs/SERVER.md#memory)).
 - **Design and interview guide** in [docs/DESIGN.md](docs/DESIGN.md).
 
 - **Fixed: `Database` could refuse to open after a power cut.** A log whose end read back as zeros or

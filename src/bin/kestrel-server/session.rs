@@ -1,10 +1,14 @@
 //! One client connection: startup, SCRAM authentication and the simple/extended query loops.
 use crate::backend::{Backend, Op, Pending};
+use crate::memory::{Budget, Ticket};
 use crate::scram::{self, ScramError};
-use crate::text::{float_text, placeholders, split_statements, substitute};
+use crate::text::{
+    count_placeholders, count_statements, float_text, placeholders, split_statements, substitute,
+    substitute_len,
+};
 use crate::wire::{
-    AUTH_TIMEOUT, Conn, Cursor, Fatal, MAX_MESSAGE, MAX_PREAUTH_MESSAGE, PgError, STARTUP_TIMEOUT,
-    protocol_violation, put_cstr,
+    AUTH_TIMEOUT, Conn, Cursor, Fatal, Incoming, MAX_MESSAGE, MAX_PREAUTH_MESSAGE, OUT_KEEP,
+    PgError, STARTUP_TIMEOUT, protocol_violation, put_cstr,
 };
 use kestrel_sql::sql::{self, Expr, Statement};
 use kestrel_sql::{QueryResult, Value};
@@ -41,6 +45,8 @@ pub struct Shared {
     /// Connections still in startup / authentication, each held by its own thread.
     pub preauth: Arc<AtomicUsize>,
     pub preauth_cap: usize,
+    /// Transient memory of every request in flight (`--max-memory`); see memory.rs.
+    pub budget: Budget,
 }
 
 /// One unit of a connection counter; released on drop.
@@ -120,22 +126,23 @@ enum Parsed {
 
 /// `DEALLOCATE [PREPARE] name` gives `Some(Some(name))`, `DEALLOCATE [PREPARE] ALL` `Some(None)`.
 fn deallocate_target(sql: &str) -> Option<Option<String>> {
-    let words: Vec<&str> = sql.split_whitespace().collect();
-    let mut rest = words.as_slice();
-    if !rest.first()?.eq_ignore_ascii_case("deallocate") {
+    // At most four words are looked at: collecting every word of a huge statement would build a
+    // list as long as the text.
+    let mut words = sql.split_whitespace();
+    if !words.next()?.eq_ignore_ascii_case("deallocate") {
         return None;
     }
-    rest = &rest[1..];
-    if rest
-        .first()
-        .is_some_and(|w| w.eq_ignore_ascii_case("prepare"))
-    {
-        rest = &rest[1..];
+    let mut name = words.next()?;
+    if name.eq_ignore_ascii_case("prepare") {
+        name = words.next()?;
     }
-    match rest {
-        [name] if name.eq_ignore_ascii_case("all") => Some(None),
-        [name] => Some(Some(name.trim_end_matches(';').to_string())),
-        _ => None,
+    if words.next().is_some() {
+        return None;
+    }
+    if name.eq_ignore_ascii_case("all") {
+        Some(None)
+    } else {
+        Some(Some(name.trim_end_matches(';').to_string()))
     }
 }
 
@@ -357,6 +364,9 @@ fn serve_inner(
     Session {
         conn,
         shared,
+        id,
+        ticket: Ticket::new(&shared.budget),
+        out_charged: 0,
         tx: Tx::Idle,
         statements: HashMap::new(),
         portals: HashMap::new(),
@@ -421,12 +431,135 @@ fn rows_cost(cols: &[(String, u32)], rows: &[Vec<Value>]) -> usize {
     cols.iter().map(|c| c.0.len() + 32).sum::<usize>() + std::mem::size_of_val(rows) + cells
 }
 
-/// The statement of a stored text; `None` for an empty query.
-fn parse_stored(sql: &str) -> Result<Option<Statement>, PgError> {
+/// The statement of a stored text; `None` for an empty query. What the parse needs is reserved
+/// from the request's ticket first (`53200` or `54000` if it cannot be): the tokens are given
+/// back when the parse returns, the syntax tree stays reserved until the request ends.
+fn parse_charged(ticket: &mut Ticket, sql: &str) -> Result<Option<Statement>, PgError> {
     if sql.is_empty() {
-        Ok(None)
+        return Ok(None);
+    }
+    let estimate = sql::parse_estimate(sql);
+    ticket.grow(estimate.total())?;
+    let parsed = sql::parse(sql);
+    ticket.shrink(estimate.tokens);
+    match parsed {
+        Ok(statement) => Ok(Some(statement)),
+        Err(e) => {
+            ticket.shrink(estimate.ast);
+            Err(syntax(e))
+        }
+    }
+}
+
+/// Bytes the pieces of a simple query and the statements parsed from them take: the vector of
+/// pieces (which doubles) and one `Parsed` for each.
+fn pieces_bytes(count: usize) -> usize {
+    std::mem::size_of::<&str>() * (count.next_power_of_two() * 3 / 2)
+        + std::mem::size_of::<Parsed>() * count
+}
+
+/// What one request may allocate for copies of strings and lists out of its own message,
+/// besides what it reserves item by item: a `Parse` copies the query text twice and its
+/// parameter types with room to grow, a `Bind` builds a list entry for every parameter (at least
+/// four bytes of message each).
+fn copy_allowance(tag: u8, body: usize) -> usize {
+    match tag {
+        b'P' => 3 * body,
+        b'B' => 10 * body,
+        b'D' | b'E' => body,
+        _ => 0,
+    }
+}
+
+/// Makes room for `extra` more bytes of pending output. The buffer is grown to exactly what is
+/// needed after reserving that much (the old block is still alive while it is copied), so the
+/// encoders that follow never grow it behind the budget's back. `charged` is what the ticket
+/// counts for the buffer's capacity so far.
+fn reserve_out(
+    ticket: &mut Ticket,
+    charged: &mut usize,
+    conn: &mut Conn,
+    extra: usize,
+) -> Result<(), PgError> {
+    let needed = conn.out.len().saturating_add(extra);
+    if conn.out.capacity() >= needed {
+        return Ok(());
+    }
+    // Double the buffer so that thousands of small statements do not copy it each time; if the
+    // budget cannot hold twice as much, ask for exactly what is needed.
+    let doubled = needed.max(conn.out.capacity().saturating_mul(2));
+    let size = if ticket.grow(doubled).is_ok() {
+        doubled
     } else {
-        sql::parse(sql).map(Some).map_err(syntax)
+        ticket.grow(needed)?;
+        needed
+    };
+    if conn.out.try_reserve_exact(size - conn.out.len()).is_err() {
+        ticket.shrink(size);
+        return Err(PgError::new(
+            "53200",
+            "out of memory: the operating system refused the output buffer (--max-memory)",
+        ));
+    }
+    ticket.shrink(*charged);
+    *charged = size;
+    Ok(())
+}
+
+/// Bytes a result still holds once it is built, from the capacities of its vectors.
+#[allow(clippy::ptr_arg)]
+fn held_bytes(rows: &Vec<Vec<Value>>) -> usize {
+    std::mem::size_of::<Vec<Value>>() * rows.capacity()
+        + rows
+            .iter()
+            .map(|row| {
+                row.capacity() * std::mem::size_of::<Value>()
+                    + sql::ALLOC_SLACK
+                    + row
+                        .iter()
+                        .map(|v| match v {
+                            Value::Text(s) => s.capacity() + sql::ALLOC_SLACK,
+                            _ => 0,
+                        })
+                        .sum::<usize>()
+            })
+            .sum::<usize>()
+}
+
+/// Most bytes the `DataRow` messages of `rows` take: a text `int8` is at most 20 characters
+/// (`check_rows` refuses anything bigger), a float, or an integer sent as `float8`, at most 32,
+/// plus four bytes of length each.
+fn rows_out_bytes(rows: &[Vec<Value>], cols: &[(String, u32)]) -> usize {
+    rows.iter()
+        .map(|row| {
+            7 + row
+                .iter()
+                .enumerate()
+                .map(|(i, v)| {
+                    4 + match v {
+                        Value::Int(_) if cols.get(i).is_some_and(|c| c.1 == FLOAT8) => 32,
+                        Value::Int(_) => 20,
+                        Value::Float(_) => 32,
+                        Value::Text(s) => s.len(),
+                        Value::Null => 0,
+                    }
+                })
+                .sum::<usize>()
+        })
+        .sum::<usize>()
+        + 64
+}
+
+/// Bytes of a `RowDescription` for `cols`.
+fn description_bytes(cols: &[(String, u32)]) -> usize {
+    7 + cols.iter().map(|c| c.0.len() + 19).sum::<usize>()
+}
+
+/// Bytes `describe` builds for a statement's columns: a name and a type for each.
+fn describe_bytes(statement: &Statement) -> usize {
+    match statement {
+        Statement::Select(q) => 4096 + 128 * q.items.len(),
+        _ => 4096,
     }
 }
 
@@ -444,12 +577,20 @@ enum Exec {
         cols: Vec<(String, u32)>,
         rows: Vec<Vec<Value>>,
         tag: String,
+        /// Bytes of the request's ticket that stand for `rows`; given back once they are sent.
+        held: usize,
     },
 }
 
 struct Session<'a> {
     conn: &'a mut Conn,
     shared: &'a Shared,
+    id: u64,
+    /// What the message being handled has reserved from the transient budget; emptied before the
+    /// next message is read.
+    ticket: Ticket<'a>,
+    /// What the ticket counts for the capacity of `conn.out` (see `reserve_out`).
+    out_charged: usize,
     tx: Tx,
     statements: HashMap<String, Prepared>,
     portals: HashMap<String, Portal>,
@@ -658,11 +799,24 @@ impl Session<'_> {
 
     fn run(&mut self) -> Result<(), Fatal> {
         loop {
-            if self.conn.out.len() > 1 << 20 {
+            // Large pending output goes out while the last message still holds its reservation;
+            // only then is everything given back, before the wait for the next message.
+            if self.conn.out.len() > OUT_KEEP {
                 self.conn.flush()?;
             }
-            let Some((tag, body)) = self.conn.read_message(MAX_MESSAGE)? else {
-                return Ok(());
+            self.conn.trim_out();
+            self.ticket.release_all();
+            self.out_charged = 0;
+            let incoming = self
+                .conn
+                .read_charged(MAX_MESSAGE, &mut self.ticket, self.id)?;
+            let (tag, body) = match incoming {
+                Incoming::Closed => return Ok(()),
+                Incoming::Message(tag, body) => (tag, body),
+                Incoming::Refused(tag, error) => {
+                    self.refuse(tag, error)?;
+                    continue;
+                }
             };
             if tag == b'X' {
                 return Ok(());
@@ -670,18 +824,24 @@ impl Session<'_> {
             if self.skip && tag != b'S' {
                 continue;
             }
-            let result = match tag {
-                b'Q' => {
+            let reserved = if tag == b'Q' {
+                Ok(())
+            } else {
+                self.ticket.grow(copy_allowance(tag, body.len()))
+            };
+            let result = match (tag, reserved) {
+                (_, Err(e)) => Err(SessErr::Soft(e)),
+                (b'Q', _) => {
                     self.simple_query(&body)?;
                     continue;
                 }
-                b'P' => self.on_parse(&body),
-                b'B' => self.on_bind(&body),
-                b'D' => self.on_describe(&body),
-                b'E' => self.on_execute(&body),
-                b'C' => self.on_close(&body),
-                b'H' => self.conn.flush().map_err(SessErr::from),
-                b'S' => {
+                (b'P', _) => self.on_parse(&body),
+                (b'B', _) => self.on_bind(&body),
+                (b'D', _) => self.on_describe(&body),
+                (b'E', _) => self.on_execute(&body),
+                (b'C', _) => self.on_close(&body),
+                (b'H', _) => self.conn.flush().map_err(SessErr::from),
+                (b'S', _) => {
                     self.skip = false;
                     // Outside a transaction block Sync ends the implicit transaction.
                     if matches!(self.tx, Tx::Idle) {
@@ -690,7 +850,7 @@ impl Session<'_> {
                     self.conn.ready(self.status());
                     self.conn.flush().map_err(SessErr::from)
                 }
-                other => Err(SessErr::Fatal(protocol_violation(format!(
+                (other, _) => Err(SessErr::Fatal(protocol_violation(format!(
                     "invalid frontend message type {other}"
                 )))),
             };
@@ -717,10 +877,55 @@ impl Session<'_> {
     }
 
     fn fail(&mut self, e: &PgError) {
+        if e.message.contains("--max-memory") {
+            // The memory budget said no (both of its messages name the flag).
+            log(self.id, &format!("refused {}: {}", e.code, e.message));
+        }
+        self.send_error(e);
+    }
+
+    fn send_error(&mut self, e: &PgError) {
         self.conn.error(e);
         if matches!(self.tx, Tx::Active(_)) {
             self.tx = Tx::Failed;
         }
+    }
+
+    /// Answers a message whose body the memory budget could not hold (already read and thrown
+    /// away, and logged when it was refused) the way any statement error is answered, so that
+    /// the connection stays usable.
+    fn refuse(&mut self, tag: u8, error: PgError) -> Result<(), Fatal> {
+        if self.skip && tag != b'S' {
+            // Already discarding until Sync: the client gets one error per batch.
+            return Ok(());
+        }
+        self.send_error(&error);
+        if tag == b'Q' {
+            if matches!(self.tx, Tx::Idle) {
+                self.portals.clear();
+            }
+            self.conn.ready(self.status());
+            self.conn.flush()?;
+        } else {
+            self.skip = true;
+        }
+        Ok(())
+    }
+
+    /// Makes room for `extra` more bytes of pending output. The buffer is grown to exactly what
+    /// is needed after reserving that much (and the old block is still alive while it is
+    /// copied), so the encoders that follow never grow it behind the budget's back.
+    fn reserve_out(&mut self, extra: usize) -> Result<(), PgError> {
+        reserve_out(&mut self.ticket, &mut self.out_charged, self.conn, extra)
+    }
+
+    /// Applies writes, with what the engine needs for it reserved for as long as it takes.
+    fn apply_ops(&mut self, ops: &[Op]) -> Result<usize, PgError> {
+        let need = self.shared.backend.apply_cost(ops);
+        self.ticket.grow(need)?;
+        let result = self.shared.backend.apply(ops);
+        self.ticket.shrink(need);
+        result
     }
 
     // ---- statement execution (shared by both protocols) ---------------------------------
@@ -759,7 +964,7 @@ impl Session<'_> {
                 };
                 self.portals.clear();
                 if !queue.is_empty() {
-                    shared.backend.apply(queue.ops())?;
+                    self.apply_ops(queue.ops())?;
                 }
                 Ok(Exec::Tag("COMMIT".into()))
             }
@@ -779,7 +984,17 @@ impl Session<'_> {
                 Ok(Exec::Tag("CHECKPOINT".into()))
             }
             Statement::Select(_) | Statement::Explain(_) => {
-                let QueryResult { columns, rows, .. } = shared.backend.select(statement, sql)?;
+                let (QueryResult { columns, rows, .. }, reserved) =
+                    shared.backend.select(statement, sql, &mut self.ticket)?;
+                // The reservation was made before the rows existed; now it can be cut down to
+                // what they really hold (and must never be below it).
+                let held = held_bytes(&rows);
+                if held <= reserved {
+                    self.ticket.shrink(reserved - held);
+                } else {
+                    log(self.id, "memory estimate for a result was too low");
+                    let _ = self.ticket.grow(held - reserved);
+                }
                 check_rows(&rows)?;
                 let tag = if matches!(statement, Statement::Select(_)) {
                     format!("SELECT {}", rows.len())
@@ -788,9 +1003,17 @@ impl Session<'_> {
                 };
                 let oids = result_oids(statement, columns.len());
                 let cols = columns.into_iter().zip(oids).collect();
-                Ok(Exec::Rows { cols, rows, tag })
+                Ok(Exec::Rows {
+                    cols,
+                    rows,
+                    tag,
+                    held,
+                })
             }
             Statement::Create { .. } | Statement::Insert { .. } => {
+                // The copy of the parsed rows that is queued or applied.
+                let copy = Op::cost_of(statement, sql);
+                self.ticket.grow(copy)?;
                 let op = Op::from_statement(statement, sql).expect("write statement");
                 let empty = Pending::default();
                 let pending = match &self.tx {
@@ -807,12 +1030,13 @@ impl Session<'_> {
                     Statement::Insert { rows, .. } => format!("INSERT 0 {}", rows.len()),
                     _ => "CREATE TABLE".into(),
                 };
-                match &mut self.tx {
-                    Tx::Active(queue) => queue.push(op),
-                    _ => {
-                        shared.backend.apply(&[op])?;
-                    }
+                if let Tx::Active(queue) = &mut self.tx {
+                    // From here on the connection budget counts the queued copy.
+                    queue.push(op);
+                } else {
+                    self.apply_ops(std::slice::from_ref(&op))?;
                 }
+                self.ticket.shrink(copy);
                 Ok(Exec::Tag(tag))
             }
         }
@@ -839,16 +1063,22 @@ impl Session<'_> {
     }
 
     fn simple_inner(&mut self, sql: &str) -> R {
-        let pieces = split_statements(sql);
-        if pieces.is_empty() {
+        let count = count_statements(sql);
+        if count == 0 {
             self.conn.message(b'I', |_| {});
             return Ok(());
         }
+        // The pieces, and every statement parsed from them, live until the message is done.
+        self.ticket.grow(pieces_bytes(count))?;
+        let pieces = split_statements(sql);
         let mut parsed = Vec::with_capacity(pieces.len());
         for piece in &pieces {
             parsed.push(match deallocate_target(piece) {
                 Some(target) => Parsed::Deallocate(target),
-                None => Parsed::Statement(sql::parse(piece).map_err(syntax)?),
+                None => Parsed::Statement(
+                    parse_charged(&mut self.ticket, piece)?
+                        .ok_or_else(|| PgError::new("42601", "empty statement"))?,
+                ),
             });
         }
         let control = parsed.iter().any(|s| {
@@ -870,8 +1100,8 @@ impl Session<'_> {
                 Parsed::Statement(statement) => self.run_statement(statement, piece),
                 Parsed::Deallocate(target) => self.deallocate(target.as_deref()),
             };
-            match result {
-                Ok(exec) => self.send_exec(exec, &[]),
+            match result.and_then(|exec| self.send_exec(exec, &[])) {
+                Ok(()) => {}
                 Err(e) => {
                     failure = Some(e);
                     break;
@@ -885,7 +1115,7 @@ impl Session<'_> {
             };
             if failure.is_none()
                 && !queue.is_empty()
-                && let Err(e) = self.shared.backend.apply(queue.ops())
+                && let Err(e) = self.apply_ops(queue.ops())
             {
                 // Nothing was applied, so do not report the statements as completed.
                 self.conn.out.truncate(mark);
@@ -920,15 +1150,32 @@ impl Session<'_> {
         result
     }
 
-    fn send_exec(&mut self, exec: Exec, formats: &[i16]) {
+    /// Encodes a statement's result into the pending output, after reserving room for it. Once
+    /// the rows are encoded they are dropped and their reservation goes back.
+    fn send_exec(&mut self, exec: Exec, formats: &[i16]) -> Result<(), PgError> {
         match exec {
-            Exec::Tag(tag) => self.conn.command_complete(&tag),
-            Exec::Rows { cols, rows, tag } => {
+            Exec::Tag(tag) => {
+                // One of these per statement: thousands in one query add up.
+                self.reserve_out(tag.len() + 8)?;
+                self.conn.command_complete(&tag);
+            }
+            Exec::Rows {
+                cols,
+                rows,
+                tag,
+                held,
+            } => {
+                self.reserve_out(
+                    description_bytes(&cols) + rows_out_bytes(&rows, &cols) + tag.len(),
+                )?;
                 row_description(self.conn, &cols, formats);
                 write_rows(self.conn, &rows, &cols, formats);
                 self.conn.command_complete(&tag);
+                drop(rows);
+                self.ticket.shrink(held);
             }
         }
+        Ok(())
     }
 
     // ---- extended query -----------------------------------------------------------------
@@ -962,6 +1209,8 @@ impl Session<'_> {
         if self.retained().saturating_add(cost) > CONNECTION_BUDGET {
             return Err(budget_exceeded().into());
         }
+        self.ticket
+            .grow(pieces_bytes(count_statements(&query)) + 24 * count_placeholders(&query))?;
         let pieces = split_statements(&query);
         if pieces.len() > 1 {
             return Err(PgError::new(
@@ -972,6 +1221,10 @@ impl Session<'_> {
         }
         let used = placeholders(&query);
         let count = used.iter().copied().max().unwrap_or(0).max(oids.len());
+        // The stand-in values, the parameter types and the text with the stand-ins put in.
+        let zeros = vec![0; count];
+        self.ticket
+            .grow(8 * count + 4 * count + pieces.first().map_or(0, |p| substitute_len(p, |_| 0)))?;
         for n in 1..=count {
             if !used.contains(&n) && oids.get(n - 1).is_none_or(|o| *o == 0) {
                 return Err(PgError::new(
@@ -984,7 +1237,7 @@ impl Session<'_> {
         let statement = match pieces.first() {
             None => None,
             // Validate the syntax now, with a stand-in value for every $n.
-            Some(piece) => Some(sql::parse(&substitute(piece, &vec![0; count])).map_err(syntax)?),
+            Some(piece) => parse_charged(&mut self.ticket, &substitute(piece, &zeros))?,
         };
         if matches!(self.tx, Tx::Failed)
             && !matches!(
@@ -1097,9 +1350,15 @@ impl Session<'_> {
             prepared.sql.clone()
         } else {
             // Substituting can change the meaning (`-$1` with a negative value is a comment), so
-            // the final text is checked here, as it always was; Execute parses it again.
+            // the final text is checked here, as it always was; Execute parses it again. Each
+            // `$1` can become up to 21 characters, so the size is worked out first.
+            let size = substitute_len(&prepared.sql, |n| values.get(n - 1).copied().unwrap_or(0));
+            if size > sql::MAX_SQL_BYTES {
+                return Err(PgError::new("42601", "SQL exceeds 16 MiB limit").into());
+            }
+            self.ticket.grow(size)?;
             let sql = substitute(&prepared.sql, &values);
-            parse_stored(&sql)?;
+            parse_charged(&mut self.ticket, &sql)?;
             sql
         };
         let cost = OBJECT_BASE + sql.len() + 2 * result_formats.len();
@@ -1134,11 +1393,17 @@ impl Session<'_> {
                         format!("prepared statement \"{}\" does not exist", clean(name)),
                     )
                 })?;
+                // The parameter types, the stand-in values and the text with them put in.
+                self.ticket
+                    .grow(12 * prepared.param_oids.len() + substitute_len(&prepared.sql, |_| 0))?;
                 let oids = prepared.param_oids.clone();
                 // Parsed with a stand-in value for every parameter, as at Parse.
                 let sql = substitute(&prepared.sql, &vec![0; oids.len()]);
-                let cols = match parse_stored(&sql)? {
-                    Some(s) => describe(backend, &s)?,
+                let cols = match parse_charged(&mut self.ticket, &sql)? {
+                    Some(s) => {
+                        self.ticket.grow(describe_bytes(&s))?;
+                        describe(backend, &s)?
+                    }
                     None => None,
                 };
                 self.conn.message(b't', |b| {
@@ -1148,7 +1413,11 @@ impl Session<'_> {
                     }
                 });
                 match cols {
-                    Some(cols) => row_description(self.conn, &cols, &[]),
+                    Some(cols) => {
+                        let extra = description_bytes(&cols);
+                        reserve_out(&mut self.ticket, &mut self.out_charged, self.conn, extra)?;
+                        row_description(self.conn, &cols, &[]);
+                    }
                     None => self.conn.message(b'n', |_| {}),
                 }
             }
@@ -1159,17 +1428,26 @@ impl Session<'_> {
                         format!("portal \"{}\" does not exist", clean(name)),
                     )
                 })?;
+                let (sql, formats) = (portal.sql.as_str(), portal.formats.as_slice());
                 let cols = match &portal.state {
-                    PortalState::Rows { cols, .. } => Some(cols.clone()),
-                    _ => match parse_stored(&portal.sql)? {
-                        Some(s) => describe(backend, &s)?,
+                    PortalState::Rows { cols, .. } => {
+                        self.ticket.grow(description_bytes(cols))?;
+                        Some(cols.clone())
+                    }
+                    _ => match parse_charged(&mut self.ticket, sql)? {
+                        Some(s) => {
+                            self.ticket.grow(describe_bytes(&s))?;
+                            describe(backend, &s)?
+                        }
                         None => None,
                     },
                 };
                 match cols {
                     Some(cols) => {
-                        check_formats(&portal.formats, cols.len())?;
-                        row_description(self.conn, &cols, &portal.formats);
+                        check_formats(formats, cols.len())?;
+                        let extra = description_bytes(&cols);
+                        reserve_out(&mut self.ticket, &mut self.out_charged, self.conn, extra)?;
+                        row_description(self.conn, &cols, formats);
                     }
                     None => self.conn.message(b'n', |_| {}),
                 }
@@ -1203,8 +1481,10 @@ impl Session<'_> {
     }
 
     fn execute_portal(&mut self, portal: &mut Portal, max_rows: usize) -> R {
+        // Bytes of the ticket that stand for rows built by this call.
+        let mut held = 0;
         if matches!(portal.state, PortalState::Fresh) {
-            let Some(statement) = parse_stored(&portal.sql)? else {
+            let Some(statement) = parse_charged(&mut self.ticket, &portal.sql)? else {
                 self.conn.message(b'I', |_| {});
                 portal.state = PortalState::Done(String::new());
                 return Ok(());
@@ -1215,7 +1495,13 @@ impl Session<'_> {
                     portal.state = PortalState::Done(tag);
                     return Ok(());
                 }
-                Exec::Rows { cols, rows, tag } => {
+                Exec::Rows {
+                    cols,
+                    rows,
+                    tag,
+                    held: reserved,
+                } => {
+                    held = reserved;
                     check_formats(&portal.formats, cols.len())?;
                     // Only a portal that stays suspended keeps its rows; the others are sent
                     // below and dropped.
@@ -1253,6 +1539,7 @@ impl Session<'_> {
                 } else {
                     (*pos + max_rows).min(rows.len())
                 };
+                self.reserve_out(rows_out_bytes(&rows[*pos..end], cols) + tag.len())?;
                 write_rows(self.conn, &rows[*pos..end], cols, &portal.formats);
                 *pos = end;
                 if end < rows.len() {
@@ -1269,6 +1556,8 @@ impl Session<'_> {
             portal.state = PortalState::Done(tag);
             portal.cost = OBJECT_BASE + portal.sql.len() + 2 * portal.formats.len();
         }
+        // Sent and dropped, or kept for a suspended portal (the connection budget counts those).
+        self.ticket.shrink(held);
         Ok(())
     }
 

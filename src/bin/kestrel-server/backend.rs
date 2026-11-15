@@ -1,10 +1,11 @@
 //! The two storage backends behind the wire protocol, and the mapping of engine errors
 //! to SQLSTATE codes.
+use crate::memory::Ticket;
 use crate::wire::PgError;
 use kestrel_sql::archive::IngestBatch;
 use kestrel_sql::live::LiveArchive;
-use kestrel_sql::sql::Statement;
-use kestrel_sql::{Database, Outcome, QueryResult};
+use kestrel_sql::sql::{self, Expr, Statement};
+use kestrel_sql::{Database, MAX_RESULT_ROWS, Outcome, QueryResult, result_bytes};
 use std::collections::{BTreeSet, HashMap};
 use std::sync::{Mutex, MutexGuard};
 
@@ -41,6 +42,26 @@ pub enum Op {
     },
 }
 
+const COST_BASE: usize = 128;
+
+fn create_cost(table: &str, columns: &[String], sql: &str) -> usize {
+    COST_BASE + table.len() + sql.len() + columns.iter().map(|c| c.len() + 24).sum::<usize>()
+}
+
+fn insert_cost(table: &str, rows: &[Vec<i64>], sql: &str) -> usize {
+    COST_BASE + table.len() + sql.len() + rows.iter().map(|r| 40 + 8 * r.len()).sum::<usize>()
+}
+
+/// Bytes the `serde_json` text of one value takes in the log record: its digits, a sign and the
+/// comma.
+fn json_len(v: i64) -> usize {
+    v.unsigned_abs()
+        .checked_ilog10()
+        .map_or(1, |d| d as usize + 1)
+        + usize::from(v < 0)
+        + 1
+}
+
 impl Op {
     pub fn from_statement(statement: &Statement, sql: &str) -> Option<Op> {
         match statement {
@@ -57,6 +78,15 @@ impl Op {
             _ => None,
         }
     }
+    /// What building an `Op` from this statement allocates, before it is built: the SQL text and
+    /// the copy of the parsed rows. The same number as [`Op::cost`] of the result.
+    pub fn cost_of(statement: &Statement, sql: &str) -> usize {
+        match statement {
+            Statement::Create { table, columns } => create_cost(table, columns, sql),
+            Statement::Insert { table, rows } => insert_cost(table, rows, sql),
+            _ => 0,
+        }
+    }
     fn rows(&self) -> usize {
         match self {
             Op::Insert { rows, .. } => rows.len(),
@@ -66,22 +96,21 @@ impl Op {
     /// Bytes this queued write keeps alive: the SQL text plus the parsed rows (a `Vec<i64>` per
     /// row costs its header, a typical allocator overhead and 8 bytes per value).
     pub fn cost(&self) -> usize {
-        const BASE: usize = 128;
         match self {
             Op::Create {
                 table,
                 columns,
                 sql,
-            } => {
-                BASE + table.len() + sql.len() + columns.iter().map(|c| c.len() + 24).sum::<usize>()
-            }
-            Op::Insert { table, rows, sql } => {
-                BASE + table.len()
-                    + sql.len()
-                    + rows.iter().map(|r| 40 + 8 * r.len()).sum::<usize>()
-            }
+            } => create_cost(table, columns, sql),
+            Op::Insert { table, rows, sql } => insert_cost(table, rows, sql),
         }
     }
+}
+
+/// Bytes the engine's own parse of the statement text may take when the write is applied.
+fn reparse_bytes(op: &Op) -> usize {
+    let (Op::Create { sql, .. } | Op::Insert { sql, .. }) = op;
+    sql::parse_estimate(sql).total()
 }
 
 /// The writes a connection queued since `BEGIN`, with running totals so that checking one more
@@ -114,6 +143,36 @@ impl Pending {
     pub fn bytes(&self) -> usize {
         self.bytes
     }
+}
+
+/// An upper bound on the heap a SELECT or EXPLAIN needs for its result, from the statement and
+/// the table's `(rows, columns)` if it is known: at most [`MAX_RESULT_ROWS`] rows are ever
+/// materialised (past that the engine fails), a statement with only aggregates gives one row, and
+/// a `LIMIT` stops a scan early unless `ORDER BY` needs every row first.
+fn select_bytes(statement: &Statement, shape: Option<(usize, usize)>) -> usize {
+    let Statement::Select(q) = statement else {
+        return result_bytes(1, 1, false, false);
+    };
+    let star = q.items.iter().any(|i| matches!(i.expr, Expr::Star));
+    let aggregate = q
+        .items
+        .iter()
+        .any(|i| !matches!(i.expr, Expr::Column(_) | Expr::Star));
+    let grouped = q.group.is_some();
+    let cols = if star {
+        shape.map_or(64, |(_, columns)| columns)
+    } else {
+        q.items.len()
+    };
+    let table_rows = shape.map_or(MAX_RESULT_ROWS, |(rows, _)| rows.min(MAX_RESULT_ROWS));
+    let rows = if aggregate && !grouped {
+        1
+    } else if grouped || q.order.is_some() {
+        table_rows
+    } else {
+        q.limit.map_or(table_rows, |limit| limit.min(table_rows))
+    };
+    result_bytes(rows, cols, grouped, q.order.is_some())
 }
 
 /// Maps an engine error message to a SQLSTATE. The engine only has message strings.
@@ -193,13 +252,41 @@ impl Backend {
         }
     }
 
-    /// Runs a SELECT or EXPLAIN against committed data.
-    pub fn select(&self, statement: &Statement, sql: &str) -> Result<QueryResult, PgError> {
+    /// Runs a SELECT or EXPLAIN against committed data. Before it runs, the memory the engine
+    /// may need (its own parse of the text, the plan, the rows it materialises) is reserved from
+    /// `ticket`; `shape` is the table's size, read under the same lock the query runs under, so
+    /// the bound cannot be outgrown by another connection's commit. Returns the result and the
+    /// bytes still reserved for it; the caller shrinks that to what the rows really hold.
+    pub fn select(
+        &self,
+        statement: &Statement,
+        sql: &str,
+        ticket: &mut Ticket,
+    ) -> Result<(QueryResult, usize), PgError> {
+        let reparse = sql::parse_estimate(sql).total();
         match self {
-            Backend::Db(db) => match lock(db)?.execute(sql).map_err(engine_error)? {
-                Outcome::Query { result } => Ok(result),
-                _ => Err(PgError::new("XX000", "engine returned no result set")),
-            },
+            Backend::Db(db) => {
+                let mut db = lock(db)?;
+                let shape = match statement {
+                    Statement::Select(q) => db.table_shape(&q.table),
+                    _ => None,
+                };
+                // An unknown table has no shape and fails inside the engine before it builds
+                // anything.
+                let bound = select_bytes(statement, shape);
+                ticket.grow(reparse + bound)?;
+                let outcome = db.execute(sql).map_err(engine_error);
+                ticket.shrink(reparse);
+                match outcome {
+                    Ok(Outcome::Query { result }) => Ok((result, bound)),
+                    other => {
+                        ticket.shrink(bound);
+                        Err(other.err().unwrap_or_else(|| {
+                            PgError::new("XX000", "engine returned no result set")
+                        }))
+                    }
+                }
+            }
             Backend::Archive(a) => {
                 if matches!(statement, Statement::Explain(_)) {
                     return Err(PgError::new(
@@ -207,12 +294,52 @@ impl Backend {
                         "EXPLAIN is not supported in --archive mode",
                     ));
                 }
-                a.live
-                    .snapshot()
-                    .query(sql)
-                    .map(|r| r.result)
-                    .map_err(engine_error)
+                let bound = select_bytes(statement, None);
+                ticket.grow(reparse + bound)?;
+                let result = a.live.snapshot().query(sql).map_err(engine_error);
+                ticket.shrink(reparse);
+                match result {
+                    Ok(r) => Ok((r.result, bound)),
+                    Err(e) => {
+                        ticket.shrink(bound);
+                        Err(e)
+                    }
+                }
             }
+        }
+    }
+
+    /// Bytes the engine may need to apply `ops` in one commit, from what is queued: the columns
+    /// it builds for every statement (kept until the commit), its parse of the largest statement
+    /// text, and the JSON log record, which `serde_json` builds in a vector that doubles (so
+    /// three times its size at the peak) before the 64 MiB limit is checked. The archive appends
+    /// one batch of at most [`ARCHIVE_BATCH_ROWS`] rows; its writer's own queue is bounded by the
+    /// engine and not counted here beyond the copy of the columns.
+    pub fn apply_cost(&self, ops: &[Op]) -> usize {
+        let values: usize = ops
+            .iter()
+            .map(|op| match op {
+                Op::Insert { rows, .. } => rows.iter().map(Vec::len).sum(),
+                Op::Create { .. } => 0,
+            })
+            .sum();
+        match self {
+            Backend::Db(_) => {
+                let json: usize = ops
+                    .iter()
+                    .map(|op| match op {
+                        Op::Insert { rows, .. } => {
+                            rows.iter().flatten().map(|v| json_len(*v)).sum::<usize>() + 128
+                        }
+                        Op::Create { columns, .. } => {
+                            128 + columns.iter().map(|c| c.len() + 3).sum::<usize>()
+                        }
+                    })
+                    .sum();
+                let parse = ops.iter().map(reparse_bytes).max().unwrap_or(0);
+                8 * values + 3 * json + parse + 4096
+            }
+            Backend::Archive(_) => 24 * values + 4096,
         }
     }
 

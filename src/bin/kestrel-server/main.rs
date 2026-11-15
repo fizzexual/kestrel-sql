@@ -2,6 +2,7 @@
 //! Plain TCP, SCRAM-SHA-256, no TLS: keep it on loopback or behind an SSH tunnel / stunnel.
 //! See docs/SERVER.md.
 mod backend;
+mod memory;
 mod scram;
 mod session;
 mod text;
@@ -11,6 +12,7 @@ use backend::{ArchiveBackend, Backend};
 use kestrel_sql::Database;
 use kestrel_sql::archive::Archive;
 use kestrel_sql::live::LiveArchive;
+use memory::Budget;
 use session::{Shared, Slot, log, serve};
 use std::io::{self, Write};
 use std::net::{TcpListener, ToSocketAddrs};
@@ -38,6 +40,9 @@ options:
   --listen ADDR         default 127.0.0.1:5433 (port 0 picks a free port)
   --allow-remote        allow a non-loopback --listen address (there is still no TLS)
   --max-connections N   authenticated sessions, default 64; further logins get SQLSTATE 53300
+  --max-memory MIB      memory all requests in flight may use together (message buffers, parsed
+                        statements, results), default 1024; a request that cannot get its share
+                        fails with SQLSTATE 53200 (busy, retry) or 54000 (too big, never fits)
 ";
 
 struct Config {
@@ -50,6 +55,8 @@ struct Config {
     listen: String,
     allow_remote: bool,
     max_connections: usize,
+    /// Transient memory budget in MiB.
+    max_memory: usize,
 }
 
 fn parse_args() -> Result<Option<Config>, String> {
@@ -63,6 +70,7 @@ fn parse_args() -> Result<Option<Config>, String> {
         listen: "127.0.0.1:5433".into(),
         allow_remote: false,
         max_connections: 64,
+        max_memory: 1024,
     };
     let (mut columns_set, mut table_set) = (false, false);
     let mut args = std::env::args().skip(1);
@@ -90,6 +98,14 @@ fn parse_args() -> Result<Option<Config>, String> {
                     .ok()
                     .filter(|n| *n >= 1)
                     .ok_or("--max-connections needs an integer >= 1")?;
+            }
+            "--max-memory" => {
+                // At most 2^30 MiB, so that the byte count cannot overflow on a 64-bit build.
+                config.max_memory = value()?
+                    .parse()
+                    .ok()
+                    .filter(|n| (1..=1 << 30).contains(n))
+                    .ok_or("--max-memory needs a whole number of MiB, 1 or more")?;
             }
             other => return Err(format!("unknown argument {other}")),
         }
@@ -205,6 +221,7 @@ fn run() -> Result<(), String> {
         // Sockets still in startup or authentication each hold a thread for at most ten
         // seconds but do not count against --max-connections.
         preauth_cap: (2 * config.max_connections).max(16),
+        budget: Budget::new(config.max_memory.saturating_mul(memory::MIB)),
     });
     // Hand-assembled so the keys keep the documented order.
     println!(
@@ -245,6 +262,17 @@ fn run() -> Result<(), String> {
                     Err(Fatal::Pg(e)) => format!("closed (error {})", e.code),
                 };
                 log(id, &reason);
+                // Everything this connection reserved is back by now: what is left is held by
+                // other connections, so the last connection to close reports 0.
+                log(
+                    id,
+                    &format!(
+                        "transient memory: {} in use, peak {}, limit {} bytes",
+                        shared.budget.used(),
+                        shared.budget.peak(),
+                        shared.budget.limit()
+                    ),
+                );
             });
         if let Err(e) = spawned {
             // The closure, and the slot it owns, were dropped.

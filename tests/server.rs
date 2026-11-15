@@ -1503,6 +1503,22 @@ fn startup_refusals() {
         vec![
             "--db",
             db.as_str(),
+            "--max-memory",
+            "0",
+            "--password-file",
+            pw.as_str(),
+        ],
+        vec![
+            "--db",
+            db.as_str(),
+            "--max-memory",
+            "lots",
+            "--password-file",
+            pw.as_str(),
+        ],
+        vec![
+            "--db",
+            db.as_str(),
             "--frobnicate",
             "--password-file",
             pw.as_str(),
@@ -1519,6 +1535,13 @@ fn startup_refusals() {
         "--user restricts the account"
     );
     assert!(Client::login(server.addr, "alice", PASSWORD).is_ok());
+    server.stop();
+
+    // --max-memory takes whole MiB.
+    let server = Server::db(&dir, &["--max-memory", "2048"]);
+    let mut c = server.login();
+    seed(&mut c);
+    assert_eq!(c.count(), "3");
 }
 
 #[test]
@@ -1941,4 +1964,358 @@ fn a_commit_over_the_wal_record_limit_fails_cleanly() {
     c.ok(&wide_insert(2, "8"));
     c.ok("COMMIT");
     assert_eq!(other.ok("SELECT COUNT(*) FROM wide")[0][0], "3");
+}
+
+// ---- the transient memory budget (--max-memory) ----------------------------------------------
+
+const MIB: usize = 1024 * 1024;
+
+/// One `transient memory: N in use, peak P, limit L bytes` line of the server log; the server
+/// writes one after each connection has closed and given everything back.
+#[derive(Debug, Clone, Copy)]
+struct MemoryLine {
+    used: usize,
+    peak: usize,
+    limit: usize,
+}
+
+fn memory_lines(log: &str) -> Vec<MemoryLine> {
+    log.lines()
+        .filter_map(|line| {
+            let rest = line.split("transient memory: ").nth(1)?;
+            let n: Vec<usize> = rest
+                .split(|c: char| !c.is_ascii_digit())
+                .filter(|s| !s.is_empty())
+                .map(|s| s.parse().unwrap())
+                .collect();
+            (n.len() == 3).then(|| MemoryLine {
+                used: n[0],
+                peak: n[1],
+                limit: n[2],
+            })
+        })
+        .collect()
+}
+
+/// Waits until `needle` has been logged `at_least` times.
+fn wait_for_log(server: &Server, needle: &str, at_least: usize) -> String {
+    let started = Instant::now();
+    loop {
+        let log = server.log();
+        if log.matches(needle).count() >= at_least {
+            return log;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(30),
+            "waited for {at_least} x {needle:?} in the log:\n{log}"
+        );
+        std::thread::sleep(Duration::from_millis(25));
+    }
+}
+
+/// Waits until every connection the server accepted has closed, and returns the memory lines
+/// they logged. The last one is written after every reservation has been given back.
+fn settled_memory_lines(server: &Server) -> Vec<MemoryLine> {
+    let started = Instant::now();
+    loop {
+        let log = server.log();
+        let opened = log.matches(": open from ").count();
+        let lines = memory_lines(&log);
+        if opened > 0 && lines.len() >= opened {
+            return lines;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(30),
+            "{opened} connections opened, {} closed:\n{log}",
+            lines.len()
+        );
+        std::thread::sleep(Duration::from_millis(25));
+    }
+}
+
+/// The body of a simple query message (the text and its terminating zero).
+fn query_body(sql: &str) -> Vec<u8> {
+    let mut body = sql.as_bytes().to_vec();
+    body.push(0);
+    body
+}
+
+/// Sends the header of a simple query and only the first `sent` bytes of its body.
+fn start_query(c: &mut Client, body: &[u8], sent: usize) {
+    let mut head = vec![b'Q'];
+    head.extend_from_slice(&i32b(body.len() as i32 + 4));
+    c.stream.write_all(&head).unwrap();
+    c.stream.write_all(&body[..sent]).unwrap();
+}
+
+#[test]
+fn concurrent_large_inserts_cannot_exceed_the_transient_budget() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "64", "--max-connections", "32"]);
+    let mut setup = server.login();
+    setup.ok(&wide_create());
+    let sql = wide_insert_of(4 * MIB);
+    let rows = 4 * MIB / (64 * 20 + 3);
+    let body = query_body(&sql);
+    let mut clients: Vec<Client> = (0..20).map(|_| server.login()).collect();
+
+    // Twenty clients each announce 4 MiB and send 2.5 MiB of it: the server is holding buffers
+    // for all of them at once, 80 MiB wanted against 64 MiB of budget.
+    let sent = 5 * MIB / 2;
+    for c in &mut clients {
+        start_query(c, &body, sent);
+    }
+    // At most 16 buffers of 4 MiB fit, so at least four requests are refused while they are
+    // still arriving. They are read and thrown away; the others wait for their last bytes.
+    wait_for_log(&server, "refused 53200", 4);
+    for c in &mut clients {
+        c.stream.write_all(&body[sent..]).unwrap();
+    }
+    let mut inserted = 0;
+    let mut refused = 0;
+    for c in &mut clients {
+        let r = c.collect();
+        match r.code() {
+            "" => {
+                assert_eq!(r.tags, [format!("INSERT 0 {rows}")]);
+                inserted += 1;
+            }
+            // Anything else would be a crash, a wrong code or a closed connection.
+            code => {
+                assert_eq!(code, "53200", "{:?}", r.error);
+                assert_eq!(r.status, b'I', "the refusal is an ordinary ERROR");
+                refused += 1;
+            }
+        }
+    }
+    assert!(refused >= 4, "{refused} refused, {inserted} inserted");
+    // Every connection is still usable after the refusal, and the server answers new ones.
+    for c in &mut clients {
+        c.ok("SELECT COUNT(*) FROM wide");
+    }
+    assert_eq!(
+        server.login().ok("SELECT COUNT(*) FROM wide")[0][0],
+        (inserted * rows).to_string()
+    );
+    // Refused means nothing was kept and nothing leaked: the same insert now goes through, one
+    // client after the other.
+    for c in &mut clients {
+        let r = c.simple(&sql);
+        assert!(r.error.is_none(), "{:?}", r.error);
+        assert_eq!(r.tags, [format!("INSERT 0 {rows}")]);
+    }
+    assert_eq!(
+        setup.ok("SELECT COUNT(*) FROM wide")[0][0],
+        ((inserted + 20) * rows).to_string()
+    );
+    drop(clients);
+    drop(setup);
+
+    let lines = settled_memory_lines(&server);
+    let limit = 64 * MIB;
+    assert!(lines.iter().all(|l| l.limit == limit && l.peak <= limit));
+    let peak = lines.iter().map(|l| l.peak).max().unwrap();
+    assert!(peak > limit / 2, "the budget was never really used: {peak}");
+    assert_eq!(lines.last().unwrap().used, 0, "everything was given back");
+    assert!(
+        !server.log().contains("estimate"),
+        "an estimate was too low:\n{}",
+        server.log()
+    );
+}
+
+#[test]
+fn a_refused_request_returns_its_reservation_and_the_retry_succeeds() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "64"]);
+    let mut c = server.login();
+    c.ok(&wide_create());
+    // Three clients start 16 MiB messages and stall after 8.5 MiB: 48 MiB of the 64 are theirs.
+    let filler = query_body(&format!(
+        "SELECT COUNT(*) FROM wide -- {}",
+        "x".repeat(16 * MIB - 100)
+    ));
+    let mut holders: Vec<Client> = (0..3).map(|_| server.login()).collect();
+    for h in &mut holders {
+        start_query(h, &filler, 17 * MIB / 2);
+    }
+    // Wait until the server has really taken their buffers.
+    let started = Instant::now();
+    // Alone this needs about 55 MiB; with 48 MiB taken it cannot be had.
+    let sql = wide_insert_of(4 * MIB);
+    let r = loop {
+        let r = c.simple(&sql);
+        if r.code() != "" || started.elapsed() > Duration::from_secs(10) {
+            break r;
+        }
+        // It went through before the holders were counted: take the rows back out of the way.
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    assert_eq!(r.code(), "53200", "{:?}", r.error);
+    assert_eq!(
+        (r.error.as_ref().unwrap().severity.as_str(), r.status),
+        ("ERROR", b'I')
+    );
+    // The refused connection is not hurt, and a small request still works with the budget full.
+    let counted = c.ok("SELECT COUNT(*) FROM wide")[0][0].clone();
+    assert!(counted.parse::<usize>().is_ok());
+    // The holders go away mid-message; their reservations must come back with them.
+    drop(holders);
+    let started = Instant::now();
+    let r = loop {
+        let r = c.simple(&sql);
+        if r.code() != "53200" || started.elapsed() > Duration::from_secs(20) {
+            break r;
+        }
+        std::thread::sleep(Duration::from_millis(50));
+    };
+    assert!(r.error.is_none(), "{:?}", r.error);
+    drop(c);
+
+    let lines = settled_memory_lines(&server);
+    assert!(lines.iter().all(|l| l.peak <= l.limit));
+    assert_eq!(lines.last().unwrap().used, 0, "the budget is back to zero");
+}
+
+#[test]
+fn a_request_larger_than_the_whole_budget_fails_cleanly() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "8"]);
+    let mut c = server.login();
+    c.ok(&wide_create());
+
+    // A message bigger than the whole budget is read and thrown away, never held.
+    let r = c.simple(&format!(
+        "SELECT COUNT(*) FROM wide -- {}",
+        "x".repeat(12 * MIB)
+    ));
+    assert_eq!((r.code(), r.status), ("54000", b'I'), "{:?}", r.error);
+    assert!(r.error.as_ref().unwrap().message.contains("--max-memory"));
+    assert_eq!(
+        c.ok("SELECT COUNT(*) FROM wide")[0][0],
+        "0",
+        "still in step"
+    );
+
+    // A statement that fits in the message but would need more than the budget to parse.
+    let r = c.simple(&wide_insert_of(2 * MIB));
+    assert_eq!((r.code(), r.status), ("54000", b'I'), "{:?}", r.error);
+    let r = c.pipeline(&[parse_msg("big", &wide_insert_of(2 * MIB), &[])]);
+    assert_eq!(r.code(), "54000", "{:?}", r.error);
+    assert_eq!(c.ok("SELECT COUNT(*) FROM wide")[0][0], "0");
+
+    // A result that would need more than the budget is refused before it is built: 1,000 rows
+    // of 1,000 columns are 32 MB of values.
+    seed(&mut c);
+    let rows: Vec<String> = (0..1000).map(|i| format!("({i},{i},{i})")).collect();
+    c.ok(&format!("INSERT INTO events VALUES {}", rows.join(",")));
+    let items = vec!["ts"; 1000].join(",");
+    let r = c.simple(&format!("SELECT {items} FROM events"));
+    assert_eq!((r.code(), r.status), ("54000", b'I'), "{:?}", r.error);
+    assert_eq!(r.rows.len(), 0);
+
+    // Requests that fit are not affected, and nothing stays reserved.
+    assert_eq!(c.count(), "1003");
+    assert!(c.simple(&wide_insert_of(256 * 1024)).error.is_none());
+    drop(c);
+    let lines = settled_memory_lines(&server);
+    assert_eq!(lines.last().unwrap().used, 0);
+    assert!(lines.iter().all(|l| l.peak <= 8 * MIB));
+}
+
+#[test]
+fn announced_but_unsent_bytes_cost_nothing() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "64"]);
+    let mut c = server.login();
+    c.ok(&wide_create());
+    // Three clients announce 16 MiB messages and send almost nothing.
+    let filler = query_body(&format!(
+        "SELECT COUNT(*) FROM wide -- {}",
+        "x".repeat(16 * MIB - 100)
+    ));
+    let mut idle: Vec<Client> = (0..3).map(|_| server.login()).collect();
+    for h in &mut idle {
+        start_query(h, &filler, 100);
+    }
+    std::thread::sleep(Duration::from_millis(300));
+    // Reserving the announced size up front would leave 16 MiB; the real request needs more.
+    let r = c.simple(&wide_insert_of(3 * MIB));
+    assert!(r.error.is_none(), "{:?}", r.error);
+    drop(idle);
+    drop(c);
+    let lines = settled_memory_lines(&server);
+    assert_eq!(lines.last().unwrap().used, 0);
+}
+
+#[test]
+fn results_never_outgrow_their_reservation() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "64"]);
+    let mut c = server.login();
+    seed(&mut c);
+    let rows: Vec<String> = (0..5000)
+        .map(|i| format!("({i},{},{})", i % 7, i % 1000))
+        .collect();
+    c.ok(&format!("INSERT INTO events VALUES {}", rows.join(",")));
+    for (sql, expected) in [
+        ("SELECT * FROM events", 5003),
+        (
+            "SELECT ts, value FROM events WHERE ts >= 100 ORDER BY ts DESC",
+            4903,
+        ),
+        (
+            "SELECT device, COUNT(*), SUM(ts), AVG(value), MIN(ts), MAX(ts) FROM events GROUP BY device",
+            1000,
+        ),
+        (
+            "SELECT value, COUNT(*) FROM events GROUP BY value ORDER BY value",
+            10,
+        ),
+        ("SELECT COUNT(*), SUM(value) FROM events", 1),
+        ("SELECT ts FROM events LIMIT 10", 10),
+        ("EXPLAIN SELECT ts FROM events", 1),
+    ] {
+        assert_eq!(c.ok(sql).len(), expected, "{sql}");
+    }
+    // The extended protocol keeps a result for a suspended portal and sends it in pieces.
+    let r = c.pipeline(&[
+        parse_msg("q", "SELECT * FROM events", &[]),
+        describe_msg(b'S', "q"),
+        bind_msg("p", "q", &[], &[], &[1]),
+        execute_msg("p", 100),
+        execute_msg("p", 0),
+    ]);
+    assert!(r.error.is_none(), "{:?}", r.error);
+    assert_eq!(r.rows.len(), 5003);
+    drop(c);
+    let lines = settled_memory_lines(&server);
+    assert_eq!(lines.last().unwrap().used, 0);
+    assert!(
+        !server.log().contains("estimate"),
+        "a reservation was too low:\n{}",
+        server.log()
+    );
+}
+
+#[test]
+fn a_flood_of_selects_in_one_query_cannot_grow_the_output_without_bound() {
+    let dir = TempDir::new();
+    let server = Server::db(&dir, &["--max-memory", "4"]);
+    let mut c = server.login();
+    seed(&mut c);
+    let rows: Vec<String> = (0..1000).map(|i| format!("({i},{i},{i})")).collect();
+    c.ok(&format!("INSERT INTO events VALUES {}", rows.join(",")));
+    // 300 statements of 1,000 rows each are about 9 MB of output, all held until the query ends
+    // (an error in a later statement of a simple query still shows the earlier results).
+    let r = c.simple(&"SELECT * FROM events;".repeat(300));
+    assert_eq!((r.code(), r.status), ("54000", b'I'), "{:?}", r.error);
+    assert!(r.rows.len() < 300 * 1000, "{} rows were sent", r.rows.len());
+    assert_eq!(c.count(), "1003");
+    // One statement more than fits is still the client's choice: the same result alone is fine.
+    assert_eq!(c.ok("SELECT * FROM events").len(), 1003);
+    drop(c);
+    let lines = settled_memory_lines(&server);
+    assert_eq!(lines.last().unwrap().used, 0);
+    assert!(lines.iter().all(|l| l.peak <= 4 * MIB));
 }
