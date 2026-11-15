@@ -179,9 +179,15 @@ while one statement of up to 16 MiB is parsed is not counted against the budget.
 - **Platforms:** Windows and Linux, the newest stable Rust and the oldest supported (1.89): 130
   tests on both.
 
-What is not tested: a real power cut on real hardware, and a filesystem-level simulator such as
-LazyFS. The byte-by-byte states cover the standard model (only synced data survives); they cannot
-cover a disk that lies about `fsync`.
+- **A file system that loses unsynced data:** 300 power cuts on LazyFS (the tool Jepsen uses),
+  including cuts inside checkpoints and torn writes with holes; all 12,838,010 acknowledged rows
+  survived ([benchmarks/lazyfs/](../benchmarks/lazyfs/README.md)). A control first proves LazyFS
+  really drops unsynced bytes, so the pass cannot come from a file system that writes through.
+- **Dependencies:** `cargo audit` against the RustSec database in CI; 0 advisories.
+
+What is not tested: a real power cut on real hardware, and a disk that lies about `fsync`, which
+defeats any database. LazyFS covers lost file data; the directory steps of a checkpoint rest on
+the state-by-state tests.
 
 ## 10. What I would do next
 

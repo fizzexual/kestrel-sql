@@ -4,8 +4,9 @@ A small embedded analytics engine in Rust for **append-only integer time series*
 
 It answers `COUNT`, `SUM` and `AVG` over a time range in a few microseconds without reading the
 rows. It runs embedded in a Rust program or as a server that `psql` and ordinary PostgreSQL drivers
-connect to. Every on-disk state a power cut can leave behind is built in the tests and checked:
-committed data survives, and a write cut off halfway is detected and removed on the next open.
+connect to. Every on-disk state a power cut can leave behind is built in the tests, and 300 power
+cuts on a file system that loses unsynced data (LazyFS) were survived: committed data is always
+there, and a write cut off halfway is detected and removed on the next open.
 
 **Status: version 0.4.0, built for production use in one narrow job:** append-only integer time
 series on a single machine, with one table per query. It is not a general SQL database: no text,
@@ -217,13 +218,19 @@ cargo test --release --locked
 
 `cargo test` runs 130 tests; they pass on Windows with current Rust and on Linux with Rust 1.89,
 the minimum version. The CI workflow in [.github/workflows/ci.yml](.github/workflows/ci.yml) runs
-format, clippy and the tests on Windows and Linux, plus a build with the minimum Rust version. The
+format, clippy and the tests on Windows and Linux, the tests with the minimum Rust version,
+`cargo audit` against the RustSec advisory database, and 60 LazyFS power cuts. The
 tests that say most about the design:
 
 - **Power cuts, state by state** ([tests/durability.rs](tests/durability.rs)). A power cut can only
   leave a few kinds of state on disk: a last write cut at some byte, a file created but empty, a
   rename done or not done. The tests build each of them byte by byte, for the log and for every
   step of a checkpoint, and check that every acknowledged transaction is back after the open.
+- **Power cuts on a real file system that loses data** ([benchmarks/lazyfs/](benchmarks/lazyfs/README.md)).
+  [LazyFS](https://github.com/dsrhaslab/lazyfs), the fault-injecting file system Jepsen uses,
+  drops every byte that was not `fsync`ed. 300 cuts at random moments, in the middle of
+  checkpoints and as torn writes with holes: all 12,838,010 acknowledged rows came back, no run
+  had a missing or half row. CI runs 60 cuts on every push.
 - **The torn-tail rule.** Damage at the end of the log with no complete, checksummed transaction
   after it is an unfinished last write: it is cut off and reported (`recovered_tail_bytes`, and a
   warning in the CLI and the server). Damage followed by a valid transaction is real corruption:
@@ -247,9 +254,10 @@ the application has to reconcile before retrying.
 
 What the tests do not cover:
 
-- **Real hardware.** The power-cut states are built by the tests on the assumption that the disk
-  keeps what `fsync` said it kept. They have not been checked with a fault-injecting file system
-  (such as LazyFS) or by pulling the plug, and a disk that lies about `fsync` defeats any database.
+- **Real hardware.** Nobody pulled a plug. The tests assume the disk keeps what `fsync` said it
+  kept; a disk that lies about `fsync` defeats any database.
+- LazyFS drops unsynced file data; whether it also drops unsynced directory changes is not
+  documented, so the rename steps of a checkpoint rest on the state-by-state tests.
 - The archive's on-disk format gets fuzzing and single-offset corruption tests, not the every-byte
   sweep the log gets.
 - The comparison against SQLite and DuckDB lives in `benchmarks/`, not in `cargo test`.
