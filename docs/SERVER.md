@@ -59,6 +59,7 @@ There are no environment variables; everything is a command-line flag.
 | `--listen ADDR` | `127.0.0.1:5433` | Port `0` picks a free port; the JSON start line shows the real one. A host name is resolved once, and exactly the addresses that passed the loopback check are bound. |
 | `--allow-remote` | off | Permit a non-loopback `--listen` address. Prints a warning on stderr. |
 | `--max-connections N` | `64` | Authenticated sessions. A further login is told `53300` and closed. Connections still in startup or authentication do not count here; they have their own cap (see [Limits](#limits)). |
+| `--max-memory MIB` | `1024` | Memory that all requests in flight may use together: message buffers, parsed statements, materialised results, encoded replies. A request that cannot get its share fails with `53200` or `54000` and the connection stays usable. See [Memory](#memory) for what it bounds and the worst case it adds up to. |
 
 Exit status is `2` for any configuration error (nothing is printed on stdout in that case).
 
@@ -171,7 +172,8 @@ concurrently. Instead:
   the transaction in the failed state like any error, which also frees the queue. `Close`,
   `DEALLOCATE`, `ROLLBACK` or `COMMIT` give the memory back.
   Prepared statements keep only their text and parameter types; the statement is parsed again at
-  `Bind` and `Execute`.
+  `Bind` and `Execute`. This budget is for what a connection *keeps*; what a request needs *while
+  it runs* comes from the shared `--max-memory` budget, see [Memory](#memory).
 * **Portals follow the protocol.** A new `Bind` to the unnamed portal replaces the previous
   unnamed portal. Every portal ends with its transaction: at `COMMIT` or `ROLLBACK` inside a
   transaction block, and at `Sync` (or the end of a simple query) outside one. A portal cannot be
@@ -212,6 +214,7 @@ concurrently. Instead:
 | Connections still authenticating | `max(16, 2 * --max-connections)` | dropped without an answer |
 | Prepared statements / portals per connection | 1,000 each | `54000` |
 | Memory kept by one connection (statement text, queued writes, suspended portal rows) | 256 MiB (estimated) | `54000`, connection stays usable |
+| Memory used by all requests in flight together (message buffers, parsed statements, results, replies) | `--max-memory` (1024 MiB) | `53200` if it is in use by others right now, `54000` if the request alone is more than all of it; connection stays usable |
 | Statements queued in one transaction | 100,000 | `54000` |
 | Rows queued in one transaction | 1,000,000 | `54000` |
 | Log record of one commit (`--db`) | 64 MiB (engine) | `54000`, nothing applied |
@@ -221,10 +224,128 @@ concurrently. Instead:
 A malformed message closes that connection only; the server and every other connection keep
 running. One thread serves each connection.
 
-Not covered by the per-connection budget: the memory a single statement needs *while it runs*.
-Parsing a statement of up to 16 MiB of SQL (the largest message) and materialising a result of up
-to 100,000 rows are transient, but many connections doing it at once add up. Size `--max-connections`
-for that, or keep the server on a host with memory to spare.
+## Memory
+
+The server's memory is bounded by a formula, and both parts of it are enforced in code.
+
+**What is counted where**
+
+* *Kept* memory is what a connection holds between messages (prepared statement text, queued
+  transaction writes, rows of suspended portals): at most **256 MiB per connection**, `54000` past
+  it (see [Transactions](#transactions)).
+* *Transient* memory is what one request needs while it runs and gives back when it ends. All
+  connections draw it from **one shared budget, `--max-memory` (default 1024 MiB)**. A request
+  reserves its bytes before it allocates them and gives them back when the request ends. The
+  reservation is an RAII ticket, so it is returned on an error, an early return, a closed socket
+  and a panic alike. What is reserved, in the order a request meets it:
+  1. **The message body.** It is reserved as the bytes arrive (the buffer doubles, and the old
+     block is counted while it is copied), so a client that announces 16 MiB and sends nothing
+     holds nothing.
+  2. **Copies out of the message** (a `Parse` copies its text, a `Bind` builds a list entry per
+     parameter): a fixed multiple of the message size.
+  3. **Parsing.** `kestrel_sql::sql::parse_estimate` reads the text once without allocating and
+     bounds the token vector and the syntax tree (below). The tokens are given back when the parse
+     returns; the tree stays reserved until the request ends.
+  4. **The queued copy of a write and the work of applying it**: the columns the engine builds, its
+     second parse of the text, and the JSON log record (`serde_json` builds it in a vector that
+     doubles, so it is counted three times, and it is built before the 64 MiB limit is checked).
+  5. **The result.** Before a `SELECT` runs, its rows are bounded from the statement and from the
+     table's size, read under the same lock the query runs under: at most 100,000 rows, one row for
+     aggregates without `GROUP BY`, `LIMIT` when no `ORDER BY` needs every row. After it ran the
+     reservation shrinks to what the rows really hold.
+  6. **The encoded reply.** Reserved before the rows are encoded; the output buffer is cut back to
+     1 MiB after it was flushed.
+* Every request may use `FREE_ALLOWANCE` = 256 KiB without reserving. That keeps `Sync`,
+  `ROLLBACK` and small statements working when the budget is used up.
+
+**What a refusal looks like.** The request fails as an ordinary `ERROR`, so the connection stays
+usable and the reservation is already back. Two codes:
+
+* `53200` (`out_of_memory`): the budget is in use by other requests right now. Try again.
+* `54000`: this request alone is more than the whole `--max-memory`; retrying cannot help.
+  Send less at a time, or start the server with more.
+
+The server does not wait for memory to become free; it answers at once. A request that holds part
+of its memory while waiting for the rest can deadlock against another that does the same (a
+half-received message holds its buffer), and a client can retry as cheaply as the server can wait.
+A message that is refused part-way is still read to its end and thrown away, so the connection
+stays in step with the protocol. Each refusal is logged (`refused 53200 ...`), and every
+connection logs `transient memory: N in use, peak P, limit L bytes` after it closed and returned
+everything: the last one to close reports 0, and `peak` never passes `limit`.
+
+**The worst case.** With `C` = `--max-connections` and `M` = `--max-memory`:
+
+```
+resident memory  <=  database data
+                     + C * (256 MiB + 1.5 MiB)          kept per connection, and its fixed part
+                     + M                                 transient, all connections together
+                     + max(16, 2C) * 80 KiB              connections still authenticating
+```
+
+The fixed part of a connection is 1 MiB of pending output (`OUT_KEEP`), the 8 KiB read buffer, the
+256 KiB free allowance and a little for error texts. A connection that has not authenticated
+yet holds one message of at most 64 KiB and its buffers. Thread stacks are not counted here: one
+thread per connection, 2 MiB of address space each, of which only the touched part is resident.
+`database data` is the tables themselves (the engine bounds them per table, not in bytes), and the
+automatic checkpoint that follows a commit works in proportion to them, not to the request.
+
+With the defaults (`C` = 64, `M` = 1024 MiB): 64 * 257.5 MiB + 1024 MiB + 128 * 80 KiB =
+16,480 + 1,024 + 10 = **17,514 MiB (about 17.1 GiB) plus the data**, of which only the 1,024 MiB
+is spent in bursts; the 256 MiB per connection is a ceiling that an idle or ordinary client never
+comes near. To size a host, lower `--max-connections` (kept memory scales with it) and
+`--max-memory`. For example `--max-connections 8 --max-memory 256` is at most
+8 * 257.5 + 256 + 1 = 2,317 MiB plus the data.
+
+**How the estimates were made, and checked.** Each is an upper bound derived from the code that
+allocates, not a typical figure:
+
+* The lexer keeps one 32-byte token per token in a vector that doubles, so a statement costs up to
+  32 bytes per byte of text (a token needs at least one byte), 48 with the old block that exists
+  while the vector doubles, plus a string for each word and operator. A bulk `INSERT` also builds
+  one `Vec<i64>` per row (the vector starts at one value and grows by doubling from four); any other
+  statement builds at most about 116 bytes of tree per token (a column list `a,a,a`), bounded as 160.
+  The text is read once to count tokens, rows and values, so a typical insert is charged about 50
+  bytes per byte of text (the densest one 79) instead of a flat worst case. A column list is
+  charged 450, because the engine parses the text again when it runs the query.
+* Result rows: a `Value` is 32 bytes, a grouped query also holds one map entry and one state vector
+  (64 bytes per expression) per group, and the row vector doubles while it grows.
+* `size_of::<Token>() == 32`, `Item == 56`, `Value == 32` and the state size are asserted by tests,
+  and tests build real statements and results (dense and sparse inserts, wide rows, column lists,
+  garbage text, 300 random strings, grouped and sorted queries) and compare the capacities of what
+  they really hold with the estimate. A heap allocation is assumed to take up to 32 bytes more than
+  asked (header and rounding).
+* The whole request was measured on the release binary (Windows 11, Rust 1.99): a script starts the
+  server, sends one 16 MiB statement from 1, 8 or 32 connections, and reads the process's peak
+  working set and peak commit with `GetProcessMemoryInfo`; the server's own `peak` log line is the
+  reservation. `--max-memory 16384` so that nothing is refused:
+
+| Request (16 MiB of SQL) | Real peak commit | Real peak working set | Reserved |
+| --- | --- | --- | --- |
+| bulk `INSERT`, rows like `(1700000000, 42, 7)` | 525 MiB | 387 MiB | 778 MiB |
+| `INSERT` of `(1),(1),(1),...` (the densest) | 786 MiB | 689 MiB | 1,264 MiB |
+| `INSERT` of 64-column rows | 143 MiB | 111 MiB | 233 MiB |
+| `SELECT a,a,a,...` (a column list) | 2,472 MiB | 2,393 MiB | 7,200 MiB |
+| `!!!!...` (a token each, fails to parse) | 929 MiB | 787 MiB | 3,872 MiB |
+| `begin;begin;...` (2.8 million statements) | 552 MiB | 509 MiB | 1,352 MiB |
+| 8 connections, bulk `INSERT` each | 2,585 MiB | 1,965 MiB | 4,668 MiB |
+
+  The reservation is above the real figure in every row. Version 0.4.0 allowed all of this: a
+  single `SELECT a,a,a,...` took 2.4 GiB of working set and eight bulk inserts took 1.9 GiB, with
+  `--max-connections 64` allowing 64 of them. With the default budget, the same eight bulk inserts
+  peak at 525 MiB commit (387 MiB working set): one runs and seven are told `53200`; 32
+  connections peak at 614 MiB commit (409 MiB working set) with 31 told `53200`; the `SELECT a,a,a,...`
+  is refused with `54000` and the server grows by 17 MiB, the message itself.
+  `benchmarks/server_memory.py` repeats the measurement.
+
+**What is not covered.**
+
+* A client that stops reading its results keeps its reservation while the server waits to write
+  to it (there is no timeout after authentication), so enough of them can make other requests
+  fail with `53200`. They cannot make the server use more memory.
+* The live archive's own ingest queue and the working memory of its `GROUP BY` are the engine's;
+  the server reserves the columns it hands over (24 bytes per value) and, for a grouped query on
+  an archive, rows for the 100,000-group maximum because it does not know the table size.
+* Checkpoints and everything else the engine does in proportion to the stored data.
 
 ## SQLSTATE codes
 
@@ -244,8 +365,9 @@ for that, or keep the server on a host with memory to spare.
 | `25P02` | Statement in a failed transaction |
 | `25001` | `CHECKPOINT` inside a transaction block |
 | `0A000` | `CHECKPOINT` in `--archive` mode (also: binary parameter type, protocol version, replication) |
+| `53200` | The shared `--max-memory` budget is in use by other requests right now; try again |
 | `53300` | Too many authenticated sessions |
-| `54000` | A limit above was exceeded |
+| `54000` | A limit above was exceeded, including a request that alone needs more than `--max-memory` |
 | `08P01` | Protocol violation |
 | `XX000` | Internal error, including a poisoned database (restart the server) and "commit outcome unknown" (the transaction may have been persisted) |
 
@@ -259,7 +381,8 @@ for that, or keep the server on a host with memory to spare.
   savepoints) and drivers that only run queries work.
 * Reads inside a transaction do not see its own writes (see above).
 * `CancelRequest` is ignored; a running query cannot be cancelled.
-* Results are materialised before they are sent (at most 100,000 rows).
+* Results are materialised before they are sent (at most 100,000 rows), and their memory is reserved
+  from `--max-memory` first (see [Memory](#memory)).
 * `NULL` parameters are rejected; there are no `NULL` columns, only `SUM`/`AVG`/`MIN`/`MAX` of no rows.
 * After an I/O failure the `--db` database must be restarted (see above), and a commit that failed
   with "commit outcome unknown" may have been persisted.

@@ -25,10 +25,9 @@ fn blank(piece: &str) -> bool {
     true
 }
 
-/// Splits a simple-query string at top-level semicolons; blank pieces are dropped.
-pub fn split_statements(sql: &str) -> Vec<&str> {
+/// Calls `f` with every top-level piece of `sql` that is not blank.
+fn each_piece<'a>(sql: &'a str, mut f: impl FnMut(&'a str)) {
     let b = sql.as_bytes();
-    let mut pieces = Vec::new();
     let (mut start, mut i) = (0, 0);
     while i < b.len() {
         if b[i] == b'-' && b.get(i + 1) == Some(&b'-') {
@@ -36,14 +35,30 @@ pub fn split_statements(sql: &str) -> Vec<&str> {
             continue;
         }
         if b[i] == b';' {
-            pieces.push(&sql[start..i]);
+            if !blank(&sql[start..i]) {
+                f(&sql[start..i]);
+            }
             start = i + 1;
         }
         i += 1;
     }
-    pieces.push(&sql[start..]);
-    pieces.retain(|p| !blank(p));
+    if !blank(&sql[start..]) {
+        f(&sql[start..]);
+    }
+}
+
+/// Splits a simple-query string at top-level semicolons; blank pieces are dropped.
+pub fn split_statements(sql: &str) -> Vec<&str> {
+    let mut pieces = Vec::new();
+    each_piece(sql, |p| pieces.push(p));
     pieces
+}
+
+/// How many pieces [`split_statements`] returns, without building them.
+pub fn count_statements(sql: &str) -> usize {
+    let mut n = 0;
+    each_piece(sql, |_| n += 1);
+    n
 }
 
 /// Calls `f(start, end, n)` for every `$n` outside comments.
@@ -76,9 +91,32 @@ pub fn placeholders(sql: &str) -> Vec<usize> {
     used
 }
 
+/// Bytes of the text [`substitute`] builds (`value` gives the integer for `$n`), without
+/// building it.
+pub fn substitute_len(sql: &str, value: impl Fn(usize) -> i64) -> usize {
+    let mut len = sql.len();
+    each_placeholder(sql, |start, end, n| {
+        let v = value(n);
+        let digits = v
+            .unsigned_abs()
+            .checked_ilog10()
+            .map_or(1, |d| d as usize + 1);
+        len = len - (end - start) + 2 + digits + usize::from(v < 0);
+    });
+    len
+}
+
+/// How many `$n` placeholders `sql` has (the same ones [`placeholders`] lists).
+pub fn count_placeholders(sql: &str) -> usize {
+    let mut n = 0;
+    each_placeholder(sql, |_, _, _| n += 1);
+    n
+}
+
 /// Replaces every `$n` with the integer `values[n-1]` (surrounded by spaces).
 pub fn substitute(sql: &str, values: &[i64]) -> String {
-    let mut out = String::with_capacity(sql.len() + 8 * values.len());
+    let value = |n: usize| values.get(n - 1).copied().unwrap_or(0);
+    let mut out = String::with_capacity(substitute_len(sql, value));
     let mut last = 0;
     each_placeholder(sql, |start, end, n| {
         out.push_str(&sql[last..start]);
@@ -142,6 +180,30 @@ mod tests {
             placeholders("select $0, $, $x, $70000"),
             Vec::<usize>::new()
         );
+    }
+
+    #[test]
+    fn sizes_are_known_before_anything_is_built() {
+        for sql in [
+            "select 1; select 2",
+            ";; ; ",
+            "  -- nothing; here\n ",
+            "a -- x;y\n; b;",
+            "",
+            "x;;y; ;z",
+        ] {
+            assert_eq!(
+                count_statements(sql),
+                split_statements(sql).len(),
+                "{sql:?}"
+            );
+        }
+        let sql = "select count(*) from t where a >= $1 and a < $2 -- $9\n and b = $1";
+        for values in [[0, 0], [-5, 7], [i64::MIN, i64::MAX], [10, 1_000_000]] {
+            let value = |n: usize| values[n - 1];
+            assert_eq!(substitute_len(sql, value), substitute(sql, &values).len());
+        }
+        assert_eq!(count_placeholders(sql), 3);
     }
 
     #[test]

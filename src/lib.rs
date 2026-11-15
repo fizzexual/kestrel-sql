@@ -8,7 +8,7 @@ pub mod source;
 pub mod sql;
 mod wal;
 
-pub use query::{QueryResult, Value};
+pub use query::{MAX_RESULT_ROWS, QueryResult, Value, result_bytes};
 use serde::{Deserialize, Serialize};
 use sql::Statement;
 use std::collections::{BTreeMap, BTreeSet};
@@ -429,6 +429,10 @@ impl Database {
             table: table.to_ascii_lowercase(),
             columns,
         })
+    }
+    /// Rows and columns of a table, for sizing a query before it runs.
+    pub fn table_shape(&self, table: &str) -> Option<(usize, usize)> {
+        self.tables.get(table).map(|t| (t.len(), t.columns.len()))
     }
     pub fn query(&self, sql: &str) -> Result<QueryResult> {
         self.healthy()?;
