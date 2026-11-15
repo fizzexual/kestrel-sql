@@ -216,7 +216,7 @@ cargo clippy --all-targets --locked -- -D warnings
 cargo test --release --locked
 ```
 
-`cargo test` runs 130 tests; they pass on Windows with current Rust and on Linux with Rust 1.89,
+`cargo test` runs 147 tests; they pass on Windows with current Rust and on Linux with Rust 1.89,
 the minimum version. The CI workflow in [.github/workflows/ci.yml](.github/workflows/ci.yml) runs
 format, clippy and the tests on Windows and Linux, the tests with the minimum Rust version,
 `cargo audit` against the RustSec advisory database, and 60 LazyFS power cuts. The
@@ -277,8 +277,9 @@ What the tests do not cover:
   not list rows.
 - One machine. No replication, no backups other than copying the folder while it is closed.
 - The server has no TLS (keep it on loopback or behind a tunnel), one user, no query cancellation,
-  and runs one writer at a time. While a statement of up to 16 MiB is parsed or a large result is
-  built, that memory is not counted against the per-connection budget.
+  and runs one writer at a time. Its memory has a written worst case: each connection keeps at
+  most 256 MiB, and all requests in flight share one `--max-memory` budget (1024 MiB by default);
+  the formula is in [docs/SERVER.md](docs/SERVER.md#memory).
 
 ## Run it
 

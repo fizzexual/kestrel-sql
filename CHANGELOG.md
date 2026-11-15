@@ -31,7 +31,12 @@
   snapshots and archive files (`tests/fuzz.rs`). The every-byte corruption test now expects a damaged
   last frame to be cut instead of refused.
 - **CI** also runs on Linux, the fault-injection build and Rust 1.89, the minimum in `Cargo.toml`.
-  130 tests pass on Windows (current Rust) and on Linux with Rust 1.89.
+  147 tests pass on Windows (current Rust) and on Linux with Rust 1.89.
+- **Power cuts on a file system that loses unsynced data:** 300 cuts on LazyFS, including cuts inside
+  checkpoints and torn writes; all 12,838,010 acknowledged rows survived. A control first proves
+  LazyFS drops unsynced bytes. CI runs 60 of these cuts on every push
+  ([benchmarks/lazyfs/](benchmarks/lazyfs/README.md)).
+- **`cargo audit`** against the RustSec advisory database in CI; 0 advisories.
 - **Measured three times:** range totals at 9.5 million rows 0.065 ms (`Database`) against DuckDB's
   2.11 ms; reopening 10 million rows 0.82–1.01 s after a checkpoint instead of 1.28–2.81 s from the
   log. Tables in the README.

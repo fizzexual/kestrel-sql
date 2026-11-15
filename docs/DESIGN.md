@@ -144,13 +144,16 @@ each with a test in [tests/server.rs](../tests/server.rs)):
 | --- | --- |
 | Open sockets and send nothing, to use up the connection slots | Connections still logging in have their own cap; the startup message must arrive within 2 s and login finish within 10 s |
 | Prepare huge statements or queue millions of rows until memory runs out | 256 MiB budget per connection for everything kept between messages; over it is an ordinary error (`54000`) and the connection stays usable |
+| Send one huge statement, or ask for huge results from many connections at once | One shared `--max-memory` budget (1024 MiB) that every request reserves before it parses, builds a result or encodes a reply; `53200` while it is in use, `54000` if one request alone is bigger |
 | Find out which user names exist | An unknown user goes through the same SCRAM exchange as a real one and fails at the same step |
 | Guess passwords quickly | Every failed login is answered after 1 s |
 | Make the queue check slower with every statement (O(n²)) | Running counters; queueing costs the same at 20,000 statements as at the first |
 | A failed `COMMIT` leaving the shared database inside a transaction | The server rolls back after every commit error |
 
-Not defended: no TLS (it listens on loopback unless `--allow-remote` is given), and the memory used
-while one statement of up to 16 MiB is parsed is not counted against the budget.
+Not defended: no TLS (it listens on loopback unless `--allow-remote` is given). Memory is defended
+by a formula rather than a hope: the worst case is written down in [SERVER.md](SERVER.md#memory)
+(about 17.1 GiB plus the data at the defaults) and lowered with `--max-connections` and
+`--max-memory`.
 
 ## 8. What was found by testing
 
@@ -160,6 +163,7 @@ while one statement of up to 16 MiB is parsed is not counted against the budget.
 | An 8-byte snapshot is bigger than the JSON log | Measuring it ([examples/restart_probe.rs](../examples/restart_probe.rs)) | Delta and zigzag encoding, 32 MB instead of 240 MB |
 | The SQL fuzzer first reached the parser's valid paths 52 times in 20,000 | Counting accepted statements | Grammar-based generation; 4,510 of 20,000 now parse |
 | A torn log header longer than 16 bytes, a leftover file that could not be deleted, and an oversized transaction left half-applied | A review told to break the checkpoint code | One test per finding in [tests/durability.rs](../tests/durability.rs), then the fix |
+| One 16 MiB `SELECT a,a,a,...` took 2.4 GiB and eight bulk inserts 1.9 GiB, outside any budget | Measuring the server's peak memory ([benchmarks/server_memory.py](../benchmarks/server_memory.py)) | The shared `--max-memory` budget: the first is now refused, the eight peak at 525 MiB |
 | Silent sockets, memory growth, user-name probing and an O(n²) queue in the server | A review told to break the server | The defences in section 7; 10 of the 13 new tests failed on the code before the fix |
 
 ## 9. How it is tested
@@ -173,10 +177,10 @@ while one statement of up to 16 MiB is parsed is not counted against the budget.
 - **Fuzzing:** 25,000 random statements, 700 damaged logs and snapshots, 300 damaged archive files.
   Each must give an error or the correct answer, never a panic or a wrong answer
   ([tests/fuzz.rs](../tests/fuzz.rs)).
-- **The server:** 27 tests that drive it over real sockets, including every attack in section 7,
+- **The server:** 33 tests that drive it over real sockets, including every attack in section 7,
   plus by hand with `psql` 17 (correct answers, `ROLLBACK`, `CHECKPOINT`, a restart that keeps
   every row, wrong passwords refused with `28P01`).
-- **Platforms:** Windows and Linux, the newest stable Rust and the oldest supported (1.89): 130
+- **Platforms:** Windows and Linux, the newest stable Rust and the oldest supported (1.89): 147
   tests on both.
 
 - **A file system that loses unsynced data:** 300 power cuts on LazyFS (the tool Jepsen uses),
