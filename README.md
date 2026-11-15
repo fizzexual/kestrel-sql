@@ -242,8 +242,8 @@ tests that say most about the design:
   (refused at the same step, after the same delay), prepared statements, concurrent transactions,
   restarts, connection and memory limits, and clients that stay silent or send garbage.
 - `process_kill_preserves_acknowledged_commit_and_releases_lock`
-  ([tests/engine.rs](tests/engine.rs)): kills a child process and checks that acknowledged commits
-  survive and the lock is released.
+  ([tests/process_kill.rs](tests/process_kill.rs)): kills a child process and checks that
+  acknowledged commits survive and the lock is released.
 - `concurrent_ingestion_retries_and_snapshot_reads_reconcile`
   ([tests/archive.rs](tests/archive.rs)): several writers and a reader at once, with an invariant
   checked on every snapshot.

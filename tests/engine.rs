@@ -1,7 +1,5 @@
 use kestrel_sql::{Database, Value};
-use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
 use std::sync::atomic::{AtomicU64, Ordering};
 
 fn temp(label: &str) -> PathBuf {
@@ -351,48 +349,6 @@ fn corruption_before_the_last_frame_is_rejected_and_a_damaged_last_frame_is_cut(
             );
         }
     }
-}
-
-#[test]
-fn process_kill_preserves_acknowledged_commit_and_releases_lock() {
-    let path = temp("kill");
-    let mut child = Command::new(env!("CARGO_BIN_EXE_kestrel"))
-        .arg("--db")
-        .arg(&path)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    let mut input = child.stdin.take().unwrap();
-    let mut output = BufReader::new(child.stdout.take().unwrap());
-    for sql in [
-        "CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL)",
-        "INSERT INTO events VALUES (1,10,1)",
-        "BEGIN",
-        "INSERT INTO events VALUES (2,999,1)",
-    ] {
-        writeln!(input, "{sql}").unwrap();
-        input.flush().unwrap();
-        let mut line = String::new();
-        output.read_line(&mut line).unwrap();
-        assert_eq!(
-            serde_json::from_str::<serde_json::Value>(&line).unwrap()["ok"],
-            true
-        );
-    }
-    child.kill().unwrap();
-    child.wait().unwrap();
-    drop(input);
-    drop(output);
-    assert_eq!(
-        Database::open(&path)
-            .unwrap()
-            .query("SELECT COUNT(*), SUM(value) FROM events")
-            .unwrap()
-            .rows,
-        vec![ints(&[1, 10])]
-    );
 }
 
 #[test]

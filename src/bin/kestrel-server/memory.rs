@@ -261,10 +261,22 @@ mod tests {
         let limit = 64 * MIB;
         let budget = Arc::new(Budget::new(limit));
         let refused = Arc::new(AtomicUsize::new(0));
+        let first_refused = Arc::new(AtomicUsize::new(0));
+        let barrier = Arc::new(std::sync::Barrier::new(16));
         let threads: Vec<_> = (0..16)
             .map(|n| {
                 let (budget, refused) = (Arc::clone(&budget), Arc::clone(&refused));
+                let (first_refused, barrier) = (Arc::clone(&first_refused), Arc::clone(&barrier));
                 std::thread::spawn(move || {
+                    // Contention that does not depend on scheduling: every thread holds its
+                    // first 8 MiB until all 16 have asked. Each holds 8 MiB minus the free
+                    // allowance, so exactly 8 fit in 64 MiB and exactly 8 are refused.
+                    let mut first = Ticket::new(&budget);
+                    if first.grow(8 * MIB).is_err() {
+                        first_refused.fetch_add(1, Ordering::SeqCst);
+                    }
+                    barrier.wait();
+                    drop(first);
                     for i in 0..2000 {
                         let mut t = Ticket::new(&budget);
                         let want = (1 + (i * 7 + n * 13) % 24) * MIB;
@@ -290,7 +302,7 @@ mod tests {
         }
         assert_eq!(budget.used(), 0);
         assert!(budget.peak() <= limit);
+        assert_eq!(first_refused.load(Ordering::SeqCst), 8, "8 of 16 fit");
         assert!(budget.peak() > limit / 2, "the threads did contend");
-        assert!(refused.load(Ordering::SeqCst) > 0);
     }
 }

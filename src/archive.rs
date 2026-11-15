@@ -1575,8 +1575,8 @@ impl ArchiveSnapshot {
                 cache: None,
                 materialized_rows: 0,
             };
-            for c in 0..self.catalog.columns.len() {
-                let index = &segment.metadata.indexes[c];
+            // One index per column: checked when the segment was loaded.
+            for (c, index) in segment.metadata.indexes.iter().enumerate() {
                 let mut sum = 0_i128;
                 let mut previous = None;
                 let mut monotonic = true;
