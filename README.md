@@ -1,5 +1,9 @@
 # KestrelSQL
 
+[![Verify](https://github.com/fizzexual/kestrel-sql/actions/workflows/ci.yml/badge.svg)](https://github.com/fizzexual/kestrel-sql/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/fizzexual/kestrel-sql)](https://github.com/fizzexual/kestrel-sql/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 A small embedded analytics engine in Rust for **append-only integer time series**.
 
 It answers `COUNT`, `SUM` and `AVG` over a time range in a few microseconds without reading the
