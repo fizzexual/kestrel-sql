@@ -3,12 +3,15 @@
 A small embedded analytics engine in Rust for **append-only integer time series**.
 
 It answers `COUNT`, `SUM` and `AVG` over a time range in a few microseconds without reading the
-rows. Its storage is designed and tested so that a write cut off halfway is detected and discarded
-on the next open, without touching data that was already committed.
+rows. It runs embedded in a Rust program or as a server that `psql` and ordinary PostgreSQL drivers
+connect to. Every on-disk state a power cut can leave behind is built in the tests and checked:
+committed data survives, and a write cut off halfway is detected and removed on the next open.
 
-**Status: research prototype, version 0.3.16.** It is not a general SQL database and it is not
-production-qualified. [What it does not do](#what-it-does-not-do) and
+**Status: version 0.4.0, built for production use in one narrow job:** append-only integer time
+series on a single machine, with one table per query. It is not a general SQL database: no text,
+no `UPDATE`, no joins, no replication. [What it does not do](#what-it-does-not-do) and
 [what the tests do not cover](#crash-safety-and-tests) are part of the description, not footnotes.
+How it works and why, written for a design review or an interview: [docs/DESIGN.md](docs/DESIGN.md).
 
 ```sql
 CREATE TABLE events (ts BIGINT NOT NULL, value BIGINT NOT NULL, device BIGINT NOT NULL);
@@ -32,14 +35,28 @@ The price is paid when data is loaded: 24 bytes per value (8 for the value, 16 f
 total) instead of 8, and the totals are computed on every append. If a late event breaks the order,
 filtered queries on that column fall back to a correct scan.
 
-## Two APIs
+## Two APIs and a server
 
 - **`Database`** keeps tables in memory and writes every committed transaction to a log. It speaks
-  the SQL subset below and has `BEGIN` / `COMMIT` / `ROLLBACK`. The benchmark in the next section
-  measures this API.
+  the SQL subset below and has `BEGIN` / `COMMIT` / `ROLLBACK`. `CHECKPOINT` (also run
+  automatically once the log reaches 64 MiB) writes a compact snapshot and starts a new log, so
+  reopening does not have to replay the whole history. The benchmark in the next section measures
+  this API.
 - **`Archive`** is the on-disk store: sorted immutable segments, snapshots, compaction, and batches
   that can be retried safely. It answers totals and groupings through the same parser, but it does
   not list rows. `LiveArchive` puts concurrent writers in front of it.
+- **`kestrel-server`** serves either one over the PostgreSQL wire protocol (simple and extended
+  query, so `psql`, psycopg and JDBC-style prepared statements work), with SCRAM-SHA-256 password
+  login. It listens on loopback only unless told otherwise, and it has no TLS. Details, limits and
+  error codes: [docs/SERVER.md](docs/SERVER.md).
+
+```
+$ psql -h 127.0.0.1 -p 5433 -U kestrel
+kestrel=> SELECT COUNT(*), SUM(value), AVG(value) FROM events WHERE ts >= 2 AND ts <= 4;
+ count(*) | sum(value) | avg(value)
+----------+------------+------------
+        3 |         90 |         30
+```
 
 ## How fast
 
@@ -125,10 +142,36 @@ What this says:
 - **`Database` depends on time order.** After 5% late rows its range totals go from 0.057 ms to
   43.9 ms, slower than every other engine in the table. `Archive` keeps its speed because each
   batch is sorted and indexed on its own.
-- **Read it with these limits.** One run. The three servers ran in Docker with near-default
+- **Read it with these limits.** The table is one run. The three servers ran in Docker with near-default
   settings. DuckDB and SQLite ran inside the test process while KestrelSQL paid a round trip. The
   load test holds DuckDB to one thread and is partly limited by its Python client. A killed process
   is not a power cut. All data is synthetic integers that fit in memory.
+
+**Repeated.** The speed test was run three more times on 2026-11-15 for the in-process engines
+(the servers were not repeated), 0 disagreements in all three runs. Median of the three runs, with
+the lowest and highest in brackets, in milliseconds:
+
+| Query | KestrelSQL `Database` | KestrelSQL `Archive` | DuckDB | DuckDB, 1 thread | SQLite |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Totals over a random time range | 0.065 (0.052–0.068) | 0.218 (0.199–0.243) | 2.11 (1.85–2.19) | 1.83 (1.66–2.04) | 1.96 (1.96–2.08) |
+| `MIN`, `MAX` over a random time range | 10.1 (5.3–11.9) | 0.186 (0.182–0.203) | 2.46 (2.17–2.66) | 6.42 (6.0–8.4) | 78.5 (77–92) |
+| Totals per device over a random time range | 39.7 (28.5–60.3) | 8.49 (8.33–9.87) | 4.28 (4.01–5.42) | 19.5 (14.9–26.1) | 500 (478–660) |
+| Filter on unsorted columns | 45.3 (27.2–77.4) | 45.3 (44.8–45.4) | 5.04 (4.77–6.64) | 42.5 (39.9–60.6) | 433 (389–448) |
+| Totals over a random time range, after 5% late rows | 45.3 (18.0–64.3) | 0.373 (0.314–0.497) | 2.15 (2.08–2.36) | 4.24 (4.12–5.63) | 2.50 (2.14–2.72) |
+
+The order is the same as in the single run: KestrelSQL wins range totals by about 30 times and
+loses scans to DuckDB. The wide ranges in the `Database` scan rows are run-to-run noise on a
+desktop machine.
+
+**Restart time.** 10 million rows, reopened 7 times per run, three runs, median of each run:
+
+| Log written as | Log size | Reopen from the log | After `CHECKPOINT` (32 MB snapshot) |
+| --- | ---: | ---: | ---: |
+| 1,000,000 commits of 10 rows | 216 MB | 2.45–2.81 s | 0.82–0.90 s |
+| 1,000 commits of 10,000 rows | 151 MB | 1.28–1.44 s | 0.75–1.01 s |
+
+The checkpoint itself took 153–180 ms. Reproduce with
+`cargo run --release --example restart_probe -- DIR 10000000 10 7 synthetic`.
 
 Older results from the project's history, including a mixed-load test that version 0.2 failed
 (881 of 2,000 requests per second, [HARD_TESTS.md](lab-notebook/HARD_TESTS.md)) and the 0.3.16
@@ -137,8 +180,10 @@ service comparison ([SERVICE_047.md](lab-notebook/SERVICE_047.md)), are in the
 
 ## What is inside
 
-About 5,700 lines of Rust, four direct dependencies (`serde`, `serde_json`, `crc32fast`, `sha2`),
-and `unsafe` code is forbidden for the whole crate.
+About 9,100 lines of Rust (2,700 of them the server), five direct dependencies (`serde`,
+`serde_json`, `crc32fast`, `sha2`, and `getrandom` for login nonces), and `unsafe` code is
+forbidden for the whole crate. The SCRAM, HMAC, PBKDF2 and base64 code is written on top of `sha2`
+and checked against the RFC test vectors.
 
 | Part | File | What it does |
 | --- | --- | --- |
@@ -170,16 +215,28 @@ cargo clippy --all-targets --locked -- -D warnings
 cargo test --release --locked
 ```
 
-`cargo test` runs 77 tests. The ones that say most about the design:
+`cargo test` runs 130 tests; they pass on Windows with current Rust and on Linux with Rust 1.89,
+the minimum version. The CI workflow in [.github/workflows/ci.yml](.github/workflows/ci.yml) runs
+format, clippy and the tests on Windows and Linux, plus a build with the minimum Rust version. The
+tests that say most about the design:
 
-- `every_partial_final_frame_is_discarded_and_all_prior_commits_survive`
-  ([tests/engine.rs](tests/engine.rs)): cuts the last log frame at every byte offset and checks
-  that everything committed before it is still there.
-- `complete_corruption_is_rejected_without_modifying_the_wal`: flips one bit at every byte offset
-  and checks that opening fails and the file is left untouched.
-- `process_kill_preserves_acknowledged_commit_and_releases_lock`: kills a child process and checks
-  that acknowledged commits survive and the lock is released.
-- `random_ranges_match_an_independent_scan`: 1,000 random ranges checked against a plain scan.
+- **Power cuts, state by state** ([tests/durability.rs](tests/durability.rs)). A power cut can only
+  leave a few kinds of state on disk: a last write cut at some byte, a file created but empty, a
+  rename done or not done. The tests build each of them byte by byte, for the log and for every
+  step of a checkpoint, and check that every acknowledged transaction is back after the open.
+- **The torn-tail rule.** Damage at the end of the log with no complete, checksummed transaction
+  after it is an unfinished last write: it is cut off and reported (`recovered_tail_bytes`, and a
+  warning in the CLI and the server). Damage followed by a valid transaction is real corruption:
+  the open is refused and no file is changed. PostgreSQL and SQLite draw the same line.
+- **Fuzzing** ([tests/fuzz.rs](tests/fuzz.rs)). 25,000 generated SQL statements (20,000 of them
+  built from the grammar, of which 4,510 are valid), 700 damaged logs and snapshots, and 300 byte flips in archive files. No panic, and
+  every damaged file is either refused or gives exactly an acknowledged prefix.
+- **The server** ([tests/server.rs](tests/server.rs)): login, wrong passwords and unknown users
+  (refused at the same step, after the same delay), prepared statements, concurrent transactions,
+  restarts, connection and memory limits, and clients that stay silent or send garbage.
+- `process_kill_preserves_acknowledged_commit_and_releases_lock`
+  ([tests/engine.rs](tests/engine.rs)): kills a child process and checks that acknowledged commits
+  survive and the lock is released.
 - `concurrent_ingestion_retries_and_snapshot_reads_reconcile`
   ([tests/archive.rs](tests/archive.rs)): several writers and a reader at once, with an invariant
   checked on every snapshot.
@@ -190,15 +247,12 @@ the application has to reconcile before retrying.
 
 What the tests do not cover:
 
-- Physical power loss. Torn writes are produced by truncating files, and the kill test in
-  `cargo test` stops the process between statements. The hard test above kills it during writes,
-  which is still a process kill and not a power cut.
-- The archive's on-disk format gets single-offset corruption tests, not the every-byte sweep the
-  log gets.
-- There is no fuzzing and no property-based testing of the SQL parser.
+- **Real hardware.** The power-cut states are built by the tests on the assumption that the disk
+  keeps what `fsync` said it kept. They have not been checked with a fault-injecting file system
+  (such as LazyFS) or by pulling the plug, and a disk that lies about `fsync` defeats any database.
+- The archive's on-disk format gets fuzzing and single-offset corruption tests, not the every-byte
+  sweep the log gets.
 - The comparison against SQLite and DuckDB lives in `benchmarks/`, not in `cargo test`.
-- Continuous integration builds with the current stable Rust only; the minimum version in
-  `Cargo.toml` (1.89) is not built there.
 
 ## What it does not do
 
@@ -210,11 +264,13 @@ What the tests do not cover:
   arithmetic in expressions.
 - Aggregates are `COUNT(*)`, `SUM`, `AVG`, `MIN` and `MAX` of a column. No `COUNT(column)`, no
   `DISTINCT`. `GROUP BY` takes one column.
-- The `Database` API keeps everything in memory (up to 10 million rows per table). Its log grows
-  without checkpointing, so reopening gets slower as history grows. The `Archive` API is the
-  on-disk store and has its own limits: it returns totals and groupings only and does not list
-  rows.
-- No network server, no parameter binding, no query cancellation.
+- The `Database` API keeps everything in memory (up to 10 million rows per table). The `Archive`
+  API is the on-disk store and has its own limits: it returns totals and groupings only and does
+  not list rows.
+- One machine. No replication, no backups other than copying the folder while it is closed.
+- The server has no TLS (keep it on loopback or behind a tunnel), one user, no query cancellation,
+  and runs one writer at a time. While a statement of up to 16 MiB is parsed or a large result is
+  built, that memory is not counted against the per-connection budget.
 
 ## Run it
 
@@ -229,6 +285,13 @@ cargo build --release --locked
 The second command runs a sample in memory. The third opens a durable database in the folder
 `demo-db` and reads one SQL statement per input line; output is JSON lines. `--help` lists the
 archive, import and benchmark modes.
+
+To serve it over the PostgreSQL protocol, put a password on the first line of a file and run:
+
+```
+./target/release/kestrel-server --db demo-db --password-file kestrel.pw
+psql -h 127.0.0.1 -p 5433 -U kestrel
+```
 
 ## Embed it in Rust
 
@@ -254,7 +317,8 @@ is not written to disk.
 
 The engine was developed as a series of numbered experiments. Each one has a short report: what
 was changed, what was measured, and whether it was adopted. Versions 0.3.1 to 0.3.16 came out of
-that process. None of the candidates for 0.3.17 was adopted: where a gain was measured, it came
+that process; 0.4.0 (checkpoints, the server, the power-cut and fuzz tests) did not, and is
+described in the changelog. None of the candidates for 0.3.17 was adopted: where a gain was measured, it came
 with regressions elsewhere or did not hold up against the identity (A/A) controls, and the reports
 say so.
 

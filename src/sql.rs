@@ -9,6 +9,7 @@ pub enum Statement {
     Begin,
     Commit,
     Rollback,
+    Checkpoint,
 }
 
 #[derive(Debug, Clone)]
@@ -328,6 +329,8 @@ impl Parser {
             Ok(Statement::Commit)
         } else if self.word("rollback") {
             Ok(Statement::Rollback)
+        } else if self.word("checkpoint") {
+            Ok(Statement::Checkpoint)
         } else {
             Ok(Statement::Select(self.query()?))
         }

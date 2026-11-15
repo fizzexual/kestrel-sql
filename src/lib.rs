@@ -1,5 +1,6 @@
-//! Experimental embedded, append-only SQL engine with automatic exact aggregate indexes.
-//! This release is a research prototype, not a production-certified database.
+//! Embedded, append-only SQL engine for integer time series, with exact running totals that answer
+//! range `COUNT` / `SUM` / `AVG` without reading rows. Durable through a checksummed write-ahead log
+//! and checkpoints. Scope and limits: see the README ("What it does not do").
 pub mod archive;
 pub mod live;
 mod query;
@@ -13,6 +14,7 @@ use sql::Statement;
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 use std::path::Path;
+pub use wal::CheckpointInfo;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -154,13 +156,25 @@ pub enum Outcome {
     Transaction {
         state: String,
     },
+    Checkpoint {
+        generation: u64,
+        snapshot_bytes: u64,
+    },
 }
+
+/// Smallest log size that triggers an automatic checkpoint. The log must also have outgrown the
+/// last snapshot, so rewriting the snapshot never costs more than the log it replaces.
+pub const DEFAULT_CHECKPOINT_BYTES: u64 = 64 * 1024 * 1024;
 
 pub struct Database {
     tables: BTreeMap<String, Table>,
     wal: Option<wal::Wal>,
     transaction: Option<Transaction>,
     poisoned: bool,
+    checkpoint_bytes: Option<u64>,
+    /// Log size before which no automatic checkpoint is retried after one failed.
+    retry_checkpoint_at: u64,
+    last_checkpoint_error: Option<String>,
 }
 
 pub(crate) fn valid_identifier(name: &str) -> bool {
@@ -180,6 +194,9 @@ impl Database {
             wal: None,
             transaction: None,
             poisoned: false,
+            checkpoint_bytes: Some(DEFAULT_CHECKPOINT_BYTES),
+            retry_checkpoint_at: 0,
+            last_checkpoint_error: None,
         }
     }
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
@@ -228,7 +245,15 @@ impl Database {
         if let Some(wal) = &mut self.wal
             && !tx.changes.is_empty()
         {
-            let payload = wal::Wal::encode(&tx.changes)?;
+            let payload = match wal::Wal::encode(&tx.changes) {
+                Ok(payload) => payload,
+                Err(e) => {
+                    // Nothing was written, so the transaction can be undone completely; leaving
+                    // it open would keep its rows visible and block every later write.
+                    self.rollback()?;
+                    return Err(Error::new(format!("{e}; the transaction was rolled back")));
+                }
+            };
             if let Err(e) = wal.commit(&payload) {
                 self.poisoned = true;
                 return Err(Error::new(format!(
@@ -237,7 +262,71 @@ impl Database {
             }
         }
         self.transaction = None;
+        self.automatic_checkpoint();
         Ok(())
+    }
+    /// Minimum log size for automatic checkpoints; `None` turns them off.
+    pub fn set_checkpoint_threshold(&mut self, bytes: Option<u64>) {
+        self.checkpoint_bytes = bytes;
+        self.retry_checkpoint_at = 0;
+    }
+    /// Bytes of an unfinished last write that were cut off when the database was opened, which
+    /// happens after a crash or power cut during a commit that was never acknowledged.
+    pub fn recovered_tail_bytes(&self) -> u64 {
+        self.wal.as_ref().map_or(0, |w| w.recovered_tail_bytes)
+    }
+    /// Why the last automatic or manual checkpoint failed, until one succeeds. A failed
+    /// automatic checkpoint never fails the commit that triggered it; this is where it shows.
+    pub fn last_checkpoint_error(&self) -> Option<&str> {
+        self.last_checkpoint_error.as_deref()
+    }
+    /// Current log size in bytes, header included (0 for an in-memory database).
+    pub fn log_bytes(&self) -> u64 {
+        self.wal.as_ref().map_or(0, |w| w.log_bytes)
+    }
+    fn automatic_checkpoint(&mut self) {
+        let (Some(min), Some(wal)) = (self.checkpoint_bytes, &self.wal) else {
+            return;
+        };
+        let due = wal.log_bytes >= min.max(wal.snapshot_bytes).max(self.retry_checkpoint_at);
+        if due && self.checkpoint().is_err() && !self.poisoned {
+            // The commit itself is durable. Retry once the log has grown by another threshold.
+            self.retry_checkpoint_at = self.log_bytes().saturating_add(min);
+        }
+    }
+    /// Writes all tables to a binary snapshot and starts an empty log, so the next open reads
+    /// the snapshot instead of replaying every transaction since the last one.
+    pub fn checkpoint(&mut self) -> Result<CheckpointInfo> {
+        self.healthy()?;
+        if self.transaction.is_some() {
+            return Err(Error::new("CHECKPOINT cannot run inside a transaction"));
+        }
+        let wal = self
+            .wal
+            .as_mut()
+            .ok_or_else(|| Error::new("an in-memory database has no log to checkpoint"))?;
+        let result = wal.checkpoint(&self.tables).map_err(|e| {
+            if e.poison {
+                self.poisoned = true;
+                Error::new(format!(
+                    "checkpoint failed after its snapshot was published; close and reopen: {}",
+                    e.error
+                ))
+            } else {
+                Error::new(format!(
+                    "checkpoint failed; the database is unchanged: {}",
+                    e.error
+                ))
+            }
+        });
+        match &result {
+            Ok(_) => {
+                self.retry_checkpoint_at = 0;
+                self.last_checkpoint_error = None;
+            }
+            Err(e) => self.last_checkpoint_error = Some(e.to_string()),
+        }
+        result
     }
     pub fn rollback(&mut self) -> Result<()> {
         self.healthy()?;
@@ -327,7 +416,7 @@ impl Database {
         }
         self.transaction.as_mut().unwrap().changes.push(change);
         if automatic && let Err(e) = self.commit() {
-            if !self.poisoned {
+            if !self.poisoned && self.transaction.is_some() {
                 self.rollback()?;
             }
             return Err(e);
@@ -420,6 +509,13 @@ impl Database {
                 self.rollback()?;
                 Ok(Outcome::Transaction {
                     state: "rolled_back".into(),
+                })
+            }
+            Statement::Checkpoint => {
+                let info = self.checkpoint()?;
+                Ok(Outcome::Checkpoint {
+                    generation: info.generation,
+                    snapshot_bytes: info.snapshot_bytes,
                 })
             }
         }

@@ -232,7 +232,17 @@ fn run() -> Result<bool, Box<dyn std::error::Error>> {
         return Ok(false);
     }
     let mut db = match &path {
-        Some(p) => Database::open(p)?,
+        Some(p) => {
+            let db = Database::open(p)?;
+            if db.recovered_tail_bytes() > 0 {
+                eprintln!(
+                    "recovered: cut {} bytes of an unfinished last write from the log \
+                     (a crash or power cut during a commit that was not acknowledged)",
+                    db.recovered_tail_bytes()
+                );
+            }
+            db
+        }
         None => Database::memory(),
     };
     if let Some((n, r)) = bench {

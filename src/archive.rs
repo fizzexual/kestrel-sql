@@ -665,7 +665,7 @@ impl Archive {
             return Err(Error::new("invalid archive schema"));
         }
         let path = path.as_ref().to_path_buf();
-        std::fs::create_dir_all(&path)?;
+        crate::wal::create_dir_durable(&path)?;
         let lock = OpenOptions::new()
             .read(true)
             .write(true)

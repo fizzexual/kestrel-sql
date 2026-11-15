@@ -1,5 +1,34 @@
 # Changes
 
+## 0.4.0 (2026-11-15)
+
+- **PostgreSQL-protocol server, `kestrel-server`.** Serves a `Database` or a `LiveArchive` to
+  `psql`, psycopg and other PostgreSQL drivers: simple and extended query, prepared statements,
+  binary integers, transactions, `CHECKPOINT`. Login is SCRAM-SHA-256 (hand-written on `sha2`,
+  checked against the RFC test vectors); a password file is required, and it listens on loopback
+  unless `--allow-remote` is given. Limits on logins in progress, authenticated sessions, memory per
+  connection (256 MiB) and statements per transaction. No TLS. See [docs/SERVER.md](docs/SERVER.md).
+  New dependency: `getrandom`, for login nonces.
+- **Design and interview guide** in [docs/DESIGN.md](docs/DESIGN.md).
+
+- **Fixed: `Database` could refuse to open after a power cut.** A log whose end read back as zeros or
+  garbage (the write in flight when the power went) was treated as corruption. Damage with no
+  complete, checksummed frame after it is now cut off as the unfinished last write and reported by
+  `Database::recovered_tail_bytes()` and a CLI warning. Damage followed by a complete frame is still
+  refused, and the file is left untouched. A log whose header was never finished opens as empty.
+- **Checkpoints.** `Database::checkpoint()`, the `CHECKPOINT` statement, and an automatic checkpoint
+  once the log is larger than both 64 MiB and the last snapshot. The snapshot stores each column as
+  zigzag-encoded differences: 10 million rows take 32 MB instead of a 151 to 216 MB log. Directories
+  written by 0.3.16 open unchanged as generation 0.
+- **Tests:** power-cut states built byte by byte (`tests/durability.rs`), and fuzzing of SQL, logs,
+  snapshots and archive files (`tests/fuzz.rs`). The every-byte corruption test now expects a damaged
+  last frame to be cut instead of refused.
+- **CI** also runs on Linux, the fault-injection build and Rust 1.89, the minimum in `Cargo.toml`.
+  130 tests pass on Windows (current Rust) and on Linux with Rust 1.89.
+- **Measured three times:** range totals at 9.5 million rows 0.065 ms (`Database`) against DuckDB's
+  2.11 ms; reopening 10 million rows 0.82–1.01 s after a checkpoint instead of 1.28–2.81 s from the
+  log. Tables in the README.
+
 ## 0.3.16 post-release service qualification (2026-10-07)
 
 - Added 52 fresh million-row service cases, 1,327,600 offered operations and independently audited raw accounting/read/write percentiles. The current six-engine comparison has 3/5 mixed-p99 median wins, 4/5 read-p99 wins and 2/5 append-p99 wins; all slower results and dropped/failed requests remain visible.

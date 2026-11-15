@@ -307,7 +307,7 @@ fn every_partial_final_frame_is_discarded_and_all_prior_commits_survive() {
 }
 
 #[test]
-fn complete_corruption_is_rejected_without_modifying_the_wal() {
+fn corruption_before_the_last_frame_is_rejected_and_a_damaged_last_frame_is_cut() {
     let source = temp("corruption-source");
     {
         let mut db = Database::open(&source).unwrap();
@@ -315,17 +315,41 @@ fn complete_corruption_is_rejected_without_modifying_the_wal() {
         db.execute("INSERT INTO events VALUES (1,2,3)").unwrap();
     }
     let bytes = std::fs::read(source.join("events.ksql")).unwrap();
+    let mut last = 16;
+    while last + 16 + u32::from_le_bytes(bytes[last + 4..last + 8].try_into().unwrap()) as usize
+        != bytes.len()
+    {
+        last += 16 + u32::from_le_bytes(bytes[last + 4..last + 8].try_into().unwrap()) as usize;
+    }
     // Flip every byte, including the signature, frame headers and JSON payload.
     for offset in 0..bytes.len() {
         let path = temp("corrupt");
         let mut damaged = bytes.clone();
         damaged[offset] ^= 1;
         std::fs::write(path.join("events.ksql"), &damaged).unwrap();
-        assert!(
-            Database::open(&path).is_err(),
-            "accepted corruption at {offset}"
-        );
-        assert_eq!(std::fs::read(path.join("events.ksql")).unwrap(), damaged);
+        if offset < last {
+            // The file header or a frame with a complete frame after it: refuse, change nothing.
+            assert!(
+                Database::open(&path).is_err(),
+                "accepted corruption at {offset}"
+            );
+            assert_eq!(std::fs::read(path.join("events.ksql")).unwrap(), damaged);
+        } else {
+            // The last frame: a power cut can leave it like this, so it is an unfinished write.
+            // The cut is reported, never silent.
+            let db = Database::open(&path).unwrap();
+            assert_eq!(db.recovered_tail_bytes(), (bytes.len() - last) as u64);
+            assert_eq!(
+                db.query("SELECT COUNT(*) FROM events").unwrap().rows,
+                vec![ints(&[0])],
+                "offset {offset}"
+            );
+            drop(db);
+            assert_eq!(
+                std::fs::read(path.join("events.ksql")).unwrap(),
+                bytes[..last]
+            );
+        }
     }
 }
 
